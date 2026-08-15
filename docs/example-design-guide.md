@@ -15,6 +15,16 @@ Public examples explain how products can be composed to achieve an outcome witho
 
 Each scenario names a concrete trigger, accountable owner, completion evidence, human decision gates, exception paths, and the information intentionally excluded from the public workflow.
 
+## Input / Output Detail
+
+Examples must document the **input and output of every step** so readers can understand the value without running the system. Follow the shared [input/output conventions](../examples/inputs-outputs.md):
+
+- **Runnable demos**: exact method, URL, headers (tenant + idempotency), JSON body, and the response fields read, per step. See the [detailed operations guide](../examples/order-fulfillment-local/operations-guide.md).
+- **Designed examples**: per-step `Input` (who provides what), `Products` (contributing roles), and `Output` artifact with a concrete id (case, assertion, approval, status record).
+- **Value report**: runnable examples emit a machine-readable [value report](../examples/value-report-template.md) recording outcome, KPIs, gates, and evidence.
+
+Use concrete, stable identifiers (for example `order-123`, `approval://order-123-stockout`) and state the headers and idempotency keys so runs are reproducible.
+
 ## Operating Steps
 
 1. Prepare the required product environments using their individual public documentation.
