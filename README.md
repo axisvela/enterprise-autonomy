@@ -43,6 +43,7 @@ Start with the [product overview](docs/products.md), then explore a [public end-
 - [Order fulfillment exception management](vertical-slices/order-fulfillment-exception.md)
 - [Procurement request to receipt](vertical-slices/procurement-request-to-receipt.md)
 - [Recruitment requisition to offer](vertical-slices/recruitment-requisition-to-offer.md)
+- [Business scenario catalog](docs/business-scenarios.md)
 - [Public example design guide](docs/example-design-guide.md)
 
 ## Status
