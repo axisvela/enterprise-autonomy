@@ -34,6 +34,13 @@ Architecture, contracts, schemas, profiles, conformance, governance, internal pl
 
 Start with the [product overview](docs/products.md), then explore a [public end-to-end scenario](vertical-slices/mission-to-execution.md).
 
+## Public Examples
+
+- [Facility inspection reference stack](reference-stacks/facility-inspection.md)
+- [Mission-to-execution](vertical-slices/mission-to-execution.md)
+- [Simulation-to-validation](vertical-slices/simulation-to-validation.md)
+- [Process-to-outcome](vertical-slices/process-to-outcome.md)
+
 ## Status
 
 Public product introductions and end-to-end examples are being expanded incrementally.
