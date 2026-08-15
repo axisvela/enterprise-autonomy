@@ -12,7 +12,11 @@ Public examples illustrate how AxisRobo products can be composed to achieve a me
 - [Value framework](../docs/example-value.md) — how examples demonstrate value.
 - [Value report template](value-report-template.md) — machine-readable outcome report.
 - [Value metrics catalog](value-metrics.md) — KPIs by example class.
+- [Input/output conventions](inputs-outputs.md) — shared shape for step I/O.
 - [Local run handbook](local-run-handbook.md) — startup and troubleshooting guidance.
+- [Detailed operations guide](order-fulfillment-local/operations-guide.md) — exact requests/responses for the runnable demo.
+- [Governance subtlety](../docs/governance-subtlety.md) — why the design is structural, not just chained services.
+- [Mission-to-execution walkthrough](mission-to-execution-walkthrough.md) — concrete artifacts for the designed example.
 
 ## Local Runnable Demos
 
