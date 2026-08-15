@@ -9,6 +9,7 @@ Public examples explain how products can be composed to achieve an outcome witho
 3. Assign product roles by published capability, while keeping each product authoritative for its own domain.
 4. Describe the lifecycle from intent through review using observable business events.
 5. State what the example intentionally excludes, including topology, policy logic, credentials, customer data, and internal interfaces.
+6. Add a **Value & Effect** section covering outcome value, 2–4 KPIs, decision gates, evidence produced, and the adoption path. See the [value framework](example-value.md) and the [value metrics catalog](../examples/value-metrics.md).
 
 ## Scenario Format
 

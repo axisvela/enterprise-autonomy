@@ -16,6 +16,7 @@ How to approach adopting AxisRobo Enterprise Autonomy products for a governed au
 3. **Plan the human gates.** Identify every decision that requires review, approval, consent, or escalation.
 4. **Trial in a controlled environment.** Use simulation ([Peiravela](products/peiravela.md)) and engineering assurance ([Tekmovela](products/tekmovela.md)) before live operation.
 5. **Run, review, and improve.** Execute the accepted plan, review evidence at each gate, and expand only after the organization accepts the result.
+6. **Measure the effect.** Define KPIs using the [value metrics catalog](../examples/value-metrics.md), and verify the outcome with the [value framework](example-value.md).
 
 ## Scenario Guidance
 

@@ -9,7 +9,11 @@ Common terms used across AxisRobo Enterprise Autonomy public material.
 | Control plane | The product surface that governs lifecycle, authorization, and audit for a domain. |
 | Effect ledger | A deny-by-default record of agent-performed actions and their consequences in Praxovela. |
 | Evidence | An auditable record of an observation, decision, or action used to support a claim or outcome. |
+| Effect | The observable change an example produces, shown through state change, governance effect, recoverability, and KPI movement. |
 | Human decision gate | A required human review or approval before an autonomous action may continue. |
+| KPI | A measurable indicator of an example's effect, such as time-to-resolve, gate compliance, or evidence completeness. |
+| Outcome | The measurable business result an example produces. |
+| Value chain | The explicit chain of outcome, accountable owner, decision gates, evidence, and effect that makes an example valuable. |
 | Plan | A revisable, verified sequence of capability invocations produced by Orchadyn. |
 | Process instance | A durable, recoverable instance of a workflow in Rheovela. |
 | Reference adapter | A local, illustrative integration for examples; not a production system. |

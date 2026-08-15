@@ -14,15 +14,19 @@ Browse the [business scenario catalog](business-scenarios.md) and choose a [vert
 
 Reference stacks, such as [facility inspection](../reference-stacks/facility-inspection.md), show which products can contribute to a class of outcomes and where human review points sit.
 
-## 4. Run a local demo
+## 4. Understand example value
+
+The [value framework](example-value.md) explains what makes an example valuable: outcome, accountable owner, decision gates, evidence, and effect. The [value metrics catalog](../examples/value-metrics.md) defines KPIs per example class.
+
+## 5. Run a local demo
 
 The [local order-exception demo](../examples/order-fulfillment-local/README.md) is the only currently runnable public example. See the [local run handbook](../examples/local-run-handbook.md) for startup guidance.
 
-## 5. Learn operational details
+## 6. Learn operational details
 
 The [technical catalog](technical-catalog.md) lists binaries, current and planned ports, databases, and health endpoints. The [port migration guide](port-migration.md) explains the planned port allocation.
 
-## 6. Check release status
+## 7. Check release status
 
 The [release status](release-status.md) page summarizes public release maturity. Each product repository is authoritative for its own releases.
 
