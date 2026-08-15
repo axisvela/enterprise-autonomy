@@ -32,18 +32,21 @@ $env:PRAXOVELA_BOUNDARIES = $previousBoundaries
 if ($OrchadynBinary) {
   $orchadynReleaseDir = Join-Path $PSScriptRoot ".orchadyn-release"
   New-Item -ItemType Directory -Force -Path $orchadynReleaseDir | Out-Null
-  foreach ($pair in @(@{Asset = "orchadyn-api_0.4.0_windows_amd64.exe"; Local = "orchadyn-api.exe"}, @{Asset = "orchadyn-migrate_0.4.0_windows_amd64.exe"; Local = "orchadyn-migrate.exe"})) {
+  foreach ($pair in @(@{Asset = "orchadyn-api_0.7.0_windows_amd64.exe"; Local = "orchadyn-api.exe"}, @{Asset = "orchadyn-migrate_0.7.0_windows_amd64.exe"; Local = "orchadyn-migrate.exe"})) {
     $target = Join-Path $orchadynReleaseDir $pair.Local
     if (-not (Test-Path $target)) {
-      $url = "https://github.com/axisrobo/orchadyn-open/releases/download/v0.4.0/$($pair.Asset)"
+      $url = "https://github.com/axisrobo/orchadyn-open/releases/download/v0.7.0/$($pair.Asset)"
       Write-Host "Downloading $url"
       Invoke-WebRequest -UseBasicParsing $url -OutFile $target
     }
   }
   $orchadynMigrationDir = Join-Path $orchadynReleaseDir "migrations"
-  if (-not (Test-Path $orchadynMigrationDir) -and $OrchadynSource) {
+  if ($OrchadynSource) {
     $sourceMigrationDir = Join-Path $OrchadynSource "backend\migrations"
-    if (Test-Path $sourceMigrationDir) { Copy-Item -Recurse $sourceMigrationDir $orchadynMigrationDir }
+    if (Test-Path $sourceMigrationDir) {
+      New-Item -ItemType Directory -Force -Path $orchadynMigrationDir | Out-Null
+      Copy-Item (Join-Path $sourceMigrationDir "*.sql") $orchadynMigrationDir -Force
+    }
   }
   $previousDatabaseURL = $env:DATABASE_URL
   $previousTenant = $env:ORCHADYN_TENANT_ID
@@ -81,9 +84,12 @@ foreach ($name in @("moduregis-api.exe", "moduregis-migrate.exe")) {
   }
 }
 $moduregisMigrationDir = Join-Path $moduregisReleaseDir "migrations"
-if (-not (Test-Path $moduregisMigrationDir) -and $ModuregisSource) {
+if ($ModuregisSource) {
   $sourceMigrationDir = Join-Path $ModuregisSource "deploy\postgres\migrations"
-  if (Test-Path $sourceMigrationDir) { Copy-Item -Recurse $sourceMigrationDir $moduregisMigrationDir }
+  if (Test-Path $sourceMigrationDir) {
+    New-Item -ItemType Directory -Force -Path $moduregisMigrationDir | Out-Null
+    Get-ChildItem (Join-Path $sourceMigrationDir "*.sql") | Where-Object { $_.Name -notlike "*remove_invocation_grant_token*" } | Copy-Item -Destination $moduregisMigrationDir -Force
+  }
 }
 $previousModuregisDatabaseURL = $env:DATABASE_URL
 $previousModuregisEnv = $env:MODUREGIS_ENV
