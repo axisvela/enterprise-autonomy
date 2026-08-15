@@ -59,6 +59,21 @@ An ordered item is unavailable at its assigned warehouse. Operations must choose
 
 See the [value framework](../docs/example-value.md).
 
+## Detailed Operating Procedure
+
+This slice has a runnable local demo. For the exact request bodies, headers, and expected responses, see the [Detailed Operations Guide](../examples/order-fulfillment-local/operations-guide.md). Summary per step:
+
+| Step | Input | Products | Output artifact |
+| --- | --- | --- | --- |
+| Detect | stockout signal + evidence ref | Ontovela | `assertion-order-123-stockout` |
+| Open case | workspace, case fields, candidate actions | Symbivela | case `order-123-stockout` (`open`) |
+| Replan | goal, catalog, constraints, delegation | Orchadyn | verified plan + violation report |
+| Process | workflow definition, actor | Rheovela | `order-exception` instance |
+| Reserve | warehouse, delta, approval ref | inventory-domain | `adjustment-inventory-order-123-reserve-v1` |
+| Handoff | session + handoff content | Praxovela | effect-ledgered handoff |
+| Approve and act | approved action | order-domain | `action-order-123-<action>-v1` |
+| Verify | final order, notifications | order-domain | `order-outcome.json` + value report |
+
 ## Public Boundary
 
 This example omits pricing rules, allocation logic, communication templates, endpoints, and approval policy.

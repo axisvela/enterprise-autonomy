@@ -54,6 +54,18 @@ An equipment signal indicates that an asset may require maintenance. Operations 
 
 See the [value framework](../docs/example-value.md).
 
+## Detailed Operating Procedure
+
+| Step | Input | Products | Output artifact |
+| --- | --- | --- | --- |
+| Open assessment | signal, affected asset, detection time, operating state | Ontovela | assessment `maint-assess-0001` (`open`) |
+| Validate signal | recent inspections, operating context, signal quality | Ontovela, Gnosivela | validation record `valid-0001` |
+| Assess impact | production, safety, access, outage implications | Symbivela, Aegivela | impact assessment `impact-0001` |
+| Plan response | approved options + required approvals/evidence | Orchadyn, Moduregis | response plan `plan-maint-0001` |
+| Authorize and schedule | owner approvals, work order fields | Aegivela, Rheovela | work order `wo-0001` + `approval://maint-assess-0001` |
+| Execute and observe | assigned scope, stop conditions | Kinetovela, Praxovela | execution record `run-wo-0001` |
+| Verify and close | post-work asset state, maintenance manager acceptance | Ontovela, Symbivela | closed work order + follow-up record |
+
 ## Public Boundary
 
 This example omits equipment thresholds, control logic, safety policy, site topology, maintenance records, and execution configuration.

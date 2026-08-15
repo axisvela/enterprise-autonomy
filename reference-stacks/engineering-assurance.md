@@ -46,6 +46,17 @@ This public reference stack illustrates how AxisRobo products can contribute to 
 
 See the [value framework](../docs/example-value.md).
 
+## Detailed Operating Procedure
+
+| Step | Input | Products | Output artifact |
+| --- | --- | --- | --- |
+| Define contracts | verification contracts for the change | Tekmovela, Symbivela | contract set `contracts-0001` |
+| Run tests | closed-loop tests, controlled environment | Tekmovela, Peiravela | test results + simulation evidence |
+| Diagnose | failures and diagnostics | Tekmovela | diagnostic report `diag-0001` |
+| Waive (exception) | explicit human approval with evidence | Aegivela, Symbivela | waiver `waiver-0001` |
+| Gate release | contract pass + review authority approval | Tekmovela, Symbivela | release decision `release-0001` |
+| Attest and re-verify | attestations, re-verification after changes | Aegivela, Tekmovela | attestation records + re-verify report |
+
 ## Scope Boundary
 
 Actual deployment topology, integrations, verification thresholds, and policy are organization-specific. Follow the [public example design guide](../docs/example-design-guide.md) and product documentation; do not treat this overview as a deployment instruction.

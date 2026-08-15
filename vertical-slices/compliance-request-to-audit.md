@@ -46,6 +46,17 @@ A governed operation must demonstrate compliance with a defined requirement. The
 - Conflicting claims: resolve through review before packaging.
 - Attestation authority unavailable: hold packaging until the authority is available or an approved deputy records the decision.
 
+## Detailed Operating Procedure
+
+| Step | Input | Products | Output artifact |
+| --- | --- | --- | --- |
+| Open case | requirement reference, accountable lead | Symbivela | case `compliance-0001` (`open`) |
+| Collect evidence | governed source artifacts with timestamps | Ontovela, Gnosivela | evidence set `evidence-compliance-0001` |
+| Review | evidence against each requirement item | Symbivela | review record `review-compliance-0001` |
+| Attest | required attestations | Aegivela | attestations `attestation-0001` |
+| Package | requirement reference + evidence + decisions | Gnosivela, Rheovela | audit package `audit-compliance-0001` |
+| Record | package for inspection, change history | Ontovela | inspection-ready record |
+
 ## Public Boundary
 
 This example omits specific regulations, endpoints, templates, and attestation policy.

@@ -46,6 +46,17 @@ This public reference stack illustrates how AxisRobo products can contribute to 
 
 See the [value framework](../docs/example-value.md).
 
+## Detailed Operating Procedure
+
+| Step | Input | Products | Output artifact |
+| --- | --- | --- | --- |
+| Open case | customer reference, issue, detection time, owner | Symbivela | case `cs-0001` (`open`) |
+| Ground context | current context, prior knowledge | Ontovela, Gnosivela, Mnemovela | grounded facts `facts-cs-0001` |
+| Recommend | permitted resolution with impact | Orchadyn, Moduregis | resolution options |
+| Consent/approve | customer consent, required approvals | Aegivela, Symbivela | `approval://cs-0001` + consent record |
+| Execute | accepted resolution, system updates | Limenora, Rheovela | applied resolution + updates |
+| Close/escalate | outcome and communication evidence | Symbivela | closed case or escalation record |
+
 ## Scope Boundary
 
 Actual deployment topology, integrations, policy logic, templates, and data handling are organization-specific. Follow the [public example design guide](../docs/example-design-guide.md) and product documentation; do not treat this overview as a deployment instruction.

@@ -47,6 +47,17 @@ A proposed autonomous capability is explored in a controlled simulation before i
 - Unexpected behavior in simulation: review and re-run before deciding.
 - Review group unavailable: hold the decision until the required authority is available.
 
+## Detailed Operating Procedure
+
+| Step | Input | Products | Output artifact |
+| --- | --- | --- | --- |
+| Open proposal | capability, scope, review group | Symbivela | proposal `proposal-0001` (`open`) |
+| Compile experiments | scenarios, boundary cases | Peiravela, Orchadyn | experiment set `exp-proposal-0001` |
+| Run simulation | possible-world runs, immutable evidence | Peiravela | simulation evidence `evidence://proposal-0001` |
+| Review | exceptions, edge cases, proposal claims | Gnosivela, Symbivela | review record `review-proposal-0001` |
+| Decide | release, restrict, or reject | Symbivela, Aegivela | policy decision `decision-proposal-0001` |
+| Apply | capability availability update | Moduregis | capability record updated |
+
 ## Public Boundary
 
 This example omits specific simulation models, thresholds, endpoints, and policy rules.

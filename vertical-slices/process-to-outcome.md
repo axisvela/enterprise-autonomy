@@ -36,6 +36,17 @@ Rheovela, Orchadyn, Aegivela, Limenora, Symbivela, Moduregis, Gnosivela, Mnemove
 
 See the [value framework](../docs/example-value.md).
 
+## Detailed Operating Procedure
+
+| Step | Input | Products | Output artifact |
+| --- | --- | --- | --- |
+| Initiate | governed operational objective | Symbivela, Rheovela | process instance `proc-0001` (`initiated`) |
+| Plan | goals, context, constraints | Orchadyn | plan `plan-proc-0001` |
+| Run process | durable lifecycle, waiting, recovery, escalation | Rheovela | instance state history |
+| Authorize | identity, authorization, approvals | Aegivela | `approval://proc-0001` |
+| Integrate | external systems, events, partner interfaces | Limenora | integration events |
+| Review and intervene | progress, pauses, revisions, outcome inspection | Symbivela | review record `review-proc-0001` |
+
 ## Public Boundary
 
 This example intentionally omits process definitions, approval policy, service endpoints, customer data, and operational runbooks.

@@ -60,6 +60,18 @@ An employee requests a business item or service. Procurement validates the reque
 
 See the [value framework](../docs/example-value.md).
 
+## Detailed Operating Procedure
+
+| Step | Input | Products | Output artifact |
+| --- | --- | --- | --- |
+| Submit | need, description, quantity, delivery need, cost center, justification | Symbivela | request `preq-0001` (`submitted`) |
+| Validate | completeness, duplicates, cost center, restricted categories | Gnosivela, Ontovela | validated request or return for correction |
+| Route | category, approval chain, sourcing path | Rheovela, Moduregis | route record `route-preq-0001` |
+| Select | eligible options + rationale | Orchadyn, Limenora | supplier decision `supplier-b` with evidence |
+| Approve | budget/procurement/security/legal reviewer decisions | Aegivela, Symbivela | `approval://preq-0001` with reviewer + rationale |
+| Purchase | approved action, purchase reference | Moduregis, Limenora | `po-0001` + supplier acknowledgement |
+| Receive and close | delivery/service acceptance, receipt evidence | Rheovela, Ontovela | closed request with purchase + receipt evidence |
+
 ## Public Boundary
 
 This example omits supplier data, thresholds, approval matrices, ERP configuration, and integration details.

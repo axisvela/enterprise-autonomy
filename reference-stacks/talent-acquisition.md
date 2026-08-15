@@ -46,6 +46,17 @@ This public reference stack illustrates how AxisRobo products can contribute to 
 
 See the [value framework](../docs/example-value.md).
 
+## Detailed Operating Procedure
+
+| Step | Input | Products | Output artifact |
+| --- | --- | --- | --- |
+| Open requisition | role, location, budget envelope, owner | Symbivela | requisition `ta-0001` (`open`) |
+| Ground process | current role and candidate context | Ontovela, Gnosivela | context record |
+| Propose steps | sourcing and evaluation plan | Orchadyn | plan `plan-ta-0001` |
+| Review shortlist | candidate evidence, structured feedback | Symbivela, Mnemovela | shortlist review `shortlist-ta-0001` |
+| Approve | requisition, shortlist, offer decisions | Aegivela, Symbivela | `approval://ta-0001` |
+| Extend and record | offer, acceptance/decline, closure | Limenora, Rheovela | `offer-ta-0001` + closure record |
+
 ## Scope Boundary
 
 Actual deployment topology, integrations, sourcing policy, templates, and data handling are organization-specific. Follow the [public example design guide](../docs/example-design-guide.md) and product documentation; do not treat this overview as a deployment instruction.

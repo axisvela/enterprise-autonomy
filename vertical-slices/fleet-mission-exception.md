@@ -60,6 +60,17 @@ A bounded physical mission encounters an exception, such as an obstacle, safety 
 
 See the [value framework](../docs/example-value.md).
 
+## Detailed Operating Procedure
+
+| Step | Input | Products | Output artifact |
+| --- | --- | --- | --- |
+| Open mission | zone, objective, required evidence, restrictions, owner | Symbivela, Ontovela | mission `mission-alpha-001` (`open`) |
+| Start and monitor | approved mission, live status | Kinetovela, Ontovela | status events (`started`, `in-progress`) |
+| Pause | exception signal, safety concern | Kinetovela, Symbivela | pause record `pause-alpha-001` |
+| Review exception | current state, proposed alternatives | Orchadyn, Symbivela | exception review `exc-alpha-001` |
+| Resume/adjust/cancel | operator decision | Aegivela, Kinetovela | `approval://mission-alpha-001` + mission status |
+| Close | outcome evidence, follow-up | Rheovela, Symbivela | closed mission + follow-up record |
+
 ## Public Boundary
 
 This example omits mission-control details, safety thresholds, topology, endpoints, and approval policy.

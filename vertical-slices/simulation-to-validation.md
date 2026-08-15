@@ -36,6 +36,17 @@ Orchadyn, Ontovela, Peiravela, Symbivela, Tekmovela, Aegivela, and Limenora can 
 
 See the [value framework](../docs/example-value.md).
 
+## Detailed Operating Procedure
+
+| Step | Input | Products | Output artifact |
+| --- | --- | --- | --- |
+| Define objective | operational objective, constraints, success criteria | Symbivela | proposal `eval-0001` |
+| Prepare context | candidate operation + relevant context | Orchadyn, Ontovela | candidate spec `spec-eval-0001` |
+| Run simulation | scenario definitions, boundary cases | Peiravela | simulation runs + immutable evidence `evidence://eval-0001` |
+| Review | simulated outcomes against criteria | Symbivela | review record `review-eval-0001` |
+| Validate | repeatable validation, release assurance | Tekmovela | validation report `assurance-eval-0001` |
+| Decide | revise, approve, or reject | Symbivela, Aegivela | decision `decision-eval-0001` |
+
 ## Public Boundary
 
 This scenario describes an outcome-level workflow only. It does not disclose simulation models, operational thresholds, policy rules, test fixtures, or internal decision logic.

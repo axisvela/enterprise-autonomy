@@ -50,6 +50,19 @@ For verified local-binary startup commands, configuration, and expected outputs,
 
 See the [value framework](../docs/example-value.md).
 
+## Detailed Operating Procedure
+
+| Step | Input | Products | Output artifact |
+| --- | --- | --- | --- |
+| Detect exception | order/inventory/carrier/payment event, owner | Ontovela, Limenora | exception signal + case `exc-0001` |
+| Review context | current order, inventory, carrier, payment | Ontovela, Gnosivela | verified context |
+| Prepare alternatives | permitted outcomes per exception class | Orchadyn, Moduregis | alternatives list |
+| Approve | required consent or finance review | Aegivela, Symbivela | `approval://exc-0001` |
+| Execute | approved action, connected-system updates | Limenora, Rheovela | applied action + update results |
+| Close | notification status, final state evidence | Symbivela | closed case or escalation |
+
+See the runnable [order-exception demo](../examples/order-fulfillment-local/README.md) and its [Detailed Operations Guide](../examples/order-fulfillment-local/operations-guide.md).
+
 ## Scope Boundary
 
 Actual deployment topology, integrations, pricing, allocation logic, communication templates, and policy are organization-specific. Follow the [public example design guide](../docs/example-design-guide.md) and product documentation; do not treat this overview as a deployment instruction.

@@ -46,6 +46,17 @@ This public reference stack illustrates how AxisRobo products can contribute to 
 
 See the [value framework](../docs/example-value.md).
 
+## Detailed Operating Procedure
+
+| Step | Input | Products | Output artifact |
+| --- | --- | --- | --- |
+| Detect signal | equipment risk signal with evidence | Ontovela, Gnosivela | signal record `pm-0001` |
+| Confirm risk | current state, prior knowledge, signal quality | Ontovela, Mnemovela | confirmed risk `confirm-pm-0001` |
+| Propose intervention | approved options with impact | Orchadyn, Moduregis | intervention options |
+| Approve | safety/cost review, scheduling | Aegivela, Symbivela | `approval://pm-0001` + schedule |
+| Execute | maintenance process, CMMS + notification updates | Rheovela, Limenora | work order + updates |
+| Close | post-work verification, evidence | Symbivela, Ontovela | closed work order + follow-up |
+
 ## Scope Boundary
 
 Actual deployment topology, integrations, prediction thresholds, and policy are organization-specific. Follow the [public example design guide](../docs/example-design-guide.md) and product documentation; do not treat this overview as a deployment instruction.

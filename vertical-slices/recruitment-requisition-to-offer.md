@@ -52,6 +52,18 @@ A hiring manager requests a role. Talent acquisition validates the requisition, 
 
 See the [value framework](../docs/example-value.md).
 
+## Detailed Operating Procedure
+
+| Step | Input | Products | Output artifact |
+| --- | --- | --- | --- |
+| Validate requisition | business justification, role, location, type, budget ref, criteria | Symbivela | requisition `req-0001` (`validated`) |
+| Approve need | finance/workforce/business decisions | Aegivela, Symbivela | `approval://req-0001` with recorded reasons |
+| Prepare evaluation | criteria, panel, structured questions, decision owner | Rheovela | evaluation plan `eval-req-0001` |
+| Coordinate interactions | scheduling, communications | Limenora, Rheovela | interview records |
+| Collect feedback | structured feedback per criteria | Gnosivela, Mnemovela | feedback bundle `feedback-req-0001` |
+| Select | human evidence review + rationale | Symbivela, Aegivela | selection decision `decision-req-0001` |
+| Offer or close | authorized offer, communication status | Symbivela, Limenora | offer `offer-req-0001` or closure with reason |
+
 ## Public Boundary
 
 This is a workflow illustration, not employment, legal, privacy, or compliance advice. It omits scoring, policy, retention, HR configuration, and decision models.

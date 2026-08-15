@@ -59,6 +59,17 @@ An external system or partner integration becomes unavailable. Governed processe
 
 See the [value framework](../docs/example-value.md).
 
+## Detailed Operating Procedure
+
+| Step | Input | Products | Output artifact |
+| --- | --- | --- | --- |
+| Detect | outage signal, affected work, detection time | Limenora, Ontovela | case `outage-0001` (`open`) |
+| Preserve | in-flight work in durable processes | Rheovela | preserved instance set `preserved-0001` |
+| Verify reconnect | integration state and evidence | Limenora, Ontovela | reconnection status `reconnect-0001` |
+| Resume/re-route | recovery plan | Orchadyn, Rheovela | resumed work records |
+| Confirm | completed actions + outage evidence | Symbivela, Limenora | closure record `close-outage-0001` |
+| Escalate (exception) | persistent outage with evidence | Symbivela | escalation record `esc-outage-0001` |
+
 ## Public Boundary
 
 This example omits partner details, topology, endpoints, credentials, and outage policy.

@@ -52,6 +52,18 @@ A customer reports a service problem that spans account, order, delivery, and bi
 
 See the [value framework](../docs/example-value.md).
 
+## Detailed Operating Procedure
+
+| Step | Input | Products | Output artifact |
+| --- | --- | --- | --- |
+| Acknowledge and classify | customer request, contact channel, urgency, affected account | Symbivela | case `case-0001` (`open`) |
+| Verify facts | relevant records, verified vs unverified | Ontovela, Gnosivela, Mnemovela | verified facts `facts-case-0001` |
+| Coordinate investigation | tasks to order/billing/delivery/product teams | Rheovela | investigation record `invest-case-0001` |
+| Prepare resolution | permitted options, customer impact, cost | Orchadyn, Moduregis | resolution options `options-case-0001` |
+| Approve and act | reviewer approvals, selected action | Aegivela, Limenora | `approval://case-0001` + executed action |
+| Communicate and confirm | customer status, accepted correction | Symbivela, Limenora | communication record `comm-case-0001` |
+| Close or escalate | outcome + communication evidence | Symbivela, Rheovela | closed case or escalation record |
+
 ## Public Boundary
 
 This example omits customer data, remedy limits, service-level targets, system endpoints, privacy controls, and internal escalation policy.

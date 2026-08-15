@@ -48,6 +48,17 @@ This public reference stack illustrates how AxisRobo products can contribute to 
 
 See the [value framework](../docs/example-value.md) and [value metrics catalog](../examples/value-metrics.md).
 
+## Detailed Operating Procedure
+
+| Step | Input | Products | Output artifact |
+| --- | --- | --- | --- |
+| Define inspection | boundary, expected evidence, service window, accountable operator | Symbivela, Ontovela | inspection case `inspect-0001` |
+| Establish context | zone, restrictions, available resources | Ontovela, Moduregis | context record + capability availability |
+| Select roles | product roles for collaboration, planning, authorization, execution | Orchadyn, Aegivela, Kinetovela | composition plan |
+| Review work | proposed scope, evidence, stop conditions | Symbivela | `approval://inspect-0001` |
+| Execute | accepted work, monitored status | Kinetovela, Ontovela | status events + pause/escalation records |
+| Review and close | completed evidence, outcome | Symbivela, Rheovela | closed inspection + follow-up |
+
 ## Scope Boundary
 
 Actual deployment topology, integrations, policies, data handling, and product configuration are organization-specific. Follow the [public example design guide](../docs/example-design-guide.md) and product documentation; do not treat this overview as a deployment instruction.
