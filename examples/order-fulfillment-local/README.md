@@ -1,6 +1,6 @@
 # Local-Binary Order Fulfillment Exception Demo
 
-This runnable example opens a stockout exception for `order-123`. It starts local AxisRobo binaries, records the observed inventory state in Ontovela, opens a human case in Symbivela, and creates a durable Rheovela process instance.
+This runnable example opens a stockout exception for `order-123`. It starts local AxisRobo binaries, records the observed inventory state in Ontovela, opens a human case in Symbivela, creates a durable Rheovela process instance, and uses Praxovela to create and verify an auditable manual-action handoff.
 
 ## What This Demo Does
 
@@ -10,6 +10,7 @@ This runnable example opens a stockout exception for `order-123`. It starts loca
 | Record stockout | Order ID, inventory source, observed status | Ontovela assertion and resolved state |
 | Create workspace and open case | Order-operations workspace, order reference, problem, permitted alternatives | Workspace owned by the operator and Symbivela case in `open` state |
 | Start process | Case ID and actor | Rheovela `order-exception` instance |
+| Create handoff | Case ID and approved manual action | Praxovela-governed local handoff record |
 | Human decision | Selected action and required approval | Case moves to `resolving`, then `resolved` or `escalated` |
 
 The demo intentionally does **not** update an order-management, inventory, carrier, payment, or customer-notification system. No locally implemented adapter for those systems was found. The operator must complete those actions in the organization's authorized business systems and attach the resulting references to the case.
@@ -40,6 +41,7 @@ The script starts:
 | Ontovela | `http://localhost:8082` | `GET /healthz` |
 | Rheovela | `http://localhost:8083` | `GET /api/v1/health` |
 | Symbivela | `http://localhost:8080` | `GET /ready` |
+| Praxovela AXON Core | `http://127.0.0.1:8420` | `GET /health` |
 
 `GET /ready` must return `{"status":"ready","postgres":"ok"}` before running the scenario. Logs are written to `.local-logs/`.
 
@@ -50,7 +52,7 @@ The script starts:
 .\run-order-exception.ps1
 ```
 
-The script prints the created assertion, case, and process instance. Before opening the case it creates the `order-ops` workspace with `$Actor` as its owner, which grants that actor the required case-operation role. Inspect the results manually:
+The script prints the created assertion, case, process instance, and Praxovela write/read results. Before opening the case it creates the `order-ops` workspace with `$Actor` as its owner, which grants that actor the required case-operation role. Praxovela is fail-closed: its policy allows only reading and writing the single handoff file under `.praxovela/`. Inspect the results manually:
 
 ```powershell
 curl.exe -H "X-Tenant-ID: $TenantId" "http://localhost:8082/v1/twins/order-123/state/fulfillment_status"
