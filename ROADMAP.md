@@ -39,6 +39,7 @@ This roadmap tracks the public content plan for the `enterprise-autonomy` reposi
 - [x] Additional domain reference adapters
 - [x] Value & Effect reporting for runnable examples
 - [x] Demo validation and smoke-test tooling
+- [x] Detailed operations guide with exact request/response per step
 - [ ] Additional runnable local demos
 
 ## Phase 6 — Consistency and release tracking (in progress)
@@ -47,7 +48,10 @@ This roadmap tracks the public content plan for the `enterprise-autonomy` reposi
 - [x] Example value framework and metrics
 - [x] Cross-link and consistency pass
 - [x] Continuous verification of public examples
-- [ ] Per-example value reports for all designed examples
+- [x] Per-example value reports for all designed examples
+- [x] Detailed operating procedures (input/products/output) for all slices and stacks
+- [x] Adapter API references and error semantics
+- [x] Version management harness and commit-time release check
 
 ## Guiding Principles
 

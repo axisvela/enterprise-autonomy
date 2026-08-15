@@ -4,6 +4,15 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`.
 
+## 0.2.1 (2026-08-16)
+
+- Added the detailed operations guide sections: output artifacts, seed data, idempotency table, verification, and troubleshooting.
+- Added adapter API references with endpoints, action semantics and state transitions, and error responses (`adapters/order-domain/API.md`, `adapters/inventory-domain/API.md`).
+- Added detailed operating procedures with per-step inputs/products/outputs to all 11 vertical slices and 6 reference stacks.
+- Added the mission-to-execution worked walkthrough and shared input/output conventions.
+- Added the governance-subtlety guide explaining the structural, distributed governance design with concrete artifacts.
+- Enriched the value report template with a worked example and the example design guide with detailed I/O requirements.
+
 ## 0.2.0 (2026-08-16)
 
 - Added the example value framework (`docs/example-value.md`), value report template, and value metrics catalog.
