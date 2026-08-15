@@ -1,0 +1,18 @@
+{
+  "schema_version": "1",
+  "workflow_id": "order-exception",
+  "title": "Order Fulfillment Exception",
+  "kind": "approval",
+  "source": "enterprise-autonomy-example",
+  "stages": [
+    {"id": "validate", "title": "Validate Exception", "assignee_spec": {"kind": "role", "role": "order-operations"}, "inputs": [], "outputs": []},
+    {"id": "approve", "title": "Approve Resolution", "assignee_spec": {"kind": "role", "role": "operations-lead"}, "inputs": [], "outputs": []},
+    {"id": "execute", "title": "Execute Approved Action", "assignee_spec": {"kind": "capability", "required": ["order.exception.execute"]}, "inputs": [], "outputs": []},
+    {"id": "close", "title": "Confirm Outcome", "assignee_spec": {"kind": "role", "role": "order-operations"}, "inputs": [], "outputs": []}
+  ],
+  "transitions": [
+    {"from": "validate", "to": "approve"},
+    {"from": "approve", "to": "execute"},
+    {"from": "execute", "to": "close"}
+  ]
+}

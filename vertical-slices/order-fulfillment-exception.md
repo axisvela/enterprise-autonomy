@@ -50,3 +50,7 @@ An ordered item is unavailable at its assigned warehouse. Operations must choose
 ## Public Boundary
 
 This example omits pricing rules, allocation logic, communication templates, endpoints, and approval policy.
+
+## Runnable Local Demo
+
+For verified local-binary startup commands, configuration, API requests, request bodies, and expected operational outputs, see the [local order-exception demo](../examples/order-fulfillment-local/README.md).
