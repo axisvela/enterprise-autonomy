@@ -34,6 +34,18 @@ This public reference stack illustrates how AxisRobo products can contribute to 
 5. Gate the release only when all required contracts pass and the review authority approves.
 6. Record attestations and re-verify after any change that invalidates prior evidence.
 
+## Value & Effect
+
+| Field | Detail |
+| --- | --- |
+| Outcome value | Releases are gated on verified contracts and explicit human approval, so autonomous systems ship with reproducible assurance. |
+| KPIs | Contract pass rate, waiver discipline, re-verification coverage, attestation completeness. |
+| Decision gates | Test design review, exception waiver, release approval. |
+| Evidence produced | Verification contracts, test and simulation results, diagnostics, waivers, attestations. |
+| Adoption path | Start with a small, bounded system and expand as assurance evidence accumulates. |
+
+See the [value framework](../docs/example-value.md).
+
 ## Scope Boundary
 
 Actual deployment topology, integrations, verification thresholds, and policy are organization-specific. Follow the [public example design guide](../docs/example-design-guide.md) and product documentation; do not treat this overview as a deployment instruction.

@@ -48,6 +48,18 @@ An employee requests a business item or service. Procurement validates the reque
 - Overdue approval: notify and escalate through the procurement process.
 - Receipt mismatch: keep open and record the discrepancy.
 
+## Value & Effect
+
+| Field | Detail |
+| --- | --- |
+| Outcome value | Purchasing completes with correct approvals and segregation of duties, reducing unauthorized or unreviewed spend. |
+| KPIs | Approval accuracy, cycle time, segregation compliance, exception closure. |
+| Decision gates | Requisition validation, category routing, supplier selection, budget/procurement/security/legal approval. |
+| Evidence produced | Justification, approvals, supplier decision, purchase reference, receipt, exceptions. |
+| Adoption path | Enable one category and spend band; expand as approval accuracy and cycle-time evidence improve. |
+
+See the [value framework](../docs/example-value.md).
+
 ## Public Boundary
 
 This example omits supplier data, thresholds, approval matrices, ERP configuration, and integration details.

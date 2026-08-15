@@ -40,6 +40,18 @@ A customer reports a service problem that spans account, order, delivery, and bi
 6. **Communicate and confirm.** The customer receives a clear status and next step. The agent verifies that any promised correction was accepted or completed.
 7. **Close or escalate.** Close only after the outcome and communication are evidenced. Repeat contacts, regulatory concerns, threats, privacy issues, or unresolved disputes follow the escalation route.
 
+## Value & Effect
+
+| Field | Detail |
+| --- | --- |
+| Outcome value | Customer cases are resolved against verified facts with consent and approvals recorded, reducing repeat contacts and unmanaged commitments. |
+| KPIs | First-resolution accuracy, consent compliance, communication completeness, case reconstructability. |
+| Decision gates | Case assignment, remedy approval, customer consent for commitments, closure review. |
+| Evidence produced | Case, verified facts, actions considered, approvals, communication status, final outcome. |
+| Adoption path | Pilot a narrow case class with a human service owner; expand after measuring first-resolution accuracy. |
+
+See the [value framework](../docs/example-value.md).
+
 ## Public Boundary
 
 This example omits customer data, remedy limits, service-level targets, system endpoints, privacy controls, and internal escalation policy.

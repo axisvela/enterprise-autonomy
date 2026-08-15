@@ -47,6 +47,18 @@ An external system or partner integration becomes unavailable. Governed processe
 - Re-routing requires consent: hold until consent or an approved fallback is recorded.
 - Conflicting state after reconnect: resolve through human review.
 
+## Value & Effect
+
+| Field | Detail |
+| --- | --- |
+| Outcome value | In-flight work survives integration outages and resumes only after verification, so the outage window is evidenced and no work is silently lost or re-executed. |
+| KPIs | In-flight preservation, resume verification, outage evidence, escalation handling. |
+| Decision gates | Outage confirmation, recovery-plan review, resume/re-route approval, case closure. |
+| Evidence produced | Outage reference, affected work, reconnection status, resumed actions, closure record. |
+| Adoption path | Pilot with a non-critical integration; expand after measuring preservation and resume verification. |
+
+See the [value framework](../docs/example-value.md).
+
 ## Public Boundary
 
 This example omits partner details, topology, endpoints, credentials, and outage policy.

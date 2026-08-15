@@ -40,6 +40,18 @@ A hiring manager requests a role. Talent acquisition validates the requisition, 
 6. **Select.** The accountable panel performs a human evidence review and records its decision rationale.
 7. **Offer or close.** Authorized stakeholders approve the offer before the recruiter communicates it. Complaints, accommodation needs, fairness concerns, or data issues are escalated to the responsible human function.
 
+## Value & Effect
+
+| Field | Detail |
+| --- | --- |
+| Outcome value | Hiring decisions remain with accountable humans while administration, scheduling, and evidence organization are automated. |
+| KPIs | Human-decision integrity, evidence completeness, cycle time, automation scope. |
+| Decision gates | Requisition approval, criteria confirmation, panel selection, offer approval. |
+| Evidence produced | Requisition, role criteria, interview records, structured feedback, approvals, decision rationale. |
+| Adoption path | Pilot one role family; keep screening, selection, and offer decisions human, and review outcomes per cycle. |
+
+See the [value framework](../docs/example-value.md).
+
 ## Public Boundary
 
 This is a workflow illustration, not employment, legal, privacy, or compliance advice. It omits scoring, policy, retention, HR configuration, and decision models.

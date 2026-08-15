@@ -48,6 +48,18 @@ A bounded physical mission encounters an exception, such as an obstacle, safety 
 - Resource loss: surface alternatives for review; do not silently swap resources.
 - Conflicting state: resolve through human review before any adjustment.
 
+## Value & Effect
+
+| Field | Detail |
+| --- | --- |
+| Outcome value | Physical missions stay bounded and recoverable: exceptions pause for human review instead of continuing unobserved. |
+| KPIs | Boundary compliance, pause-and-review rate, evidence completeness, human-approval rate. |
+| Decision gates | Mission approval, exception pause and review, resume/adjust/cancel decision. |
+| Evidence produced | Mission objective, paused status, exception reason, reviewed decision, completion state. |
+| Adoption path | Pilot with a limited zone and a repeatable objective before expanding coverage. |
+
+See the [value framework](../docs/example-value.md).
+
 ## Public Boundary
 
 This example omits mission-control details, safety thresholds, topology, endpoints, and approval policy.

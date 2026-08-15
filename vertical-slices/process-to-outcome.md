@@ -24,6 +24,18 @@ An enterprise coordinates a long-running operational process that requires plann
 
 Rheovela, Orchadyn, Aegivela, Limenora, Symbivela, Moduregis, Gnosivela, Mnemovela, and Noetivela can contribute to this outcome, depending on the process.
 
+## Value & Effect
+
+| Field | Detail |
+| --- | --- |
+| Outcome value | Long-running enterprise processes recover and complete with human oversight, so work survives failures and stays auditable. |
+| KPIs | In-flight preservation, resume verification, gate compliance, audit reconstructability. |
+| Decision gates | Initiation review, approvals within the process, pause/revise/cancel decisions, outcome acceptance. |
+| Evidence produced | Objective, plan, process lifecycle record, approvals, integration events, outcome. |
+| Adoption path | Start with a single governed process; expand after measuring recovery and gate compliance. |
+
+See the [value framework](../docs/example-value.md).
+
 ## Public Boundary
 
 This example intentionally omits process definitions, approval policy, service endpoints, customer data, and operational runbooks.

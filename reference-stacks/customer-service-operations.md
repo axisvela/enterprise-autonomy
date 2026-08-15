@@ -34,6 +34,18 @@ This public reference stack illustrates how AxisRobo products can contribute to 
 5. Execute the accepted resolution, confirm connected-system updates, and close with evidence.
 6. Escalate unresolved or consent-sensitive cases with all prior evidence.
 
+## Value & Effect
+
+| Field | Detail |
+| --- | --- |
+| Outcome value | Customer cases resolve against verified facts with consent and approvals recorded, reducing unmanaged commitments. |
+| KPIs | First-resolution accuracy, consent compliance, communication completeness, case reconstructability. |
+| Decision gates | Case assignment, resolution recommendation, consent capture, closure. |
+| Evidence produced | Case, verified facts, considered actions, approvals, communication status, outcome. |
+| Adoption path | Pilot a limited case class and measure outcome quality before expanding. |
+
+See the [value framework](../docs/example-value.md).
+
 ## Scope Boundary
 
 Actual deployment topology, integrations, policy logic, templates, and data handling are organization-specific. Follow the [public example design guide](../docs/example-design-guide.md) and product documentation; do not treat this overview as a deployment instruction.

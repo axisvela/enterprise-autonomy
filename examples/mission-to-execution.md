@@ -35,4 +35,16 @@ The operator can initiate, supervise, and review a physical inspection without r
 5. **Review outcome.** Verify required evidence, record completion, and create follow-up work for findings.
 6. **Close or repeat.** Close only after evidence review; partial or failed work remains visible for repeat or escalation.
 
+## Value & Effect
+
+| Field | Detail |
+| --- | --- |
+| Outcome value | A facility inspection is completed under human authority with reviewable evidence, without merging products into a single runtime. |
+| KPIs | Boundary compliance, pause-and-review rate, evidence completeness, human-approval rate. |
+| Decision gates | Work review before start, pause/escalation on exceptions, evidence review at outcome. |
+| Evidence produced | Inspection objective, zone context, approved plan, mission status, required evidence, completion record. |
+| Adoption path | Start with a limited zone and a repeatable objective; expand coverage only after the organization accepts the result. |
+
+See the [value framework](../docs/example-value.md) and [value metrics catalog](../examples/value-metrics.md).
+
 See the [public example design guide](../docs/example-design-guide.md) for common boundaries and adaptation guidance.

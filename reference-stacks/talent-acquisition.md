@@ -34,6 +34,18 @@ This public reference stack illustrates how AxisRobo products can contribute to 
 5. Extend an approved offer, record acceptance or decline, and close the requisition with evidence.
 6. Escalate or hold any stage that requires consent or compliance review.
 
+## Value & Effect
+
+| Field | Detail |
+| --- | --- |
+| Outcome value | Hiring decisions remain with accountable humans while administration and evidence organization are automated. |
+| KPIs | Human-decision integrity, evidence completeness, cycle time, automation scope. |
+| Decision gates | Requisition approval, shortlist review, offer approval, acceptance. |
+| Evidence produced | Requisition, role context, candidate evidence, approvals, offer, communication status. |
+| Adoption path | Pilot one role family and review outcome quality before expanding. |
+
+See the [value framework](../docs/example-value.md).
+
 ## Scope Boundary
 
 Actual deployment topology, integrations, sourcing policy, templates, and data handling are organization-specific. Follow the [public example design guide](../docs/example-design-guide.md) and product documentation; do not treat this overview as a deployment instruction.

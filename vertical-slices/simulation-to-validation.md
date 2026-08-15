@@ -24,6 +24,18 @@ An organization evaluates a proposed autonomous operation in simulation before a
 
 Orchadyn, Ontovela, Peiravela, Symbivela, Tekmovela, Aegivela, and Limenora can participate in this outcome, depending on the deployment.
 
+## Value & Effect
+
+| Field | Detail |
+| --- | --- |
+| Outcome value | Autonomous operations are reviewed in simulation before live use, so the organization decides with evidence instead of by trial. |
+| KPIs | Contract pass rate, re-verification coverage, waiver discipline, attestation completeness. |
+| Decision gates | Scenario definition, evidence review, revise/approve/reject decision, release assurance. |
+| Evidence produced | Candidate operation, simulation outcomes, review record, validation and release assurance evidence. |
+| Adoption path | Evaluate one bounded operation; expand only after the review group accepts simulated evidence. |
+
+See the [value framework](../docs/example-value.md).
+
 ## Public Boundary
 
 This scenario describes an outcome-level workflow only. It does not disclose simulation models, operational thresholds, policy rules, test fixtures, or internal decision logic.

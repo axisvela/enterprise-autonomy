@@ -34,6 +34,18 @@ This public reference stack illustrates how AxisRobo products can contribute to 
 5. Execute the maintenance process, confirm CMMS and notification updates, and close with evidence.
 6. Escalate unexpected risk without silently deferring the intervention.
 
+## Value & Effect
+
+| Field | Detail |
+| --- | --- |
+| Outcome value | Equipment risk signals lead to approved interventions with safety review, not unvalidated action. |
+| KPIs | Signal-to-intervention, gate compliance, evidence quality, false-alarm handling. |
+| Decision gates | Risk confirmation, intervention approval, scheduling, close-out. |
+| Evidence produced | Signal, asset state, assessment, approval, work order, execution result, post-work verification. |
+| Adoption path | Pilot on non-critical equipment and measure prediction and intervention quality before expanding. |
+
+See the [value framework](../docs/example-value.md).
+
 ## Scope Boundary
 
 Actual deployment topology, integrations, prediction thresholds, and policy are organization-specific. Follow the [public example design guide](../docs/example-design-guide.md) and product documentation; do not treat this overview as a deployment instruction.

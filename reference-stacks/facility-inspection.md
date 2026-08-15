@@ -36,6 +36,18 @@ This public reference stack illustrates how AxisRobo products can contribute to 
 5. Pause or escalate when an exception, safety concern, or unexpected result requires human review.
 6. Review the completed evidence, record the outcome, and use the result to improve the next inspection cycle.
 
+## Value & Effect
+
+| Field | Detail |
+| --- | --- |
+| Outcome value | Facility inspections complete under human authority with bounded scope and reviewable evidence. |
+| KPIs | Boundary compliance, pause-and-review rate, evidence completeness, human-approval rate. |
+| Decision gates | Initial approval, exception handling, final result acceptance. |
+| Evidence produced | Inspection objective, zone context, approved work, mission status, required evidence, completion record. |
+| Adoption path | Start with a limited zone and a repeatable objective before expanding coverage. |
+
+See the [value framework](../docs/example-value.md) and [value metrics catalog](../examples/value-metrics.md).
+
 ## Scope Boundary
 
 Actual deployment topology, integrations, policies, data handling, and product configuration are organization-specific. Follow the [public example design guide](../docs/example-design-guide.md) and product documentation; do not treat this overview as a deployment instruction.

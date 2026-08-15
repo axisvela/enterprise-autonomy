@@ -47,6 +47,18 @@ An ordered item is unavailable at its assigned warehouse. Operations must choose
 - External update failed: preserve the case and show the failure to the accountable operator.
 - Conflicting data: resolve through human review before changing the customer promise.
 
+## Value & Effect
+
+| Field | Detail |
+| --- | --- |
+| Outcome value | An at-risk customer order is resolved with evidence and required approvals; no product silently changes the customer promise. |
+| KPIs | Time-to-resolve, gate compliance, evidence completeness, audit reconstructability. |
+| Decision gates | Case opened by the operator, alternative selection, required approval before any promise change. |
+| Evidence produced | Exception case, order/inventory/carrier context, verified plan, durable process, applied action, notification status. |
+| Adoption path | Pilot one exception class with reversible outcomes; replace local adapters with authorized integrations before production. |
+
+See the [value framework](../docs/example-value.md).
+
 ## Public Boundary
 
 This example omits pricing rules, allocation logic, communication templates, endpoints, and approval policy.

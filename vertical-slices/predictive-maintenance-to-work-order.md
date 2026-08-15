@@ -42,6 +42,18 @@ An equipment signal indicates that an asset may require maintenance. Operations 
 6. **Execute and observe.** The assigned team, robot, or agent performs only the approved scope. Exceptions, unsafe conditions, and incomplete work are reported to the maintenance owner.
 7. **Verify and close.** Confirm the post-work asset state and attach the result to the work order. Close only when the maintenance manager accepts the evidence; otherwise create follow-up work.
 
+## Value & Effect
+
+| Field | Detail |
+| --- | --- |
+| Outcome value | Equipment risk is validated before action, so predictions do not become confirmed faults and interventions are approved with evidence. |
+| KPIs | Signal-to-intervention, gate compliance, evidence quality, false-alarm handling. |
+| Decision gates | Risk confirmation, safety impact review, intervention approval, close-out acceptance. |
+| Evidence produced | Signal, asset context, assessment, safety decision, work order, execution result, post-work verification. |
+| Adoption path | Pilot on non-critical assets; measure prediction and intervention quality before broader robotic or autonomous work. |
+
+See the [value framework](../docs/example-value.md).
+
 ## Public Boundary
 
 This example omits equipment thresholds, control logic, safety policy, site topology, maintenance records, and execution configuration.

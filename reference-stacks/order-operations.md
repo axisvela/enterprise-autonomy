@@ -38,6 +38,18 @@ This public reference stack illustrates how AxisRobo products can contribute to 
 
 For verified local-binary startup commands, configuration, and expected outputs, see the [local order-exception demo](../examples/order-fulfillment-local/README.md).
 
+## Value & Effect
+
+| Field | Detail |
+| --- | --- |
+| Outcome value | Order exceptions resolve with evidence and required approvals; no product silently changes the customer promise. |
+| KPIs | Time-to-resolve, gate compliance, evidence completeness, audit reconstructability. |
+| Decision gates | Case open, alternative selection, approval before promise changes, outcome acceptance. |
+| Evidence produced | Case, state, plan, process, applied action, notification status. |
+| Adoption path | Pilot one exception class with reversible outcomes; the local order-exception demo is the runnable starting point. |
+
+See the [value framework](../docs/example-value.md).
+
 ## Scope Boundary
 
 Actual deployment topology, integrations, pricing, allocation logic, communication templates, and policy are organization-specific. Follow the [public example design guide](../docs/example-design-guide.md) and product documentation; do not treat this overview as a deployment instruction.
