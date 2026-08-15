@@ -32,18 +32,22 @@ This roadmap tracks the public content plan for the `enterprise-autonomy` reposi
 - [x] Compliance request to audit
 - [x] Innovation sandbox to policy
 
-## Phase 5 — Runnable examples (in progress)
+## Phase 5 — Runnable examples (complete)
 
 - [x] Local run handbook
 - [x] Example index
 - [x] Additional domain reference adapters
+- [x] Value & Effect reporting for runnable examples
+- [x] Demo validation and smoke-test tooling
 - [ ] Additional runnable local demos
 
-## Phase 6 — Consistency and release tracking (planned)
+## Phase 6 — Consistency and release tracking (in progress)
 
-- [ ] Release-status documentation
-- [ ] Cross-link and consistency pass
-- [ ] Continuous verification of public examples
+- [x] Release-status documentation
+- [x] Example value framework and metrics
+- [x] Cross-link and consistency pass
+- [x] Continuous verification of public examples
+- [ ] Per-example value reports for all designed examples
 
 ## Guiding Principles
 
