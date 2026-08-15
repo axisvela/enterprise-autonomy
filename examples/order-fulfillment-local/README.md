@@ -1,6 +1,6 @@
 # Local-Binary Order Fulfillment Exception Demo
 
-This runnable example opens a stockout exception for `order-123`. It starts local AxisRobo binaries, records the observed inventory state in Ontovela, opens a human case in Symbivela, creates a durable Rheovela process instance, and uses Praxovela to create and verify an auditable manual-action handoff.
+This runnable example opens a stockout exception for `order-123`. It starts local AxisRobo binaries and the local order-domain adapter, records the observed inventory state in Ontovela, opens a human case in Symbivela, creates a durable Rheovela process instance, uses Praxovela to record an auditable handoff, and applies the configured approved action to the adapter.
 
 ## What This Demo Does
 
@@ -10,7 +10,7 @@ This runnable example opens a stockout exception for `order-123`. It starts loca
 | Record stockout | Order ID, inventory source, observed status | Ontovela assertion and resolved state |
 | Create workspace and open case | Order-operations workspace, order reference, problem, permitted alternatives | Workspace owned by the operator and Symbivela case in `open` state |
 | Start process | Case ID and actor | Rheovela `order-exception` instance |
-| Create handoff | Case ID and approved manual action | Praxovela-governed local handoff record |
+| Apply approved action | Action, approver, approval reference | Persisted order, carrier, and notification state in the local adapter |
 | Human decision | Selected action and required approval | Case moves to `resolving`, then `resolved` or `escalated` |
 
 The demo intentionally does **not** update an order-management, inventory, carrier, payment, or customer-notification system. No locally implemented adapter for those systems was found. The operator must complete those actions in the organization's authorized business systems and attach the resulting references to the case.
@@ -42,6 +42,7 @@ The script starts:
 | Rheovela | `http://localhost:8083` | `GET /api/v1/health` |
 | Symbivela | `http://localhost:8080` | `GET /ready` |
 | Praxovela AXON Core | `http://127.0.0.1:8420` | `GET /health` |
+| Order-domain adapter | `http://localhost:8090` | `GET /healthz` |
 
 `GET /ready` must return `{"status":"ready","postgres":"ok"}` before running the scenario. Logs are written to `.local-logs/`.
 
@@ -61,11 +62,11 @@ curl.exe -H "X-SYMBIVELA-Tenant: $TenantId" -H "X-SYMBIVELA-Actor: $Actor" "http
 
 ## Complete The Human Operation
 
-1. Review the stockout assertion and confirm the external inventory system is the authoritative source.
-2. In the organization's order system, review permitted alternatives: alternate location, split shipment, approved substitute, revised promise, refund, or cancellation.
-3. Obtain the required customer or managerial approval before changing a promise, price, refund, or cancellation.
-4. Update the authorized business systems manually and retain their transaction references.
-5. Move the case to `resolved` only after the final order state and customer communication have been verified. Use `escalated` when no permitted alternative exists.
+1. Review the stockout assertion and confirm the inventory view before approving an action.
+2. Set `$OrderAction` and `$OrderApprovalRef` in `local.env.ps1` after the responsible person approves the action.
+3. Run the scenario. The adapter accepts only an action with `approved_by`, `approval_ref`, and an idempotency key, then persists the resulting order, carrier, and notification state.
+4. Inspect `GET http://localhost:8090/v1/orders/order-123` and `GET http://localhost:8090/v1/notifications/order-123` before marking the case resolved.
+5. Replace this reference adapter with authorized production OMS, inventory, payment, carrier, and notification adapters before any real business use.
 
 ## Stop The Demo
 

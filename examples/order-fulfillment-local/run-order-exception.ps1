@@ -1,6 +1,6 @@
 param()
 
-if (-not $TenantId -or -not $Actor -or -not $AxisRoboHome) { throw "Load local.env.ps1 before running this script." }
+if (-not $TenantId -or -not $Actor -or -not $AxisRoboHome -or -not $OrderAction -or -not $OrderApprovalRef) { throw "Load local.env.ps1 before running this script." }
 
 $ontoHeaders = @{ "X-Tenant-ID" = $TenantId; "Idempotency-Key" = "order-123-stockout-v1" }
 $symbiHeaders = @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $Actor; "Idempotency-Key" = "order-123-case-v1" }
@@ -33,4 +33,7 @@ $writeResult = Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8420/v1/age
 $readCall = @{ session_id = $sessionResult.session_id; call = @{ call_id = "order-123-stockout-handoff-read-v1"; name = "file.read"; operation = "read"; resource = $handoffPath; risk = "low"; reason = "Verify the locally recorded order-exception handoff."; input = @{ path = $handoffPath } } } | ConvertTo-Json -Depth 6
 $readResult = Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8420/v1/agent/tools/execute" -ContentType "application/json" -Body $readCall
 
-[PSCustomObject]@{ assertion = $state; exception_case = $caseResult; process_instance = $instance; praxovela_handoff_write = $writeResult; praxovela_handoff_read = $readResult } | ConvertTo-Json -Depth 10
+$orderAction = @{ action = $OrderAction; approved_by = $Actor; approval_ref = $OrderApprovalRef; idempotency_key = "order-123-$OrderAction-v1" } | ConvertTo-Json
+$orderResult = Invoke-RestMethod -Method Post -Uri "http://localhost:8090/v1/orders/order-123/fulfillment-actions" -ContentType "application/json" -Body $orderAction
+
+[PSCustomObject]@{ assertion = $state; exception_case = $caseResult; process_instance = $instance; praxovela_handoff_write = $writeResult; praxovela_handoff_read = $readResult; order_adapter_action = $orderResult } | ConvertTo-Json -Depth 10

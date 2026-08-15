@@ -27,7 +27,19 @@ $env:PRAXOVELA_BOUNDARIES = Join-Path $PSScriptRoot "praxovela-boundaries.yaml"
 Start-Process -FilePath $praxovela -WorkingDirectory (Join-Path $AxisRoboHome "PRAXOVELA") -RedirectStandardOutput "$logDir\praxovela.out.log" -RedirectStandardError "$logDir\praxovela.err.log" -WindowStyle Hidden
 $env:PRAXOVELA_BOUNDARIES = $previousBoundaries
 
-$checks = @("http://localhost:10255/healthz", "http://localhost:8082/healthz", "http://localhost:8083/api/v1/health", "http://localhost:8080/ready", "http://127.0.0.1:8420/health")
+$adapterDir = Join-Path $PSScriptRoot "..\..\adapters\order-domain"
+$adapterBinary = Join-Path $adapterDir "order-domain-adapter.exe"
+if (-not (Test-Path $adapterBinary)) {
+  $previousGoWork = $env:GOWORK
+  $env:GOWORK = "off"
+  Push-Location $adapterDir
+  go build -o $adapterBinary .
+  Pop-Location
+  $env:GOWORK = $previousGoWork
+}
+Start-Process -FilePath $adapterBinary -ArgumentList "--addr :8090 --data-file `"$dataDir\order-domain-data.json`"" -RedirectStandardOutput "$logDir\order-domain.out.log" -RedirectStandardError "$logDir\order-domain.err.log" -WindowStyle Hidden
+
+$checks = @("http://localhost:10255/healthz", "http://localhost:8082/healthz", "http://localhost:8083/api/v1/health", "http://localhost:8080/ready", "http://127.0.0.1:8420/health", "http://localhost:8090/healthz")
 foreach ($check in $checks) {
   $ready = $false
   for ($attempt = 0; $attempt -lt 20 -and -not $ready; $attempt++) {
