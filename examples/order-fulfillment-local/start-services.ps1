@@ -125,7 +125,19 @@ if (-not (Test-Path $adapterBinary)) {
 }
 Start-Process -FilePath $adapterBinary -ArgumentList "--addr :8090 --data-file `"$dataDir\order-domain-data.json`"" -RedirectStandardOutput "$logDir\order-domain.out.log" -RedirectStandardError "$logDir\order-domain.err.log" -WindowStyle Hidden
 
-$checks = @("http://localhost:10255/healthz", "http://localhost:8082/healthz", "http://localhost:8083/api/v1/health", "http://localhost:8080/ready", "http://127.0.0.1:8420/health", "http://localhost:8090/healthz")
+$inventoryAdapterDir = Join-Path $PSScriptRoot "..\..\adapters\inventory-domain"
+$inventoryAdapterBinary = Join-Path $inventoryAdapterDir "inventory-domain-adapter.exe"
+if (-not (Test-Path $inventoryAdapterBinary)) {
+  $previousGoWork = $env:GOWORK
+  $env:GOWORK = "off"
+  Push-Location $inventoryAdapterDir
+  go build -o $inventoryAdapterBinary .
+  Pop-Location
+  $env:GOWORK = $previousGoWork
+}
+Start-Process -FilePath $inventoryAdapterBinary -ArgumentList "--addr :8091 --data-file `"$dataDir\inventory-domain-data.json`"" -RedirectStandardOutput "$logDir\inventory-domain.out.log" -RedirectStandardError "$logDir\inventory-domain.err.log" -WindowStyle Hidden
+
+$checks = @("http://localhost:10255/healthz", "http://localhost:8082/healthz", "http://localhost:8083/api/v1/health", "http://localhost:8080/ready", "http://127.0.0.1:8420/health", "http://localhost:8090/healthz", "http://localhost:8091/healthz")
 if ($OrchadynBinary) { $checks += "http://localhost$($OrchadynListenAddr)/healthz" }
 foreach ($check in $checks) {
   $ready = $false

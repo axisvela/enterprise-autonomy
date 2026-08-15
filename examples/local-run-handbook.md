@@ -16,7 +16,20 @@ This handbook covers common steps for running public local demos against real pr
 3. Load the environment and start the services.
 4. Run the scenario script and inspect the printed business report and `.local-data/` artifacts.
 5. Review live state with the documented `curl.exe` requests before closing the case.
-6. Stop the processes shown in `.local-logs/` and remove `.local-data/` only when you intentionally discard the demo data.
+6. Verify the outcome with the demo's `verify.ps1`, which checks the produced artifacts against the [value framework](../docs/example-value.md) thresholds.
+7. Stop the processes shown in `.local-logs/` and remove `.local-data/` only when you intentionally discard the demo data.
+
+## One-Command Run
+
+The order-exception demo provides `run-all.ps1`, which loads the environment, starts the services, runs the scenario, and verifies the outcome in one step:
+
+```powershell
+.\run-all.ps1
+```
+
+## Value Reports
+
+Runnable demos emit a machine-readable value report (`.local-data/order-value-report.json`) alongside the business outcome. The report records the outcome, KPIs, human gates, and per-product evidence so the effect can be verified. See the [value report template](value-report-template.md) and the demo's [evidence schema](order-fulfillment-local/evidence-schema.md).
 
 ## Common Checks
 

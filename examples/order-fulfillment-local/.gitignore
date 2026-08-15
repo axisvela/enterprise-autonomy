@@ -5,3 +5,4 @@
 .moduregis-release/
 local.env.ps1
 order-domain-data.json
+inventory-domain-data.json
