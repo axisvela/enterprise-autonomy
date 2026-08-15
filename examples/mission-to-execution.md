@@ -28,9 +28,11 @@ The operator can initiate, supervise, and review a physical inspection without r
 
 ## Operating Steps
 
-1. Prepare each selected product using its published documentation.
-2. Define and review the inspection objective in the operator workspace.
-3. Begin the limited inspection run and monitor its status.
-4. Review the result and evidence, then decide whether to accept, repeat, or revise the next run.
+1. **Open the request.** Record the inspection zone, purpose, completion window, required evidence, restrictions, and accountable operator.
+2. **Validate context.** Confirm the zone is available; delay, reduce scope, or escalate if an operating condition requires it.
+3. **Review work.** Check planned scope, assigned resource, evidence, and stop conditions. Approve, revise, or cancel the run.
+4. **Supervise.** Start the approved work, monitor status, and pause or escalate unexpected conditions.
+5. **Review outcome.** Verify required evidence, record completion, and create follow-up work for findings.
+6. **Close or repeat.** Close only after evidence review; partial or failed work remains visible for repeat or escalation.
 
 See the [public example design guide](../docs/example-design-guide.md) for common boundaries and adaptation guidance.

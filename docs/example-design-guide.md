@@ -10,6 +10,10 @@ Public examples explain how products can be composed to achieve an outcome witho
 4. Describe the lifecycle from intent through review using observable business events.
 5. State what the example intentionally excludes, including topology, policy logic, credentials, customer data, and internal interfaces.
 
+## Scenario Format
+
+Each scenario names a concrete trigger, accountable owner, completion evidence, human decision gates, exception paths, and the information intentionally excluded from the public workflow.
+
 ## Operating Steps
 
 1. Prepare the required product environments using their individual public documentation.
