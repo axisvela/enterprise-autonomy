@@ -12,6 +12,10 @@ These scenarios illustrate outcome-level product composition. They are not deplo
 | [Mission to execution](../vertical-slices/mission-to-execution.md) | Execute a bounded physical inspection with human review. | Operations owner |
 | [Simulation to validation](../vertical-slices/simulation-to-validation.md) | Review an autonomous operation before live use. | Designated review group |
 | [Process to outcome](../vertical-slices/process-to-outcome.md) | Coordinate a long-running enterprise process. | Process owner |
+| [Fleet mission exception](../vertical-slices/fleet-mission-exception.md) | Pause and resolve a bounded physical mission under human review. | Operations owner |
+| [Integration outage recovery](../vertical-slices/integration-outage-recovery.md) | Preserve and resume in-flight work across an integration outage. | Integration operations lead |
+| [Compliance request to audit](../vertical-slices/compliance-request-to-audit.md) | Assemble evidence into an auditable record. | Compliance lead |
+| [Innovation sandbox to policy](../vertical-slices/innovation-sandbox-to-policy.md) | Decide capability release from simulation evidence. | Designated review group |
 
 Use the [public example design guide](example-design-guide.md) when adapting a scenario.
 
