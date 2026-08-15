@@ -1,0 +1,43 @@
+# Order Operations Reference Stack
+
+## Purpose
+
+This public reference stack illustrates how AxisRobo products can contribute to a governed order-operations outcome. It is a product-composition overview, not a deployment blueprint or implementation specification.
+
+## Example Composition
+
+| Outcome Need | Example Product Role |
+| --- | --- |
+| Operator review, case authority, and approvals | Symbivela |
+| Order, warehouse, carrier, and payment state | Ontovela |
+| Alternative planning and replanning | Orchadyn |
+| Capability discovery and control | Moduregis |
+| Identity, authorization, and approval | Aegivela |
+| Order-system and partner connectivity | Limenora |
+| Durable exception process | Rheovela |
+| Governed agent actions | Praxovela |
+
+## Design Steps
+
+1. Define the order exceptions that matter: stockout, delivery delay, address failure, payment hold, and damaged goods.
+2. Define permitted outcomes per exception class and which outcomes require customer consent or finance review.
+3. Select the product roles needed for state, planning, authorization, connectivity, process, and review.
+4. Identify the human decision points: case open, alternative selection, approval, and outcome acceptance.
+5. Pilot one exception class with reversible outcomes before expanding scope.
+
+## Operating Steps
+
+1. Prepare each selected product using its own public setup documentation and confirm operator access.
+2. Record the at-risk order, exception reason, and accountable owner when an event fires.
+3. Review current order, inventory, carrier, and payment context before proposing alternatives.
+4. Select an approved alternative and obtain the required approval before any promise change.
+5. Execute the approved action, confirm each connected-system update, and close the case with evidence.
+6. Escalate unresolved cases with all prior evidence rather than silently cancelling or substituting.
+
+## Runnable Local Demo
+
+For verified local-binary startup commands, configuration, and expected outputs, see the [local order-exception demo](../examples/order-fulfillment-local/README.md).
+
+## Scope Boundary
+
+Actual deployment topology, integrations, pricing, allocation logic, communication templates, and policy are organization-specific. Follow the [public example design guide](../docs/example-design-guide.md) and product documentation; do not treat this overview as a deployment instruction.
