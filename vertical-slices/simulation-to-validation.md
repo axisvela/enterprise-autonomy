@@ -4,7 +4,14 @@
 
 An organization evaluates a proposed autonomous operation in simulation before allowing it to proceed in a live environment.
 
-## Flow
+## Design Steps
+
+1. Define the operation to be evaluated, its intended business outcome, and the accountable review group.
+2. Identify the representative operational context and the scenarios that would make the operation unacceptable.
+3. Define evidence that allows reviewers to compare candidate approaches and record a decision.
+4. Establish a clear boundary between the simulation exercise and any later live operation.
+
+## Operating Steps
 
 1. A team defines an operational objective, constraints, and success criteria.
 2. Planning and world-model products provide the candidate operation and relevant context.
@@ -20,3 +27,5 @@ Orchadyn, Ontovela, Peiravela, Symbivela, Tekmovela, Aegivela, and Limenora can 
 ## Public Boundary
 
 This scenario describes an outcome-level workflow only. It does not disclose simulation models, operational thresholds, policy rules, test fixtures, or internal decision logic.
+
+Use the [example design guide](../docs/example-design-guide.md) when adapting this scenario to a specific organization.

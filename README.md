@@ -40,6 +40,7 @@ Start with the [product overview](docs/products.md), then explore a [public end-
 - [Mission-to-execution](vertical-slices/mission-to-execution.md)
 - [Simulation-to-validation](vertical-slices/simulation-to-validation.md)
 - [Process-to-outcome](vertical-slices/process-to-outcome.md)
+- [Public example design guide](docs/example-design-guide.md)
 
 ## Status
 
