@@ -324,3 +324,128 @@ GET http://localhost:8090/v1/notifications/order-123     -> pending notification
 - `order-value-report.json` — the machine-readable value report (example, outcome, KPIs, gates, evidence, steps).
 
 **What to notice.** The audit trail is **not one artifact but a chain**: Ontovela assertion + Symbivela case + Orchadyn plan + Rheovela instance + Praxovela effect ledger + inventory reservation + order action + notification. Each product owns one link; together they reconstruct the decision, the approval, and the effect.
+
+## Output Artifacts
+
+All artifacts are written to `.local-data/`.
+
+### `order-outcome.json`
+
+The business outcome. Example after a successful `alternate_location`:
+
+```json
+{
+  "order_id": "order-123",
+  "tenant": "tenant-a",
+  "operator": "operations-lead",
+  "steps": [
+    {"index": 1, "title": "Detect the stockout", "product": "ontovela", "artifact": "assertion-order-123-stockout"},
+    {"index": 2, "title": "Open the human exception case", "product": "symbivela", "artifact": "order-123-stockout"},
+    {"index": 3, "title": "Generate a verified replan", "product": "orchadyn", "artifact": "plan-order-123"},
+    {"index": 4, "title": "Create the durable exception process", "product": "rheovela", "artifact": "<instance-id>"},
+    {"index": 5, "title": "Reserve inventory at the alternate warehouse", "product": "inventory-domain", "artifact": "adjustment-inventory-order-123-reserve-v1"},
+    {"index": 6, "title": "Record an auditable handoff", "product": "praxovela", "artifact": "order-123-stockout-handoff-v1"},
+    {"index": 7, "title": "Approve and apply the fulfillment action", "product": "order-domain", "artifact": "action-order-123-alternate_location-v1"},
+    {"index": 8, "title": "Verify the outcome", "product": "order-domain", "artifact": "order-outcome.json"}
+  ],
+  "order_state": {
+    "id": "order-123", "sku": "sku-inspection-kit", "quantity": 1,
+    "warehouse": "warehouse-b", "fulfillment_status": "replanned",
+    "payment_status": "authorized", "carrier_status": "awaiting_dispatch",
+    "notifications": ["customer-notification-pending:action-order-123-alternate_location-v1"],
+    "actions": [
+      {"id": "action-order-123-alternate_location-v1", "action": "alternate_location",
+       "approved_by": "operations-lead", "approval_ref": "approval://order-123-stockout",
+       "idempotency_key": "order-123-alternate_location-v1", "occurred_at": "<timestamp>"}
+    ]
+  },
+  "notifications": ["customer-notification-pending:action-order-123-alternate_location-v1"]
+}
+```
+
+### `order-value-report.json`
+
+The machine-readable value report. Example:
+
+```json
+{
+  "example": "order-fulfillment-exception",
+  "version": "1.0",
+  "tenant": "tenant-a",
+  "operator": "operations-lead",
+  "outcome": {"subject": "order-123", "before": "stockout", "after": "replanned",
+              "warehouse": "warehouse-b", "completed": true, "escalated": false},
+  "kpis": {"products_involved": 7, "gates_passed": 2, "evidence_artifacts": 8,
+           "steps_completed": 8, "time_to_resolve": "1.4"},
+  "gates": [
+    {"gate": "case-opened", "owner": "operations-lead", "decision": "open"},
+    {"gate": "action-approved", "owner": "operations-lead", "decision": "alternate_location",
+     "approval_ref": "approval://order-123-stockout"}
+  ],
+  "evidence": [
+    {"product": "ontovela", "artifact": "assertion-order-123-stockout", "state": "observed"},
+    {"product": "symbivela", "artifact": "order-123-stockout", "state": "open"},
+    {"product": "rheovela", "artifact": "<instance-id>", "state": "open"},
+    {"product": "inventory-domain", "artifact": "adjustment-inventory-order-123-reserve-v1", "state": "reserved"},
+    {"product": "praxovela", "artifact": "order-123-stockout-handoff-v1", "state": "effect-ledgered"},
+    {"product": "order-domain", "artifact": "unapproved-action-rejected", "state": "denied"},
+    {"product": "order-domain", "artifact": "action-order-123-alternate_location-v1", "state": "replanned"},
+    {"product": "order-domain", "artifact": "notification-order-123", "state": "pending"}
+  ],
+  "steps": []
+}
+```
+
+See [evidence-schema.md](evidence-schema.md) for the field contract.
+
+## Seed Data and Idempotency
+
+The demo starts from fixed seed data so every run is reproducible:
+
+- **Order** (`order-123`): `sku = sku-inspection-kit`, `quantity = 1`, `warehouse = warehouse-a`, `fulfillment_status = stockout`, `payment_status = authorized`, `carrier_status = not_dispatched`.
+- **Inventory** (`sku-inspection-kit`): `warehouse-a = 0` available, `warehouse-b = 10` available.
+- **Plan** (`order-exception-plan.json`): goal, two requirements, two catalog capabilities (cost 10 and 20), hard region/budget constraints, and a delegation chain with evidence duty.
+- **Workflow** (`order-exception.json`): `validate → approve → execute → close` with role and capability assignments.
+
+**Idempotency.** Every mutating call carries a stable key:
+
+| Call | Key |
+| --- | --- |
+| Ontovela assertion | `order-123-stockout-v1` |
+| Symbivela workspace | `order-ops-workspace-v1` |
+| Symbivela case | `order-123-case-v1` |
+| Inventory reservation | `inventory-order-123-reserve-v1` |
+| Praxovela handoff | `order-123-stockout-handoff-v1` |
+| Order action | `order-123-<action>-v1` |
+
+Re-running the demo replays each call without duplicating artifacts: the order adapter returns `"replayed": true`, the inventory adapter applies the adjustment once, and Symbivela/Ontovela accept the stable keys.
+
+## Verification and Troubleshooting
+
+### Verify the outcome
+
+```powershell
+.\verify.ps1
+```
+
+`verify.ps1` runs ten assertions: report identifies the example, order moved off `stockout`, outcome marked completed, fulfillment at `warehouse-b`, at least 6 products involved, at least 1 gate, at least 6 evidence artifacts, all 8 steps, governance-denial evidence present, `action-approved` gate recorded, and a pending notification. It prints `VERIFY OK` and exits `0`, or lists the failing checks and exits `1`.
+
+### One-command run
+
+```powershell
+.\run-all.ps1
+```
+
+This loads `local.env.ps1`, starts services, runs the scenario, and verifies the outcome in sequence.
+
+### Troubleshooting
+
+| Symptom | Likely cause | Expected fix |
+| --- | --- | --- |
+| `Load local.env.ps1 before running this script.` | Env not sourced | `. .\local.env.ps1` first. |
+| `Binary not found: ...` | Product checkout path wrong | Correct the path in `local.env.ps1`. |
+| `Service did not become ready: ...` | Database missing or port busy | Confirm `symbivela`/`orchadyn`/`moduregis` databases; check `.local-logs/`. |
+| `GET /ready` not `{"postgres":"ok"}` | Symbivela cannot reach PostgreSQL | Fix `$env:DATABASE_URL`. |
+| Orchadyn step prints "skip plan generation" | `$OrchadynBinary = $null` | Set it to a downloaded release to enable plan generation. |
+| Order adapter returns `400 ...required` | Missing `approved_by`/`approval_ref` | This is the *expected* governance denial; supply the approved values. |
+| Value report missing | Scenario did not reach step 8 | Run `run-order-exception.ps1` fully; check `.local-logs/`. |

@@ -2,6 +2,8 @@
 
 A stockout on `order-123` triggers an end-to-end exception workflow across six AxisRobo products plus two reference adapters. Each step is executed against real local binaries and produces an observable business artifact, not just a test call.
 
+> **Detailed walkthrough:** for the exact request bodies, headers, expected responses, and per-step governance behavior, see the [Detailed Operations Guide](operations-guide.md).
+
 ## What You Get From Running It
 
 The run script prints a **step-by-step business report**, a **Value & Effect summary**, and writes `.local-data/order-outcome.json` and `.local-data/order-value-report.json`. You can see:
