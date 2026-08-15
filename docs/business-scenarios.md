@@ -14,3 +14,5 @@ These scenarios illustrate outcome-level product composition. They are not deplo
 | [Process to outcome](../vertical-slices/process-to-outcome.md) | Coordinate a long-running enterprise process. | Process owner |
 
 Use the [public example design guide](example-design-guide.md) when adapting a scenario.
+
+For product binaries, ports, databases, and interfaces, see the [technical catalog](technical-catalog.md).

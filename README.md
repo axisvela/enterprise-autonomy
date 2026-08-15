@@ -32,7 +32,7 @@ Architecture, contracts, schemas, profiles, conformance, governance, internal pl
 
 ## Getting Started
 
-Start with the [product overview](docs/products.md), then explore a [public end-to-end scenario](vertical-slices/mission-to-execution.md).
+Start with the [product overview](docs/products.md), then explore a [public end-to-end scenario](vertical-slices/mission-to-execution.md). For product binaries, ports, databases, and interfaces, see the [technical catalog](docs/technical-catalog.md).
 
 ## Public Examples
 

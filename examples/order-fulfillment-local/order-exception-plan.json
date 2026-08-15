@@ -1,0 +1,23 @@
+{
+  "goals": [
+    {"id": "goal-order-123-fulfilled", "owner": "operations-lead", "outcome": "order-123 fulfilled without an unapproved customer promise change", "deadline": "2026-08-16T12:00:00Z"}
+  ],
+  "requirements": [
+    {"id": "req-order-123-source", "goalId": "goal-order-123-fulfilled", "capabilityType": "order.sourcing", "requiredEffect": "source-from-approved-location", "dependsOn": []},
+    {"id": "req-order-123-fulfill", "goalId": "goal-order-123-fulfilled", "capabilityType": "order.fulfillment", "requiredEffect": "fulfill", "dependsOn": ["req-order-123-source"]}
+  ],
+  "catalog": [
+    {"id": "cap-alternate-location", "type": "order.sourcing", "version": "1.0.0", "effects": ["source-from-approved-location"], "region": "warehouse-b", "cost": 10},
+    {"id": "cap-fulfill", "type": "order.fulfillment", "version": "1.0.0", "effects": ["fulfill"], "region": "warehouse-b", "cost": 20}
+  ],
+  "constraints": [
+    {"kind": "region", "hard": true, "value": "warehouse-b"},
+    {"kind": "budget", "hard": true, "value": "fulfillment-cost", "amount": 50}
+  ],
+  "delegations": {
+    "operations-lead": {"delegator": "order-owner", "delegatee": "operations-lead", "parentScopes": ["order.fulfillment"], "delegatedScopes": ["order.sourcing"], "budgetCeiling": 50, "evidenceDuty": ["approval://order-123-stockout"]}
+  },
+  "authorityGrants": [
+    {"principal": "operations-lead", "scopes": ["order.fulfillment", "order.sourcing"], "budgetCeiling": 50, "revoked": false}
+  ]
+}
