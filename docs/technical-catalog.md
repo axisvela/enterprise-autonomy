@@ -4,23 +4,23 @@ This catalog summarizes the local runnable surfaces of the AxisRobo Enterprise A
 
 ## Summary
 
-| Product | Primary Service | Local Binary / Entrypoint | HTTP Port | Database | Interface |
-| --- | --- | --- | --- | --- | --- |
-| Moduregis | Capability control plane | `moduregis-api.exe`; worker + migrate CLIs | `:8080` (`LISTEN_ADDR`) | PostgreSQL (required) | HTTP API + React console + CLI |
-| Orchadyn | Planning compiler | `orchadyn-api.exe`; migrate CLI | `:8080` (`ORCHADYN_LISTEN_ADDR`) | PostgreSQL (required) | HTTP API + MCP |
-| Noetivela | Inference fabric | `noetivela-gateway`, `noetivela-controller`, `noetivela` CLI | gateway `:8080`, controller `:8081` | None (in-memory / JSON file) | HTTP API + CLI + SDKs |
-| Gnosivela | Semantic and knowledge fabric | `gnosivela`; `gnosivela-gen` CLI | `:8080` (`-addr`) | PostgreSQL optional (in-memory default) | HTTP API + CLI + SDKs |
-| Mnemovela | Cognition and memory runtime | `mneme-http`, `mneme-grpc`, `mneme-mcp-stdio` | HTTP `8080`, gRPC `9090`, web `4200` | Embedded (in-memory / Pebble / SQLite); PostgreSQL in EE | HTTP + gRPC + MCP + web console + CLI |
-| Ontovela | Digital twin and world model | `ontovela.exe` | `:8080` (`-addr`) | PostgreSQL optional (in-memory default) | HTTP API + SDKs |
-| Praxovela | Governed agent runtime | `axond.exe`; desktop app | `8420` (`AXON_PORT`) | SQLite local | HTTP API + desktop app + MCP |
-| Rheovela | Durable workflow platform | `rheo.exe` | `:8080` (`--addr`) | SQLite default; PostgreSQL in EE | CLI + HTTP API + MCP + EE console |
-| Aegivela | Identity and authorization fabric | `aegivela-api` (EE `aegivela-ee.exe`) | core `:8080`, EE `:8081` | PostgreSQL (required) | HTTP API + PEP SDK |
-| Limenora | Governed integration gateway | `limenora-edge.exe`, `limenora-enterprise.exe`, `limenora-control.exe` | edge `10255`, enterprise `10256`, control `10257` | PostgreSQL/Valkey optional | HTTP gateway + CLI |
-| Peiravela | Simulation and experiment control plane | `api-server.exe`, `control-plane.exe` | `:8080` (`PEIRAVELA_API_ADDR`) | PostgreSQL optional (in-memory fallback) | HTTP API + embedded Studio + CLI |
-| Tekmovela | Engineering assurance | `tek.exe` | none (CLI) | PostgreSQL for migrations; local file store default | CLI only |
-| Symbivela | Human–agent collaboration workspace | `symbivela.exe` | `:8080` | PostgreSQL (required) | HTTP API + React frontend + CLI tools |
-| Harmovela | Coordination protocol runtime | `harmovelad`; `harmovela` CLI | WS `8787`, SSE `8788`, API `8790` | SQLite default; PostgreSQL optional | HTTP + WebSocket + SSE + stdio + CLI + MCP bridge |
-| Kinetovela | Robotics fleet control plane | `kinetovela-api` | `:8080` (`KINETOVELA_LISTEN_ADDR`) | PostgreSQL documented, not yet wired in shipped binary | HTTP API (health only in current binary) |
+| Product | Primary Service | Local Binary / Entrypoint | Current Port | Planned Port (from 1806) | Database | Interface |
+| --- | --- | --- | --- | --- | --- | --- |
+| Moduregis | Capability control plane | `moduregis-api.exe`; worker + migrate CLIs | `:8080` (`LISTEN_ADDR`) | `1806` API · `1807` console | PostgreSQL (required) | HTTP API + React console + CLI |
+| Orchadyn | Planning compiler | `orchadyn-api.exe`; migrate CLI | `:8080` (`ORCHADYN_LISTEN_ADDR`) | `1816` API | PostgreSQL (required) | HTTP API + MCP |
+| Noetivela | Inference fabric | `noetivela-gateway`, `noetivela-controller`, `noetivela` CLI | gateway `:8080`, controller `:8081` | `1826` gateway · `1827` controller | None (in-memory / JSON file) | HTTP API + CLI + SDKs |
+| Gnosivela | Semantic and knowledge fabric | `gnosivela`; `gnosivela-gen` CLI | `:8080` (`-addr`) | `1836` API | PostgreSQL optional (in-memory default) | HTTP API + CLI + SDKs |
+| Mnemovela | Cognition and memory runtime | `mneme-http`, `mneme-grpc`, `mneme-mcp-stdio` | HTTP `8080`, gRPC `9090`, web `4200` | `1846` HTTP · `1847` gRPC | Embedded (in-memory / Pebble / SQLite); PostgreSQL in EE | HTTP + gRPC + MCP + web console + CLI |
+| Ontovela | Digital twin and world model | `ontovela.exe` | `:8080` (`-addr`) | `1856` API | PostgreSQL optional (in-memory default) | HTTP API + SDKs |
+| Praxovela | Governed agent runtime | `axond.exe`; desktop app | `8420` (`AXON_PORT`) | `1866` AXON | SQLite local | HTTP API + desktop app + MCP |
+| Rheovela | Durable workflow platform | `rheo.exe` | `:8080` (`--addr`) | `1876` serve · `1877` console | SQLite default; PostgreSQL in EE | CLI + HTTP API + MCP + EE console |
+| Aegivela | Identity and authorization fabric | `aegivela-api` (EE `aegivela-ee.exe`) | core `:8080`, EE `:8081` | `1886` core · `1887` EE | PostgreSQL (required) | HTTP API + PEP SDK |
+| Limenora | Governed integration gateway | `limenora-edge.exe`, `limenora-enterprise.exe`, `limenora-control.exe` | edge `10255`, enterprise `10256`, control `10257` | `1896` edge · `1897` enterprise · `1898` control | PostgreSQL/Valkey optional | HTTP gateway + CLI |
+| Peiravela | Simulation and experiment control plane | `api-server.exe`, `control-plane.exe` | `:8080` (`PEIRAVELA_API_ADDR`) | `1906` API | PostgreSQL optional (in-memory fallback) | HTTP API + embedded Studio + CLI |
+| Tekmovela | Engineering assurance | `tek.exe` | none (CLI) | `1916` reserved | PostgreSQL for migrations; local file store default | CLI only |
+| Symbivela | Human–agent collaboration workspace | `symbivela.exe` | `:8080` | `1926` API | PostgreSQL (required) | HTTP API + React frontend + CLI tools |
+| Harmovela | Coordination protocol runtime | `harmovelad`; `harmovela` CLI | WS `8787`, SSE `8788`, API `8790` | `1936` WS · `1937` SSE · `1938` API | SQLite default; PostgreSQL optional | HTTP + WebSocket + SSE + stdio + CLI + MCP bridge |
+| Kinetovela | Robotics fleet control plane | `kinetovela-api` | `:8080` (`KINETOVELA_LISTEN_ADDR`) | `1946` API | PostgreSQL documented, not yet wired in shipped binary | HTTP API (health only in current binary) |
 
 ## Per-Product Details
 
@@ -150,3 +150,31 @@ This catalog summarizes the local runnable surfaces of the AxisRobo Enterprise A
 - Health endpoints are `/healthz` or `/health`; Symbivela additionally exposes `/ready` and `/metrics`.
 - Database posture varies: PostgreSQL-required (Moduregis, Orchadyn, Aegivela, Symbivela), PostgreSQL-optional with in-memory default (Gnosivela, Ontovela, Peiravela), and embedded/SQLite-default (Mnemovela, Praxovela, Rheovela, Harmovela).
 - Interfaces range from HTTP-only, CLI-only (Tekmovela), and desktop (Praxovela) to web consoles (Moduregis, Symbivela, Peiravela, Mnemovela, Rheovela-EE).
+
+## Port Allocation (from 1806)
+
+New and future deployments use the planned ports below. Each product owns a block of ten consecutive ports starting at `1806 + productIndex × 10`, giving up to nine listener addresses per product for API, console, and auxiliary planes.
+
+| Block | Product | Allocated |
+| --- | --- | --- |
+| 1806–1815 | Moduregis | `1806` API · `1807` console |
+| 1816–1825 | Orchadyn | `1816` API |
+| 1826–1835 | Noetivela | `1826` gateway · `1827` controller |
+| 1836–1845 | Gnosivela | `1836` API |
+| 1846–1855 | Mnemovela | `1846` HTTP · `1847` gRPC |
+| 1856–1865 | Ontovela | `1856` API |
+| 1866–1875 | Praxovela | `1866` AXON |
+| 1876–1885 | Rheovela | `1876` serve · `1877` console |
+| 1886–1895 | Aegivela | `1886` core · `1887` EE |
+| 1896–1905 | Limenora | `1896` edge · `1897` enterprise · `1898` control |
+| 1906–1915 | Peiravela | `1906` API |
+| 1916–1925 | Tekmovela | `1916` reserved |
+| 1926–1935 | Symbivela | `1926` API |
+| 1936–1945 | Harmovela | `1936` WS · `1937` SSE · `1938` API |
+| 1946–1955 | Kinetovela | `1946` API |
+
+Rules:
+
+- Use the next free port inside a product's block before extending into a later block.
+- Do not reuse `8080`-style defaults in new deployments; the planned ports are authoritative going forward.
+- Reserve the last slot of each block for future needs; document any occupation in this table.
