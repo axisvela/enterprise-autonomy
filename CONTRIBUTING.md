@@ -27,4 +27,5 @@ Runnable examples must document prerequisites, startup, expected output, and shu
 1. Keep changes small and focused on one area.
 2. Test local examples before describing them as runnable.
 3. Update `docs/` indexes and `CHANGELOG.md` for user-visible content changes.
-4. Open a pull request with a clear description of the public content being added or changed.
+4. Install the pre-commit hook once with `.\scripts\install-hooks.ps1`; it verifies internal links and reports the version on every commit.
+5. Open a pull request with a clear description of the public content being added or changed. CI runs the same link, smoke, and version checks.
