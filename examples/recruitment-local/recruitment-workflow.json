@@ -1,0 +1,20 @@
+{
+  "schema_version": "1",
+  "workflow_id": "recruitment-requisition-to-offer",
+  "title": "Recruitment Requisition To Offer",
+  "kind": "approval",
+  "source": "enterprise-autonomy-example",
+  "stages": [
+    {"id": "validate", "title": "Validate Requisition", "assignee_spec": {"kind": "role", "role": "ta-lead"}, "inputs": [], "outputs": []},
+    {"id": "shortlist", "title": "Human Shortlist Decision", "assignee_spec": {"kind": "role", "role": "panel"}, "inputs": [], "outputs": []},
+    {"id": "selection", "title": "Human Selection Decision", "assignee_spec": {"kind": "role", "role": "hiring-manager"}, "inputs": [], "outputs": []},
+    {"id": "offer", "title": "Offer Decision And Issue", "assignee_spec": {"kind": "capability", "required": ["recruitment.offer.execute"]}, "inputs": [], "outputs": []},
+    {"id": "close", "title": "Confirm Outcome", "assignee_spec": {"kind": "role", "role": "ta-lead"}, "inputs": [], "outputs": []}
+  ],
+  "transitions": [
+    {"from": "validate", "to": "shortlist"},
+    {"from": "shortlist", "to": "selection"},
+    {"from": "selection", "to": "offer"},
+    {"from": "offer", "to": "close"}
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "goals": [
+    {"id": "goal-req-0001-filled", "owner": "hiring-manager-1", "outcome": "req-0001 filled with a human-selected candidate and an approved offer, without automated hiring decisions", "deadline": "2026-08-25T12:00:00Z"}
+  ],
+  "requirements": [
+    {"id": "req-req-0001-validate", "goalId": "goal-req-0001-filled", "capabilityType": "recruitment.validation", "requiredEffect": "validate", "dependsOn": []},
+    {"id": "req-req-0001-select", "goalId": "goal-req-0001-filled", "capabilityType": "recruitment.selection", "requiredEffect": "select", "dependsOn": ["req-req-0001-validate"]}
+  ],
+  "catalog": [
+    {"id": "cap-validate", "type": "recruitment.validation", "version": "1.0.0", "effects": ["validate"], "cost": 0},
+    {"id": "cap-shortlist", "type": "recruitment.selection", "version": "1.0.0", "effects": ["select"], "stage": "shortlist", "humanOnly": true, "cost": 0},
+    {"id": "cap-select", "type": "recruitment.selection", "version": "1.0.0", "effects": ["select"], "stage": "selection", "humanOnly": true, "cost": 0},
+    {"id": "cap-offer", "type": "recruitment.selection", "version": "1.0.0", "effects": ["select"], "stage": "offer", "humanOnly": true, "cost": 0}
+  ],
+  "constraints": [
+    {"kind": "human-decision", "hard": true, "value": "automation-cannot-decide"},
+    {"kind": "budget", "hard": true, "value": "compensation-budget", "amount": 200}
+  ],
+  "delegations": {
+    "ta-lead-1": {"delegator": "talent-authority", "delegatee": "ta-lead-1", "parentScopes": ["recruitment.selection"], "delegatedScopes": ["recruitment.validation"], "budgetCeiling": 200, "evidenceDuty": ["decision://req-0001"]}
+  },
+  "authorityGrants": [
+    {"principal": "hiring-manager-1", "scopes": ["recruitment.selection"], "budgetCeiling": 200, "revoked": false}
+  ]
+}
