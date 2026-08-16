@@ -1,0 +1,41 @@
+name: release
+
+# Automatically creates an annotated tag and a GitHub Release when a new
+# version is prepared: VERSION bumped and a matching CHANGELOG.md section
+# exists (check-release.ps1 exit 2). Idempotent: skips when the tag exists.
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create tag and release when prepared
+        shell: powershell
+        run: |
+          # 0 = no changes since last tag; 1 = changes exist, not prepared;
+          # 2 = prepared (VERSION bumped + CHANGELOG section) -> release.
+          .\scripts\check-release.ps1
+          if ($LASTEXITCODE -eq 2) {
+            $v = (.\scripts\version.ps1 get).Trim()
+            Write-Host "release: preparing v$v"
+            .\scripts\create-tag.ps1 -Ver $v
+            if ($LASTEXITCODE -ne 0) { exit 1 }
+            git push origin "v$v"
+            $body = .\scripts\read-changelog-section.ps1 $v
+            if ($LASTEXITCODE -ne 0) { exit 1 }
+            gh release create "v$v" --title "Release v$v" --notes $body
+            if ($LASTEXITCODE -ne 0) { exit 1 }
+            Write-Host "release: created tag and release v$v"
+          } else {
+            Write-Host "release: no prepared release (check-release exit $LASTEXITCODE)"
+          }

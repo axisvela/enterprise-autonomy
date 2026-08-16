@@ -1,4 +1,4 @@
-# Inventory-Domain Adapter â€?API Reference
+# Inventory-Domain Adapter â€” API Reference
 
 Local reference service for simulated multi-warehouse inventory views. Not a production WMS.
 
@@ -71,8 +71,6 @@ Replaying the same `idempotency_key` returns `"replayed": true` without adjustin
 - `delta` is applied to the named warehouse's availability.
 - The resulting availability can never be negative; an over-draw returns `422`.
 - The adjustment is recorded with `approved_by` and `approval_ref`; there is no unauthored path.
-
-**Governance pattern:** [Deny-by-default, no bypass](../../docs/governance-patterns.md#1-deny-by-default-no-bypass) and [idempotency](../../docs/governance-patterns.md#6-idempotency-makes-reruns-safe) from the [governance patterns catalog](../../docs/governance-patterns.md).
 
 ## Errors
 

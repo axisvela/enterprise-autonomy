@@ -16,14 +16,14 @@ The run script prints a **step-by-step business report** and a **Value & Effect 
 
 ## The Scenario In Business Terms
 
-1. **Open** â€?the operator opens a governed mission case.
-2. **Context** â€?the mission boundary is asserted with evidence.
-3. **Start and enforce** â€?the mission starts; out-of-boundary telemetry is frozen, in-bound telemetry proceeds.
-4. **Pause** â€?an obstacle exception pauses the mission.
-5. **Review** â€?the operator resumes with an approval reference; a non-operator review is rejected.
-6. **Process** â€?a durable mission process is opened.
-7. **Plan** â€?a verified mission plan is generated (recommendation only).
-8. **Complete** â€?the mission completes and the value report is emitted.
+1. **Open** â€” the operator opens a governed mission case.
+2. **Context** â€” the mission boundary is asserted with evidence.
+3. **Start and enforce** â€” the mission starts; out-of-boundary telemetry is frozen, in-bound telemetry proceeds.
+4. **Pause** â€” an obstacle exception pauses the mission.
+5. **Review** â€” the operator resumes with an approval reference; a non-operator review is rejected.
+6. **Process** â€” a durable mission process is opened.
+7. **Plan** â€” a verified mission plan is generated (recommendation only).
+8. **Complete** â€” the mission completes and the value report is emitted.
 
 ## What This Demo Does
 
@@ -103,10 +103,6 @@ curl.exe "http://localhost:8099/v1/notifications/mission-alpha-001"
 | Adoption path | Pilot with a limited zone and a repeatable objective before expanding coverage. |
 
 See the [value framework](../../docs/example-value.md) and the [fleet domain adapter API](../../adapters/fleet-domain/API.md).
-
-## Governance Patterns
-
-This demo demonstrates patterns [1](../../docs/governance-patterns.md#1-deny-by-default-no-bypass), [3](../../docs/governance-patterns.md#3-plan-is-a-recommendation-not-an-authorization), [4](../../docs/governance-patterns.md#4-deny-by-default-runtime-effect-ledger), [5](../../docs/governance-patterns.md#5-audit-trail-is-a-chain), [6](../../docs/governance-patterns.md#6-idempotency-makes-reruns-safe), and [15](../../docs/governance-patterns.md#15-autonomous-boundary-pause-and-review) of the [governance patterns catalog](../../docs/governance-patterns.md): **autonomous boundary enforcement** and **pause-and-review**.
 
 ## Stop The Demo
 

@@ -1,4 +1,4 @@
-# Order-Domain Adapter â€?API Reference
+# Order-Domain Adapter â€” API Reference
 
 Local reference service for simulated order, inventory, payment, carrier, and customer-notification views. Not a production OMS.
 
@@ -111,5 +111,3 @@ Every accepted action appends `customer-notification-pending:<action-id>` and re
 | `200` | `"replayed": true` | Idempotency key already applied (not an error). |
 
 The adapter has **no bypass path**: an empty `approved_by`/`approval_ref` is rejected, never treated as "no approval required".
-
-**Governance pattern:** [Deny-by-default, no bypass](../../docs/governance-patterns.md#1-deny-by-default-no-bypass) and [shared approval reference](../../docs/governance-patterns.md#2-shared-approval-reference) from the [governance patterns catalog](../../docs/governance-patterns.md).

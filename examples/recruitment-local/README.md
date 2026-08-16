@@ -16,14 +16,14 @@ The run script prints a **step-by-step business report** and a **Value & Effect 
 
 ## The Scenario In Business Terms
 
-1. **Open** â€?the hiring manager opens a governed requisition case.
-2. **Validate** â€?the TA lead validates the requisition and records criteria.
-3. **Automation boundary** â€?an automated assistant's decision is rejected.
-4. **Shortlist** â€?the panel records a human shortlist decision.
-5. **Process** â€?a durable hiring process is opened.
-6. **Plan** â€?a verified hiring plan is generated (recommendation only).
-7. **Select and offer** â€?the hiring manager records selection and offer decisions; the TA lead issues the offer.
-8. **Close** â€?the requisition closes and the value report is emitted.
+1. **Open** â€” the hiring manager opens a governed requisition case.
+2. **Validate** â€” the TA lead validates the requisition and records criteria.
+3. **Automation boundary** â€” an automated assistant's decision is rejected.
+4. **Shortlist** â€” the panel records a human shortlist decision.
+5. **Process** â€” a durable hiring process is opened.
+6. **Plan** â€” a verified hiring plan is generated (recommendation only).
+7. **Select and offer** â€” the hiring manager records selection and offer decisions; the TA lead issues the offer.
+8. **Close** â€” the requisition closes and the value report is emitted.
 
 ## What This Demo Does
 
@@ -102,10 +102,6 @@ curl.exe "http://localhost:8094/v1/notifications/req-0001"
 | Adoption path | Pilot one role family; keep screening, selection, and offer decisions human, and review outcomes per cycle. |
 
 See the [value framework](../../docs/example-value.md) and the [recruitment domain adapter API](../../adapters/recruitment-domain/API.md).
-
-## Governance Patterns
-
-This demo demonstrates patterns [1â€?](../../docs/governance-patterns.md#integrity-patterns-cross-cutting) and [10](../../docs/governance-patterns.md#10-automation-cannot-decide) of the [governance patterns catalog](../../docs/governance-patterns.md): **automation cannot decide** â€?screening, selection, and offer decisions are human-only.
 
 ## Stop The Demo
 

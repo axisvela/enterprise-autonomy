@@ -1,4 +1,4 @@
-# Simulation-Domain Adapter â€?API Reference
+# Simulation-Domain Adapter â€” API Reference
 
 Local reference service for simulated possible-world validation. Not a production simulation platform.
 
@@ -42,7 +42,7 @@ Records immutable simulation evidence. Requires `run_id`, `outcome` (`pass`/`fai
  "recorded_by":"simulation-engineer","idempotency_key":"sim-run-v1"}
 ```
 
-`proposal.status` â†?`evidence`; the run is `immutable: true`.
+`proposal.status` â†’ `evidence`; the run is `immutable: true`.
 
 Errors: `400` missing/invalid outcome, `409 evidence_already_recorded_immutable`.
 
@@ -55,7 +55,7 @@ Review group records the decision. Requires `decision` (`approve`/`reject`/`revi
  "decision_ref":"decision://sim-0001","idempotency_key":"sim-dec-v1"}
 ```
 
-`proposal.status` â†?`decided`. Gated on recorded evidence and review-group membership.
+`proposal.status` â†’ `decided`. Gated on recorded evidence and review-group membership.
 
 Errors: `400` missing/invalid fields, `403 simulation_evidence_required_before_decision`, `403 not_review_group_member`.
 
@@ -67,7 +67,7 @@ Releases the proposal. Requires `released_by`, `decision_ref`, `idempotency_key`
 {"released_by":"reviewer-a","decision_ref":"decision://sim-0001","idempotency_key":"sim-rel-v1"}
 ```
 
-`proposal.status` â†?`released`. Gated on an `approve` decision citing the exact `decision_ref`.
+`proposal.status` â†’ `released`. Gated on an `approve` decision citing the exact `decision_ref`.
 
 Errors: `400` missing fields, `403 release_requires_approval`, `403 decision_ref_mismatch`.
 
@@ -101,5 +101,3 @@ proposed -> evidence -> decided -> released
 - **Immutable evidence.** One immutable run per proposal; re-recording is rejected.
 - **Review-group authority.** Only designated members decide.
 - **Approval-gated release.** Release requires an approve decision citing the exact reference.
-
-**Governance pattern:** [Evidence-gated release and immutable simulation](../../docs/governance-patterns.md#13-evidence-gated-release-immutable-simulation) from the [governance patterns catalog](../../docs/governance-patterns.md).

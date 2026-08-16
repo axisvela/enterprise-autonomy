@@ -1,4 +1,4 @@
-# Procurement-Domain Adapter â€?API Reference
+# Procurement-Domain Adapter â€” API Reference
 
 Local reference service for simulated purchasing views: requests, budget, suppliers, purchase orders, and receipts. Not a production procurement or ERP system.
 
@@ -36,7 +36,7 @@ Submits the request. Requires `requester` and `idempotency_key`.
 {"requester":"e-1001","idempotency_key":"proc-submit-v1"}
 ```
 
-`request.status` â†?`submitted`. Errors: `400` missing fields, `403 requester_mismatch`, `409 request_not_draft`.
+`request.status` â†’ `submitted`. Errors: `400` missing fields, `403 requester_mismatch`, `409 request_not_draft`.
 
 ### `POST /v1/requests/{id}/approvals`
 
@@ -47,8 +47,8 @@ Records a role approval. Requires `role`, `approver`, `decision`, `approval_ref`
 ```
 
 - `role` must be `finance` or `procurement`; `decision` must be `approve` or `reject`.
-- `request.status` â†?`approved` only after both roles have approved.
-- A `reject` sets `request.status` â†?`rejected`.
+- `request.status` â†’ `approved` only after both roles have approved.
+- A `reject` sets `request.status` â†’ `rejected`.
 
 Errors: `400` missing fields or unsupported role/decision, `403 segregation_of_duties_requester_cannot_approve_own_request`.
 
@@ -60,7 +60,7 @@ Issues a purchase order. Requires `supplier`, `approved_by`, `approval_ref`, `id
 {"supplier":"supplier-b","approved_by":"procurement-owner","approval_ref":"approval://preq-0001","idempotency_key":"proc-buy-v1"}
 ```
 
-Creates `po-preq-0001-supplier-b` (amount 220), decrements the budget, and sets `request.status` â†?`ordered`.
+Creates `po-preq-0001-supplier-b` (amount 220), decrements the budget, and sets `request.status` â†’ `ordered`.
 
 Errors: `400` missing fields or unknown supplier, `403 request_not_approved` or `required_approvals_missing`, `422 insufficient_budget`.
 
@@ -72,7 +72,7 @@ Records a receipt and closes the request. Requires `received_by`, `accepted`, `i
 {"received_by":"warehouse-receiver","accepted":true,"idempotency_key":"proc-rcv-v1"}
 ```
 
-Sets `po.status` â†?`received` (or `discrepancy` when not accepted) and `request.status` â†?`closed`.
+Sets `po.status` â†’ `received` (or `discrepancy` when not accepted) and `request.status` â†’ `closed`.
 
 Errors: `400` missing fields, `403 no_purchase_order`.
 
@@ -108,8 +108,6 @@ draft -> submitted -> approved -> ordered -> closed
 ```
 
 `approved` requires both `finance` and `procurement` approvals under the same approval reference. Every mutating call is idempotent (`"replayed": true` on repeat keys).
-
-**Governance patterns:** [Segregation of duties](../../docs/governance-patterns.md#7-segregation-of-duties) and [conjunctive authority](../../docs/governance-patterns.md#8-conjunctive-authority) from the [governance patterns catalog](../../docs/governance-patterns.md).
 
 ## Errors
 

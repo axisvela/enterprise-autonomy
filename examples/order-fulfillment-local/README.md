@@ -17,14 +17,14 @@ The run script prints a **step-by-step business report**, a **Value & Effect sum
 
 ## The Scenario In Business Terms
 
-1. **Detect** â€?inventory reports `stockout` for the order.
-2. **Review** â€?an operator opens a governed exception case; nothing may change the order without it.
-3. **Replan** â€?a verified alternate-fulfillment plan is generated (recommendation only).
-4. **Process** â€?a durable exception process is opened so the resolution survives restarts.
-5. **Reserve** â€?the alternate warehouse inventory is reserved under the same approval.
-6. **Handoff** â€?Praxovela records the operator's action under a deny-by-default policy.
-7. **Approve and act** â€?the operator applies the approved fulfillment action to the order adapter.
-8. **Verify** â€?final order state and pending customer notification are confirmed.
+1. **Detect** â€” inventory reports `stockout` for the order.
+2. **Review** â€” an operator opens a governed exception case; nothing may change the order without it.
+3. **Replan** â€” a verified alternate-fulfillment plan is generated (recommendation only).
+4. **Process** â€” a durable exception process is opened so the resolution survives restarts.
+5. **Reserve** â€” the alternate warehouse inventory is reserved under the same approval.
+6. **Handoff** â€” Praxovela records the operator's action under a deny-by-default policy.
+7. **Approve and act** â€” the operator applies the approved fulfillment action to the order adapter.
+8. **Verify** â€” final order state and pending customer notification are confirmed.
 
 ## What This Demo Does
 
@@ -140,10 +140,6 @@ See the [value framework](../../docs/example-value.md) and the [value report tem
 3. Run the scenario. The adapter accepts only an action with `approved_by`, `approval_ref`, and an idempotency key, then persists the resulting order, carrier, and notification state.
 4. Inspect `GET http://localhost:8090/v1/orders/order-123` and `GET http://localhost:8090/v1/notifications/order-123` before marking the case resolved.
 5. Replace this reference adapter and any local Orchadyn database with authorized production integrations before real business use.
-
-## Governance Patterns
-
-This demo demonstrates patterns [1](../../docs/governance-patterns.md#1-deny-by-default-no-bypass), [2](../../docs/governance-patterns.md#2-shared-approval-reference), [3](../../docs/governance-patterns.md#3-plan-is-a-recommendation-not-an-authorization), [4](../../docs/governance-patterns.md#4-deny-by-default-runtime-effect-ledger), [5](../../docs/governance-patterns.md#5-audit-trail-is-a-chain), and [6](../../docs/governance-patterns.md#6-idempotency-makes-reruns-safe) of the [governance patterns catalog](../../docs/governance-patterns.md): deny-by-default with no bypass, one shared approval reference across products, plan-as-recommendation, effect-ledger runtime, chain-based audit trail, and idempotent reruns.
 
 ## Stop The Demo
 

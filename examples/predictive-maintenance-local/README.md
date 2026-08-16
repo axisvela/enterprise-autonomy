@@ -16,14 +16,14 @@ The run script prints a **step-by-step business report** and a **Value & Effect 
 
 ## The Scenario In Business Terms
 
-1. **Open** â€?the maintenance manager opens a governed case.
-2. **Context** â€?the elevated risk signal and asset state are asserted.
-3. **Prediction gate** â€?a work order on an unvalidated signal is rejected.
-4. **Validate and decide** â€?the maintenance manager validates the signal and records a `repair` decision; an unconfirmed `stop` is rejected.
-5. **Safety review** â€?the safety authority approves intrusive work; without it the work order is rejected.
-6. **Process** â€?a durable maintenance process is opened.
-7. **Plan** â€?a verified maintenance plan is generated (recommendation only).
-8. **Schedule** â€?the approved, safety-reviewed work order is created and the value report is emitted.
+1. **Open** â€” the maintenance manager opens a governed case.
+2. **Context** â€” the elevated risk signal and asset state are asserted.
+3. **Prediction gate** â€” a work order on an unvalidated signal is rejected.
+4. **Validate and decide** â€” the maintenance manager validates the signal and records a `repair` decision; an unconfirmed `stop` is rejected.
+5. **Safety review** â€” the safety authority approves intrusive work; without it the work order is rejected.
+6. **Process** â€” a durable maintenance process is opened.
+7. **Plan** â€” a verified maintenance plan is generated (recommendation only).
+8. **Schedule** â€” the approved, safety-reviewed work order is created and the value report is emitted.
 
 ## What This Demo Does
 
@@ -104,10 +104,6 @@ curl.exe "http://localhost:8095/v1/workorders/wo-pm-wo-v1"
 | Adoption path | Pilot on non-critical assets; measure prediction and intervention quality before broader robotic work. |
 
 See the [value framework](../../docs/example-value.md) and the [maintenance domain adapter API](../../adapters/maintenance-domain/API.md).
-
-## Governance Patterns
-
-This demo demonstrates patterns [1â€?](../../docs/governance-patterns.md#integrity-patterns-cross-cutting), [8](../../docs/governance-patterns.md#8-conjunctive-authority), and [11](../../docs/governance-patterns.md#11-prediction-is-not-a-fault-safety-is-conjunctive) of the [governance patterns catalog](../../docs/governance-patterns.md): **prediction is not a fault** and **safety is conjunctive** with the maintenance decision.
 
 ## Stop The Demo
 

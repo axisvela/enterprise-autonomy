@@ -17,14 +17,14 @@ The run script prints a **step-by-step business report** and a **Value & Effect 
 
 ## The Scenario In Business Terms
 
-1. **Open** â€?the reviewer opens a governed validation case.
-2. **Compile** â€?the simulation engineer compiles scenarios and the scope is asserted.
-3. **Evidence gate** â€?a decision before evidence is rejected.
-4. **Record** â€?the immutable simulation run is recorded; a second run is rejected.
-5. **Decide** â€?the reviewer approves; a non-member decision is rejected.
-6. **Process** â€?a durable validation process is opened.
-7. **Plan** â€?a verified validation plan is generated (recommendation only).
-8. **Release** â€?the proposal releases only after the approve decision citing the exact reference.
+1. **Open** â€” the reviewer opens a governed validation case.
+2. **Compile** â€” the simulation engineer compiles scenarios and the scope is asserted.
+3. **Evidence gate** â€” a decision before evidence is rejected.
+4. **Record** â€” the immutable simulation run is recorded; a second run is rejected.
+5. **Decide** â€” the reviewer approves; a non-member decision is rejected.
+6. **Process** â€” a durable validation process is opened.
+7. **Plan** â€” a verified validation plan is generated (recommendation only).
+8. **Release** â€” the proposal releases only after the approve decision citing the exact reference.
 
 ## What This Demo Does
 
@@ -106,10 +106,6 @@ curl.exe "http://localhost:8097/v1/notifications/proposal-sim-0001"
 | Adoption path | Evaluate one bounded operation; expand only after the review group accepts simulated evidence. |
 
 See the [value framework](../../docs/example-value.md) and the [simulation domain adapter API](../../adapters/simulation-domain/API.md).
-
-## Governance Patterns
-
-This demo demonstrates patterns [1](../../docs/governance-patterns.md#1-deny-by-default-no-bypass), [3](../../docs/governance-patterns.md#3-plan-is-a-recommendation-not-an-authorization), [4](../../docs/governance-patterns.md#4-deny-by-default-runtime-effect-ledger), [5](../../docs/governance-patterns.md#5-audit-trail-is-a-chain), [6](../../docs/governance-patterns.md#6-idempotency-makes-reruns-safe), and [13](../../docs/governance-patterns.md#13-evidence-gated-release-immutable-simulation) of the [governance patterns catalog](../../docs/governance-patterns.md): **evidence-gated release** and **immutable simulation evidence**.
 
 ## Stop The Demo
 

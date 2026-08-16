@@ -1,4 +1,4 @@
-# Compliance-Domain Adapter â€?API Reference
+# Compliance-Domain Adapter â€” API Reference
 
 Local reference service for simulated compliance-audit views. Not a production compliance system.
 
@@ -33,7 +33,7 @@ Collects a required evidence item. Requires `item_id`, `source`, `timestamp`, `e
  "evidence_ref":"evidence://comp/item-1","collected_by":"compliance-lead","idempotency_key":"comp-ev-1"}
 ```
 
-`case.status` â†?`evidence` once all items are collected.
+`case.status` â†’ `evidence` once all items are collected.
 
 Errors: `400` missing fields or `unknown_evidence_item`, `409 evidence_item_already_collected`.
 
@@ -45,7 +45,7 @@ Designated attestor attests. Requires `attested_by`, `decision` (`attest`/`defer
 {"attested_by":"compliance-lead","decision":"attest","attestation_ref":"attestation://comp-0001","idempotency_key":"comp-att-v1"}
 ```
 
-`case.status` â†?`attested` when attested. Errors: `400` missing/invalid fields, `403 evidence_incomplete_attestation_requires_all_items`, `403 not_designated_attestor`.
+`case.status` â†’ `attested` when attested. Errors: `400` missing/invalid fields, `403 evidence_incomplete_attestation_requires_all_items`, `403 not_designated_attestor`.
 
 ### `POST /v1/compliance/{id}/packages`
 
@@ -55,7 +55,7 @@ Assembles and releases the audit package. Requires `released_by`, `attestation_r
 {"released_by":"compliance-lead","attestation_ref":"attestation://comp-0001","idempotency_key":"comp-pkg-v1"}
 ```
 
-Creates `package-comp-pkg-v1`; `case.status` â†?`released`. Gated on an `attest` decision citing the exact reference; released packages are immutable.
+Creates `package-comp-pkg-v1`; `case.status` â†’ `released`. Gated on an `attest` decision citing the exact reference; released packages are immutable.
 
 Errors: `400` missing fields, `403 attestation_required_before_package`, `403 attestation_ref_mismatch`, `409 package_already_released_immutable`.
 
@@ -73,12 +73,10 @@ Errors: `404 compliance_case_not_found`.
 open -> evidence -> attested -> released
 ```
 
-`evidence` transitions to `open â†?evidence` when all items are collected; an `attest` decision moves to `attested`; the package release moves to `released` and is immutable.
+`evidence` transitions to `open â†’ evidence` when all items are collected; an `attest` decision moves to `attested`; the package release moves to `released` and is immutable.
 
 ## Compliance Integrity Model
 
 - **Completeness-gated attestation.** No attestation without all required evidence items.
 - **Designated attestor.** Only the designated attestor may attest.
 - **Attestation-gated, immutable package.** The package releases only after an attest citing the exact reference, and can never be replaced.
-
-**Governance pattern:** [Completeness-gated attestation and immutable audit](../../docs/governance-patterns.md#14-completeness-gated-attestation-immutable-audit) from the [governance patterns catalog](../../docs/governance-patterns.md).

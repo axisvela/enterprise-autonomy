@@ -16,14 +16,14 @@ The run script prints a **step-by-step business report** and a **Value & Effect 
 
 ## The Scenario In Business Terms
 
-1. **Open** â€?the compliance lead opens a governed case.
-2. **Context** â€?the requirement and its four required evidence items are asserted.
-3. **Completeness gate** â€?attestation before all evidence is rejected.
-4. **Collect** â€?all four evidence items are collected from governed sources.
-5. **Attest** â€?the designated attestor attests; a non-attestor is rejected.
-6. **Process** â€?a durable compliance process is opened.
-7. **Plan** â€?a verified compliance plan is generated (recommendation only).
-8. **Release** â€?the audit package releases after attestation citing the exact reference; released packages are immutable.
+1. **Open** â€” the compliance lead opens a governed case.
+2. **Context** â€” the requirement and its four required evidence items are asserted.
+3. **Completeness gate** â€” attestation before all evidence is rejected.
+4. **Collect** â€” all four evidence items are collected from governed sources.
+5. **Attest** â€” the designated attestor attests; a non-attestor is rejected.
+6. **Process** â€” a durable compliance process is opened.
+7. **Plan** â€” a verified compliance plan is generated (recommendation only).
+8. **Release** â€” the audit package releases after attestation citing the exact reference; released packages are immutable.
 
 ## What This Demo Does
 
@@ -104,10 +104,6 @@ curl.exe "http://localhost:8098/v1/notifications/compliance-0001"
 | Adoption path | Pilot with one requirement class; expand as evidence completeness improves. |
 
 See the [value framework](../../docs/example-value.md) and the [compliance domain adapter API](../../adapters/compliance-domain/API.md).
-
-## Governance Patterns
-
-This demo demonstrates patterns [1â€?](../../docs/governance-patterns.md#integrity-patterns-cross-cutting) and [14](../../docs/governance-patterns.md#14-completeness-gated-attestation-immutable-audit) of the [governance patterns catalog](../../docs/governance-patterns.md): **completeness-gated attestation** and **immutable audit package**.
 
 ## Stop The Demo
 
