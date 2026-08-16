@@ -4,6 +4,11 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`. `1.0.0` is the first stable release of the public introduction and examples repository.
 
+## 1.0.2 (2026-08-16)
+
+- Fixed CI: the checkout did not fetch tags (`fetch-depth: 0`), so `check-release.ps1` failed with "No names found" on every push. The workflow now fetches tags and treats the informational release check as non-blocking (`continue-on-error`).
+- Hardened `scripts/check-release.ps1` to tolerate `git describe` returning nothing (e.g. shallow checkouts) instead of calling `.Trim()` on a null value.
+
 ## 1.0.1 (2026-08-16)
 
 - Backfilled GitHub Releases for every pre-0.14.0 version (v0.1.0 through v0.13.0), so each of the 19 tags now has a matching release with its CHANGELOG body. Kept v1.0.0 as the Latest release.

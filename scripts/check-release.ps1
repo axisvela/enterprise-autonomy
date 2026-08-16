@@ -13,8 +13,8 @@ if (-not $Root) { $Root = Resolve-Path (Join-Path $PSScriptRoot "..") }
 $git = "git"
 Push-Location $Root
 try {
-  $lastTag = (& $git describe --tags --abbrev=0 2>$null).Trim()
-  if (-not $lastTag) { $lastTag = "<none>" }
+  $lastTagRaw = (& $git describe --tags --abbrev=0 2>$null)
+  $lastTag = if ($lastTagRaw) { ($lastTagRaw | Select-Object -First 1).Trim() } else { "<none>" }
 
   $count = 0
   if ($lastTag -ne "<none>") {
