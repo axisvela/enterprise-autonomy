@@ -32,6 +32,8 @@ jobs:
             if ($LASTEXITCODE -ne 0) { Write-Host "release: verify-release blocked the release"; exit 1 }
             $v = (.\scripts\version.ps1 get).Trim()
             Write-Host "release: preparing v$v"
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             .\scripts\create-tag.ps1 -Ver $v
             if ($LASTEXITCODE -ne 0) { exit 1 }
             git push origin "v$v"
