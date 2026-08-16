@@ -4,6 +4,13 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`. `1.0.0` is the first stable release of the public introduction and examples repository.
 
+## 1.0.1 (2026-08-16)
+
+- Backfilled GitHub Releases for every pre-0.14.0 version (v0.1.0 through v0.13.0), so each of the 19 tags now has a matching release with its CHANGELOG body. Kept v1.0.0 as the Latest release.
+- Hardened `scripts/create-release.ps1`: idempotent (skips existing releases) and added `-NotLatest` for historical backfills so the newest version stays "Latest".
+- Delegated `.github/workflows/release.yml` to the shared release scripts (`create-tag.ps1` + `create-release.ps1`) so local and CI behavior stay identical.
+- Added a Phase 7 (post-1.0 additive work) backlog to the roadmap and updated the status note.
+
 ## 1.0.0 (2026-08-16)
 
 First stable release of the public repository. All eleven vertical slices have runnable local demos backed by twelve reference adapters, with unit tests, continuous integration, structural validation, value reporting, and an automated release workflow.

@@ -71,6 +71,17 @@ This roadmap tracks the public content plan for the `enterprise-autonomy` reposi
 - [x] Structural validation (demo structure, script syntax, JSON validity) in CI
 - [x] All eleven vertical slices have runnable local demos
 
+## Phase 7 — Post-1.0 additive work (in progress)
+
+Post-1.0 changes are additive and follow the same verification and release process. Completed items land here as they ship.
+
+- [x] Backfill GitHub Releases for every pre-0.14.0 tag (v0.1.0–v0.13.0), so every version has a matching tag and release
+- [x] Harden release tooling: idempotent `create-release.ps1` (skips existing releases) and `-NotLatest` support for historical backfills
+- [x] Delegate the release workflow to the shared release scripts (single source of truth for tag and release creation)
+- [ ] New runnable demos covering additional governance patterns
+- [ ] Deeper release tooling (CI-gated release verification, release-body preview)
+- [ ] Refreshed content and navigation as the example set grows
+
 ## Guiding Principles
 
 - Product repositories remain authoritative for their own runtimes and domains.
@@ -79,4 +90,4 @@ This roadmap tracks the public content plan for the `enterprise-autonomy` reposi
 
 ## Status
 
-All phases of the initial public roadmap are complete as of **1.0.0**. Post-1.0 work is additive: new runnable demos, deeper tooling, and refreshed content follow the same verification and release process.
+All phases of the initial public roadmap are complete as of **1.0.0**. Post-1.0 work is additive: new runnable demos, deeper tooling, and refreshed content follow the same verification and release process. Every released version now has a matching GitHub tag and release (backfilled for pre-0.14.0 versions).

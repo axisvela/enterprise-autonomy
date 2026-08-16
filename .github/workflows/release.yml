@@ -2,7 +2,9 @@ name: release
 
 # Automatically creates an annotated tag and a GitHub Release when a new
 # version is prepared: VERSION bumped and a matching CHANGELOG.md section
-# exists (check-release.ps1 exit 2). Idempotent: skips when the tag exists.
+# exists (check-release.ps1 exit 2). Idempotent: skips when the tag or
+# release already exists. Delegates to the shared release scripts so local
+# and CI behavior stay identical.
 
 on:
   push:
@@ -33,13 +35,9 @@ jobs:
             .\scripts\create-tag.ps1 -Ver $v
             if ($LASTEXITCODE -ne 0) { exit 1 }
             git push origin "v$v"
-            $body = .\scripts\read-changelog-section.ps1 $v
             if ($LASTEXITCODE -ne 0) { exit 1 }
-            $notesFile = Join-Path $env:TEMP ("release-notes-" + [guid]::NewGuid().ToString("N") + ".md")
-            Set-Content -Path $notesFile -Value $body -Encoding UTF8
-            gh release create "v$v" --title "Release v$v" --notes-file $notesFile
+            .\scripts\create-release.ps1 -Ver $v
             if ($LASTEXITCODE -ne 0) { exit 1 }
-            Remove-Item $notesFile -ErrorAction SilentlyContinue
             Write-Host "release: created tag and release v$v"
           } else {
             Write-Host "release: no prepared release (check-release exit $LASTEXITCODE)"
