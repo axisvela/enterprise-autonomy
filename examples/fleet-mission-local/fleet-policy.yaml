@@ -1,0 +1,11 @@
+rules:
+  - capability_id: file.write
+    resource: D:\profile\paper-code\enterprise-autonomy\examples\fleet-mission-local\.praxovela\mission-alpha-001-handoff.json
+    risk: medium
+    actor_id: axon-core
+    action: allow
+  - capability_id: file.read
+    resource: D:\profile\paper-code\enterprise-autonomy\examples\fleet-mission-local\.praxovela\mission-alpha-001-handoff.json
+    risk: low
+    actor_id: axon-core
+    action: allow

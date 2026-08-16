@@ -1,0 +1,26 @@
+{
+  "goals": [
+    {"id": "goal-fleet-0001-safe", "owner": "ops-lead", "outcome": "mission-alpha-001 completes within zone-alpha with boundary compliance and operator-reviewed exceptions", "deadline": "2026-08-31T12:00:00Z"}
+  ],
+  "requirements": [
+    {"id": "req-fleet-0001-bounded", "goalId": "goal-fleet-0001-safe", "capabilityType": "fleet.boundary", "requiredEffect": "stay-in-boundary", "dependsOn": []},
+    {"id": "req-fleet-0001-pause", "goalId": "goal-fleet-0001-safe", "capabilityType": "fleet.exception", "requiredEffect": "pause", "dependsOn": []},
+    {"id": "req-fleet-0001-review", "goalId": "goal-fleet-0001-safe", "capabilityType": "fleet.review", "requiredEffect": "resume", "dependsOn": ["req-fleet-0001-pause"]}
+  ],
+  "catalog": [
+    {"id": "cap-boundary", "type": "fleet.boundary", "version": "1.0.0", "effects": ["stay-in-boundary"], "autonomous": true, "cost": 0},
+    {"id": "cap-pause", "type": "fleet.exception", "version": "1.0.0", "effects": ["pause"], "cost": 0},
+    {"id": "cap-review", "type": "fleet.review", "version": "1.0.0", "effects": ["resume"], "pauseRequired": true, "operatorOnly": true, "cost": 0}
+  ],
+  "constraints": [
+    {"kind": "boundary", "hard": true, "value": "zone-alpha"},
+    {"kind": "pause-and-review", "hard": true, "value": "exceptions-pause"},
+    {"kind": "operator-gated", "hard": true, "value": "operator-review-required"}
+  ],
+  "delegations": {
+    "ops-lead": {"delegator": "fleet-authority", "delegatee": "ops-lead", "parentScopes": ["fleet.review"], "delegatedScopes": ["fleet.exception"], "budgetCeiling": 0, "evidenceDuty": ["approval://mission-alpha-001"]}
+  },
+  "authorityGrants": [
+    {"principal": "ops-lead", "scopes": ["fleet.exception", "fleet.review"], "budgetCeiling": 0, "revoked": false}
+  ]
+}

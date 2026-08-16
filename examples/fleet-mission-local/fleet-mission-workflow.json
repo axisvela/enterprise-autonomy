@@ -1,0 +1,20 @@
+{
+  "schema_version": "1",
+  "workflow_id": "fleet-mission-exception",
+  "title": "Fleet Mission Exception",
+  "kind": "approval",
+  "source": "enterprise-autonomy-example",
+  "stages": [
+    {"id": "start", "title": "Start Bounded Mission", "assignee_spec": {"kind": "role", "role": "ops-lead"}, "inputs": [], "outputs": []},
+    {"id": "pause", "title": "Pause On Exception", "assignee_spec": {"kind": "capability", "required": ["fleet.exception.pause"]}, "inputs": [], "outputs": []},
+    {"id": "review", "title": "Operator Review", "assignee_spec": {"kind": "role", "role": "ops-lead"}, "inputs": [], "outputs": []},
+    {"id": "resume", "title": "Resume Mission", "assignee_spec": {"kind": "capability", "required": ["fleet.resume.execute"]}, "inputs": [], "outputs": []},
+    {"id": "close", "title": "Confirm Outcome", "assignee_spec": {"kind": "role", "role": "ops-lead"}, "inputs": [], "outputs": []}
+  ],
+  "transitions": [
+    {"from": "start", "to": "pause"},
+    {"from": "pause", "to": "review"},
+    {"from": "review", "to": "resume"},
+    {"from": "resume", "to": "close"}
+  ]
+}
