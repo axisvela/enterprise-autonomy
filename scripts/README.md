@@ -7,7 +7,7 @@ Small validation and reporting utilities for the public examples.
 | [check-links.ps1](check-links.ps1) | Verifies every internal markdown link resolves. Run after content changes. | `0` pass, `1` broken links |
 | [check-examples.ps1](check-examples.ps1) | Verifies a runnable demo's produced artifacts against expectations via its `verify.ps1`. | `0` pass, `1` failure |
 | [report-value.ps1](report-value.ps1) | Aggregates value reports (`.local-data/*-value-report.json`) into a summary table. | `0` (also succeeds when no reports exist) |
-| [run-demo-smoke.ps1](run-demo-smoke.ps1) | Smoke-tests the reference adapters end to end: health, governed reservation, unapproved-action rejection, approved action. | `0` pass, `1` failure |
+| [run-demo-smoke.ps1](run-demo-smoke.ps1) | Smoke-tests the reference adapters end to end: order (governed fulfillment + denial), inventory (governed reservation), and procurement (segregation of duties, role approvals, purchase, receipt). | `0` pass, `1` failure |
 | [version.ps1](version.ps1) | Reads, sets, or bumps the repository version in `VERSION`. | `0` success |
 | [check-release.ps1](check-release.ps1) | Decides whether a new tag/version is warranted after commits. | `0` no change, `1` new tag needed, `2` prepared and ready to tag |
 

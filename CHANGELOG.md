@@ -4,6 +4,14 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`.
 
+## 0.3.0 (2026-08-16)
+
+- Added the procurement-domain reference adapter (requests, budget, suppliers, purchase orders, receipts) with structural segregation of duties and conjunctive role approvals.
+- Added the runnable procurement request-to-receipt local demo (`examples/procurement-local/`) with an 8-step governed lifecycle, `verify.ps1`, `run-all.ps1`, value report, and a detailed operations guide.
+- Extended `run-demo-smoke.ps1` to cover all three adapters (order, inventory, procurement) and fixed the build-lock issue by giving each adapter its own smoke binary.
+- Extended the governance-subtlety guide with the segregation-of-duties and conjunctive-approval patterns.
+- Cross-linked the procurement demo from the procurement slice, example index, getting-started, run handbook, and roadmap.
+
 ## 0.2.1 (2026-08-16)
 
 - Added the detailed operations guide sections: output artifacts, seed data, idempotency table, verification, and troubleshooting.

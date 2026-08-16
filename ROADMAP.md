@@ -40,7 +40,7 @@ This roadmap tracks the public content plan for the `enterprise-autonomy` reposi
 - [x] Value & Effect reporting for runnable examples
 - [x] Demo validation and smoke-test tooling
 - [x] Detailed operations guide with exact request/response per step
-- [ ] Additional runnable local demos
+- [x] Additional runnable local demos (procurement request-to-receipt)
 
 ## Phase 6 — Consistency and release tracking (in progress)
 
@@ -52,6 +52,7 @@ This roadmap tracks the public content plan for the `enterprise-autonomy` reposi
 - [x] Detailed operating procedures (input/products/output) for all slices and stacks
 - [x] Adapter API references and error semantics
 - [x] Version management harness and commit-time release check
+- [x] Second runnable local demo (procurement) cross-linked from slices and indexes
 
 ## Guiding Principles
 

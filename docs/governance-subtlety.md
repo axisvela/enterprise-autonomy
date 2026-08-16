@@ -67,6 +67,29 @@ Removing any link breaks the reconstruction: the fact has no owner, the change h
 
 Every mutating call carries a stable idempotency key. Re-running the demo does not duplicate artifacts; the order adapter returns `"replayed": true`. Governance works on reruns too.
 
+## 7. Segregation of Duties Is Structural (Procurement Demo)
+
+The [procurement demo](../examples/procurement-local/README.md) adds a distinct governance subtlety: the requester cannot approve their own request.
+
+```
+POST /v1/requests/preq-0001/approvals
+{"role":"finance","approver":"e-1001", ...}
+-> 403 {"error":"segregation_of_duties_requester_cannot_approve_own_request"}
+```
+
+And both roles must approve before a purchase is possible:
+
+```
+finance  approves  -> request stays "submitted"
+procurement approves -> request becomes "approved"
+unapproved purchase -> 400 / 403, no PO is created
+```
+
+Two properties worth noticing:
+
+1. **Segregation is enforced by the domain, not by a procedure.** The adapter refuses the requester-as-approver regardless of role, before any role logic runs.
+2. **Approval is conjunctive.** A single role's approval is insufficient; the purchase is only reachable after both finance and procurement approvals under the same reference. The purchase and receipt steps are also capability/state-gated (`request_not_approved`, `no_purchase_order`).
+
 ## Why This Matters
 
 The subtlety is that **governance is distributed and structural**: each product enforces a piece of the policy in its own domain, the pieces reference each other through shared approval/evidence references, and none of them can be bypassed by calling another one. That is what "contract-governed" means in practice.

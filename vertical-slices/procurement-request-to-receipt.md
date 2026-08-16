@@ -72,6 +72,10 @@ See the [value framework](../docs/example-value.md).
 | Purchase | approved action, purchase reference | Moduregis, Limenora | `po-0001` + supplier acknowledgement |
 | Receive and close | delivery/service acceptance, receipt evidence | Rheovela, Ontovela | closed request with purchase + receipt evidence |
 
+## Runnable Local Demo
+
+For verified local-binary startup commands, configuration, API requests, request bodies, and expected operational outputs, see the [local procurement demo](../examples/procurement-local/README.md) and its [Detailed Operations Guide](../examples/procurement-local/operations-guide.md).
+
 ## Public Boundary
 
 This example omits supplier data, thresholds, approval matrices, ERP configuration, and integration details.
