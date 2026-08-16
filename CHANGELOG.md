@@ -4,6 +4,13 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`.
 
+## 0.15.0 (2026-08-16)
+
+- Added the process-domain reference adapter (durable process, stage-sequenced advances, terminal-state enforcement, immutable completion) with **durable process lifecycle integrity** governance.
+- Added the runnable process-to-outcome local demo (`examples/process-to-outcome-local/`) with an 8-step lifecycle, `verify.ps1`, `run-all.ps1`, value report, and a detailed operations guide.
+- Extended `run-demo-smoke.ps1` to all eleven adapters (62 assertions) and wired the process demo into `run-all-demos.ps1`, `report-value.ps1`, `check-examples.ps1`, `validate-demos.ps1`, and `run-go-tests.ps1`.
+- Cross-linked the process demo from the process-to-outcome slice, example index, getting-started, run handbook, and roadmap. Ten of the eleven vertical slices now have runnable demos.
+
 ## 0.14.0 (2026-08-16)
 
 - Added release automation completing the versioning harness: `scripts/read-changelog-section.ps1` (extracts a version's changelog block), `scripts/create-tag.ps1` (annotated tag from `VERSION`, idempotent), and `scripts/create-release.ps1` (`gh release create` with changelog body).

@@ -5,7 +5,7 @@ param(
 # Runs go test + go vet across every reference-adapter module. Exits non-zero
 # if any module fails. Used by CI and pre-commit verification.
 
-$adapters = @("order-domain", "inventory-domain", "procurement-domain", "customer-domain", "recruitment-domain", "maintenance-domain", "integration-domain", "simulation-domain", "compliance-domain", "fleet-domain")
+$adapters = @("order-domain", "inventory-domain", "procurement-domain", "customer-domain", "recruitment-domain", "maintenance-domain", "integration-domain", "simulation-domain", "compliance-domain", "fleet-domain", "process-domain")
 $failures = @()
 $previousGoWork = $env:GOWORK
 $env:GOWORK = "off"

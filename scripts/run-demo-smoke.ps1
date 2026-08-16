@@ -13,7 +13,8 @@ $adapters = @(
   @{ Name = "integration-domain"; Dir = "integration-domain"; Args = "--addr :$($Port + 6) --data-file `"$env:TEMP\smoke-integration-data.json`""; Check = "/healthz" },
   @{ Name = "simulation-domain"; Dir = "simulation-domain"; Args = "--addr :$($Port + 7) --data-file `"$env:TEMP\smoke-simulation-data.json`""; Check = "/healthz" },
   @{ Name = "compliance-domain"; Dir = "compliance-domain"; Args = "--addr :$($Port + 8) --data-file `"$env:TEMP\smoke-compliance-data.json`""; Check = "/healthz" },
-  @{ Name = "fleet-domain"; Dir = "fleet-domain"; Args = "--addr :$($Port + 9) --data-file `"$env:TEMP\smoke-fleet-data.json`""; Check = "/healthz" }
+  @{ Name = "fleet-domain"; Dir = "fleet-domain"; Args = "--addr :$($Port + 9) --data-file `"$env:TEMP\smoke-fleet-data.json`""; Check = "/healthz" },
+  @{ Name = "process-domain"; Dir = "process-domain"; Args = "--addr :$($Port + 10) --data-file `"$env:TEMP\smoke-process-data.json`""; Check = "/healthz" }
 )
 
 $procs = @()
@@ -42,6 +43,7 @@ try {
   $simAddr = "http://localhost:$($Port + 7)"
   $compAddr = "http://localhost:$($Port + 8)"
   $fleetAddr = "http://localhost:$($Port + 9)"
+  $procAddr2 = "http://localhost:$($Port + 10)"
 
   $failures = @()
   function Assert-True($condition, $message) {
@@ -59,6 +61,7 @@ try {
   Assert-True ((Invoke-RestMethod -Uri "$simAddr/healthz").status -eq "ok") "simulation-domain adapter is healthy"
   Assert-True ((Invoke-RestMethod -Uri "$compAddr/healthz").status -eq "ok") "compliance-domain adapter is healthy"
   Assert-True ((Invoke-RestMethod -Uri "$fleetAddr/healthz").status -eq "ok") "fleet-domain adapter is healthy"
+  Assert-True ((Invoke-RestMethod -Uri "$procAddr2/healthz").status -eq "ok") "process-domain adapter is healthy"
 
   $order = Invoke-RestMethod -Uri "$orderAddr/v1/orders/order-123"
   Assert-True ($order.fulfillment_status -eq "stockout") "order starts in stockout"
@@ -340,6 +343,41 @@ try {
   $compResult = Invoke-RestMethod -Method Post -Uri "$fleetBase/complete" -ContentType "application/json" -Body $comp
   Assert-True ($compResult.mission.status -eq "completed") "mission completes after review"
 
+  # Process flow
+  $procBase = "$procAddr2/v1/processes/proc-0001"
+  $orderDenied = $null
+  try {
+    $skip = @{ from_stage = "request"; to_stage = "approve"; decided_by = "ops-lead"; rationale = "skip"; decision_ref = "decision://smoke"; idempotency_key = "smoke-proc-skip-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$procBase/advance" -ContentType "application/json" -Body $skip | Out-Null
+  } catch { $orderDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($orderDenied -eq 409) "out-of-order advance is rejected (HTTP 409)"
+
+  for ($i = 0; $i -lt 2; $i++) {
+    $pairs = @(@("request", "review"), @("review", "approve"))
+    $a = @{ from_stage = $pairs[$i][0]; to_stage = $pairs[$i][1]; decided_by = "ops-lead"; rationale = "ok"; decision_ref = "decision://smoke"; idempotency_key = "smoke-proc-$($pairs[$i][0])-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$procBase/advance" -ContentType "application/json" -Body $a | Out-Null
+  }
+
+  $termDenied = $null
+  try {
+    $early = @{ completed_by = "ops-lead"; idempotency_key = "smoke-proc-comp-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$procBase/complete" -ContentType "application/json" -Body $early | Out-Null
+  } catch { $termDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($termDenied -eq 403) "completion before terminal stage is rejected (HTTP 403)"
+
+  $lastAdv = @{ from_stage = "approve"; to_stage = "complete"; decided_by = "ops-lead"; rationale = "ok"; decision_ref = "decision://smoke"; idempotency_key = "smoke-proc-approve-v1" } | ConvertTo-Json
+  Invoke-RestMethod -Method Post -Uri "$procBase/advance" -ContentType "application/json" -Body $lastAdv | Out-Null
+  $compBody = @{ completed_by = "ops-lead"; idempotency_key = "smoke-proc-comp-v1" } | ConvertTo-Json
+  $procComp = Invoke-RestMethod -Method Post -Uri "$procBase/complete" -ContentType "application/json" -Body $compBody
+  Assert-True ($procComp.process.status -eq "completed") "process completes at the terminal stage"
+
+  $reopenDenied = $null
+  try {
+    $reopen = @{ from_stage = "complete"; to_stage = "request"; decided_by = "ops-lead"; rationale = "reopen"; decision_ref = "decision://smoke"; idempotency_key = "smoke-proc-reopen-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$procBase/advance" -ContentType "application/json" -Body $reopen | Out-Null
+  } catch { $reopenDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($reopenDenied -eq 409) "reopen of a completed process is rejected (HTTP 409)"
+
   Write-Host ""
   if ($failures.Count -eq 0) { Write-Host "run-demo-smoke: all adapter-level checks passed." -ForegroundColor Green; exit 0 }
   Write-Host "run-demo-smoke: $($failures.Count) check(s) failed." -ForegroundColor Red
@@ -360,4 +398,5 @@ try {
   Remove-Item "$env:TEMP\smoke-simulation-data.json" -ErrorAction SilentlyContinue
   Remove-Item "$env:TEMP\smoke-compliance-data.json" -ErrorAction SilentlyContinue
   Remove-Item "$env:TEMP\smoke-fleet-data.json" -ErrorAction SilentlyContinue
+  Remove-Item "$env:TEMP\smoke-process-data.json" -ErrorAction SilentlyContinue
 }

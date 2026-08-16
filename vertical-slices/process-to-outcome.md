@@ -47,6 +47,10 @@ See the [value framework](../docs/example-value.md).
 | Integrate | external systems, events, partner interfaces | Limenora | integration events |
 | Review and intervene | progress, pauses, revisions, outcome inspection | Symbivela | review record `review-proc-0001` |
 
+## Runnable Local Demo
+
+For verified local-binary startup commands, configuration, API requests, request bodies, and expected operational outputs, see the [local process-to-outcome demo](../examples/process-to-outcome-local/README.md) and its [Detailed Operations Guide](../examples/process-to-outcome-local/operations-guide.md).
+
 ## Public Boundary
 
 This example intentionally omits process definitions, approval policy, service endpoints, customer data, and operational runbooks.

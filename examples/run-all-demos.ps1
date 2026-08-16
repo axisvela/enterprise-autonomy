@@ -21,7 +21,8 @@ $demos = @(
   @{ Name = "integration-recovery-local";  Run = "run-integration-recovery.ps1";   Report = "integration-value-report.json" },
   @{ Name = "simulation-validation-local"; Run = "run-simulation-validation.ps1";   Report = "simulation-value-report.json" },
   @{ Name = "compliance-audit-local";      Run = "run-compliance-audit.ps1";        Report = "compliance-value-report.json" },
-  @{ Name = "fleet-mission-local";         Run = "run-fleet-mission.ps1";           Report = "fleet-value-report.json" }
+  @{ Name = "fleet-mission-local";         Run = "run-fleet-mission.ps1";           Report = "fleet-value-report.json" },
+  @{ Name = "process-to-outcome-local";    Run = "run-process-to-outcome.ps1";      Report = "process-value-report.json" }
 )
 
 $requiredFiles = @("README.md", "operations-guide.md", "local.env.ps1.example", "evidence-schema.md", "run-all.ps1", "verify.ps1", "start-services.ps1")

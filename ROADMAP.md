@@ -60,6 +60,7 @@ This roadmap tracks the public content plan for the `enterprise-autonomy` reposi
 - [x] Seventh runnable local demo (simulation validation) with evidence-gated release
 - [x] Eighth runnable local demo (compliance audit) with completeness-gated attestation
 - [x] Ninth runnable local demo (fleet mission) with autonomous boundary and pause-and-review
+- [x] Tenth runnable local demo (process to outcome) with stage-sequenced durable process
 - [x] Unit tests (go test) for every reference adapter, wired into CI
 - [x] Governance pattern catalog organizing examples vertically by pattern
 - [x] Automated release workflow (tag + GitHub Release when a version is prepared)
