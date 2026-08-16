@@ -1,0 +1,20 @@
+{
+  "schema_version": "1",
+  "workflow_id": "compliance-request-to-audit",
+  "title": "Compliance Request To Audit",
+  "kind": "approval",
+  "source": "enterprise-autonomy-example",
+  "stages": [
+    {"id": "collect", "title": "Collect Evidence", "assignee_spec": {"kind": "role", "role": "compliance-lead"}, "inputs": [], "outputs": []},
+    {"id": "attest", "title": "Attest Evidence Set", "assignee_spec": {"kind": "role", "role": "compliance-lead"}, "inputs": [], "outputs": []},
+    {"id": "package", "title": "Assemble Audit Package", "assignee_spec": {"kind": "capability", "required": ["compliance.package.assemble"]}, "inputs": [], "outputs": []},
+    {"id": "release", "title": "Release Package", "assignee_spec": {"kind": "capability", "required": ["compliance.package.release"]}, "inputs": [], "outputs": []},
+    {"id": "close", "title": "Confirm Outcome", "assignee_spec": {"kind": "role", "role": "compliance-lead"}, "inputs": [], "outputs": []}
+  ],
+  "transitions": [
+    {"from": "collect", "to": "attest"},
+    {"from": "attest", "to": "package"},
+    {"from": "package", "to": "release"},
+    {"from": "release", "to": "close"}
+  ]
+}

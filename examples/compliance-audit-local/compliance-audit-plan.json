@@ -1,0 +1,26 @@
+{
+  "goals": [
+    {"id": "goal-comp-0001-attested", "owner": "compliance-lead", "outcome": "compliance-0001 evidenced, attested, and packaged for audit without a missing evidence item", "deadline": "2026-08-30T12:00:00Z"}
+  ],
+  "requirements": [
+    {"id": "req-comp-0001-collect", "goalId": "goal-comp-0001-attested", "capabilityType": "compliance.evidence", "requiredEffect": "collect", "dependsOn": []},
+    {"id": "req-comp-0001-attest", "goalId": "goal-comp-0001-attested", "capabilityType": "compliance.attestation", "requiredEffect": "attest", "dependsOn": ["req-comp-0001-collect"]},
+    {"id": "req-comp-0001-package", "goalId": "goal-comp-0001-attested", "capabilityType": "compliance.package", "requiredEffect": "release", "dependsOn": ["req-comp-0001-attest"]}
+  ],
+  "catalog": [
+    {"id": "cap-collect", "type": "compliance.evidence", "version": "1.0.0", "effects": ["collect"], "sourceRequired": true, "cost": 0},
+    {"id": "cap-attest", "type": "compliance.attestation", "version": "1.0.0", "effects": ["attest"], "completenessRequired": true, "attestorOnly": true, "cost": 0},
+    {"id": "cap-package", "type": "compliance.package", "version": "1.0.0", "effects": ["release"], "attestationRequired": true, "immutable": true, "cost": 0}
+  ],
+  "constraints": [
+    {"kind": "evidence-completeness", "hard": true, "value": "all-items-required"},
+    {"kind": "attestation-gated", "hard": true, "value": "designated-attestor-only"},
+    {"kind": "package-immutable", "hard": true, "value": "released-packages-are-final"}
+  ],
+  "delegations": {
+    "compliance-lead": {"delegator": "compliance-authority", "delegatee": "compliance-lead", "parentScopes": ["compliance.package"], "delegatedScopes": ["compliance.evidence", "compliance.attestation"], "budgetCeiling": 0, "evidenceDuty": ["attestation://comp-0001"]}
+  },
+  "authorityGrants": [
+    {"principal": "compliance-lead", "scopes": ["compliance.evidence", "compliance.attestation", "compliance.package"], "budgetCeiling": 0, "revoked": false}
+  ]
+}
