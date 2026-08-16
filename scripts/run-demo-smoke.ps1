@@ -12,7 +12,8 @@ $adapters = @(
   @{ Name = "maintenance-domain"; Dir = "maintenance-domain"; Args = "--addr :$($Port + 5) --data-file `"$env:TEMP\smoke-maintenance-data.json`""; Check = "/healthz" },
   @{ Name = "integration-domain"; Dir = "integration-domain"; Args = "--addr :$($Port + 6) --data-file `"$env:TEMP\smoke-integration-data.json`""; Check = "/healthz" },
   @{ Name = "simulation-domain"; Dir = "simulation-domain"; Args = "--addr :$($Port + 7) --data-file `"$env:TEMP\smoke-simulation-data.json`""; Check = "/healthz" },
-  @{ Name = "compliance-domain"; Dir = "compliance-domain"; Args = "--addr :$($Port + 8) --data-file `"$env:TEMP\smoke-compliance-data.json`""; Check = "/healthz" }
+  @{ Name = "compliance-domain"; Dir = "compliance-domain"; Args = "--addr :$($Port + 8) --data-file `"$env:TEMP\smoke-compliance-data.json`""; Check = "/healthz" },
+  @{ Name = "fleet-domain"; Dir = "fleet-domain"; Args = "--addr :$($Port + 9) --data-file `"$env:TEMP\smoke-fleet-data.json`""; Check = "/healthz" }
 )
 
 $procs = @()
@@ -40,6 +41,7 @@ try {
   $intAddr = "http://localhost:$($Port + 6)"
   $simAddr = "http://localhost:$($Port + 7)"
   $compAddr = "http://localhost:$($Port + 8)"
+  $fleetAddr = "http://localhost:$($Port + 9)"
 
   $failures = @()
   function Assert-True($condition, $message) {
@@ -56,6 +58,7 @@ try {
   Assert-True ((Invoke-RestMethod -Uri "$intAddr/healthz").status -eq "ok") "integration-domain adapter is healthy"
   Assert-True ((Invoke-RestMethod -Uri "$simAddr/healthz").status -eq "ok") "simulation-domain adapter is healthy"
   Assert-True ((Invoke-RestMethod -Uri "$compAddr/healthz").status -eq "ok") "compliance-domain adapter is healthy"
+  Assert-True ((Invoke-RestMethod -Uri "$fleetAddr/healthz").status -eq "ok") "fleet-domain adapter is healthy"
 
   $order = Invoke-RestMethod -Uri "$orderAddr/v1/orders/order-123"
   Assert-True ($order.fulfillment_status -eq "stockout") "order starts in stockout"
@@ -302,6 +305,41 @@ try {
   Assert-True ($pkgResult.case.status -eq "released") "audit package releases after attestation"
   Assert-True ($immutability -eq 409) "released audit package is immutable (HTTP 409)"
 
+  # Fleet mission flow
+  $fleetBase = "$fleetAddr/v1/missions/mission-alpha-001"
+  $start = @{ started_by = "ops-lead"; idempotency_key = "smoke-fleet-start-v1" } | ConvertTo-Json
+  $startResult = Invoke-RestMethod -Method Post -Uri "$fleetBase/start" -ContentType "application/json" -Body $start
+  Assert-True ($startResult.mission.status -eq "running") "mission starts within its boundary"
+
+  $boundaryDenied = $null
+  try {
+    $deviation = @{ position = "zone-omega"; status = "running"; idempotency_key = "smoke-fleet-tl-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$fleetBase/telemetry" -ContentType "application/json" -Body $deviation | Out-Null
+  } catch { $boundaryDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($boundaryDenied -eq 403) "out-of-boundary telemetry is frozen (HTTP 403)"
+
+  $inBounds = @{ position = "zone-alpha"; status = "running"; idempotency_key = "smoke-fleet-tl2-v1" } | ConvertTo-Json
+  Invoke-RestMethod -Method Post -Uri "$fleetBase/telemetry" -ContentType "application/json" -Body $inBounds | Out-Null
+
+  $ex = @{ type = "obstacle"; detail = "rack-07 blocked"; raised_by = "fleet-runtime"; idempotency_key = "smoke-fleet-ex-v1" } | ConvertTo-Json
+  $exResult = Invoke-RestMethod -Method Post -Uri "$fleetBase/exceptions" -ContentType "application/json" -Body $ex
+  Assert-True ($exResult.mission.status -eq "paused") "exception pauses the mission"
+
+  $reviewDenied = $null
+  try {
+    $outsider = @{ reviewed_by = "outsider"; decision = "resume"; approval_ref = "approval://smoke"; idempotency_key = "smoke-fleet-rv-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$fleetBase/reviews" -ContentType "application/json" -Body $outsider | Out-Null
+  } catch { $reviewDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($reviewDenied -eq 403) "non-operator review is rejected (HTTP 403)"
+
+  $review = @{ reviewed_by = "ops-lead"; decision = "resume"; approval_ref = "approval://smoke"; idempotency_key = "smoke-fleet-rv-v1" } | ConvertTo-Json
+  $reviewResult = Invoke-RestMethod -Method Post -Uri "$fleetBase/reviews" -ContentType "application/json" -Body $review
+  Assert-True ($reviewResult.mission.status -eq "resumed") "operator review resumes the mission"
+
+  $comp = @{ completed_by = "ops-lead"; idempotency_key = "smoke-fleet-cmp-v1" } | ConvertTo-Json
+  $compResult = Invoke-RestMethod -Method Post -Uri "$fleetBase/complete" -ContentType "application/json" -Body $comp
+  Assert-True ($compResult.mission.status -eq "completed") "mission completes after review"
+
   Write-Host ""
   if ($failures.Count -eq 0) { Write-Host "run-demo-smoke: all adapter-level checks passed." -ForegroundColor Green; exit 0 }
   Write-Host "run-demo-smoke: $($failures.Count) check(s) failed." -ForegroundColor Red
@@ -321,4 +359,5 @@ try {
   Remove-Item "$env:TEMP\smoke-integration-data.json" -ErrorAction SilentlyContinue
   Remove-Item "$env:TEMP\smoke-simulation-data.json" -ErrorAction SilentlyContinue
   Remove-Item "$env:TEMP\smoke-compliance-data.json" -ErrorAction SilentlyContinue
+  Remove-Item "$env:TEMP\smoke-fleet-data.json" -ErrorAction SilentlyContinue
 }

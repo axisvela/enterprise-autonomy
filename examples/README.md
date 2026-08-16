@@ -13,6 +13,7 @@ Public examples illustrate how AxisRobo products can be composed to achieve a me
 | [Integration outage recovery (local)](integration-recovery-local/README.md) | Runnable local demo | Preserved, verified recovery with no silent re-execution, and a verified value report. | [Value & Effect](integration-recovery-local/README.md#value--effect) |
 | [Simulation to validation (local)](simulation-validation-local/README.md) | Runnable local demo | Evidence-gated release with immutable simulation evidence, and a verified value report. | [Value & Effect](simulation-validation-local/README.md#value--effect) |
 | [Compliance request to audit (local)](compliance-audit-local/README.md) | Runnable local demo | Completeness-gated attestation and immutable audit package, with a verified value report. | [Value & Effect](compliance-audit-local/README.md#value--effect) |
+| [Fleet mission exception (local)](fleet-mission-local/README.md) | Runnable local demo | Autonomous boundary enforcement and operator-reviewed pauses, with a verified value report. | [Value & Effect](fleet-mission-local/README.md#value--effect) |
 
 ## Supporting Material
 

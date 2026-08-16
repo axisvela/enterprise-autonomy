@@ -13,5 +13,6 @@ Reference adapters are local, illustrative integrations used by runnable example
 | [integration-domain](integration-domain/README.md) | Simulated integration-outage recovery views: preservation, reconnection verification, resume, and completion with no-silent-rerun. | [API.md](integration-domain/API.md) |
 | [simulation-domain](simulation-domain/README.md) | Simulated possible-world validation: scenarios, immutable simulation evidence, review decisions, and release with evidence-gated governance. | [API.md](simulation-domain/API.md) |
 | [compliance-domain](compliance-domain/README.md) | Simulated compliance-audit views: evidence collection, attestation, and immutable audit packages with completeness gates. | [API.md](compliance-domain/API.md) |
+| [fleet-domain](fleet-domain/README.md) | Simulated physical-mission views: boundary enforcement, exceptions, and operator review with pause-and-review governance. | [API.md](fleet-domain/API.md) |
 
 Use these only for demos and development. Replace them with authorized production integrations before real business use.

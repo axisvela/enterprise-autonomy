@@ -4,6 +4,14 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`.
 
+## 0.11.0 (2026-08-16)
+
+- Added the fleet-domain reference adapter (missions, boundary enforcement, exceptions, operator reviews) with **autonomous boundary enforcement** and **pause-and-review** governance.
+- Added the runnable fleet-mission-exception local demo (`examples/fleet-mission-local/`) with an 8-step lifecycle, `verify.ps1`, `run-all.ps1`, value report, and a detailed operations guide.
+- Extended `run-demo-smoke.ps1` to all ten adapters (55 assertions) and wired the fleet demo into `run-all-demos.ps1`, `report-value.ps1`, `check-examples.ps1`, and `validate-demos.ps1`.
+- Extended the governance-subtlety guide with the autonomous-boundary and pause-and-review pattern.
+- Cross-linked the fleet demo from the fleet-mission-exception slice, example index, getting-started, run handbook, and roadmap.
+
 ## 0.10.0 (2026-08-16)
 
 - Added the compliance-domain reference adapter (compliance cases, evidence collection, attestation, audit packages) with **completeness-gated attestation**, **designated-attestor**, and **immutable package** governance.

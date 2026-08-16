@@ -211,6 +211,27 @@ Four properties worth noticing:
 3. **Attestation-gated package.** The audit package releases only after an `attest` decision citing the exact reference.
 4. **Immutable package.** A released audit package is final (`409`); the audit record cannot be replaced.
 
+## 14. Autonomous Boundary and Pause-and-Review (Fleet Demo)
+
+The [fleet-mission demo](../examples/fleet-mission-local/README.md) shows the two sides of physical autonomy — automated boundary enforcement and human exception review:
+
+```
+POST /v1/missions/mission-alpha-001/telemetry   (position = zone-omega)
+-> 403 {"error":"boundary_deviation_mission_frozen"}        (autonomous, no human)
+
+POST /v1/missions/mission-alpha-001/reviews     (mission not paused)
+-> 403 {"error":"operator_review_required_mission_must_be_paused"}
+
+POST /v1/missions/mission-alpha-001/reviews     (outsider)
+-> 403 {"error":"not_mission_operator"}
+```
+
+Three properties worth noticing:
+
+1. **Boundary enforcement is autonomous.** Out-of-bound telemetry is frozen with no human involvement — the boundary is hard-coded, not procedural.
+2. **Pause-and-review is mandatory.** An exception always pauses; resume/adjust/cancel require an operator review carrying an `approval_ref`.
+3. **Operator-gated.** Only the mission operator may start or review — physical actions are never unsupervised.
+
 ## Why This Matters
 
 The subtlety is that **governance is distributed and structural**: each product enforces a piece of the policy in its own domain, the pieces reference each other through shared approval/evidence references, and none of them can be bypassed by calling another one. That is what "contract-governed" means in practice.

@@ -71,6 +71,10 @@ See the [value framework](../docs/example-value.md).
 | Resume/adjust/cancel | operator decision | Aegivela, Kinetovela | `approval://mission-alpha-001` + mission status |
 | Close | outcome evidence, follow-up | Rheovela, Symbivela | closed mission + follow-up record |
 
+## Runnable Local Demo
+
+For verified local-binary startup commands, configuration, API requests, request bodies, and expected operational outputs, see the [local fleet-mission demo](../examples/fleet-mission-local/README.md) and its [Detailed Operations Guide](../examples/fleet-mission-local/operations-guide.md).
+
 ## Public Boundary
 
 This example omits mission-control details, safety thresholds, topology, endpoints, and approval policy.

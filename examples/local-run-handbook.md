@@ -24,7 +24,7 @@ This handbook covers common steps for running public local demos against real pr
 All runnable demos provide a `run-all.ps1` wrapper that loads the environment, starts the services, runs the scenario, and verifies the outcome in one step:
 
 ```powershell
-# order-fulfillment-local, procurement-local, customer-case-local, recruitment-local, predictive-maintenance-local, integration-recovery-local, simulation-validation-local, compliance-audit-local
+# order-fulfillment-local, procurement-local, customer-case-local, recruitment-local, predictive-maintenance-local, integration-recovery-local, simulation-validation-local, compliance-audit-local, fleet-mission-local
 .\run-all.ps1
 ```
 
@@ -33,7 +33,7 @@ All runnable demos provide a `run-all.ps1` wrapper that loads the environment, s
 Run every demo end to end with a single command from `examples/`:
 
 ```powershell
-.\run-all-demos.ps1                # all eight demos
+.\run-all-demos.ps1                # all nine demos
 .\run-all-demos.ps1 -CheckOnly     # verify structure only, no database needed
 .\run-all-demos.ps1 -Only procurement-local,recruitment-local
 .\run-all-demos.ps1 -Skip customer-case-local
@@ -63,6 +63,7 @@ Runnable demos emit a machine-readable value report alongside the business outco
 - Integration-recovery demo: `.local-data/integration-value-report.json` (see [evidence schema](integration-recovery-local/evidence-schema.md)).
 - Simulation-validation demo: `.local-data/simulation-value-report.json` (see [evidence schema](simulation-validation-local/evidence-schema.md)).
 - Compliance-audit demo: `.local-data/compliance-value-report.json` (see [evidence schema](compliance-audit-local/evidence-schema.md)).
+- Fleet-mission demo: `.local-data/fleet-value-report.json` (see [evidence schema](fleet-mission-local/evidence-schema.md)).
 
 Aggregate all reports with `.\scripts\report-value.ps1` into the [value dashboard](../docs/value-dashboard.md).
 
