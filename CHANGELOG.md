@@ -4,6 +4,13 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`.
 
+## 0.12.0 (2026-08-16)
+
+- Added Go unit tests (`main_test.go`) for all ten reference adapters, covering each governance gate, denial path, and idempotency behavior.
+- Refactored every adapter to expose `newMux` for direct handler testing.
+- Added `scripts/run-go-tests.ps1` to run `go vet` and `go test` across all adapter modules, wired into CI.
+- Updated the repository About (GitHub) with a project description and topics.
+
 ## 0.11.0 (2026-08-16)
 
 - Added the fleet-domain reference adapter (missions, boundary enforcement, exceptions, operator reviews) with **autonomous boundary enforcement** and **pause-and-review** governance.

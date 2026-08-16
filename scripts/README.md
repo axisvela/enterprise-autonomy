@@ -15,6 +15,7 @@ Small validation and reporting utilities for the public examples.
 | [validate-demos.ps1](validate-demos.ps1) | Verifies demo structure (required files) and PowerShell syntax of all scripts. | `0` pass, `1` failure |
 | [validate-json.ps1](validate-json.ps1) | Verifies every JSON file under `examples/` and `adapters/` parses. | `0` pass, `1` failure |
 | [kill-adapters.ps1](kill-adapters.ps1) | Kills any reference-adapter process built from this repository. | `0` (with or without matches) |
+| [run-go-tests.ps1](run-go-tests.ps1) | Runs `go vet` and `go test` across every reference-adapter module. | `0` pass, `1` failure |
 
 ## Usage
 
@@ -74,9 +75,10 @@ The repository includes [`.github/workflows/ci.yml`](../.github/workflows/ci.yml
 1. `check-links.ps1` — breaks the build on broken internal links.
 2. `validate-demos.ps1` — verifies demo structure and script syntax.
 3. `validate-json.ps1` — verifies every JSON plan/workflow parses.
-4. `run-demo-smoke.ps1` — builds and smoke-tests all five reference adapters (order, inventory, procurement, customer, recruitment).
-5. `check-hooks.ps1` — verifies the pre-commit hook file is present (config check is local-only).
-6. `version.ps1 get` — reports the current version.
-7. `check-release.ps1` — reports whether a new tag is warranted (informational; exit `1` does not fail the build).
+4. `run-go-tests.ps1` — runs `go vet` and `go test` on all ten reference adapters.
+5. `run-demo-smoke.ps1` — builds and smoke-tests all ten reference adapters (55 assertions).
+6. `check-hooks.ps1` — verifies the pre-commit hook file is present (config check is local-only).
+7. `version.ps1 get` — reports the current version.
+8. `check-release.ps1` — reports whether a new tag is warranted (informational; exit `1` does not fail the build).
 
 `check-examples.ps1` verifies produced demo artifacts after a run; it is intended for post-run verification, not CI without a full demo environment.

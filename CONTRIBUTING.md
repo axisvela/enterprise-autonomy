@@ -24,6 +24,7 @@ Runnable examples must document prerequisites, startup, expected output, and shu
 
 - Run `.\examples\run-all-demos.ps1 -CheckOnly` to verify demo structure without a database.
 - Run `.\scripts\validate-demos.ps1` and `.\scripts\validate-json.ps1` to verify structure, script syntax, and JSON validity.
+- Run `.\scripts\run-go-tests.ps1` before changing any reference adapter; every adapter must pass `go vet` and `go test`.
 - Use `.\examples\stop-demo.ps1` to stop demo processes (it matches by executable path, never unrelated processes).
 
 ## Process

@@ -28,6 +28,10 @@ jobs:
         shell: powershell
         run: .\scripts\validate-json.ps1
 
+      - name: Go vet and test reference adapters
+        shell: powershell
+        run: .\scripts\run-go-tests.ps1
+
       - name: Smoke-test reference adapters
         shell: powershell
         run: .\scripts\run-demo-smoke.ps1
