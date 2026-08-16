@@ -1,8 +1,27 @@
 # Process-to-Outcome Vertical Slice
 
-## Scenario
+## Business Scenario
 
 An enterprise coordinates a long-running operational process that requires planning, external integrations, human approvals, and recoverable execution.
+
+| Item | Definition |
+| --- | --- |
+| Trigger | A user or business system initiates a governed operational objective. |
+| Accountable owner | The process owner who accepts the outcome. |
+| Completion | The process reaches its terminal state through the sequenced stages with recorded evidence. |
+| Evidence | Objective, plan, process lifecycle record, approvals, integration events, outcome. |
+
+## Product Roles
+
+| Need | Example Product Role |
+| --- | --- |
+| Operator collaboration and review | Symbivela |
+| Planning and replanning | Orchadyn |
+| Durable process lifecycle | Rheovela |
+| Identity, authorization, and approvals | Aegivela |
+| External integration | Limenora |
+| Capability control | Moduregis |
+| Contextual support | Gnosivela, Mnemovela, Noetivela |
 
 ## Design Steps
 
@@ -19,10 +38,6 @@ An enterprise coordinates a long-running operational process that requires plann
 4. Aegivela supports the required identity, authorization, and approval steps.
 5. Limenora connects the process to external systems, events, and partner interfaces.
 6. Symbivela provides a workspace for operators to review progress, intervene, and inspect outcomes.
-
-## Commonly Involved Products
-
-Rheovela, Orchadyn, Aegivela, Limenora, Symbivela, Moduregis, Gnosivela, Mnemovela, and Noetivela can contribute to this outcome, depending on the process.
 
 ## Value & Effect
 

@@ -1,8 +1,28 @@
 # Sequenced Deployment Vertical Slice
 
-## Scenario
+## Business Scenario
 
 An enterprise releases a service through a governed, sequenced pipeline in which an autonomous agent executes each step strictly in order, citing evidence, while any deviation from the sequence (pause, skip, rollback) requires human approval.
+
+| Item | Definition |
+| --- | --- |
+| Trigger | A release is opened for the pipeline. |
+| Accountable owner | The release lead who accepts the release and approves deviations. |
+| Completion | The pipeline reaches the terminal step and the deployment is released, immutable. |
+| Evidence | Case, pipeline assertion, per-step evidence, deviations, release record. |
+
+## Product Roles
+
+| Need | Example Product Role |
+| --- | --- |
+| Release case and operator workspace | Symbivela |
+| Pipeline state and capability assertions | Ontovela |
+| Durable release process | Rheovela |
+| Planning under sequence constraints | Orchadyn |
+| Release and compliance notifications | Moduregis |
+| Integration of pipeline systems | Limenora |
+| Bounded agent execution | Praxovela |
+| Identity, authorization, and approvals | Aegivela |
 
 ## Design Steps
 
@@ -18,10 +38,6 @@ An enterprise releases a service through a governed, sequenced pipeline in which
 3. Out-of-sequence or evidence-less execution is rejected; completed steps are immutable.
 4. A deviation (pause, skip, rollback) is applied only after a human approval citing a shared approval reference.
 5. Operators inspect progress in a collaboration workspace; the released deployment is final and immutable.
-
-## Commonly Involved Products
-
-Symbivela, Rheovela, Orchadyn, Moduregis, and Limenora can contribute to this outcome, depending on the pipeline.
 
 ## Value & Effect
 

@@ -46,6 +46,18 @@ A governed operation must demonstrate compliance with a defined requirement. The
 - Conflicting claims: resolve through review before packaging.
 - Attestation authority unavailable: hold packaging until the authority is available or an approved deputy records the decision.
 
+## Value & Effect
+
+| Field | Detail |
+| --- | --- |
+| Outcome value | A compliance record reaches inspection only when every required evidence item is collected, reviewed, attested, and packaged immutably, so the record is complete and reconstructable. |
+| KPIs | Evidence completeness, review discipline, attestation coverage, package immutability. |
+| Decision gates | Evidence review, attestation, package approval. |
+| Evidence produced | Requirement reference, collected evidence, review decisions, attestations, audit package. |
+| Adoption path | Start with one requirement class; expand after measuring completeness and attestation coverage. |
+
+See the [value framework](../docs/example-value.md).
+
 ## Detailed Operating Procedure
 
 | Step | Input | Products | Output artifact |

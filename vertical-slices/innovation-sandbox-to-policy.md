@@ -47,6 +47,18 @@ A proposed autonomous capability is explored in a controlled simulation before i
 - Unexpected behavior in simulation: review and re-run before deciding.
 - Review group unavailable: hold the decision until the required authority is available.
 
+## Value & Effect
+
+| Field | Detail |
+| --- | --- |
+| Outcome value | A proposed capability reaches policy only after bounded, evidence-grounded experiments and a recorded, immutable policy decision, so exploration is safe and reversible. |
+| KPIs | Boundary compliance, evidence-before-policy, review discipline, policy immutability. |
+| Decision gates | Experiment approval, evidence review, policy decision. |
+| Evidence produced | Proposal, simulation runs, exception handling, review decisions, policy record. |
+| Adoption path | Pilot with a low-impact capability before expanding the sandbox. |
+
+See the [value framework](../docs/example-value.md).
+
 ## Detailed Operating Procedure
 
 | Step | Input | Products | Output artifact |

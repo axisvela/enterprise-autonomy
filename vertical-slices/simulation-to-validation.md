@@ -1,8 +1,26 @@
 # Simulation-to-Validation Vertical Slice
 
-## Scenario
+## Business Scenario
 
 An organization evaluates a proposed autonomous operation in simulation before allowing it to proceed in a live environment.
+
+| Item | Definition |
+| --- | --- |
+| Trigger | A proposed autonomous operation is submitted for evaluation. |
+| Accountable owner | The designated review group. |
+| Completion | A decision to revise, approve, or reject the operation is recorded with simulation evidence. |
+| Evidence | Candidate operation, simulation outcomes, review record, validation and release assurance evidence. |
+
+## Product Roles
+
+| Need | Example Product Role |
+| --- | --- |
+| Human review and decision | Symbivela |
+| Planning and world-model context | Orchadyn, Ontovela |
+| Simulation and experiment control | Peiravela |
+| Validation and release assurance | Tekmovela |
+| Identity, authorization, and review evidence | Aegivela |
+| External integration | Limenora |
 
 ## Design Steps
 
@@ -19,10 +37,6 @@ An organization evaluates a proposed autonomous operation in simulation before a
 4. Symbivela enables human review of the proposed operation and its evidence.
 5. Tekmovela supports repeatable validation and release-assurance activities before deployment.
 6. The organization decides whether to revise, approve, or reject the proposed operation.
-
-## Commonly Involved Products
-
-Orchadyn, Ontovela, Peiravela, Symbivela, Tekmovela, Aegivela, and Limenora can participate in this outcome, depending on the deployment.
 
 ## Value & Effect
 
