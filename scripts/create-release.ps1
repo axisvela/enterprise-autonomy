@@ -28,8 +28,11 @@ try {
   $exists = (& git rev-parse --verify -q "$tag" 2>$null)
   if (-not $exists) { Remove-Item $notesFile -ErrorAction SilentlyContinue; Write-Error "Tag $tag does not exist; create it first (create-tag.ps1)."; exit 1 }
 
-  $already = & gh release view $tag 2>$null
-  if ($already) {
+  $ErrorActionPreference = "SilentlyContinue"
+  & gh release view $tag 2>$null | Out-Null
+  $viewExit = $LASTEXITCODE
+  $ErrorActionPreference = "Continue"
+  if ($viewExit -eq 0) {
     Remove-Item $notesFile -ErrorAction SilentlyContinue
     Write-Host "create-release: GitHub release $tag already exists; nothing to do." -ForegroundColor Yellow
     exit 0
