@@ -26,6 +26,7 @@ Architecture, contracts, schemas, profiles, conformance, governance, internal pl
 | --- | --- |
 | `docs/products.md` | Public overview of the ecosystem products. |
 | `docs/products/` | Per-product public overview pages. |
+| `docs/demo-matrix.md` | Comparison of all eleven runnable demos. |
 | `examples/` | Public, illustrative end-to-end scenarios and local runnable demos. |
 | `examples/run-all-demos.ps1` | Run every runnable demo end to end and stop the stack. |
 | `examples/stop-demo.ps1` | Stop demo processes reliably (path-based). |
@@ -45,6 +46,40 @@ Placeholder indexes in `architecture/`, `contracts/`, `schemas/`, `profiles/`, `
 ## Getting Started
 
 Start with the [getting-started guide](docs/getting-started.md), then explore a [public end-to-end scenario](vertical-slices/mission-to-execution.md). For product binaries, ports, databases, and interfaces, see the [technical catalog](docs/technical-catalog.md). Product-specific pages live under [docs/products/](docs/products.md).
+
+## Runnable Demos
+
+All eleven vertical slices have runnable local demos. Each demo drives real local product binaries plus a reference adapter and produces a machine-readable [value report](docs/value-dashboard.md). See the [demo matrix](docs/demo-matrix.md) for the full comparison.
+
+| Demo | Adapter | Port | Governance flavor | Value report |
+| --- | --- | --- | --- | --- |
+| [Order fulfillment exception](examples/order-fulfillment-local/README.md) | order-domain | 8090 | Approval-cited deny-by-default | `order-value-report.json` |
+| [Procurement request to receipt](examples/procurement-local/README.md) | procurement-domain | 8092 | Segregation of duties + conjunctive approval | `procurement-value-report.json` |
+| [Customer case resolution](examples/customer-case-local/README.md) | customer-domain | 8093 | Consent as a first-class gate | `customer-value-report.json` |
+| [Recruitment requisition to offer](examples/recruitment-local/README.md) | recruitment-domain | 8094 | Automation cannot decide | `recruitment-value-report.json` |
+| [Predictive maintenance](examples/predictive-maintenance-local/README.md) | maintenance-domain | 8095 | Prediction-not-fault + safety conjunctive | `maintenance-value-report.json` |
+| [Integration outage recovery](examples/integration-recovery-local/README.md) | integration-domain | 8096 | Preserve / verify / never rerun | `integration-value-report.json` |
+| [Simulation to validation](examples/simulation-validation-local/README.md) | simulation-domain | 8097 | Evidence-gated release | `simulation-value-report.json` |
+| [Compliance audit](examples/compliance-audit-local/README.md) | compliance-domain | 8098 | Completeness-gated attestation | `compliance-value-report.json` |
+| [Fleet mission exception](examples/fleet-mission-local/README.md) | fleet-domain | 8099 | Autonomous boundary + pause-and-review | `fleet-value-report.json` |
+| [Process to outcome](examples/process-to-outcome-local/README.md) | process-domain | 8100 | Stage-sequenced durable process | `process-value-report.json` |
+| [Innovation sandbox](examples/innovation-sandbox-local/README.md) | sandbox-domain | 8101 | Sandbox boundary + evidence-based policy | `sandbox-value-report.json` |
+
+## Quickstart
+
+```powershell
+# verify structure without a database
+.\examples\run-all-demos.ps1 -CheckOnly
+
+# run every demo end to end (requires a full local stack)
+.\examples\run-all-demos.ps1
+
+# stop all demo processes safely
+.\examples\stop-demo.ps1
+
+# aggregate value reports into the dashboard
+.\scripts\report-value.ps1
+```
 
 ## Public Examples
 
@@ -70,4 +105,4 @@ Start with the [getting-started guide](docs/getting-started.md), then explore a 
 
 ## Status
 
-Public product introductions and end-to-end examples are being expanded incrementally. See the [repository roadmap](ROADMAP.md) for the public content plan and [release status](docs/release-status.md) for the ecosystem release overview.
+All eleven vertical slices have runnable local demos, backed by twelve reference adapters with Go unit tests, continuous integration, and an automated release workflow. Public content is maintained in this repository; governance-pattern knowledge and internal material live in the private `enterprise-autonomy-ee` repository. See the [repository roadmap](ROADMAP.md) and [release status](docs/release-status.md).
