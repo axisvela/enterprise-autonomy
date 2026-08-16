@@ -37,7 +37,7 @@ Each designed example, vertical slice, and reference stack includes a **Value & 
 
 ## Value Report
 
-Runnable examples produce a machine-readable **value report** in addition to their business report. The report records the outcome, each step's evidence, the gates passed, and the resulting KPI values, so the effect can be verified. See the [value report template](../examples/value-report-template.md) and the [value metrics catalog](../examples/value-metrics.md).
+Runnable examples produce a machine-readable **value report** in addition to their business report. The report records the outcome, each step's evidence, the gates passed, and the resulting KPI values, so the effect can be verified. See the [value report template](../examples/value-report-template.md) and the [value metrics catalog](../examples/value-metrics.md). Aggregate all demo reports into the [value dashboard](value-dashboard.md).
 
 ## Validation
 
