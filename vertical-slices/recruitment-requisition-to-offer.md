@@ -64,6 +64,10 @@ See the [value framework](../docs/example-value.md).
 | Select | human evidence review + rationale | Symbivela, Aegivela | selection decision `decision-req-0001` |
 | Offer or close | authorized offer, communication status | Symbivela, Limenora | offer `offer-req-0001` or closure with reason |
 
+## Runnable Local Demo
+
+For verified local-binary startup commands, configuration, API requests, request bodies, and expected operational outputs, see the [local recruitment demo](../examples/recruitment-local/README.md) and its [Detailed Operations Guide](../examples/recruitment-local/operations-guide.md).
+
 ## Public Boundary
 
 This is a workflow illustration, not employment, legal, privacy, or compliance advice. It omits scoring, policy, retention, HR configuration, and decision models.

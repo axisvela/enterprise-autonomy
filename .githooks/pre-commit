@@ -1,0 +1,17 @@
+#!/bin/sh
+# Pre-commit hook: verify internal links and report the version.
+# Blocks the commit when internal markdown links are broken.
+# Install with: .\scripts\install-hooks.ps1
+
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+
+echo "pre-commit: checking internal links..."
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$ROOT/scripts/check-links.ps1"
+if [ $? -ne 0 ]; then
+  echo "pre-commit: FAILED - broken internal links; commit blocked."
+  exit 1
+fi
+
+VERSION="$(powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$ROOT/scripts/version.ps1" get 2>/dev/null | tr -d '\r')"
+echo "pre-commit: version is $VERSION"
+exit 0

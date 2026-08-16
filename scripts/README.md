@@ -10,6 +10,8 @@ Small validation and reporting utilities for the public examples.
 | [run-demo-smoke.ps1](run-demo-smoke.ps1) | Smoke-tests the reference adapters end to end: order (governed fulfillment + denial), inventory (governed reservation), and procurement (segregation of duties, role approvals, purchase, receipt). | `0` pass, `1` failure |
 | [version.ps1](version.ps1) | Reads, sets, or bumps the repository version in `VERSION`. | `0` success |
 | [check-release.ps1](check-release.ps1) | Decides whether a new tag/version is warranted after commits. | `0` no change, `1` new tag needed, `2` prepared and ready to tag |
+| [install-hooks.ps1](install-hooks.ps1) | Installs the pre-commit hook (`.githooks/pre-commit`) via `core.hooksPath`. | `0` success |
+| [check-hooks.ps1](check-hooks.ps1) | Verifies the pre-commit hook is installed and active. | `0` active, `1` not installed |
 
 ## Usage
 
@@ -52,6 +54,15 @@ git push origin main --tags
 ## Automation
 
 These scripts are designed to run in CI or pre-commit checks. Run `check-links.ps1` and `run-demo-smoke.ps1` on every content change, and `check-release.ps1` after every commit.
+
+## Commit-Time Checks (Git Hooks)
+
+Run `.\scripts\install-hooks.ps1` once to activate the [pre-commit hook](../.githooks/pre-commit). On every commit it:
+
+1. Runs `check-links.ps1` and **blocks the commit** if any internal link is broken.
+2. Reports the current `VERSION`.
+
+Verify the hook is active with `.\scripts\check-hooks.ps1`. The CI workflow performs the same checks on every push.
 
 ## Continuous Integration
 

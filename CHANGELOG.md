@@ -4,6 +4,15 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`.
 
+## 0.5.0 (2026-08-16)
+
+- Added the recruitment-domain reference adapter (requisitions, candidates, human-only decisions, offers) with an **automation-cannot-decide** structural boundary and stage-gated lifecycle.
+- Added the runnable recruitment requisition-to-offer local demo (`examples/recruitment-local/`) with an 8-step lifecycle, `verify.ps1`, `run-all.ps1`, value report, and a detailed operations guide.
+- Extended `run-demo-smoke.ps1` to all five adapters (23 assertions).
+- Added commit-time checks via local git hooks: `.githooks/pre-commit` plus `install-hooks.ps1` and `check-hooks.ps1`, verifying internal links and reporting the version on every commit.
+- Extended the governance-subtlety guide with the automation-cannot-decide pattern.
+- Cross-linked the recruitment demo from the recruitment slice, example index, getting-started, run handbook, and roadmap.
+
 ## 0.4.0 (2026-08-16)
 
 - Added the customer-domain reference adapter (cases, verified facts, consent, resolutions, accounts, notifications) with consent-required and approval-required conjunctive governance.

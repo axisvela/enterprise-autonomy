@@ -2,7 +2,7 @@ param(
   [string]$DemosDir = (Join-Path $PSScriptRoot "..\examples")
 )
 
-$demos = @("order-fulfillment-local", "procurement-local", "customer-case-local")
+$demos = @("order-fulfillment-local", "procurement-local", "customer-case-local", "recruitment-local")
 $failures = @()
 foreach ($demo in $demos) {
   $verify = Join-Path $DemosDir "$demo\verify.ps1"

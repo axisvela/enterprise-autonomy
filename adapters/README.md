@@ -8,5 +8,6 @@ Reference adapters are local, illustrative integrations used by runnable example
 | [inventory-domain](inventory-domain/README.md) | Simulated multi-warehouse inventory views with governed, approved stock adjustments. | [API.md](inventory-domain/API.md) |
 | [procurement-domain](procurement-domain/README.md) | Simulated purchasing views: requests, budget, suppliers, purchase orders, and receipts with segregation of duties and role approvals. | [API.md](procurement-domain/API.md) |
 | [customer-domain](customer-domain/README.md) | Simulated customer-service views: cases, verified facts, consent, resolutions, accounts, and notifications with consent + approval governance. | [API.md](customer-domain/API.md) |
+| [recruitment-domain](recruitment-domain/README.md) | Simulated recruiting views: requisitions, candidates, human-only decisions, and offers with an automation-cannot-decide boundary. | [API.md](recruitment-domain/API.md) |
 
 Use these only for demos and development. Replace them with authorized production integrations before real business use.

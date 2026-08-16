@@ -108,6 +108,23 @@ Three properties worth noticing:
 2. **Consent is attributable.** The record carries the customer reference and a `consent_ref` that the resolution must cite exactly (`consent_ref_mismatch` otherwise).
 3. **Facts gate the case.** Only verified facts can be recorded, so a remedy cannot be grounded in unverified claims.
 
+## 9. Automation Cannot Decide (Recruitment Demo)
+
+The [recruitment demo](../examples/recruitment-local/README.md) enforces **human-decision integrity**: screening, selection, and offer decisions are human-only.
+
+```
+POST /v1/requisitions/req-0001/decisions
+{"stage":"shortlist","decision":"advance","candidate":"cand-a","decided_by":"recruiter-assistant",
+ "actor_type":"automated","rationale":"keyword match", ...}
+-> 403 {"error":"automation_cannot_make_hiring_decisions"}
+```
+
+Three properties worth noticing:
+
+1. **The boundary is structural and first.** The `actor_type: automated` check runs before stage or candidate checks — automation cannot route around it.
+2. **Every decision is attributed.** A human `decided_by`, a `rationale`, and a `decision_ref` are all required; there is no unattributed screening.
+3. **The lifecycle is stage-gated.** `shortlist → selection → offer` must proceed in order, and an offer requires a matching offer-stage human decision for the same candidate.
+
 ## Why This Matters
 
 The subtlety is that **governance is distributed and structural**: each product enforces a piece of the policy in its own domain, the pieces reference each other through shared approval/evidence references, and none of them can be bypassed by calling another one. That is what "contract-governed" means in practice.

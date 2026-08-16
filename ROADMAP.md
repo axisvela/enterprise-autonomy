@@ -54,7 +54,9 @@ This roadmap tracks the public content plan for the `enterprise-autonomy` reposi
 - [x] Version management harness and commit-time release check
 - [x] Second runnable local demo (procurement) cross-linked from slices and indexes
 - [x] Third runnable local demo (customer case) with consent governance
+- [x] Fourth runnable local demo (recruitment) with human-only decisions
 - [x] Continuous integration running link, smoke, and version checks on push
+- [x] Commit-time checks via local git hooks (links + version) and CI
 
 ## Guiding Principles
 

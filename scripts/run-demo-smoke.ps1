@@ -7,7 +7,8 @@ $adapters = @(
   @{ Name = "order-domain"; Dir = "order-domain"; Args = "--addr :$Port --data-file `"$env:TEMP\smoke-order-data.json`""; Check = "/healthz" },
   @{ Name = "inventory-domain"; Dir = "inventory-domain"; Args = "--addr :$($Port + 1) --data-file `"$env:TEMP\smoke-inventory-data.json`""; Check = "/healthz" },
   @{ Name = "procurement-domain"; Dir = "procurement-domain"; Args = "--addr :$($Port + 2) --data-file `"$env:TEMP\smoke-procurement-data.json`""; Check = "/healthz" },
-  @{ Name = "customer-domain"; Dir = "customer-domain"; Args = "--addr :$($Port + 3) --data-file `"$env:TEMP\smoke-customer-data.json`""; Check = "/healthz" }
+  @{ Name = "customer-domain"; Dir = "customer-domain"; Args = "--addr :$($Port + 3) --data-file `"$env:TEMP\smoke-customer-data.json`""; Check = "/healthz" },
+  @{ Name = "recruitment-domain"; Dir = "recruitment-domain"; Args = "--addr :$($Port + 4) --data-file `"$env:TEMP\smoke-recruitment-data.json`""; Check = "/healthz" }
 )
 
 $procs = @()
@@ -28,6 +29,7 @@ try {
   $invAddr = "http://localhost:$($Port + 1)"
   $procAddr = "http://localhost:$($Port + 2)"
   $custAddr = "http://localhost:$($Port + 3)"
+  $recAddr = "http://localhost:$($Port + 4)"
 
   $failures = @()
   function Assert-True($condition, $message) {
@@ -39,6 +41,7 @@ try {
   Assert-True ((Invoke-RestMethod -Uri "$invAddr/healthz").status -eq "ok") "inventory-domain adapter is healthy"
   Assert-True ((Invoke-RestMethod -Uri "$procAddr/healthz").status -eq "ok") "procurement-domain adapter is healthy"
   Assert-True ((Invoke-RestMethod -Uri "$custAddr/healthz").status -eq "ok") "customer-domain adapter is healthy"
+  Assert-True ((Invoke-RestMethod -Uri "$recAddr/healthz").status -eq "ok") "recruitment-domain adapter is healthy"
 
   $order = Invoke-RestMethod -Uri "$orderAddr/v1/orders/order-123"
   Assert-True ($order.fulfillment_status -eq "stockout") "order starts in stockout"
@@ -118,6 +121,31 @@ try {
   $closed = Invoke-RestMethod -Method Post -Uri "$custBase/close" -ContentType "application/json" -Body $closeBody
   Assert-True ($closed.case.status -eq "resolved") "case closes after resolution"
 
+  # Recruitment flow
+  $recBase = "$recAddr/v1/requisitions/req-0001"
+  $validate = @{ validated_by = "ta-lead-1"; criteria = @("platform-expertise"); idempotency_key = "smoke-rec-val-v1" } | ConvertTo-Json
+  $val = Invoke-RestMethod -Method Post -Uri "$recBase/validate" -ContentType "application/json" -Body $validate
+  Assert-True ($val.requisition.status -eq "validated") "requisition is validated by the TA lead"
+
+  $autoDenied = $null
+  try {
+    $auto = @{ stage = "shortlist"; decision = "advance"; candidate = "cand-a"; decided_by = "recruiter-assistant"; actor_type = "automated"; rationale = "keyword"; decision_ref = "decision://smoke"; idempotency_key = "smoke-rec-auto-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$recBase/decisions" -ContentType "application/json" -Body $auto | Out-Null
+  } catch { $autoDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($autoDenied -eq 403) "automated hiring decision is rejected (HTTP 403)"
+
+  $sl = @{ stage = "shortlist"; decision = "advance"; candidate = "cand-a"; decided_by = "panel-1"; actor_type = "human"; rationale = "meets criteria"; decision_ref = "decision://smoke"; idempotency_key = "smoke-rec-sl-v1" } | ConvertTo-Json
+  Invoke-RestMethod -Method Post -Uri "$recBase/decisions" -ContentType "application/json" -Body $sl | Out-Null
+  $sel = @{ stage = "selection"; decision = "select"; candidate = "cand-a"; decided_by = "hiring-manager-1"; actor_type = "human"; rationale = "best evidence"; decision_ref = "decision://smoke"; idempotency_key = "smoke-rec-sel-v1" } | ConvertTo-Json
+  Invoke-RestMethod -Method Post -Uri "$recBase/decisions" -ContentType "application/json" -Body $sel | Out-Null
+  $ofd = @{ stage = "offer"; decision = "offer"; candidate = "cand-a"; decided_by = "hiring-manager-1"; actor_type = "human"; rationale = "approved"; decision_ref = "decision://smoke"; idempotency_key = "smoke-rec-of-v1" } | ConvertTo-Json
+  $ofdResult = Invoke-RestMethod -Method Post -Uri "$recBase/decisions" -ContentType "application/json" -Body $ofd
+  Assert-True ($ofdResult.requisition.status -eq "offer") "human decisions advance to offer stage"
+
+  $offer = @{ candidate = "cand-a"; offered_by = "ta-lead-1"; offer_ref = "offer://smoke"; idempotency_key = "smoke-rec-offer-v1" } | ConvertTo-Json
+  $of = Invoke-RestMethod -Method Post -Uri "$recBase/offers" -ContentType "application/json" -Body $offer
+  Assert-True ($of.requisition.status -eq "closed") "offer closes the requisition"
+
   Write-Host ""
   if ($failures.Count -eq 0) { Write-Host "run-demo-smoke: all adapter-level checks passed." -ForegroundColor Green; exit 0 }
   Write-Host "run-demo-smoke: $($failures.Count) check(s) failed." -ForegroundColor Red
@@ -132,4 +160,5 @@ try {
   Remove-Item "$env:TEMP\smoke-inventory-data.json" -ErrorAction SilentlyContinue
   Remove-Item "$env:TEMP\smoke-procurement-data.json" -ErrorAction SilentlyContinue
   Remove-Item "$env:TEMP\smoke-customer-data.json" -ErrorAction SilentlyContinue
+  Remove-Item "$env:TEMP\smoke-recruitment-data.json" -ErrorAction SilentlyContinue
 }
