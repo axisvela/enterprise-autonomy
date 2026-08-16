@@ -1,0 +1,20 @@
+{
+  "schema_version": "1",
+  "workflow_id": "predictive-maintenance-to-work-order",
+  "title": "Predictive Maintenance To Work Order",
+  "kind": "approval",
+  "source": "enterprise-autonomy-example",
+  "stages": [
+    {"id": "validate", "title": "Validate Signal", "assignee_spec": {"kind": "role", "role": "maintenance-manager"}, "inputs": [], "outputs": []},
+    {"id": "decide", "title": "Maintenance Decision", "assignee_spec": {"kind": "role", "role": "maintenance-manager"}, "inputs": [], "outputs": []},
+    {"id": "safety", "title": "Safety Review", "assignee_spec": {"kind": "role", "role": "safety-authority"}, "inputs": [], "outputs": []},
+    {"id": "schedule", "title": "Schedule Work Order", "assignee_spec": {"kind": "capability", "required": ["maintenance.work.schedule"]}, "inputs": [], "outputs": []},
+    {"id": "close", "title": "Confirm Outcome", "assignee_spec": {"kind": "role", "role": "maintenance-manager"}, "inputs": [], "outputs": []}
+  ],
+  "transitions": [
+    {"from": "validate", "to": "decide"},
+    {"from": "decide", "to": "safety"},
+    {"from": "safety", "to": "schedule"},
+    {"from": "schedule", "to": "close"}
+  ]
+}

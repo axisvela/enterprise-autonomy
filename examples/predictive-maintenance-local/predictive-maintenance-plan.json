@@ -1,0 +1,27 @@
+{
+  "goals": [
+    {"id": "goal-pm-0001-safe", "owner": "maintenance-manager", "outcome": "signal-pm-0001 resolved through an approved, safety-reviewed intervention without treating a prediction as a confirmed fault", "deadline": "2026-08-26T12:00:00Z"}
+  ],
+  "requirements": [
+    {"id": "req-pm-0001-validate", "goalId": "goal-pm-0001-safe", "capabilityType": "maintenance.validation", "requiredEffect": "validate", "dependsOn": []},
+    {"id": "req-pm-0001-decide", "goalId": "goal-pm-0001-safe", "capabilityType": "maintenance.decision", "requiredEffect": "decide", "dependsOn": ["req-pm-0001-validate"]},
+    {"id": "req-pm-0001-safety", "goalId": "goal-pm-0001-safe", "capabilityType": "maintenance.safety", "requiredEffect": "review", "dependsOn": ["req-pm-0001-decide"]}
+  ],
+  "catalog": [
+    {"id": "cap-validate", "type": "maintenance.validation", "version": "1.0.0", "effects": ["validate"], "cost": 0},
+    {"id": "cap-decide", "type": "maintenance.decision", "version": "1.0.0", "effects": ["decide"], "cost": 0},
+    {"id": "cap-safety", "type": "maintenance.safety", "version": "1.0.0", "effects": ["review"], "safetyRequired": true, "cost": 0},
+    {"id": "cap-repair", "type": "maintenance.work", "version": "1.0.0", "effects": ["repair"], "intrusive": true, "safetyRequired": true, "cost": 50}
+  ],
+  "constraints": [
+    {"kind": "prediction-integrity", "hard": true, "value": "prediction-is-not-fault"},
+    {"kind": "safety", "hard": true, "value": "safety-review-required-for-intrusive"},
+    {"kind": "budget", "hard": true, "value": "maintenance-budget", "amount": 500}
+  ],
+  "delegations": {
+    "maintenance-manager": {"delegator": "asset-authority", "delegatee": "maintenance-manager", "parentScopes": ["maintenance.work"], "delegatedScopes": ["maintenance.validation", "maintenance.decision"], "budgetCeiling": 500, "evidenceDuty": ["safety://pm-0001", "approval://pm-0001"]}
+  },
+  "authorityGrants": [
+    {"principal": "maintenance-manager", "scopes": ["maintenance.validation", "maintenance.decision", "maintenance.work"], "budgetCeiling": 500, "revoked": false}
+  ]
+}
