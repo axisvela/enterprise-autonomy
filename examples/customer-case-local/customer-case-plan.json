@@ -1,0 +1,25 @@
+{
+  "goals": [
+    {"id": "goal-cs-0001-resolved", "owner": "service-lead", "outcome": "cs-0001 resolved with consent and approval for any compensation, without an unmanaged customer commitment", "deadline": "2026-08-22T12:00:00Z"}
+  ],
+  "requirements": [
+    {"id": "req-cs-0001-facts", "goalId": "goal-cs-0001-resolved", "capabilityType": "customer.facts", "requiredEffect": "verify", "dependsOn": []},
+    {"id": "req-cs-0001-resolve", "goalId": "goal-cs-0001-resolved", "capabilityType": "customer.resolution", "requiredEffect": "resolve", "dependsOn": ["req-cs-0001-facts"]}
+  ],
+  "catalog": [
+    {"id": "cap-verify", "type": "customer.facts", "version": "1.0.0", "effects": ["verify"], "cost": 0},
+    {"id": "cap-compensation", "type": "customer.resolution", "version": "1.0.0", "effects": ["resolve"], "kind": "compensation", "consentRequired": true, "approvalRequired": true, "cost": 40},
+    {"id": "cap-explanation", "type": "customer.resolution", "version": "1.0.0", "effects": ["resolve"], "kind": "explanation", "cost": 0}
+  ],
+  "constraints": [
+    {"kind": "consent", "hard": true, "value": "customer-consent-required"},
+    {"kind": "approval", "hard": true, "value": "service-lead-approval-required"},
+    {"kind": "compensation-ceiling", "hard": true, "value": "compensation", "amount": 100}
+  ],
+  "delegations": {
+    "service-lead": {"delegator": "service-authority", "delegatee": "service-lead", "parentScopes": ["customer.resolution"], "delegatedScopes": ["customer.facts"], "budgetCeiling": 100, "evidenceDuty": ["consent://cs-0001", "approval://cs-0001"]}
+  },
+  "authorityGrants": [
+    {"principal": "service-lead", "scopes": ["customer.facts", "customer.resolution"], "budgetCeiling": 100, "revoked": false}
+  ]
+}

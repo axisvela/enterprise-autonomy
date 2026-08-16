@@ -1,0 +1,20 @@
+{
+  "schema_version": "1",
+  "workflow_id": "customer-case-resolution",
+  "title": "Customer Case Resolution",
+  "kind": "approval",
+  "source": "enterprise-autonomy-example",
+  "stages": [
+    {"id": "verify-facts", "title": "Verify Facts", "assignee_spec": {"kind": "role", "role": "service-agent"}, "inputs": [], "outputs": []},
+    {"id": "consent", "title": "Capture Customer Consent", "assignee_spec": {"kind": "role", "role": "customer"}, "inputs": [], "outputs": []},
+    {"id": "approve", "title": "Approve Resolution", "assignee_spec": {"kind": "role", "role": "service-lead"}, "inputs": [], "outputs": []},
+    {"id": "resolve", "title": "Apply Resolution", "assignee_spec": {"kind": "capability", "required": ["customer.resolution.execute"]}, "inputs": [], "outputs": []},
+    {"id": "close", "title": "Confirm Outcome", "assignee_spec": {"kind": "role", "role": "service-lead"}, "inputs": [], "outputs": []}
+  ],
+  "transitions": [
+    {"from": "verify-facts", "to": "consent"},
+    {"from": "consent", "to": "approve"},
+    {"from": "approve", "to": "resolve"},
+    {"from": "resolve", "to": "close"}
+  ]
+}
