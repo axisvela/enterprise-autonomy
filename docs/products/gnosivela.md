@@ -17,6 +17,8 @@ Enterprise semantic and knowledge fabric for governed concepts, claims, evidence
 
 ## Where It Fits
 
+- [Inference request to governed answer](../../vertical-slices/inference-request-to-governed-answer.md) — grounded claims and evidence
+- [Inference governance](../../reference-stacks/inference-governance.md) — grounding contract and evidence
 - Provides grounded concepts and claims for scenario reasoning
 - Pairs with Noetivela (inference) and Mnemovela (memory) in composition
 

@@ -4,6 +4,13 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`. `1.0.0` is the first stable release of the public introduction and examples repository.
 
+## 1.1.8 (2026-08-16)
+
+- Opened **Phase 8 (post-1.1 additive content)** on the roadmap, covering governed-inference content, a future inference-domain demo, product local-surface maturity tracking, and port-migration status tracking.
+- Added the [inference-request-to-governed-answer](vertical-slices/inference-request-to-governed-answer.md) vertical slice and the [inference-governance](reference-stacks/inference-governance.md) reference stack — the first content covering the inference, knowledge, and memory fabrics (Noetivela, Gnosivela, Mnemovela).
+- Cross-linked the new slice and stack from the top-level README, the business-scenario catalog, and the Noetivela, Gnosivela, and Mnemovela product pages, and clarified slice/demo counts (thirteen slices, twelve with runnable demos).
+- Refreshed the current-version references in `README.md`, `docs/release-status.md`, and `docs/demo-matrix.md` to the released 1.1.7.
+
 ## 1.1.7 (2026-08-16)
 
 - Refreshed stale version references to the current 1.1.6 release across `README.md`, `docs/release-status.md`, and `docs/demo-matrix.md`, and marked the roadmap's Phase 6 and Phase 7 sections complete (all items checked).

@@ -83,6 +83,15 @@ Post-1.0 changes are additive and follow the same verification and release proce
 - [x] New runnable demo: sequenced deployment (twelfth slice) with the deployment-domain adapter covering sequenced autonomous execution and approval-required deviations
 - [x] Refreshed content and navigation as the example set grows (demo matrix, getting-started, example index, run handbook, governance-subtlety, version references)
 
+## Phase 8 — Post-1.1 additive content (in progress)
+
+Post-1.1 changes are additive and follow the same verification and release process. Completed items land here as they ship.
+
+- [x] New vertical slice (inference-request-to-governed-answer) and inference-governance reference stack covering the inference, knowledge, and memory fabrics (Noetivela, Gnosivela, Mnemovela) — the first content for those products
+- [ ] Runnable inference-governance local demo backed by a new inference-domain reference adapter (fourteenth adapter)
+- [ ] Local-surface maturity tracking for products without a shipped binary (Kinetovela, Aegivela core, Harmovela) as the product repositories land releases
+- [ ] Port-migration status tracking against the planned port allocation in release-status
+
 ## Guiding Principles
 
 - Product repositories remain authoritative for their own runtimes and domains.
@@ -91,4 +100,4 @@ Post-1.0 changes are additive and follow the same verification and release proce
 
 ## Status
 
-All phases of the initial public roadmap are complete as of **1.0.0**, and all Phase 7 post-1.0 additive items are complete as of **1.1.6**. Twelve vertical slices have runnable local demos backed by thirteen reference adapters, with release automation, CI-gated consistency checks, and every released version carrying a matching GitHub tag and release (backfilled for pre-0.14.0 versions).
+All phases of the initial public roadmap are complete as of **1.0.0**, and all Phase 7 post-1.0 additive items are complete as of **1.1.6**. Thirteen vertical slices describe end-to-end scenarios; twelve have runnable local demos backed by thirteen reference adapters, with release automation, CI-gated consistency checks, and every released version carrying a matching GitHub tag and release (backfilled for pre-0.14.0 versions). Phase 8 tracks additive content and maturity-tracking work after 1.1.x.

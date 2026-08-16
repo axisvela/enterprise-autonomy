@@ -17,6 +17,8 @@ Enterprise inference fabric for governed model and endpoint selection and routin
 
 ## Where It Fits
 
+- [Inference request to governed answer](../../vertical-slices/inference-request-to-governed-answer.md) — governed model and endpoint selection
+- [Inference governance](../../reference-stacks/inference-governance.md) — governed routing under policy
 - Complements semantic and cognition fabrics (Gnosivela, Mnemovela) in scenario composition
 - Governed model selection for agent runtimes such as Praxovela
 

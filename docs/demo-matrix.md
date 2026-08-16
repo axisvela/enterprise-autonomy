@@ -1,6 +1,6 @@
 # Demo Matrix
 
-All twelve vertical slices have runnable local demos. Each demo drives real local product binaries plus one reference adapter, and produces a machine-readable value report.
+Twelve of the thirteen vertical slices have runnable local demos. Each demo drives real local product binaries plus one reference adapter, and produces a machine-readable value report.
 
 ## Full Matrix
 
@@ -33,4 +33,4 @@ The governance-pattern catalog organizing these demos vertically by governance b
 
 ## Version
 
-This demo set is part of the public repository's **1.x** stable release series (current: 1.1.6). See [release status](release-status.md) and [CHANGELOG.md](../CHANGELOG.md).
+This demo set is part of the public repository's **1.x** stable release series (current: 1.1.7). See [release status](release-status.md) and [CHANGELOG.md](../CHANGELOG.md).

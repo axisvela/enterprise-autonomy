@@ -49,7 +49,7 @@ Start with the [getting-started guide](docs/getting-started.md), then explore a 
 
 ## Runnable Demos
 
-All twelve vertical slices have runnable local demos. Each demo drives real local product binaries plus a reference adapter and produces a machine-readable [value report](docs/value-dashboard.md). See the [demo matrix](docs/demo-matrix.md) for the full comparison.
+Twelve of the thirteen vertical slices have runnable local demos. Each demo drives real local product binaries plus a reference adapter and produces a machine-readable [value report](docs/value-dashboard.md). See the [demo matrix](docs/demo-matrix.md) for the full comparison.
 
 | Demo | Adapter | Port | Governance flavor | Value report |
 | --- | --- | --- | --- | --- |
@@ -91,6 +91,7 @@ All twelve vertical slices have runnable local demos. Each demo drives real loca
 - [Predictive maintenance reference stack](reference-stacks/predictive-maintenance.md)
 - [Engineering assurance reference stack](reference-stacks/engineering-assurance.md)
 - [Release operations reference stack](reference-stacks/release-operations.md)
+- [Inference governance reference stack](reference-stacks/inference-governance.md)
 - [Mission-to-execution](vertical-slices/mission-to-execution.md)
 - [Simulation-to-validation](vertical-slices/simulation-to-validation.md)
 - [Process-to-outcome](vertical-slices/process-to-outcome.md)
@@ -102,13 +103,14 @@ All twelve vertical slices have runnable local demos. Each demo drives real loca
 - [Compliance request to audit](vertical-slices/compliance-request-to-audit.md)
 - [Innovation sandbox to policy](vertical-slices/innovation-sandbox-to-policy.md)
 - [Sequenced deployment](vertical-slices/sequenced-deployment.md)
+- [Inference request to governed answer](vertical-slices/inference-request-to-governed-answer.md)
 - [Business scenario catalog](docs/business-scenarios.md)
 - [Public example design guide](docs/example-design-guide.md)
 - [Glossary](docs/glossary.md)
 
 ## Status
 
-**Stable 1.x release series** (current: 1.1.6). All twelve vertical slices have runnable local demos, backed by thirteen reference adapters with Go unit tests, continuous integration, structural validation, and an automated release workflow that publishes a tag and GitHub Release for every prepared version. Public content is maintained in this repository; governance-pattern knowledge and internal material live in the private `enterprise-autonomy-ee` repository. See the [repository roadmap](ROADMAP.md) and [release status](docs/release-status.md).
+**Stable 1.x release series** (current: 1.1.7). Thirteen vertical slices describe end-to-end scenarios; twelve have runnable local demos, backed by thirteen reference adapters with Go unit tests, continuous integration, structural validation, and an automated release workflow that publishes a tag and GitHub Release for every prepared version. Public content is maintained in this repository; governance-pattern knowledge and internal material live in the private `enterprise-autonomy-ee` repository. See the [repository roadmap](ROADMAP.md) and [release status](docs/release-status.md).
 
 ## Releases
 

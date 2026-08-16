@@ -16,6 +16,7 @@ These scenarios illustrate outcome-level product composition. They are not deplo
 | [Integration outage recovery](../vertical-slices/integration-outage-recovery.md) | Preserve and resume in-flight work across an integration outage. | Integration operations lead |
 | [Compliance request to audit](../vertical-slices/compliance-request-to-audit.md) | Assemble evidence into an auditable record. | Compliance lead |
 | [Innovation sandbox to policy](../vertical-slices/innovation-sandbox-to-policy.md) | Decide capability release from simulation evidence. | Designated review group |
+| [Inference request to governed answer](../vertical-slices/inference-request-to-governed-answer.md) | Route a governed inference under policy with grounded, auditable evidence. | Inference governance owner |
 
 Use the [public example design guide](example-design-guide.md) when adapting a scenario.
 
