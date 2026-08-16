@@ -29,3 +29,7 @@ Each demo writes its value report to `.local-data/`. Aggregate them with `.\scri
 ## Governance
 
 The governance-pattern catalog organizing these demos vertically by governance behavior is maintained in the private `enterprise-autonomy-ee` repository; each demo's README and the [governance subtlety guide](governance-subtlety.md) summarize the behaviors it demonstrates.
+
+## Version
+
+This demo set is part of the public repository's **1.0.0** stable release.

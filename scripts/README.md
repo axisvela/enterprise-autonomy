@@ -19,6 +19,7 @@ Small validation and reporting utilities for the public examples.
 | [read-changelog-section.ps1](read-changelog-section.ps1) | Extracts a version's block from `CHANGELOG.md`. | `0` (prints block), `1` missing |
 | [create-tag.ps1](create-tag.ps1) | Creates the annotated tag `v<VERSION>` (no-op if it exists). | `0` success, `1` invalid/missing |
 | [create-release.ps1](create-release.ps1) | Creates a GitHub Release via `gh` with the changelog block as body. | `0` success, `1` failure |
+| [verify-release.ps1](verify-release.ps1) | Full release checklist: VERSION, CHANGELOG, tag, clean tree, validators, prepared state. | `0` ready, `1` blocking issue(s) |
 
 ## Usage
 
@@ -49,12 +50,13 @@ The repository version follows `major.minor.patch` and lives in the `VERSION` fi
 Release flow:
 
 ```powershell
-.\scripts\version.ps1 bump minor   # e.g. 0.13.0 -> 0.14.0
+.\scripts\version.ps1 bump minor   # e.g. 0.17.0 -> 0.18.0
 # add a CHANGELOG.md entry for the new version
 git add -A
 git commit -m "..."
 .\scripts\check-release.ps1        # expect exit 2
-.\scripts\create-tag.ps1           # creates v0.14.0 (no-op if it exists)
+.\scripts\verify-release.ps1       # full release checklist (expect exit 0)
+.\scripts\create-tag.ps1           # creates v0.18.0 (no-op if it exists)
 .\scripts\create-release.ps1       # gh release create with changelog body
 git push origin main --tags
 ```
@@ -90,3 +92,5 @@ The repository includes [`.github/workflows/ci.yml`](../.github/workflows/ci.yml
 `check-examples.ps1` verifies produced demo artifacts after a run; it is intended for post-run verification, not CI without a full demo environment.
 
 The governance-pattern catalog and its machine-readable matrix (`patterns.json`) are maintained in the private **`enterprise-autonomy-ee`** repository.
+
+The repository is released as **1.0.0** (see `CHANGELOG.md`); `VERSION` tracks the current version.

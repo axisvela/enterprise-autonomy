@@ -76,3 +76,7 @@ This roadmap tracks the public content plan for the `enterprise-autonomy` reposi
 - Product repositories remain authoritative for their own runtimes and domains.
 - Public content is adoption-oriented and non-deployment-specific.
 - Sensitive material belongs in `enterprise-autonomy-ee`, never here.
+
+## Status
+
+All phases of the initial public roadmap are complete as of **1.0.0**. Post-1.0 work is additive: new runnable demos, deeper tooling, and refreshed content follow the same verification and release process.

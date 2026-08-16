@@ -2,7 +2,16 @@
 
 All notable changes to this repository are documented here. Public content is expanded incrementally; product runtimes track their own releases in their own repositories.
 
-Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`.
+Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`. `1.0.0` is the first stable release of the public introduction and examples repository.
+
+## 1.0.0 (2026-08-16)
+
+First stable release of the public repository. All eleven vertical slices have runnable local demos backed by twelve reference adapters, with unit tests, continuous integration, structural validation, value reporting, and an automated release workflow.
+
+- **11 runnable demos** covering every vertical slice, each with a detailed operations guide and a machine-readable value report.
+- **12 reference adapters**, each with Go unit tests covering its governance gates.
+- **Tooling**: version harness, commit-time hooks, CI (links, structure, JSON, go tests, smoke, version), release automation, demo orchestration, value dashboard, structural validators.
+- **Governance knowledge** (pattern catalog) maintained in the private `enterprise-autonomy-ee` repository.
 
 ## 0.17.0 (2026-08-16)
 

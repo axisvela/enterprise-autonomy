@@ -26,6 +26,8 @@ jobs:
           # 2 = prepared (VERSION bumped + CHANGELOG section) -> release.
           .\scripts\check-release.ps1
           if ($LASTEXITCODE -eq 2) {
+            .\scripts\verify-release.ps1
+            if ($LASTEXITCODE -ne 0) { Write-Host "release: verify-release blocked the release"; exit 1 }
             $v = (.\scripts\version.ps1 get).Trim()
             Write-Host "release: preparing v$v"
             .\scripts\create-tag.ps1 -Ver $v

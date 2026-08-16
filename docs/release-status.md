@@ -2,6 +2,8 @@
 
 This page summarizes the public maturity of each product's local surface. Product repositories are authoritative for their own release versions and availability.
 
+> **This public repository is at 1.0.0** — a stable release of the introduction and examples content. Releases are tagged `vX.Y.Z` and published to GitHub Releases; see the [demo matrix](demo-matrix.md) for the full runnable-demo set.
+
 | Product | Local binary available | Maturity notes |
 | --- | --- | --- |
 | Moduregis | Yes (`moduregis-api.exe`, worker, migrate) | Windows release archives under `dist/`; local demo uses v1.0.1. |
