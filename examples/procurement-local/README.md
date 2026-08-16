@@ -16,14 +16,14 @@ The run script prints a **step-by-step business report** and a **Value & Effect 
 
 ## The Scenario In Business Terms
 
-1. **Submit** â€” the requester submits `preq-0001` against a cost center and budget.
-2. **Review** â€” the procurement owner opens a governed case.
-3. **Context** â€” the budget is recorded as available in the world model.
-4. **Approve** â€” finance approves the budget and procurement approves the supplier; self-approval is denied.
-5. **Process** â€” a durable request-to-receipt process is opened.
-6. **Plan** â€” a verified sourcing plan is generated (recommendation only).
-7. **Purchase** â€” the approved purchase issues PO `po-preq-0001-supplier-b`; unapproved purchases are rejected.
-8. **Receive and close** â€” receipt is confirmed, the request closes, and the value report is emitted.
+1. **Submit** â€?the requester submits `preq-0001` against a cost center and budget.
+2. **Review** â€?the procurement owner opens a governed case.
+3. **Context** â€?the budget is recorded as available in the world model.
+4. **Approve** â€?finance approves the budget and procurement approves the supplier; self-approval is denied.
+5. **Process** â€?a durable request-to-receipt process is opened.
+6. **Plan** â€?a verified sourcing plan is generated (recommendation only).
+7. **Purchase** â€?the approved purchase issues PO `po-preq-0001-supplier-b`; unapproved purchases are rejected.
+8. **Receive and close** â€?receipt is confirmed, the request closes, and the value report is emitted.
 
 ## What This Demo Does
 
@@ -103,6 +103,10 @@ curl.exe "http://localhost:8092/v1/pos/po-preq-0001-supplier-b"
 | Adoption path | Replace the reference adapter and local databases with authorized systems, then enable one category and spend band. |
 
 See the [value framework](../../docs/example-value.md) and the [procurement domain adapter API](../../adapters/procurement-domain/API.md).
+
+## Governance Patterns
+
+This demo demonstrates patterns [1â€?](../../docs/governance-patterns.md#integrity-patterns-cross-cutting), [7](../../docs/governance-patterns.md#7-segregation-of-duties), and [8](../../docs/governance-patterns.md#8-conjunctive-authority) of the [governance patterns catalog](../../docs/governance-patterns.md): structural **segregation of duties** and **conjunctive authority** (finance and procurement must both approve).
 
 ## Stop The Demo
 

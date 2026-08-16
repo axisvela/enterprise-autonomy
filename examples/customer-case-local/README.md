@@ -16,14 +16,14 @@ The run script prints a **step-by-step business report** and a **Value & Effect 
 
 ## The Scenario In Business Terms
 
-1. **Open** â€” the service lead opens a governed case.
-2. **Verify** â€” the agent records a verified billing fact and the account context is asserted.
-3. **Consent** â€” the customer consents to the compensation; without consent the remedy is denied.
-4. **Approve** â€” the service lead approves the resolution; without approval the remedy is denied.
-5. **Process** â€” a durable case-resolution process is opened.
-6. **Plan** â€” a verified resolution plan is generated (recommendation only).
-7. **Resolve** â€” the consented, approved compensation is applied to the account.
-8. **Close** â€” the case closes with evidence and the value report is emitted.
+1. **Open** â€?the service lead opens a governed case.
+2. **Verify** â€?the agent records a verified billing fact and the account context is asserted.
+3. **Consent** â€?the customer consents to the compensation; without consent the remedy is denied.
+4. **Approve** â€?the service lead approves the resolution; without approval the remedy is denied.
+5. **Process** â€?a durable case-resolution process is opened.
+6. **Plan** â€?a verified resolution plan is generated (recommendation only).
+7. **Resolve** â€?the consented, approved compensation is applied to the account.
+8. **Close** â€?the case closes with evidence and the value report is emitted.
 
 ## What This Demo Does
 
@@ -102,6 +102,10 @@ curl.exe "http://localhost:8093/v1/notifications/cs-0001"
 | Adoption path | Replace the reference adapter and local databases with authorized systems, then pilot a narrow case class. |
 
 See the [value framework](../../docs/example-value.md) and the [customer domain adapter API](../../adapters/customer-domain/API.md).
+
+## Governance Patterns
+
+This demo demonstrates patterns [1â€?](../../docs/governance-patterns.md#integrity-patterns-cross-cutting), [8](../../docs/governance-patterns.md#8-conjunctive-authority), and [9](../../docs/governance-patterns.md#9-consent-as-a-first-class-gate) of the [governance patterns catalog](../../docs/governance-patterns.md): **consent as a first-class gate** combined with service-lead approval (conjunctive).
 
 ## Stop The Demo
 

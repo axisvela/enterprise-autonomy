@@ -1,4 +1,4 @@
-# Maintenance-Domain Adapter â€” API Reference
+# Maintenance-Domain Adapter â€?API Reference
 
 Local reference service for simulated predictive-maintenance views. Not a production CMMS.
 
@@ -40,7 +40,7 @@ Maintenance manager validates the signal. Requires `validated_by`, `confirmed`, 
  "note":"prediction based on vibration trend","idempotency_key":"pm-val-v1"}
 ```
 
-`signal.status` â†’ `validated`; `confirmed` records whether the signal is a confirmed fault or an unconfirmed prediction.
+`signal.status` â†?`validated`; `confirmed` records whether the signal is a confirmed fault or an unconfirmed prediction.
 
 Errors: `400` missing fields, `403 only_maintenance_manager_can_validate`, `409 signal_already_validated`.
 
@@ -98,10 +98,12 @@ Errors: `404 signal_not_found`.
 pending -> validated -> (decision) -> (safety review) -> work order (scheduled)
 ```
 
-`validate` moves `pending â†’ validated`. A decision must follow validation. `repair`/`stop` additionally require an approved safety review before a work order can be created. Every mutating call is idempotent (`"replayed": true` on repeat keys).
+`validate` moves `pending â†?validated`. A decision must follow validation. `repair`/`stop` additionally require an approved safety review before a work order can be created. Every mutating call is idempotent (`"replayed": true` on repeat keys).
 
 ## Integrity Model
 
 - **Prediction-vs-fact**: unvalidated signals are never treated as faults; an unconfirmed prediction cannot trigger a `stop`.
 - **Safety conjunctive**: intrusive work requires both a maintenance decision and an approved safety review.
 - **Decision-scoped work**: only `repair`/`stop` produce work orders; `monitor`/`inspect`/`defer` do not.
+
+**Governance patterns:** [Prediction is not a fault](../../docs/governance-patterns.md#11-prediction-is-not-a-fault-safety-is-conjunctive) and [conjunctive authority](../../docs/governance-patterns.md#8-conjunctive-authority) from the [governance patterns catalog](../../docs/governance-patterns.md).

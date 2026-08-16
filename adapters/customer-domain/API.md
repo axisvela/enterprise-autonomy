@@ -1,4 +1,4 @@
-# Customer-Domain Adapter â€” API Reference
+# Customer-Domain Adapter â€?API Reference
 
 Local reference service for simulated customer-service views: cases, facts, consent, resolutions, accounts, and notifications. Not a production CRM, billing, or compensation system.
 
@@ -42,7 +42,7 @@ Records the customer's consent decision. Requires `customer`, `decision` (`appro
 {"customer":"cust-1001","decision":"approve","consent_ref":"consent://cs-0001","idempotency_key":"cs-consent-v1"}
 ```
 
-`case.status` â†’ `consented` when approved. Errors: `400` missing fields or invalid decision, `403 customer_mismatch`.
+`case.status` â†?`consented` when approved. Errors: `400` missing fields or invalid decision, `403 customer_mismatch`.
 
 ### `POST /v1/cases/{id}/resolutions`
 
@@ -54,8 +54,8 @@ Applies a resolution. Requires `type` and `idempotency_key`; money movements (`c
 
 - `explanation`/`correction`: no consent or approval.
 - `compensation`/`refund`/`credit`: require an approved consent and a service-lead approval; apply the credit to the account.
-- `escalation`: records without moving money; sets `case.status` â†’ `escalated`.
-- Otherwise `case.status` â†’ `resolving`.
+- `escalation`: records without moving money; sets `case.status` â†?`escalated`.
+- Otherwise `case.status` â†?`resolving`.
 
 Errors: `400` missing/invalid fields, `403 consent_required`, `403 consent_ref_mismatch`, `403 approval_required_for_compensation`, `400 amount_must_be_positive`.
 
@@ -67,7 +67,7 @@ Closes the case. Requires `closed_by`, `idempotency_key`.
 {"closed_by":"service-lead","idempotency_key":"cs-close-v1"}
 ```
 
-`case.status` â†’ `resolved`. Errors: `400` missing fields, `403 no_resolution_applied`, `409 escalated_case_requires_escalation_queue`.
+`case.status` â†?`resolved`. Errors: `400` missing fields, `403 no_resolution_applied`, `409 escalated_case_requires_escalation_queue`.
 
 ### `GET /v1/accounts/{id}`
 
@@ -100,3 +100,5 @@ open -> consented -> resolving -> resolved
 - **Approval-required**: the same movements are denied without a service-lead `approved_by`/`approval_ref`.
 - **Verified-facts-only**: unverified claims cannot be recorded.
 - **Close-after-resolution**: a case cannot close with no applied resolution.
+
+**Governance patterns:** [Consent as a first-class gate](../../docs/governance-patterns.md#9-consent-as-a-first-class-gate) and [conjunctive authority](../../docs/governance-patterns.md#8-conjunctive-authority) from the [governance patterns catalog](../../docs/governance-patterns.md).

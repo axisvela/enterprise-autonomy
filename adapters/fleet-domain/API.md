@@ -1,4 +1,4 @@
-# Fleet-Domain Adapter â€” API Reference
+# Fleet-Domain Adapter â€?API Reference
 
 Local reference service for simulated physical-mission views. Not a production fleet control plane.
 
@@ -31,7 +31,7 @@ Starts the mission. Requires `started_by` (the operator), `idempotency_key`.
 {"started_by":"ops-lead","idempotency_key":"fleet-start-v1"}
 ```
 
-`mission.status` â†’ `running`, position set to the mission zone.
+`mission.status` â†?`running`, position set to the mission zone.
 
 Errors: `400` missing fields, `403 not_mission_operator`, `409 mission_not_planned`.
 
@@ -53,7 +53,7 @@ Raises an exception and pauses the mission. Requires `type`, `detail`, `raised_b
 {"type":"obstacle","detail":"rack-07 blocked","raised_by":"fleet-runtime","idempotency_key":"fleet-ex-v1"}
 ```
 
-`mission.status` â†’ `paused`. Errors: `400` missing fields, `409 mission_not_active`.
+`mission.status` â†?`paused`. Errors: `400` missing fields, `409 mission_not_active`.
 
 ### `POST /v1/missions/{id}/reviews`
 
@@ -63,7 +63,7 @@ Operator reviews a paused mission. Requires `reviewed_by`, `decision` (`resume`/
 {"reviewed_by":"ops-lead","decision":"resume","approval_ref":"approval://mission-alpha-001","idempotency_key":"fleet-rv-v1"}
 ```
 
-`mission.status` â†’ `resumed` (resume/adjust) or `cancelled`. Gated on a paused mission and the mission operator.
+`mission.status` â†?`resumed` (resume/adjust) or `cancelled`. Gated on a paused mission and the mission operator.
 
 Errors: `400` missing/invalid fields, `403 operator_review_required_mission_must_be_paused`, `403 not_mission_operator`, `409 no_exception_to_review`.
 
@@ -75,7 +75,7 @@ Completes an active mission. Requires `completed_by`, `idempotency_key`.
 {"completed_by":"ops-lead","idempotency_key":"fleet-cmp-v1"}
 ```
 
-`mission.status` â†’ `completed`. Errors: `400` missing fields, `403 mission_not_active`.
+`mission.status` â†?`completed`. Errors: `400` missing fields, `403 mission_not_active`.
 
 ### `GET /v1/notifications/{id}`
 
@@ -92,10 +92,12 @@ planned -> running -> paused -> resumed -> completed
                         \-> cancelled
 ```
 
-`start` moves `planned â†’ running`; an exception or exception-status telemetry moves to `paused`; an operator review resumes/adjusts/cancels; `complete` requires an active mission.
+`start` moves `planned â†?running`; an exception or exception-status telemetry moves to `paused`; an operator review resumes/adjusts/cancels; `complete` requires an active mission.
 
 ## Fleet Governance Model
 
 - **Autonomous boundary enforcement.** Out-of-boundary telemetry is frozen without human involvement.
 - **Pause-and-review.** Exceptions always pause; only an operator review (with approval reference) resumes.
 - **Operator-gated.** Only the mission operator may start or review.
+
+**Governance pattern:** [Autonomous boundary and pause-and-review](../../docs/governance-patterns.md#15-autonomous-boundary-pause-and-review) from the [governance patterns catalog](../../docs/governance-patterns.md).

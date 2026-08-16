@@ -1,4 +1,4 @@
-# Integration-Domain Adapter â€” API Reference
+# Integration-Domain Adapter â€?API Reference
 
 Local reference service for simulated integration-outage recovery. Not a production integration gateway.
 
@@ -40,7 +40,7 @@ Preserves in-flight work. Requires `preserved_by`, `preserved_ref`, `idempotency
 {"preserved_by":"integration-owner","preserved_ref":"process://work-0001","idempotency_key":"int-pres-v1"}
 ```
 
-`work.status` â†’ `preserved`. Errors: `400` missing fields, `409 work_not_inflight`.
+`work.status` â†?`preserved`. Errors: `400` missing fields, `409 work_not_inflight`.
 
 ### `POST /v1/integrations/{id}/checks`
 
@@ -50,7 +50,7 @@ Integration owner records a reconnection check. Requires `checked_by`, `verified
 {"checked_by":"integration-owner","verified":true,"evidence_ref":"evidence://reconnect/partner-shipping","idempotency_key":"int-check-v1"}
 ```
 
-`integration.status` â†’ `checked` when verified. Errors: `400` missing fields, `403 only_integration_owner_can_check`.
+`integration.status` â†?`checked` when verified. Errors: `400` missing fields, `403 only_integration_owner_can_check`.
 
 ### `POST /v1/work/{id}/resume`
 
@@ -60,7 +60,7 @@ Resumes work. Requires `resumed_by`, `idempotency_key`.
 {"resumed_by":"integration-owner","idempotency_key":"int-resume-v1"}
 ```
 
-`work.status` â†’ `resumed`. Gated on: preserved work **and** a verified integration.
+`work.status` â†?`resumed`. Gated on: preserved work **and** a verified integration.
 
 Errors: `400` missing fields, `403 work_not_preserved`, `403 integration_not_verified`.
 
@@ -72,7 +72,7 @@ Completes work. Requires `completed_by`, `idempotency_key`.
 {"completed_by":"integration-owner","idempotency_key":"int-comp-v1"}
 ```
 
-`work.status` â†’ `completed`. Errors: `400` missing fields, `403 work_not_resumed`, `409 action_already_completed_no_silent_rerun`.
+`work.status` â†?`completed`. Errors: `400` missing fields, `403 work_not_resumed`, `409 action_already_completed_no_silent_rerun`.
 
 ### `GET /v1/notifications/{id}`
 
@@ -89,10 +89,12 @@ integration: down -> checked
 work:         inflight -> preserved -> resumed -> completed
 ```
 
-`preserve` moves work to `preserved`; a verified integration check moves the integration to `checked`; `resume` requires preserved **and** checked; `complete` requires resumed. A second, different-idempotency `complete` is rejected â€” no silent re-execution.
+`preserve` moves work to `preserved`; a verified integration check moves the integration to `checked`; `resume` requires preserved **and** checked; `complete` requires resumed. A second, different-idempotency `complete` is rejected â€?no silent re-execution.
 
 ## Recovery Integrity Model
 
 - **Preserve-before-resume.** In-flight work must have a durable preservation reference before it can resume.
 - **Verify-before-resume.** Resumption requires an integration-owner reconnection check that verified the integration.
 - **No-silent-rerun.** Completed actions cannot be re-executed; only idempotent replays are permitted.
+
+**Governance pattern:** [Recovery integrity](../../docs/governance-patterns.md#12-recovery-integrity-preserve-verify-never-rerun) from the [governance patterns catalog](../../docs/governance-patterns.md).
