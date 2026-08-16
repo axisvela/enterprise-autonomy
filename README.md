@@ -27,10 +27,14 @@ Architecture, contracts, schemas, profiles, conformance, governance, internal pl
 | `docs/products.md` | Public overview of the ecosystem products. |
 | `docs/products/` | Per-product public overview pages. |
 | `examples/` | Public, illustrative end-to-end scenarios and local runnable demos. |
+| `examples/run-all-demos.ps1` | Run every runnable demo end to end and stop the stack. |
+| `examples/stop-demo.ps1` | Stop demo processes reliably (path-based). |
 | `reference-stacks/` | Public reference-stack overviews. |
 | `vertical-slices/` | End-to-end use cases spanning products. |
 | `adapters/` | Local reference adapters used by runnable examples. |
 | `docs/` | Supporting documentation for adopters and contributors. |
+| `scripts/` | Validation, versioning, and release tooling (see [scripts/README.md](scripts/README.md)). |
+| `.githooks/` | Commit-time checks (install with `scripts/install-hooks.ps1`). |
 
 Placeholder indexes in `architecture/`, `contracts/`, `schemas/`, `profiles/`, `conformance/`, `governance/`, and `benchmarks/` mark domains whose authoritative content lives in the private repository.
 

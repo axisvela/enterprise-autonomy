@@ -22,6 +22,10 @@ Do not place credentials, secrets, internal endpoints, private incident evidence
 
 Runnable examples must document prerequisites, startup, expected output, and shutdown in their own `README.md`. Reference adapters must be buildable with the documented toolchain.
 
+- Run `.\examples\run-all-demos.ps1 -CheckOnly` to verify demo structure without a database.
+- Run `.\scripts\validate-demos.ps1` and `.\scripts\validate-json.ps1` to verify structure, script syntax, and JSON validity.
+- Use `.\examples\stop-demo.ps1` to stop demo processes (it matches by executable path, never unrelated processes).
+
 ## Process
 
 1. Keep changes small and focused on one area.

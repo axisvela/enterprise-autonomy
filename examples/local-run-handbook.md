@@ -28,6 +28,29 @@ All runnable demos provide a `run-all.ps1` wrapper that loads the environment, s
 .\run-all.ps1
 ```
 
+## Run All Demos
+
+Run every demo end to end with a single command from `examples/`:
+
+```powershell
+.\run-all-demos.ps1                # all four demos
+.\run-all-demos.ps1 -CheckOnly     # verify structure only, no database needed
+.\run-all-demos.ps1 -Only procurement-local,recruitment-local
+.\run-all-demos.ps1 -Skip customer-case-local
+```
+
+The runner starts each demo, executes its scenario, verifies the outcome, stops the processes, and reports a summary table. It fails (exit 1) if any selected demo fails, and continues past a failed demo.
+
+## Stop The Stack
+
+Stop all demo processes reliably with:
+
+```powershell
+.\stop-demo.ps1
+```
+
+`stop-demo.ps1` matches processes by executable path (repo adapters and the demo product stack), so it never touches unrelated processes. `scripts\kill-adapters.ps1` kills only reference-adapter processes.
+
 ## Value Reports
 
 Runnable demos emit a machine-readable value report alongside the business outcome:
@@ -36,6 +59,8 @@ Runnable demos emit a machine-readable value report alongside the business outco
 - Procurement demo: `.local-data/procurement-value-report.json` (see [evidence schema](procurement-local/evidence-schema.md)).
 - Customer-case demo: `.local-data/customer-value-report.json` (see [evidence schema](customer-case-local/evidence-schema.md)).
 - Recruitment demo: `.local-data/recruitment-value-report.json` (see [evidence schema](recruitment-local/evidence-schema.md)).
+
+Aggregate all reports with `.\scripts\report-value.ps1` into the [value dashboard](../docs/value-dashboard.md).
 
 The report records the outcome, KPIs, human gates, and per-product evidence so the effect can be verified. See the [value report template](value-report-template.md).
 

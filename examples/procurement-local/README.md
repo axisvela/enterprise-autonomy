@@ -106,4 +106,4 @@ See the [value framework](../../docs/example-value.md) and the [procurement doma
 
 ## Stop The Demo
 
-Stop the processes shown in `.local-logs/` or close the PowerShell sessions that started them. Remove `.local-data/` only when you intentionally want to discard the demo data.
+Stop the processes shown in `.local-logs/` or close the PowerShell sessions that started them, or run `..\stop-demo.ps1` from the `examples/` directory. Remove `.local-data/` only when you intentionally want to discard the demo data.

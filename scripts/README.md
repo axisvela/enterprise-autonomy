@@ -12,6 +12,9 @@ Small validation and reporting utilities for the public examples.
 | [check-release.ps1](check-release.ps1) | Decides whether a new tag/version is warranted after commits. | `0` no change, `1` new tag needed, `2` prepared and ready to tag |
 | [install-hooks.ps1](install-hooks.ps1) | Installs the pre-commit hook (`.githooks/pre-commit`) via `core.hooksPath`. | `0` success |
 | [check-hooks.ps1](check-hooks.ps1) | Verifies the pre-commit hook is installed and active. | `0` active, `1` not installed |
+| [validate-demos.ps1](validate-demos.ps1) | Verifies demo structure (required files) and PowerShell syntax of all scripts. | `0` pass, `1` failure |
+| [validate-json.ps1](validate-json.ps1) | Verifies every JSON file under `examples/` and `adapters/` parses. | `0` pass, `1` failure |
+| [kill-adapters.ps1](kill-adapters.ps1) | Kills any reference-adapter process built from this repository. | `0` (with or without matches) |
 
 ## Usage
 
@@ -69,8 +72,11 @@ Verify the hook is active with `.\scripts\check-hooks.ps1`. The CI workflow perf
 The repository includes [`.github/workflows/ci.yml`](../.github/workflows/ci.yml). On every push to `main` and on pull requests it runs on a Windows runner:
 
 1. `check-links.ps1` — breaks the build on broken internal links.
-2. `run-demo-smoke.ps1` — builds and smoke-tests all four reference adapters (order, inventory, procurement, customer).
-3. `version.ps1 get` — reports the current version.
-4. `check-release.ps1` — reports whether a new tag is warranted (informational; exit `1` does not fail the build).
+2. `validate-demos.ps1` — verifies demo structure and script syntax.
+3. `validate-json.ps1` — verifies every JSON plan/workflow parses.
+4. `run-demo-smoke.ps1` — builds and smoke-tests all five reference adapters (order, inventory, procurement, customer, recruitment).
+5. `check-hooks.ps1` — verifies the pre-commit hook file is present (config check is local-only).
+6. `version.ps1 get` — reports the current version.
+7. `check-release.ps1` — reports whether a new tag is warranted (informational; exit `1` does not fail the build).
 
 `check-examples.ps1` verifies produced demo artifacts after a run; it is intended for post-run verification, not CI without a full demo environment.

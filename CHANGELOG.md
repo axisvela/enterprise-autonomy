@@ -4,6 +4,15 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`.
 
+## 0.6.0 (2026-08-16)
+
+- Added demo orchestration: `examples/run-all-demos.ps1` runs all four demos end to end (`-Only`/`-Skip`/`-CheckOnly`), with per-demo summary and combined dashboard JSON.
+- Added `examples/stop-demo.ps1` and `scripts/kill-adapters.ps1` — path-based, safe process stop for demo runs and CI hygiene.
+- Added structural validators `scripts/validate-demos.ps1` (structure + PowerShell syntax) and `scripts/validate-json.ps1` (JSON validity), wired into CI.
+- Enhanced `scripts/report-value.ps1` into a value dashboard aggregating all demo value reports, documented in `docs/value-dashboard.md`.
+- Hardened `run-demo-smoke.ps1`: deletes stale binaries before build and fails on build errors.
+- Updated demo READMEs, run handbook, getting-started, repository map, and roadmap for the orchestration tooling.
+
 ## 0.5.0 (2026-08-16)
 
 - Added the recruitment-domain reference adapter (requisitions, candidates, human-only decisions, offers) with an **automation-cannot-decide** structural boundary and stage-gated lifecycle.

@@ -20,9 +20,21 @@ jobs:
         shell: powershell
         run: .\scripts\check-links.ps1
 
+      - name: Validate demo structure and script syntax
+        shell: powershell
+        run: .\scripts\validate-demos.ps1
+
+      - name: Validate JSON files
+        shell: powershell
+        run: .\scripts\validate-json.ps1
+
       - name: Smoke-test reference adapters
         shell: powershell
         run: .\scripts\run-demo-smoke.ps1
+
+      - name: Verify commit-time hooks
+        shell: powershell
+        run: .\scripts\check-hooks.ps1
 
       - name: Show version
         shell: powershell

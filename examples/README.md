@@ -13,6 +13,7 @@ Public examples illustrate how AxisRobo products can be composed to achieve a me
 ## Supporting Material
 
 - [Value framework](../docs/example-value.md) — how examples demonstrate value.
+- [Value dashboard](../docs/value-dashboard.md) — aggregated view of all demo value reports.
 - [Value report template](value-report-template.md) — machine-readable outcome report.
 - [Value metrics catalog](value-metrics.md) — KPIs by example class.
 - [Input/output conventions](inputs-outputs.md) — shared shape for step I/O.
@@ -23,7 +24,21 @@ Public examples illustrate how AxisRobo products can be composed to achieve a me
 
 ## Local Runnable Demos
 
-Runnable demos execute against real local product binaries and produce observable business artifacts plus a machine-readable value report. See the [local run handbook](local-run-handbook.md) for common startup and troubleshooting guidance.
+Runnable demos execute against real local product binaries and produce observable business artifacts plus a machine-readable value report. Run them individually (`<demo-dir>\run-all.ps1`) or all together:
+
+```powershell
+.\run-all-demos.ps1                # all four demos, end to end
+.\run-all-demos.ps1 -CheckOnly     # verify structure without a database
+.\stop-demo.ps1                    # stop all demo processes (path-based, safe)
+```
+
+Then aggregate the value reports:
+
+```powershell
+..\scripts\report-value.ps1        # dashboard -> .stack\all-demos-report.json
+```
+
+See the [local run handbook](local-run-handbook.md) for startup and troubleshooting guidance.
 
 ## Boundaries
 

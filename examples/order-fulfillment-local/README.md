@@ -143,4 +143,4 @@ See the [value framework](../../docs/example-value.md) and the [value report tem
 
 ## Stop The Demo
 
-Stop the processes shown in `.local-logs/` or close the PowerShell sessions that started them. The example uses in-memory Ontovela state and a local Rheovela database path; remove `.local-data/` only when you intentionally want to discard the demo data.
+Stop the processes shown in `.local-logs/` or close the PowerShell sessions that started them, or run `..\stop-demo.ps1` from the `examples/` directory (it stops demo processes by executable path). The example uses in-memory Ontovela state and a local Rheovela database path; remove `.local-data/` only when you intentionally want to discard the demo data.
