@@ -91,13 +91,17 @@ func main() {
 	dataFile := flag.String("data-file", "customer-domain-data.json", "JSON persistence file")
 	flag.Parse()
 	s := load(*dataFile)
+	log.Printf("customer-domain adapter listening on %s", *addr)
+	log.Fatal(http.ListenAndServe(*addr, newMux(s)))
+}
+
+func newMux(s *store) *http.ServeMux {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/healthz", func(w http.ResponseWriter, _ *http.Request) { write(w, http.StatusOK, map[string]string{"status": "ok", "service": "customer-domain-adapter"}) })
 	mux.HandleFunc("/v1/cases/", s.cases)
 	mux.HandleFunc("/v1/accounts/", s.account)
 	mux.HandleFunc("/v1/notifications/", s.notifications)
-	log.Printf("customer-domain adapter listening on %s", *addr)
-	log.Fatal(http.ListenAndServe(*addr, mux))
+	return mux
 }
 
 func load(file string) *store {

@@ -84,14 +84,18 @@ func main() {
 	dataFile := flag.String("data-file", "procurement-domain-data.json", "JSON persistence file")
 	flag.Parse()
 	s := load(*dataFile)
+	log.Printf("procurement-domain adapter listening on %s", *addr)
+	log.Fatal(http.ListenAndServe(*addr, newMux(s)))
+}
+
+func newMux(s *store) *http.ServeMux {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/healthz", func(w http.ResponseWriter, _ *http.Request) { write(w, http.StatusOK, map[string]string{"status": "ok", "service": "procurement-domain-adapter"}) })
 	mux.HandleFunc("/v1/requests/", s.requests)
 	mux.HandleFunc("/v1/budget/", s.budget)
 	mux.HandleFunc("/v1/suppliers/", s.suppliers)
 	mux.HandleFunc("/v1/pos/", s.pos)
-	log.Printf("procurement-domain adapter listening on %s", *addr)
-	log.Fatal(http.ListenAndServe(*addr, mux))
+	return mux
 }
 
 func load(file string) *store {
