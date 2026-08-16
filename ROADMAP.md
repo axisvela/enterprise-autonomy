@@ -42,7 +42,7 @@ This roadmap tracks the public content plan for the `enterprise-autonomy` reposi
 - [x] Detailed operations guide with exact request/response per step
 - [x] Additional runnable local demos (procurement request-to-receipt)
 
-## Phase 6 — Consistency and release tracking (in progress)
+## Phase 6 — Consistency and release tracking (complete)
 
 - [x] Release-status documentation
 - [x] Example value framework and metrics
@@ -72,7 +72,7 @@ This roadmap tracks the public content plan for the `enterprise-autonomy` reposi
 - [x] All eleven vertical slices have runnable local demos
 - [x] Twelfth vertical slice (sequenced deployment) with runnable local demo and the deployment-domain reference adapter
 
-## Phase 7 — Post-1.0 additive work (in progress)
+## Phase 7 — Post-1.0 additive work (complete)
 
 Post-1.0 changes are additive and follow the same verification and release process. Completed items land here as they ship.
 
@@ -91,4 +91,4 @@ Post-1.0 changes are additive and follow the same verification and release proce
 
 ## Status
 
-All phases of the initial public roadmap are complete as of **1.0.0**, and all Phase 7 post-1.0 additive items are complete as of **1.1.1**. Twelve vertical slices have runnable local demos backed by thirteen reference adapters, with release automation, CI-gated consistency checks, and every released version carrying a matching GitHub tag and release (backfilled for pre-0.14.0 versions).
+All phases of the initial public roadmap are complete as of **1.0.0**, and all Phase 7 post-1.0 additive items are complete as of **1.1.6**. Twelve vertical slices have runnable local demos backed by thirteen reference adapters, with release automation, CI-gated consistency checks, and every released version carrying a matching GitHub tag and release (backfilled for pre-0.14.0 versions).

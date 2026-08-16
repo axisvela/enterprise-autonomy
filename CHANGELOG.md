@@ -4,6 +4,10 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`. `1.0.0` is the first stable release of the public introduction and examples repository.
 
+## 1.1.7 (2026-08-16)
+
+- Refreshed stale version references to the current 1.1.6 release across `README.md`, `docs/release-status.md`, and `docs/demo-matrix.md`, and marked the roadmap's Phase 6 and Phase 7 sections complete (all items checked).
+
 ## 1.1.6 (2026-08-16)
 
 - Standardized all thirteen vertical slices to a single section layout (`Business Scenario` / `Product Roles` / `Design Steps` / `Operating Steps` / `Value & Effect` / `Detailed Operating Procedure` / `Runnable Local Demo` / `Public Boundary`): converted the old-format mission-to-execution slice, added missing Value & Effect sections to the compliance and innovation-sandbox slices, and aligned the process-to-outcome, simulation-to-validation, and sequenced-deployment slices.
