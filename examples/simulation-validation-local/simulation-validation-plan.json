@@ -1,0 +1,26 @@
+{
+  "goals": [
+    {"id": "goal-sim-0001-validated", "owner": "reviewer-a", "outcome": "proposal-sim-0001 released for zone-alpha only after accepted simulation evidence and a review-group decision", "deadline": "2026-08-29T12:00:00Z"}
+  ],
+  "requirements": [
+    {"id": "req-sim-0001-compile", "goalId": "goal-sim-0001-validated", "capabilityType": "simulation.compile", "requiredEffect": "compile", "dependsOn": []},
+    {"id": "req-sim-0001-run", "goalId": "goal-sim-0001-validated", "capabilityType": "simulation.run", "requiredEffect": "produce-evidence", "dependsOn": ["req-sim-0001-compile"]},
+    {"id": "req-sim-0001-decide", "goalId": "goal-sim-0001-validated", "capabilityType": "simulation.review", "requiredEffect": "decide", "dependsOn": ["req-sim-0001-run"]}
+  ],
+  "catalog": [
+    {"id": "cap-compile", "type": "simulation.compile", "version": "1.0.0", "effects": ["compile"], "cost": 0},
+    {"id": "cap-run", "type": "simulation.run", "version": "1.0.0", "effects": ["produce-evidence"], "immutable": true, "cost": 0},
+    {"id": "cap-review", "type": "simulation.review", "version": "1.0.0", "effects": ["decide"], "evidenceRequired": true, "humanOnly": true, "cost": 0}
+  ],
+  "constraints": [
+    {"kind": "evidence-before-decision", "hard": true, "value": "simulation-evidence-required"},
+    {"kind": "evidence-immutable", "hard": true, "value": "runs-are-immutable"},
+    {"kind": "scope", "hard": true, "value": "zone-alpha"}
+  ],
+  "delegations": {
+    "reviewer-a": {"delegator": "validation-authority", "delegatee": "reviewer-a", "parentScopes": ["simulation.review"], "delegatedScopes": ["simulation.compile", "simulation.run"], "budgetCeiling": 0, "evidenceDuty": ["evidence://sim/run-001"]}
+  },
+  "authorityGrants": [
+    {"principal": "reviewer-a", "scopes": ["simulation.compile", "simulation.run", "simulation.review"], "budgetCeiling": 0, "revoked": false}
+  ]
+}

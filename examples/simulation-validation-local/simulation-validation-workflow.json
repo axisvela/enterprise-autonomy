@@ -1,0 +1,20 @@
+{
+  "schema_version": "1",
+  "workflow_id": "simulation-to-validation",
+  "title": "Simulation To Validation",
+  "kind": "approval",
+  "source": "enterprise-autonomy-example",
+  "stages": [
+    {"id": "compile", "title": "Compile Scenarios", "assignee_spec": {"kind": "role", "role": "simulation-engineer"}, "inputs": [], "outputs": []},
+    {"id": "run", "title": "Record Simulation Evidence", "assignee_spec": {"kind": "capability", "required": ["simulation.run.execute"]}, "inputs": [], "outputs": []},
+    {"id": "decide", "title": "Review Decision", "assignee_spec": {"kind": "role", "role": "review-group"}, "inputs": [], "outputs": []},
+    {"id": "release", "title": "Release", "assignee_spec": {"kind": "capability", "required": ["simulation.release.execute"]}, "inputs": [], "outputs": []},
+    {"id": "close", "title": "Confirm Outcome", "assignee_spec": {"kind": "role", "role": "review-group"}, "inputs": [], "outputs": []}
+  ],
+  "transitions": [
+    {"from": "compile", "to": "run"},
+    {"from": "run", "to": "decide"},
+    {"from": "decide", "to": "release"},
+    {"from": "release", "to": "close"}
+  ]
+}
