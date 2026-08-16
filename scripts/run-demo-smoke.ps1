@@ -18,7 +18,9 @@ try {
     $env:GOWORK = "off"
     Push-Location $dir
     $exe = "$env:TEMP\smoke-$($a.Name)-adapter.exe"
+    Remove-Item $exe -ErrorAction SilentlyContinue
     go build -o $exe .
+    if ($LASTEXITCODE -ne 0) { throw "build failed for $($a.Name)" }
     Pop-Location
     $p = Start-Process -FilePath $exe -ArgumentList $a.Args -PassThru -WindowStyle Hidden
     $procs += $p
