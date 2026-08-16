@@ -9,6 +9,7 @@ Public examples illustrate how AxisRobo products can be composed to achieve a me
 | [Procurement request to receipt (local)](procurement-local/README.md) | Runnable local demo | Governed purchasing lifecycle with segregation of duties and a verified value report. | [Value & Effect](procurement-local/README.md#value--effect) |
 | [Customer case resolution (local)](customer-case-local/README.md) | Runnable local demo | Governed customer remedy with consent and approval, and a verified value report. | [Value & Effect](customer-case-local/README.md#value--effect) |
 | [Recruitment requisition to offer (local)](recruitment-local/README.md) | Runnable local demo | Human-only hiring decisions with an automation boundary, and a verified value report. | [Value & Effect](recruitment-local/README.md#value--effect) |
+| [Predictive maintenance (local)](predictive-maintenance-local/README.md) | Runnable local demo | Safety-reviewed intervention with prediction-vs-fact integrity, and a verified value report. | [Value & Effect](predictive-maintenance-local/README.md#value--effect) |
 
 ## Supporting Material
 

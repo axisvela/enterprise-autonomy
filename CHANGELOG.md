@@ -4,6 +4,14 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`.
 
+## 0.7.0 (2026-08-16)
+
+- Added the maintenance-domain reference adapter (signals, validation, decisions, safety reviews, work orders) with **prediction-vs-fact integrity** and a **safety conjunctive gate** for intrusive work.
+- Added the runnable predictive-maintenance to work-order local demo (`examples/predictive-maintenance-local/`) with an 8-step lifecycle, `verify.ps1`, `run-all.ps1`, value report, and a detailed operations guide.
+- Extended `run-demo-smoke.ps1` to all six adapters (28 assertions) and wired the maintenance demo into `run-all-demos.ps1`, `report-value.ps1`, `check-examples.ps1`, and `validate-demos.ps1`.
+- Extended the governance-subtlety guide with the prediction-vs-fact and safety-conjunctive patterns.
+- Cross-linked the maintenance demo from the predictive-maintenance slice, example index, getting-started, run handbook, and roadmap.
+
 ## 0.6.0 (2026-08-16)
 
 - Added demo orchestration: `examples/run-all-demos.ps1` runs all four demos end to end (`-Only`/`-Skip`/`-CheckOnly`), with per-demo summary and combined dashboard JSON.

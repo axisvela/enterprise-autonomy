@@ -24,7 +24,7 @@ This handbook covers common steps for running public local demos against real pr
 All runnable demos provide a `run-all.ps1` wrapper that loads the environment, starts the services, runs the scenario, and verifies the outcome in one step:
 
 ```powershell
-# order-fulfillment-local, procurement-local, customer-case-local, recruitment-local
+# order-fulfillment-local, procurement-local, customer-case-local, recruitment-local, predictive-maintenance-local
 .\run-all.ps1
 ```
 
@@ -33,7 +33,7 @@ All runnable demos provide a `run-all.ps1` wrapper that loads the environment, s
 Run every demo end to end with a single command from `examples/`:
 
 ```powershell
-.\run-all-demos.ps1                # all four demos
+.\run-all-demos.ps1                # all five demos
 .\run-all-demos.ps1 -CheckOnly     # verify structure only, no database needed
 .\run-all-demos.ps1 -Only procurement-local,recruitment-local
 .\run-all-demos.ps1 -Skip customer-case-local
@@ -59,6 +59,7 @@ Runnable demos emit a machine-readable value report alongside the business outco
 - Procurement demo: `.local-data/procurement-value-report.json` (see [evidence schema](procurement-local/evidence-schema.md)).
 - Customer-case demo: `.local-data/customer-value-report.json` (see [evidence schema](customer-case-local/evidence-schema.md)).
 - Recruitment demo: `.local-data/recruitment-value-report.json` (see [evidence schema](recruitment-local/evidence-schema.md)).
+- Predictive-maintenance demo: `.local-data/maintenance-value-report.json` (see [evidence schema](predictive-maintenance-local/evidence-schema.md)).
 
 Aggregate all reports with `.\scripts\report-value.ps1` into the [value dashboard](../docs/value-dashboard.md).
 

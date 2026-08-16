@@ -125,6 +125,27 @@ Three properties worth noticing:
 2. **Every decision is attributed.** A human `decided_by`, a `rationale`, and a `decision_ref` are all required; there is no unattributed screening.
 3. **The lifecycle is stage-gated.** `shortlist → selection → offer` must proceed in order, and an offer requires a matching offer-stage human decision for the same candidate.
 
+## 10. A Prediction Is Not a Fault, and Safety Is Conjunctive (Maintenance Demo)
+
+The [predictive-maintenance demo](../examples/predictive-maintenance-local/README.md) adds two coupled governance properties:
+
+```
+POST /v1/signals/signal-pm-0001/work-orders       (signal still pending)
+-> 403 {"error":"signal_not_validated_prediction_is_not_a_fault"}
+
+POST /v1/signals/signal-pm-0001/decisions         (decision = stop, unconfirmed)
+-> 403 {"error":"unconfirmed_prediction_cannot_trigger_stop"}
+
+POST /v1/signals/signal-pm-0001/work-orders       (repair decided, no safety review)
+-> 403 {"error":"safety_review_required_for_intrusive_work"}
+```
+
+Three properties worth noticing:
+
+1. **Prediction-vs-fact is structural.** A work order cannot exist on an unvalidated signal, and an unconfirmed prediction cannot escalate to a `stop` — a prediction is never treated as a confirmed fault.
+2. **Safety is conjunctive.** Intrusive work (`repair`/`stop`) requires both a maintenance decision and an approved safety review by the safety authority; either missing factor denies the work order.
+3. **Decisions scope the work.** `monitor`, `inspect`, and `defer` never produce a work order; only `repair`/`stop` do, and only after all gates pass.
+
 ## Why This Matters
 
 The subtlety is that **governance is distributed and structural**: each product enforces a piece of the policy in its own domain, the pieces reference each other through shared approval/evidence references, and none of them can be bypassed by calling another one. That is what "contract-governed" means in practice.

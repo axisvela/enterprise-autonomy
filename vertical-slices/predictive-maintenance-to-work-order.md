@@ -66,6 +66,10 @@ See the [value framework](../docs/example-value.md).
 | Execute and observe | assigned scope, stop conditions | Kinetovela, Praxovela | execution record `run-wo-0001` |
 | Verify and close | post-work asset state, maintenance manager acceptance | Ontovela, Symbivela | closed work order + follow-up record |
 
+## Runnable Local Demo
+
+For verified local-binary startup commands, configuration, API requests, request bodies, and expected operational outputs, see the [local predictive-maintenance demo](../examples/predictive-maintenance-local/README.md) and its [Detailed Operations Guide](../examples/predictive-maintenance-local/operations-guide.md).
+
 ## Public Boundary
 
 This example omits equipment thresholds, control logic, safety policy, site topology, maintenance records, and execution configuration.

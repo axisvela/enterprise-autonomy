@@ -8,7 +8,8 @@ $adapters = @(
   @{ Name = "inventory-domain"; Dir = "inventory-domain"; Args = "--addr :$($Port + 1) --data-file `"$env:TEMP\smoke-inventory-data.json`""; Check = "/healthz" },
   @{ Name = "procurement-domain"; Dir = "procurement-domain"; Args = "--addr :$($Port + 2) --data-file `"$env:TEMP\smoke-procurement-data.json`""; Check = "/healthz" },
   @{ Name = "customer-domain"; Dir = "customer-domain"; Args = "--addr :$($Port + 3) --data-file `"$env:TEMP\smoke-customer-data.json`""; Check = "/healthz" },
-  @{ Name = "recruitment-domain"; Dir = "recruitment-domain"; Args = "--addr :$($Port + 4) --data-file `"$env:TEMP\smoke-recruitment-data.json`""; Check = "/healthz" }
+  @{ Name = "recruitment-domain"; Dir = "recruitment-domain"; Args = "--addr :$($Port + 4) --data-file `"$env:TEMP\smoke-recruitment-data.json`""; Check = "/healthz" },
+  @{ Name = "maintenance-domain"; Dir = "maintenance-domain"; Args = "--addr :$($Port + 5) --data-file `"$env:TEMP\smoke-maintenance-data.json`""; Check = "/healthz" }
 )
 
 $procs = @()
@@ -32,6 +33,7 @@ try {
   $procAddr = "http://localhost:$($Port + 2)"
   $custAddr = "http://localhost:$($Port + 3)"
   $recAddr = "http://localhost:$($Port + 4)"
+  $maintAddr = "http://localhost:$($Port + 5)"
 
   $failures = @()
   function Assert-True($condition, $message) {
@@ -44,6 +46,7 @@ try {
   Assert-True ((Invoke-RestMethod -Uri "$procAddr/healthz").status -eq "ok") "procurement-domain adapter is healthy"
   Assert-True ((Invoke-RestMethod -Uri "$custAddr/healthz").status -eq "ok") "customer-domain adapter is healthy"
   Assert-True ((Invoke-RestMethod -Uri "$recAddr/healthz").status -eq "ok") "recruitment-domain adapter is healthy"
+  Assert-True ((Invoke-RestMethod -Uri "$maintAddr/healthz").status -eq "ok") "maintenance-domain adapter is healthy"
 
   $order = Invoke-RestMethod -Uri "$orderAddr/v1/orders/order-123"
   Assert-True ($order.fulfillment_status -eq "stockout") "order starts in stockout"
@@ -148,6 +151,41 @@ try {
   $of = Invoke-RestMethod -Method Post -Uri "$recBase/offers" -ContentType "application/json" -Body $offer
   Assert-True ($of.requisition.status -eq "closed") "offer closes the requisition"
 
+  # Maintenance flow
+  $maintBase = "$maintAddr/v1/signals/signal-pm-0001"
+  $prematureWO = $null
+  try {
+    $premature = @{ scope = "replace bearing"; approved_by = "maintenance-manager"; approval_ref = "approval://smoke"; idempotency_key = "smoke-maint-wo-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$maintBase/work-orders" -ContentType "application/json" -Body $premature | Out-Null
+  } catch { $prematureWO = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($prematureWO -eq 403) "work order on unvalidated signal is rejected (HTTP 403)"
+
+  $val = @{ validated_by = "maintenance-manager"; confirmed = $false; note = "prediction"; idempotency_key = "smoke-maint-val-v1" } | ConvertTo-Json
+  Invoke-RestMethod -Method Post -Uri "$maintBase/validate" -ContentType "application/json" -Body $val | Out-Null
+
+  $stopDenied = $null
+  try {
+    $stop = @{ decision = "stop"; decided_by = "maintenance-manager"; decision_ref = "decision://smoke"; idempotency_key = "smoke-maint-stop-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$maintBase/decisions" -ContentType "application/json" -Body $stop | Out-Null
+  } catch { $stopDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($stopDenied -eq 403) "unconfirmed prediction cannot trigger stop (HTTP 403)"
+
+  $dec = @{ decision = "repair"; decided_by = "maintenance-manager"; decision_ref = "decision://smoke"; idempotency_key = "smoke-maint-dec-v1" } | ConvertTo-Json
+  Invoke-RestMethod -Method Post -Uri "$maintBase/decisions" -ContentType "application/json" -Body $dec | Out-Null
+
+  $noSafety = $null
+  try {
+    $wo = @{ scope = "replace bearing"; approved_by = "maintenance-manager"; approval_ref = "approval://smoke"; idempotency_key = "smoke-maint-wo-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$maintBase/work-orders" -ContentType "application/json" -Body $wo | Out-Null
+  } catch { $noSafety = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($noSafety -eq 403) "work order without safety review is rejected (HTTP 403)"
+
+  $safety = @{ reviewed_by = "safety-authority"; outcome = "approve"; safety_ref = "safety://smoke"; idempotency_key = "smoke-maint-safety-v1" } | ConvertTo-Json
+  Invoke-RestMethod -Method Post -Uri "$maintBase/safety-reviews" -ContentType "application/json" -Body $safety | Out-Null
+  $woFinal = @{ scope = "replace bearing"; approved_by = "maintenance-manager"; approval_ref = "approval://smoke"; idempotency_key = "smoke-maint-wo-v1" } | ConvertTo-Json
+  $maintResult = Invoke-RestMethod -Method Post -Uri "$maintBase/work-orders" -ContentType "application/json" -Body $woFinal
+  Assert-True ($maintResult.work_order.status -eq "scheduled") "safety-reviewed work order is scheduled"
+
   Write-Host ""
   if ($failures.Count -eq 0) { Write-Host "run-demo-smoke: all adapter-level checks passed." -ForegroundColor Green; exit 0 }
   Write-Host "run-demo-smoke: $($failures.Count) check(s) failed." -ForegroundColor Red
@@ -163,4 +201,5 @@ try {
   Remove-Item "$env:TEMP\smoke-procurement-data.json" -ErrorAction SilentlyContinue
   Remove-Item "$env:TEMP\smoke-customer-data.json" -ErrorAction SilentlyContinue
   Remove-Item "$env:TEMP\smoke-recruitment-data.json" -ErrorAction SilentlyContinue
+  Remove-Item "$env:TEMP\smoke-maintenance-data.json" -ErrorAction SilentlyContinue
 }

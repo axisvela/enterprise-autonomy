@@ -20,12 +20,13 @@ The [value framework](example-value.md) explains what makes an example valuable:
 
 ## 5. Run a local demo
 
-Four runnable local demos are available, each producing a value report:
+Five runnable local demos are available, each producing a value report:
 
 - [Order exception demo](../examples/order-fulfillment-local/README.md) — stockout exception with approvals and value report.
 - [Procurement demo](../examples/procurement-local/README.md) — governed purchasing with segregation of duties.
 - [Customer case demo](../examples/customer-case-local/README.md) — governed customer remedy with consent and approval.
 - [Recruitment demo](../examples/recruitment-local/README.md) — human-only hiring decisions with an automation boundary.
+- [Predictive maintenance demo](../examples/predictive-maintenance-local/README.md) — safety-reviewed intervention with prediction-vs-fact integrity.
 
 Run them all end to end with `.\examples\run-all-demos.ps1` (requires a full local stack; use `-CheckOnly` to verify structure without a database). Aggregate the results with `.\scripts\report-value.ps1` into the [value dashboard](value-dashboard.md). See the [local run handbook](../examples/local-run-handbook.md) for startup guidance.
 
