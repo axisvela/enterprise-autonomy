@@ -18,6 +18,8 @@ This page explains, with concrete artifacts from the [order-exception demo](../e
 12. [Evidence-Gated Release and Immutable Simulation (Simulation Demo)](#12-evidence-gated-release-and-immutable-simulation-simulation-demo)
 13. [Completeness-Gated Attestation and Immutable Audit (Compliance Demo)](#13-completeness-gated-attestation-and-immutable-audit-compliance-demo)
 14. [Autonomous Boundary and Pause-and-Review (Fleet Demo)](#14-autonomous-boundary-and-pause-and-review-fleet-demo)
+15. [Durable Process Lifecycle Integrity (Process-To-Outcome Demo)](#15-durable-process-lifecycle-integrity-process-to-outcome-demo)
+16. [Sandbox Boundary, Evidence-Based Policy, and Immutable Policy (Innovation Sandbox Demo)](#16-sandbox-boundary-evidence-based-policy-and-immutable-policy-innovation-sandbox-demo)
 
 ## 1. No Product Can Change the Order Without a Case
 
@@ -248,6 +250,52 @@ Three properties worth noticing:
 1. **Boundary enforcement is autonomous.** Out-of-bound telemetry is frozen with no human involvement — the boundary is hard-coded, not procedural.
 2. **Pause-and-review is mandatory.** An exception always pauses; resume/adjust/cancel require an operator review carrying an `approval_ref`.
 3. **Operator-gated.** Only the mission operator may start or review — physical actions are never unsupervised.
+
+## 15. Durable Process Lifecycle Integrity (Process-To-Outcome Demo)
+
+The [process-to-outcome demo](../examples/process-to-outcome-local/README.md) shows that a long-running process is a governed sequence, not a mutable to-do list:
+
+```
+POST /v1/processes/proc-0001/advance     (out-of-order: request -> approve)
+-> 409 {"error":"stage_mismatch_next_is_review"}
+
+POST /v1/processes/proc-0001/complete    (before the terminal stage)
+-> 403 {"error":"outcome_not_reached_terminal_stage_required"}
+
+POST /v1/processes/proc-0001/complete    (no advances recorded)
+-> 403 {"error":"no_stage_advances_recorded"}
+```
+
+Three properties worth noticing:
+
+1. **Stage-sequenced gating is structural.** An advance must name the exact current stage and the exact next stage; any jump is rejected with `409` — the stage order is encoded in the domain, not a procedure.
+2. **Terminal-state enforcement.** The outcome completes only at the terminal stage (`complete`), and only after at least one recorded advance — a process cannot reach its outcome out of order.
+3. **Completed-process immutability.** A completed process is final; any advance or completion after that is rejected (`409`), and only the same idempotency key replays. The outcome is durable, never reopened.
+
+## 16. Sandbox Boundary, Evidence-Based Policy, and Immutable Policy (Innovation Sandbox Demo)
+
+The [innovation-sandbox demo](../examples/innovation-sandbox-local/README.md) shows how a proposed capability earns policy through bounded, evidence-grounded exploration:
+
+```
+POST /v1/proposals/proposal-sandbox-0001/experiments   (outside sandbox scope)
+-> 403 {"error":"sandbox_boundary_experiment_outside_scope"}
+
+POST /v1/proposals/proposal-sandbox-0001/decisions     (no experiment evidence yet)
+-> 403 {"error":"experiment_evidence_required_before_policy"}
+
+POST /v1/proposals/proposal-sandbox-0001/decisions     (outsider)
+-> 403 {"error":"not_designated_reviewer"}
+
+POST /v1/proposals/proposal-sandbox-0001/apply         (wrong policy reference)
+-> 403 {"error":"policy_ref_mismatch"}
+```
+
+Four properties worth noticing:
+
+1. **Sandbox boundary is structural.** An experiment must stay within the proposal's declared `sandbox_scope`; anything outside is rejected before any other logic runs — exploration is bounded, not open-ended.
+2. **Evidence-based policy.** A policy decision cannot exist before recorded experiment evidence — the review cannot precede the experiment.
+3. **Designated reviewer.** Only review-group members may decide (`403 not_designated_reviewer`).
+4. **Immutable policy.** A recorded policy decision is final (`409 policy_already_recorded_immutable`), and `apply` requires the exact `policy_ref`; a rejected proposal can never be applied. Policy is earned once, from evidence, and then fixed.
 
 ## Why This Matters
 

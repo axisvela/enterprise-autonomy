@@ -4,6 +4,10 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`. `1.0.0` is the first stable release of the public introduction and examples repository.
 
+## 1.0.5 (2026-08-16)
+
+- Completed the governance-subtlety deep dive: added section 15 (durable process lifecycle integrity, process-to-outcome demo) and section 16 (sandbox boundary, evidence-based policy, immutable policy; innovation-sandbox demo), matching the pattern coverage of every earlier demo.
+
 ## 1.0.4 (2026-08-16)
 
 - Documented the new release tooling in `scripts/README.md` (table entries, release flow preview step, CI step list) and refreshed the release flow in `CONTRIBUTING.md`.
