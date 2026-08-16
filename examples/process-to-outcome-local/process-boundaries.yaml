@@ -1,0 +1,13 @@
+capability:
+  type: local
+authz:
+  type: local
+  local:
+    rules: D:\profile\paper-code\enterprise-autonomy\examples\process-to-outcome-local\process-policy.yaml
+    storage: D:\profile\paper-code\enterprise-autonomy\examples\process-to-outcome-local\.praxovela\grants.db
+    dev_allow_all: false
+    grant_ttl: 15m
+network:
+  type: local
+  local:
+    allow: false

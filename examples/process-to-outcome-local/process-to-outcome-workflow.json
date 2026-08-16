@@ -1,0 +1,18 @@
+{
+  "schema_version": "1",
+  "workflow_id": "process-to-outcome",
+  "title": "Process To Outcome",
+  "kind": "approval",
+  "source": "enterprise-autonomy-example",
+  "stages": [
+    {"id": "request", "title": "Request", "assignee_spec": {"kind": "role", "role": "ops-lead"}, "inputs": [], "outputs": []},
+    {"id": "review", "title": "Review", "assignee_spec": {"kind": "role", "role": "ops-lead"}, "inputs": [], "outputs": []},
+    {"id": "approve", "title": "Approve", "assignee_spec": {"kind": "role", "role": "ops-lead"}, "inputs": [], "outputs": []},
+    {"id": "complete", "title": "Complete", "assignee_spec": {"kind": "capability", "required": ["process.complete.execute"]}, "inputs": [], "outputs": []}
+  ],
+  "transitions": [
+    {"from": "request", "to": "review"},
+    {"from": "review", "to": "approve"},
+    {"from": "approve", "to": "complete"}
+  ]
+}

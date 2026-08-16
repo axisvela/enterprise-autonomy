@@ -1,0 +1,28 @@
+{
+  "goals": [
+    {"id": "goal-proc-0001-outcome", "owner": "ops-lead", "outcome": "proc-0001 reaches its terminal stage and completes only through the sequenced onboarding stages", "deadline": "2026-09-02T12:00:00Z"}
+  ],
+  "requirements": [
+    {"id": "req-proc-0001-request", "goalId": "goal-proc-0001-outcome", "capabilityType": "process.stage", "requiredEffect": "advance-request", "dependsOn": []},
+    {"id": "req-proc-0001-review", "goalId": "goal-proc-0001-outcome", "capabilityType": "process.stage", "requiredEffect": "advance-review", "dependsOn": ["req-proc-0001-request"]},
+    {"id": "req-proc-0001-approve", "goalId": "goal-proc-0001-outcome", "capabilityType": "process.stage", "requiredEffect": "advance-approve", "dependsOn": ["req-proc-0001-review"]},
+    {"id": "req-proc-0001-complete", "goalId": "goal-proc-0001-outcome", "capabilityType": "process.stage", "requiredEffect": "complete", "dependsOn": ["req-proc-0001-approve"]}
+  ],
+  "catalog": [
+    {"id": "cap-request", "type": "process.stage", "version": "1.0.0", "effects": ["advance-request"], "stage": "request", "humanOnly": true, "cost": 0},
+    {"id": "cap-review", "type": "process.stage", "version": "1.0.0", "effects": ["advance-review"], "stage": "review", "humanOnly": true, "cost": 0},
+    {"id": "cap-approve", "type": "process.stage", "version": "1.0.0", "effects": ["advance-approve"], "stage": "approve", "humanOnly": true, "cost": 0},
+    {"id": "cap-complete", "type": "process.stage", "version": "1.0.0", "effects": ["complete"], "stage": "complete", "terminal": true, "cost": 0}
+  ],
+  "constraints": [
+    {"kind": "stage-sequence", "hard": true, "value": "advance-in-order"},
+    {"kind": "terminal-state", "hard": true, "value": "complete-only-at-terminal"},
+    {"kind": "immutable-outcome", "hard": true, "value": "completed-processes-are-final"}
+  ],
+  "delegations": {
+    "ops-lead": {"delegator": "process-authority", "delegatee": "ops-lead", "parentScopes": ["process.stage"], "delegatedScopes": [], "budgetCeiling": 0, "evidenceDuty": ["decision://proc-0001"]}
+  },
+  "authorityGrants": [
+    {"principal": "ops-lead", "scopes": ["process.stage"], "budgetCeiling": 0, "revoked": false}
+  ]
+}
