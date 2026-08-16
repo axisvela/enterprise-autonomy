@@ -4,6 +4,12 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`. `1.0.0` is the first stable release of the public introduction and examples repository.
 
+## 1.0.3 (2026-08-16)
+
+- Added `scripts/check-releases.ps1`: verifies every release tag has a matching GitHub Release (excluding the in-flight current version), preventing the tag-without-release regression from recurring.
+- Added `scripts/release-body-preview.ps1`: prints the CHANGELOG body that would be used for a release, without creating anything.
+- Wired both into CI (release-tag consistency gate + informational body preview) and added `check-releases.ps1` to `verify-release.ps1` so the release gate blocks on inconsistent releases.
+
 ## 1.0.2 (2026-08-16)
 
 - Fixed CI: the checkout did not fetch tags (`fetch-depth: 0`), so `check-release.ps1` failed with "No names found" on every push. The workflow now fetches tags and treats the informational release check as non-blocking (`continue-on-error`).

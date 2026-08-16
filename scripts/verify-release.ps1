@@ -41,10 +41,11 @@ try {
 
 # 5. Validators
 $validators = @(
-  @{ Name = "check-links.ps1";    Script = "check-links.ps1" },
-  @{ Name = "validate-demos.ps1"; Script = "validate-demos.ps1" },
-  @{ Name = "validate-json.ps1";  Script = "validate-json.ps1" },
-  @{ Name = "run-go-tests.ps1";   Script = "run-go-tests.ps1" }
+  @{ Name = "check-links.ps1";      Script = "check-links.ps1" },
+  @{ Name = "validate-demos.ps1";   Script = "validate-demos.ps1" },
+  @{ Name = "validate-json.ps1";    Script = "validate-json.ps1" },
+  @{ Name = "run-go-tests.ps1";     Script = "run-go-tests.ps1" },
+  @{ Name = "check-releases.ps1";   Script = "check-releases.ps1" }
 )
 foreach ($v in $validators) {
   $p = powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot $v.Script)

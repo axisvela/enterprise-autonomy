@@ -78,8 +78,8 @@ Post-1.0 changes are additive and follow the same verification and release proce
 - [x] Backfill GitHub Releases for every pre-0.14.0 tag (v0.1.0–v0.13.0), so every version has a matching tag and release
 - [x] Harden release tooling: idempotent `create-release.ps1` (skips existing releases) and `-NotLatest` support for historical backfills
 - [x] Delegate the release workflow to the shared release scripts (single source of truth for tag and release creation)
+- [x] Deeper release tooling: CI-gated tag↔release consistency check (`check-releases.ps1`) and release-body preview (`release-body-preview.ps1`)
 - [ ] New runnable demos covering additional governance patterns
-- [ ] Deeper release tooling (CI-gated release verification, release-body preview)
 - [ ] Refreshed content and navigation as the example set grows
 
 ## Guiding Principles

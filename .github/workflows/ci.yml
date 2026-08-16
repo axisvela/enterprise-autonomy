@@ -51,6 +51,17 @@ jobs:
         continue-on-error: true
         run: .\scripts\check-release.ps1
 
+      - name: Preview release body
+        shell: powershell
+        continue-on-error: true
+        run: .\scripts\release-body-preview.ps1 (.\scripts\version.ps1 get)
+
+      - name: Verify release tags have GitHub releases
+        shell: powershell
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: .\scripts\check-releases.ps1
+
       - name: Fail on broken links only
         shell: powershell
         if: always()
