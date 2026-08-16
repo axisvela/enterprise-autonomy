@@ -1,0 +1,24 @@
+{
+  "goals": [
+    {"id": "goal-preq-0001-sourced", "owner": "procurement-owner", "outcome": "preq-0001 purchased and received within budget without an unapproved purchase", "deadline": "2026-08-20T12:00:00Z"}
+  ],
+  "requirements": [
+    {"id": "req-preq-0001-source", "goalId": "goal-preq-0001-sourced", "capabilityType": "procurement.sourcing", "requiredEffect": "source-from-approved-supplier", "dependsOn": []},
+    {"id": "req-preq-0001-purchase", "goalId": "goal-preq-0001-sourced", "capabilityType": "procurement.purchase", "requiredEffect": "purchase", "dependsOn": ["req-preq-0001-source"]}
+  ],
+  "catalog": [
+    {"id": "cap-preferred-supplier", "type": "procurement.sourcing", "version": "1.0.0", "effects": ["source-from-approved-supplier"], "supplier": "supplier-b", "cost": 220},
+    {"id": "cap-standard-supplier", "type": "procurement.sourcing", "version": "1.0.0", "effects": ["source-from-approved-supplier"], "supplier": "supplier-a", "cost": 240},
+    {"id": "cap-purchase", "type": "procurement.purchase", "version": "1.0.0", "effects": ["purchase"], "cost": 0}
+  ],
+  "constraints": [
+    {"kind": "budget", "hard": true, "value": "procurement-budget", "amount": 5000},
+    {"kind": "preferred-supplier", "hard": false, "value": "supplier-b"}
+  ],
+  "delegations": {
+    "procurement-owner": {"delegator": "purchasing-authority", "delegatee": "procurement-owner", "parentScopes": ["procurement.purchase"], "delegatedScopes": ["procurement.sourcing"], "budgetCeiling": 5000, "evidenceDuty": ["approval://preq-0001"]}
+  },
+  "authorityGrants": [
+    {"principal": "procurement-owner", "scopes": ["procurement.sourcing", "procurement.purchase"], "budgetCeiling": 5000, "revoked": false}
+  ]
+}

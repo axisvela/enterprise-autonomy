@@ -1,0 +1,13 @@
+capability:
+  type: local
+authz:
+  type: local
+  local:
+    rules: D:\profile\paper-code\enterprise-autonomy\examples\procurement-local\procurement-policy.yaml
+    storage: D:\profile\paper-code\enterprise-autonomy\examples\procurement-local\.praxovela\grants.db
+    dev_allow_all: false
+    grant_ttl: 15m
+network:
+  type: local
+  local:
+    allow: false

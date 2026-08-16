@@ -1,0 +1,20 @@
+{
+  "schema_version": "1",
+  "workflow_id": "procurement-request-to-receipt",
+  "title": "Procurement Request To Receipt",
+  "kind": "approval",
+  "source": "enterprise-autonomy-example",
+  "stages": [
+    {"id": "validate", "title": "Validate Request", "assignee_spec": {"kind": "role", "role": "requester"}, "inputs": [], "outputs": []},
+    {"id": "approve", "title": "Approve Budget And Supplier", "assignee_spec": {"kind": "role", "role": "finance-lead,procurement-owner"}, "inputs": [], "outputs": []},
+    {"id": "purchase", "title": "Execute Purchase", "assignee_spec": {"kind": "capability", "required": ["procurement.purchase.execute"]}, "inputs": [], "outputs": []},
+    {"id": "receive", "title": "Confirm Receipt", "assignee_spec": {"kind": "role", "role": "warehouse-receiver"}, "inputs": [], "outputs": []},
+    {"id": "close", "title": "Confirm Outcome", "assignee_spec": {"kind": "role", "role": "procurement-owner"}, "inputs": [], "outputs": []}
+  ],
+  "transitions": [
+    {"from": "validate", "to": "approve"},
+    {"from": "approve", "to": "purchase"},
+    {"from": "purchase", "to": "receive"},
+    {"from": "receive", "to": "close"}
+  ]
+}
