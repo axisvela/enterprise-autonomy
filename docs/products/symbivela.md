@@ -1,4 +1,4 @@
-# Symbivela â€?Human-Agent Collaboration Workspace
+# Symbivela â€” Human-Agent Collaboration Workspace
 
 ## Public Role
 
@@ -17,9 +17,9 @@ Human sovereignty control surface for goals, plan review, approvals, interventio
 
 ## Where It Fits
 
-- [Order fulfillment exception](../../vertical-slices/order-fulfillment-exception.md) â€?operator review and case authority
-- [Mission-to-execution](../../vertical-slices/mission-to-execution.md) â€?operator collaboration and approval
-- [Local order-exception demo](../../examples/order-fulfillment-local/README.md) â€?runnable workspace and exception cases
+- [Order fulfillment exception](../../vertical-slices/order-fulfillment-exception.md) â€” operator review and case authority
+- [Mission-to-execution](../../vertical-slices/mission-to-execution.md) â€” operator collaboration and approval
+- [Local order-exception demo](../../examples/order-fulfillment-local/README.md) â€” runnable workspace and exception cases
 
 ## Authority
 

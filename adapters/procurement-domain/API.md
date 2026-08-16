@@ -125,3 +125,5 @@ draft -> submitted -> approved -> ordered -> closed
 | `409` | `{"error":"request_not_draft"}` | Re-submit after submission. |
 | `422` | `{"error":"insufficient_budget"}` | Supplier price exceeds budget. |
 | `200` | `"replayed": true` | Idempotency key already applied (not an error). |
+
+**Governance patterns:** segregation of duties and conjunctive authority; see the governance-pattern catalog in the private **`enterprise-autonomy-ee`** repository.

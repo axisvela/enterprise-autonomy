@@ -1,4 +1,4 @@
-# Tekmovela â€?Engineering Assurance
+# Tekmovela â€” Engineering Assurance
 
 ## Public Role
 
@@ -17,8 +17,8 @@ Agent-engineering assurance platform for reproducible testing, diagnosis, releas
 
 ## Where It Fits
 
-- [Facility inspection](../../reference-stacks/facility-inspection.md) â€?testing and release assurance
-- [Engineering assurance](../../reference-stacks/engineering-assurance.md) â€?verification contracts and release gating
+- [Facility inspection](../../reference-stacks/facility-inspection.md) â€” testing and release assurance
+- [Engineering assurance](../../reference-stacks/engineering-assurance.md) â€” verification contracts and release gating
 
 ## Authority
 

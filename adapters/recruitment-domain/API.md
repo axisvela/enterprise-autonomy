@@ -91,3 +91,5 @@ draft -> validated -> shortlisting -> selection -> offer -> closed
 ## Automation Boundary
 
 The adapter's central constraint is **human-decision integrity**: only humans (`actor_type: human`) may record screening, selection, or offer decisions. Automation can administer and organize, but any attempt to record a decision as an automated actor is denied before stage or candidate checks run.
+
+**Governance pattern:** automation cannot decide; see the governance-pattern catalog in the private **`enterprise-autonomy-ee`** repository.

@@ -83,3 +83,5 @@ Replaying the same `idempotency_key` returns `"replayed": true` without adjustin
 | `422` | `{"error":"insufficient_stock"}` | Adjustment would make availability negative. |
 | `405` | `{"error":"method_not_allowed"}` | Non-GET/POST method. |
 | `200` | `"replayed": true` | Idempotency key already applied (not an error). |
+
+**Governance pattern:** deny-by-default with no bypass and idempotency; see the governance-pattern catalog in the private **`enterprise-autonomy-ee`** repository.

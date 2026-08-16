@@ -101,3 +101,5 @@ proposed -> evidence -> decided -> released
 - **Immutable evidence.** One immutable run per proposal; re-recording is rejected.
 - **Review-group authority.** Only designated members decide.
 - **Approval-gated release.** Release requires an approve decision citing the exact reference.
+
+**Governance pattern:** evidence-gated release and immutable simulation; see the governance-pattern catalog in the private **`enterprise-autonomy-ee`** repository.

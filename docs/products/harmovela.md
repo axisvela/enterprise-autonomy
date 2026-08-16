@@ -1,4 +1,4 @@
-# Harmovela â€?Coordination Protocol
+# Harmovela â€” Coordination Protocol
 
 ## Public Role
 

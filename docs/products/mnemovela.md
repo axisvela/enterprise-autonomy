@@ -1,4 +1,4 @@
-# Mnemovela â€?Cognition and Memory Runtime
+# Mnemovela â€” Cognition and Memory Runtime
 
 ## Public Role
 

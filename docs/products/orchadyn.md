@@ -1,4 +1,4 @@
-# Orchadyn â€?Planning Compiler
+# Orchadyn â€” Planning Compiler
 
 ## Public Role
 
@@ -17,9 +17,9 @@ Enterprise planning compiler that turns governed goals, state, capabilities, and
 
 ## Where It Fits
 
-- [Order fulfillment exception](../../vertical-slices/order-fulfillment-exception.md) â€?alternate-fulfillment plan generation
-- [Mission-to-execution](../../vertical-slices/mission-to-execution.md) â€?planning and replanning
-- [Local order-exception demo](../../examples/order-fulfillment-local/README.md) â€?runnable verified planning
+- [Order fulfillment exception](../../vertical-slices/order-fulfillment-exception.md) â€” alternate-fulfillment plan generation
+- [Mission-to-execution](../../vertical-slices/mission-to-execution.md) â€” planning and replanning
+- [Local order-exception demo](../../examples/order-fulfillment-local/README.md) â€” runnable verified planning
 
 ## Authority
 

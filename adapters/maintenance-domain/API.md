@@ -105,3 +105,5 @@ pending -> validated -> (decision) -> (safety review) -> work order (scheduled)
 - **Prediction-vs-fact**: unvalidated signals are never treated as faults; an unconfirmed prediction cannot trigger a `stop`.
 - **Safety conjunctive**: intrusive work requires both a maintenance decision and an approved safety review.
 - **Decision-scoped work**: only `repair`/`stop` produce work orders; `monitor`/`inspect`/`defer` do not.
+
+**Governance patterns:** prediction-is-not-a-fault and safety conjunctive; see the governance-pattern catalog in the private **`enterprise-autonomy-ee`** repository.

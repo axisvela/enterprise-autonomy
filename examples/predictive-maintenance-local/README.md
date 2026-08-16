@@ -105,6 +105,10 @@ curl.exe "http://localhost:8095/v1/workorders/wo-pm-wo-v1"
 
 See the [value framework](../../docs/example-value.md) and the [maintenance domain adapter API](../../adapters/maintenance-domain/API.md).
 
+## Governance Patterns
+
+This demo demonstrates the integrity layer plus **prediction is not a fault** and **safety is conjunctive** with the maintenance decision of the governance-pattern catalog (maintained in the private **`enterprise-autonomy-ee`** repository).
+
 ## Stop The Demo
 
 Stop the processes shown in `.local-logs/` or close the PowerShell sessions that started them, or run `..\stop-demo.ps1` from the `examples/` directory. Remove `.local-data/` only when you intentionally want to discard the demo data.

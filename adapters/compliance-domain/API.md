@@ -80,3 +80,5 @@ open -> evidence -> attested -> released
 - **Completeness-gated attestation.** No attestation without all required evidence items.
 - **Designated attestor.** Only the designated attestor may attest.
 - **Attestation-gated, immutable package.** The package releases only after an attest citing the exact reference, and can never be replaced.
+
+**Governance pattern:** completeness-gated attestation and immutable audit; see the governance-pattern catalog in the private **`enterprise-autonomy-ee`** repository.

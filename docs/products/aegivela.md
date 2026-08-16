@@ -1,4 +1,4 @@
-# Aegivela â€?Identity and Authorization Fabric
+# Aegivela â€” Identity and Authorization Fabric
 
 ## Public Role
 
@@ -17,9 +17,9 @@ Agent identity, authorization, and security fabric for delegated authority, appr
 
 ## Where It Fits
 
-- [Order fulfillment exception](../../vertical-slices/order-fulfillment-exception.md) â€?authorization and approvals
-- [Mission-to-execution](../../vertical-slices/mission-to-execution.md) â€?identity and authorization
-- [Facility inspection](../../reference-stacks/facility-inspection.md) â€?delegated authority and approval
+- [Order fulfillment exception](../../vertical-slices/order-fulfillment-exception.md) â€” authorization and approvals
+- [Mission-to-execution](../../vertical-slices/mission-to-execution.md) â€” identity and authorization
+- [Facility inspection](../../reference-stacks/facility-inspection.md) â€” delegated authority and approval
 
 ## Authority
 

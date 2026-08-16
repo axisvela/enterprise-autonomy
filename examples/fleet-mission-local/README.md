@@ -104,6 +104,10 @@ curl.exe "http://localhost:8099/v1/notifications/mission-alpha-001"
 
 See the [value framework](../../docs/example-value.md) and the [fleet domain adapter API](../../adapters/fleet-domain/API.md).
 
+## Governance Patterns
+
+This demo demonstrates the integrity layer plus **autonomous boundary enforcement** and **pause-and-review** of the governance-pattern catalog (maintained in the private **`enterprise-autonomy-ee`** repository).
+
 ## Stop The Demo
 
 Stop the processes shown in `.local-logs/` or close the PowerShell sessions that started them, or run `..\stop-demo.ps1` from the `examples/` directory. Remove `.local-data/` only when you intentionally want to discard the demo data.

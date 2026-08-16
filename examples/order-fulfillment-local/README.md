@@ -141,6 +141,10 @@ See the [value framework](../../docs/example-value.md) and the [value report tem
 4. Inspect `GET http://localhost:8090/v1/orders/order-123` and `GET http://localhost:8090/v1/notifications/order-123` before marking the case resolved.
 5. Replace this reference adapter and any local Orchadyn database with authorized production integrations before real business use.
 
+## Governance Patterns
+
+This demo demonstrates the integrity layer of the governance-pattern catalog (maintained in the private **`enterprise-autonomy-ee`** repository): deny-by-default with no bypass, one shared approval reference across products, plan-as-recommendation, effect-ledger runtime, chain-based audit trail, and idempotent reruns.
+
 ## Stop The Demo
 
 Stop the processes shown in `.local-logs/` or close the PowerShell sessions that started them, or run `..\stop-demo.ps1` from the `examples/` directory (it stops demo processes by executable path). The example uses in-memory Ontovela state and a local Rheovela database path; remove `.local-data/` only when you intentionally want to discard the demo data.

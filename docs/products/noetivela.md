@@ -1,4 +1,4 @@
-# Noetivela â€?Inference Fabric
+# Noetivela â€” Inference Fabric
 
 ## Public Role
 

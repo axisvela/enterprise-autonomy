@@ -1,4 +1,4 @@
-# Ontovela â€?Digital Twin and World Model
+# Ontovela â€” Digital Twin and World Model
 
 ## Public Role
 
@@ -17,10 +17,10 @@ Digital enterprise twin and operational world-model platform with evidence-beari
 
 ## Where It Fits
 
-- [Order fulfillment exception](../../vertical-slices/order-fulfillment-exception.md) â€?operational state such as stockout assertions
-- [Mission-to-execution](../../vertical-slices/mission-to-execution.md) â€?operational context
-- [Facility inspection](../../reference-stacks/facility-inspection.md) â€?facility state
-- [Local order-exception demo](../../examples/order-fulfillment-local/README.md) â€?runnable assertion and state resolution
+- [Order fulfillment exception](../../vertical-slices/order-fulfillment-exception.md) â€” operational state such as stockout assertions
+- [Mission-to-execution](../../vertical-slices/mission-to-execution.md) â€” operational context
+- [Facility inspection](../../reference-stacks/facility-inspection.md) â€” facility state
+- [Local order-exception demo](../../examples/order-fulfillment-local/README.md) â€” runnable assertion and state resolution
 
 ## Authority
 

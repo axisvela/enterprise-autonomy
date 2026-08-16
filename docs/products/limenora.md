@@ -1,4 +1,4 @@
-# Limenora â€?Governed Integration Gateway
+# Limenora â€” Governed Integration Gateway
 
 ## Public Role
 
@@ -17,9 +17,9 @@ Governed integration gateway for APIs, MCP servers, events, webhooks, and partne
 
 ## Where It Fits
 
-- [Order fulfillment exception](../../vertical-slices/order-fulfillment-exception.md) â€?order, warehouse, carrier, and customer-system connectivity
-- [Local order-exception demo](../../examples/order-fulfillment-local/README.md) â€?runnable governed edge gateway
-- [Integration outage recovery](../../vertical-slices/integration-outage-recovery.md) â€?connectivity resilience
+- [Order fulfillment exception](../../vertical-slices/order-fulfillment-exception.md) â€” order, warehouse, carrier, and customer-system connectivity
+- [Local order-exception demo](../../examples/order-fulfillment-local/README.md) â€” runnable governed edge gateway
+- [Integration outage recovery](../../vertical-slices/integration-outage-recovery.md) â€” connectivity resilience
 
 ## Authority
 

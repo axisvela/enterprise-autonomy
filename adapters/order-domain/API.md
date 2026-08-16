@@ -111,3 +111,5 @@ Every accepted action appends `customer-notification-pending:<action-id>` and re
 | `200` | `"replayed": true` | Idempotency key already applied (not an error). |
 
 The adapter has **no bypass path**: an empty `approved_by`/`approval_ref` is rejected, never treated as "no approval required".
+
+**Governance pattern:** deny-by-default with no bypass and shared approval references; see the governance-pattern catalog in the private **`enterprise-autonomy-ee`** repository.

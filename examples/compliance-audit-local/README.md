@@ -105,6 +105,10 @@ curl.exe "http://localhost:8098/v1/notifications/compliance-0001"
 
 See the [value framework](../../docs/example-value.md) and the [compliance domain adapter API](../../adapters/compliance-domain/API.md).
 
+## Governance Patterns
+
+This demo demonstrates the integrity layer plus **completeness-gated attestation** and **immutable audit package** of the governance-pattern catalog (maintained in the private **`enterprise-autonomy-ee`** repository).
+
 ## Stop The Demo
 
 Stop the processes shown in `.local-logs/` or close the PowerShell sessions that started them, or run `..\stop-demo.ps1` from the `examples/` directory. Remove `.local-data/` only when you intentionally want to discard the demo data.

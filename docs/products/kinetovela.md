@@ -1,4 +1,4 @@
-# Kinetovela â€?Robotics Fleet Control Plane
+# Kinetovela â€” Robotics Fleet Control Plane
 
 ## Public Role
 
@@ -17,9 +17,9 @@ Physical-autonomy and robotics fleet control plane for bounded, observable, and 
 
 ## Where It Fits
 
-- [Mission-to-execution](../../vertical-slices/mission-to-execution.md) â€?physical execution
-- [Facility inspection](../../reference-stacks/facility-inspection.md) â€?robot-fleet task execution
-- [Fleet mission exception](../../vertical-slices/fleet-mission-exception.md) â€?exception handling for physical missions
+- [Mission-to-execution](../../vertical-slices/mission-to-execution.md) â€” physical execution
+- [Facility inspection](../../reference-stacks/facility-inspection.md) â€” robot-fleet task execution
+- [Fleet mission exception](../../vertical-slices/fleet-mission-exception.md) â€” exception handling for physical missions
 
 ## Authority
 

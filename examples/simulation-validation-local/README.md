@@ -107,6 +107,10 @@ curl.exe "http://localhost:8097/v1/notifications/proposal-sim-0001"
 
 See the [value framework](../../docs/example-value.md) and the [simulation domain adapter API](../../adapters/simulation-domain/API.md).
 
+## Governance Patterns
+
+This demo demonstrates the integrity layer plus **evidence-gated release** and **immutable simulation evidence** of the governance-pattern catalog (maintained in the private **`enterprise-autonomy-ee`** repository).
+
 ## Stop The Demo
 
 Stop the processes shown in `.local-logs/` or close the PowerShell sessions that started them, or run `..\stop-demo.ps1` from the `examples/` directory. Remove `.local-data/` only when you intentionally want to discard the demo data.

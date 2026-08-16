@@ -103,6 +103,10 @@ curl.exe "http://localhost:8094/v1/notifications/req-0001"
 
 See the [value framework](../../docs/example-value.md) and the [recruitment domain adapter API](../../adapters/recruitment-domain/API.md).
 
+## Governance Patterns
+
+This demo demonstrates the integrity layer plus **automation cannot decide** (screening, selection, and offer decisions are human-only) of the governance-pattern catalog (maintained in the private **`enterprise-autonomy-ee`** repository).
+
 ## Stop The Demo
 
 Stop the processes shown in `.local-logs/` or close the PowerShell sessions that started them, or run `..\stop-demo.ps1` from the `examples/` directory. Remove `.local-data/` only when you intentionally want to discard the demo data.

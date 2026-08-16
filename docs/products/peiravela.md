@@ -1,4 +1,4 @@
-# Peiravela â€?Simulation and Experiment Control Plane
+# Peiravela â€” Simulation and Experiment Control Plane
 
 ## Public Role
 
@@ -17,9 +17,9 @@ Autonomous-system simulation, experimentation, and validation control plane with
 
 ## Where It Fits
 
-- [Simulation-to-validation](../../vertical-slices/simulation-to-validation.md) â€?review before live use
-- [Facility inspection](../../reference-stacks/facility-inspection.md) â€?simulation before live operation
-- [Innovation sandbox to policy](../../vertical-slices/innovation-sandbox-to-policy.md) â€?possible-world experimentation
+- [Simulation-to-validation](../../vertical-slices/simulation-to-validation.md) â€” review before live use
+- [Facility inspection](../../reference-stacks/facility-inspection.md) â€” simulation before live operation
+- [Innovation sandbox to policy](../../vertical-slices/innovation-sandbox-to-policy.md) â€” possible-world experimentation
 
 ## Authority
 

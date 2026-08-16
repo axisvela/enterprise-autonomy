@@ -99,3 +99,5 @@ planned -> running -> paused -> resumed -> completed
 - **Autonomous boundary enforcement.** Out-of-boundary telemetry is frozen without human involvement.
 - **Pause-and-review.** Exceptions always pause; only an operator review (with approval reference) resumes.
 - **Operator-gated.** Only the mission operator may start or review.
+
+**Governance pattern:** autonomous boundary and pause-and-review; see the governance-pattern catalog in the private **`enterprise-autonomy-ee`** repository.

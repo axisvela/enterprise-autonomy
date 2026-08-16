@@ -1,4 +1,4 @@
-# Rheovela â€?Durable Workflow Platform
+# Rheovela â€” Durable Workflow Platform
 
 ## Public Role
 
@@ -17,9 +17,9 @@ Dynamic process and durable-workflow platform for recoverable, approvable, and a
 
 ## Where It Fits
 
-- [Order fulfillment exception](../../vertical-slices/order-fulfillment-exception.md) â€?durable exception process
-- [Process-to-outcome](../../vertical-slices/process-to-outcome.md) â€?long-running process coordination
-- [Local order-exception demo](../../examples/order-fulfillment-local/README.md) â€?runnable durable process instance
+- [Order fulfillment exception](../../vertical-slices/order-fulfillment-exception.md) â€” durable exception process
+- [Process-to-outcome](../../vertical-slices/process-to-outcome.md) â€” long-running process coordination
+- [Local order-exception demo](../../examples/order-fulfillment-local/README.md) â€” runnable durable process instance
 
 ## Authority
 

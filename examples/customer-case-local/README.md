@@ -103,6 +103,10 @@ curl.exe "http://localhost:8093/v1/notifications/cs-0001"
 
 See the [value framework](../../docs/example-value.md) and the [customer domain adapter API](../../adapters/customer-domain/API.md).
 
+## Governance Patterns
+
+This demo demonstrates the integrity layer plus **consent as a first-class gate** and **conjunctive authority** (customer consent + service-lead approval) of the governance-pattern catalog (maintained in the private **`enterprise-autonomy-ee`** repository).
+
 ## Stop The Demo
 
 Stop the processes shown in `.local-logs/` or close the PowerShell sessions that started them, or run `..\stop-demo.ps1` from the `examples/` directory. Remove `.local-data/` only when you intentionally want to discard the demo data.

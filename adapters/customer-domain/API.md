@@ -100,3 +100,5 @@ open -> consented -> resolving -> resolved
 - **Approval-required**: the same movements are denied without a service-lead `approved_by`/`approval_ref`.
 - **Verified-facts-only**: unverified claims cannot be recorded.
 - **Close-after-resolution**: a case cannot close with no applied resolution.
+
+**Governance patterns:** consent as a first-class gate and conjunctive authority; see the governance-pattern catalog in the private **`enterprise-autonomy-ee`** repository.

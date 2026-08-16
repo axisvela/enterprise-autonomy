@@ -1,4 +1,4 @@
-# Praxovela â€?Governed Agent Runtime
+# Praxovela â€” Governed Agent Runtime
 
 ## Public Role
 
@@ -17,8 +17,8 @@ Local-first desktop agent runtime with governed, sandboxed capability use, a den
 
 ## Where It Fits
 
-- [Local order-exception demo](../../examples/order-fulfillment-local/README.md) â€?runnable deny-by-default agent step with effect ledger
-- [Mission-to-execution](../../vertical-slices/mission-to-execution.md) â€?governed agent actions
+- [Local order-exception demo](../../examples/order-fulfillment-local/README.md) â€” runnable deny-by-default agent step with effect ledger
+- [Mission-to-execution](../../vertical-slices/mission-to-execution.md) â€” governed agent actions
 
 ## Authority
 

@@ -105,6 +105,10 @@ curl.exe "http://localhost:8096/v1/notifications/work-0001"
 
 See the [value framework](../../docs/example-value.md) and the [integration domain adapter API](../../adapters/integration-domain/API.md).
 
+## Governance Patterns
+
+This demo demonstrates the integrity layer plus **recovery integrity** (preserve before resume, verify before resume, never re-execute) of the governance-pattern catalog (maintained in the private **`enterprise-autonomy-ee`** repository).
+
 ## Stop The Demo
 
 Stop the processes shown in `.local-logs/` or close the PowerShell sessions that started them, or run `..\stop-demo.ps1` from the `examples/` directory. Remove `.local-data/` only when you intentionally want to discard the demo data.

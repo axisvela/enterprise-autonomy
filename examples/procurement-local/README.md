@@ -104,6 +104,10 @@ curl.exe "http://localhost:8092/v1/pos/po-preq-0001-supplier-b"
 
 See the [value framework](../../docs/example-value.md) and the [procurement domain adapter API](../../adapters/procurement-domain/API.md).
 
+## Governance Patterns
+
+This demo demonstrates the integrity layer plus **segregation of duties** and **conjunctive authority** (finance and procurement must both approve) of the governance-pattern catalog (maintained in the private **`enterprise-autonomy-ee`** repository).
+
 ## Stop The Demo
 
 Stop the processes shown in `.local-logs/` or close the PowerShell sessions that started them, or run `..\stop-demo.ps1` from the `examples/` directory. Remove `.local-data/` only when you intentionally want to discard the demo data.

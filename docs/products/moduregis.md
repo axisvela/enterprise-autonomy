@@ -1,4 +1,4 @@
-# Moduregis â€?Capability Control Plane
+# Moduregis â€” Capability Control Plane
 
 ## Public Role
 
@@ -17,8 +17,8 @@ Enterprise capability control plane for publishing, discovering, governing, auth
 
 ## Where It Fits
 
-- [Mission-to-execution](../../vertical-slices/mission-to-execution.md) â€?capability control for physical work
-- [Order fulfillment exception](../../vertical-slices/order-fulfillment-exception.md) â€?governed capability invocation
+- [Mission-to-execution](../../vertical-slices/mission-to-execution.md) â€” capability control for physical work
+- [Order fulfillment exception](../../vertical-slices/order-fulfillment-exception.md) â€” governed capability invocation
 
 ## Authority
 

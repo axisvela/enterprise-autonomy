@@ -1,4 +1,4 @@
-# Gnosivela â€?Semantic and Knowledge Fabric
+# Gnosivela â€” Semantic and Knowledge Fabric
 
 ## Public Role
 

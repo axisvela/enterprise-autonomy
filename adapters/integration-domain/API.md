@@ -96,3 +96,5 @@ work:         inflight -> preserved -> resumed -> completed
 - **Preserve-before-resume.** In-flight work must have a durable preservation reference before it can resume.
 - **Verify-before-resume.** Resumption requires an integration-owner reconnection check that verified the integration.
 - **No-silent-rerun.** Completed actions cannot be re-executed; only idempotent replays are permitted.
+
+**Governance pattern:** recovery integrity (preserve, verify, never rerun); see the governance-pattern catalog in the private **`enterprise-autonomy-ee`** repository.
