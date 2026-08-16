@@ -70,6 +70,7 @@ This roadmap tracks the public content plan for the `enterprise-autonomy` reposi
 - [x] Demo orchestration: run all demos with one command, reliable stop, and a value dashboard
 - [x] Structural validation (demo structure, script syntax, JSON validity) in CI
 - [x] All eleven vertical slices have runnable local demos
+- [x] Twelfth vertical slice (sequenced deployment) with runnable local demo and the deployment-domain reference adapter
 
 ## Phase 7 — Post-1.0 additive work (in progress)
 
@@ -79,7 +80,7 @@ Post-1.0 changes are additive and follow the same verification and release proce
 - [x] Harden release tooling: idempotent `create-release.ps1` (skips existing releases) and `-NotLatest` support for historical backfills
 - [x] Delegate the release workflow to the shared release scripts (single source of truth for tag and release creation)
 - [x] Deeper release tooling: CI-gated tag↔release consistency check (`check-releases.ps1`) and release-body preview (`release-body-preview.ps1`)
-- [ ] New runnable demos covering additional governance patterns
+- [x] New runnable demo: sequenced deployment (twelfth slice) with the deployment-domain adapter covering sequenced autonomous execution and approval-required deviations
 - [ ] Refreshed content and navigation as the example set grows
 
 ## Guiding Principles

@@ -20,6 +20,7 @@ This page explains, with concrete artifacts from the [order-exception demo](../e
 14. [Autonomous Boundary and Pause-and-Review (Fleet Demo)](#14-autonomous-boundary-and-pause-and-review-fleet-demo)
 15. [Durable Process Lifecycle Integrity (Process-To-Outcome Demo)](#15-durable-process-lifecycle-integrity-process-to-outcome-demo)
 16. [Sandbox Boundary, Evidence-Based Policy, and Immutable Policy (Innovation Sandbox Demo)](#16-sandbox-boundary-evidence-based-policy-and-immutable-policy-innovation-sandbox-demo)
+17. [Sequenced Autonomous Execution (Sequenced-Deployment Demo)](#17-sequenced-autonomous-execution-sequenced-deployment-demo)
 
 ## 1. No Product Can Change the Order Without a Case
 
@@ -296,6 +297,28 @@ Four properties worth noticing:
 2. **Evidence-based policy.** A policy decision cannot exist before recorded experiment evidence — the review cannot precede the experiment.
 3. **Designated reviewer.** Only review-group members may decide (`403 not_designated_reviewer`).
 4. **Immutable policy.** A recorded policy decision is final (`409 policy_already_recorded_immutable`), and `apply` requires the exact `policy_ref`; a rejected proposal can never be applied. Policy is earned once, from evidence, and then fixed.
+
+## 17. Sequenced Autonomous Execution (Sequenced-Deployment Demo)
+
+The [sequenced-deployment demo](../examples/deployment-local/README.md) shows that automation can advance a release pipeline itself — but only in a declared order, citing evidence, and never outside human control of deviations:
+
+```
+POST /v1/deployments/dep-0001/steps      (jump ahead to test before checkout)
+-> 409 {"error":"step_out_of_sequence_next_is_checkout"}
+
+POST /v1/deployments/dep-0001/deviations (pause with no approval)
+-> 403 {"error":"deviation_requires_human_approval"}
+
+POST /v1/deployments/dep-0001/steps      (re-run checkout after release)
+-> 409 {"error":"deployment_already_released_immutable"}
+```
+
+Four properties worth noticing:
+
+1. **Sequence integrity is structural.** An autonomous executor can only run the exact next step; jumping or reordering is rejected (`409`) with the next expected step named — the order is encoded in the domain, not a procedure.
+2. **Evidence-cited steps.** Every step carries an `evidence_ref` recorded by the executor, so each advance is traceable to the artifact it consumed; an evidence-less step is rejected (`400`).
+3. **Deviations require human approval.** Pause, skip, and rollback are off-sequence by definition; any of them needs an `approved_by` and `approval_ref`, and an unapproved deviation is denied (`403`) before any state changes.
+4. **Released immutability.** Once the terminal step runs, the deployment is `released` and final; no further step or deviation is accepted (`409`), and only the same idempotency key replays. Automation stays on a leash: it may run the whole sequence, but it cannot skip, reorder, or reopen it without a human.
 
 ## Why This Matters
 

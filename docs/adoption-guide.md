@@ -22,7 +22,7 @@ How to approach adopting AxisRobo Enterprise Autonomy products for a governed au
 ## Scenario Guidance
 
 - [Business scenario catalog](business-scenarios.md) — outcome-level scenarios
-- [Demo matrix](demo-matrix.md) — comparison of all eleven runnable demos
+- [Demo matrix](demo-matrix.md) — comparison of all twelve runnable demos
 - [Reference stacks](../reference-stacks/) — product-composition overviews
 - [Vertical slices](../vertical-slices/) — end-to-end use cases
 

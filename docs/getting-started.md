@@ -24,7 +24,7 @@ The governance-pattern catalog — which organized the examples vertically by pa
 
 ## 6. Run a local demo
 
-Eleven runnable local demos are available, each producing a value report. The [demo matrix](demo-matrix.md) compares them all:
+Twelve runnable local demos are available, each producing a value report. The [demo matrix](demo-matrix.md) compares them all:
 
 - [Order exception demo](../examples/order-fulfillment-local/README.md) — stockout exception with approvals and value report.
 - [Procurement demo](../examples/procurement-local/README.md) — governed purchasing with segregation of duties.
@@ -37,6 +37,7 @@ Eleven runnable local demos are available, each producing a value report. The [d
 - [Fleet mission demo](../examples/fleet-mission-local/README.md) — autonomous boundary enforcement and operator-reviewed pauses.
 - [Process to outcome demo](../examples/process-to-outcome-local/README.md) — stage-sequenced durable process with terminal-state enforcement.
 - [Innovation sandbox demo](../examples/innovation-sandbox-local/README.md) — bounded sandbox experiments and evidence-based policy.
+- [Sequenced deployment demo](../examples/deployment-local/README.md) — sequenced autonomous release with approval-required deviations.
 
 Run them all end to end with `.\examples\run-all-demos.ps1` (requires a full local stack; use `-CheckOnly` to verify structure without a database). Aggregate the results with `.\scripts\report-value.ps1` into the [value dashboard](value-dashboard.md). See the [local run handbook](../examples/local-run-handbook.md) for startup guidance.
 

@@ -1,0 +1,20 @@
+{
+  "schema_version": "1",
+  "workflow_id": "sequenced-deployment",
+  "title": "Sequenced Deployment",
+  "kind": "approval",
+  "source": "enterprise-autonomy-example",
+  "stages": [
+    {"id": "checkout", "title": "Checkout", "assignee_spec": {"kind": "capability", "required": ["deployment.step.execute"]}, "inputs": [], "outputs": []},
+    {"id": "build", "title": "Build", "assignee_spec": {"kind": "capability", "required": ["deployment.step.execute"]}, "inputs": [], "outputs": []},
+    {"id": "test", "title": "Test", "assignee_spec": {"kind": "capability", "required": ["deployment.step.execute"]}, "inputs": [], "outputs": []},
+    {"id": "approve", "title": "Approve", "assignee_spec": {"kind": "role", "role": "release-lead"}, "inputs": [], "outputs": []},
+    {"id": "production", "title": "Production", "assignee_spec": {"kind": "capability", "required": ["deployment.step.execute"]}, "inputs": [], "outputs": []}
+  ],
+  "transitions": [
+    {"from": "checkout", "to": "build"},
+    {"from": "build", "to": "test"},
+    {"from": "test", "to": "approve"},
+    {"from": "approve", "to": "production"}
+  ]
+}

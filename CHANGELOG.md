@@ -4,6 +4,14 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`. `1.0.0` is the first stable release of the public introduction and examples repository.
 
+## 1.1.0 (2026-08-16)
+
+- Added the deployment-domain reference adapter (release pipeline, sequenced steps, evidence-cited execution, approved deviations) with **sequenced autonomous execution** governance.
+- Added the runnable sequenced-deployment local demo (`examples/deployment-local/`) with an 8-step lifecycle, `verify.ps1`, `run-all.ps1`, value report, and a detailed operations guide. **All twelve vertical slices now have runnable demos.**
+- Extended `run-demo-smoke.ps1` to all thirteen adapters (75 assertions) and wired the deployment demo into `run-all-demos.ps1`, `report-value.ps1`, `check-examples.ps1`, `validate-demos.ps1`, and `run-go-tests.ps1`.
+- Extended the governance-subtlety guide with the sequenced-autonomous-execution pattern (section 17).
+- Cross-linked the deployment demo from the sequenced-deployment slice, example index, demo matrix, getting-started, run handbook, and roadmap.
+
 ## 1.0.5 (2026-08-16)
 
 - Completed the governance-subtlety deep dive: added section 15 (durable process lifecycle integrity, process-to-outcome demo) and section 16 (sandbox boundary, evidence-based policy, immutable policy; innovation-sandbox demo), matching the pattern coverage of every earlier demo.

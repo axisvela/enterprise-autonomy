@@ -15,7 +15,8 @@ $adapters = @(
   @{ Name = "compliance-domain"; Dir = "compliance-domain"; Args = "--addr :$($Port + 8) --data-file `"$env:TEMP\smoke-compliance-data.json`""; Check = "/healthz" },
   @{ Name = "fleet-domain"; Dir = "fleet-domain"; Args = "--addr :$($Port + 9) --data-file `"$env:TEMP\smoke-fleet-data.json`""; Check = "/healthz" },
   @{ Name = "process-domain"; Dir = "process-domain"; Args = "--addr :$($Port + 10) --data-file `"$env:TEMP\smoke-process-data.json`""; Check = "/healthz" },
-  @{ Name = "sandbox-domain"; Dir = "sandbox-domain"; Args = "--addr :$($Port + 11) --data-file `"$env:TEMP\smoke-sandbox-data.json`""; Check = "/healthz" }
+  @{ Name = "sandbox-domain"; Dir = "sandbox-domain"; Args = "--addr :$($Port + 11) --data-file `"$env:TEMP\smoke-sandbox-data.json`""; Check = "/healthz" },
+  @{ Name = "deployment-domain"; Dir = "deployment-domain"; Args = "--addr :$($Port + 12) --data-file `"$env:TEMP\smoke-deployment-data.json`""; Check = "/healthz" }
 )
 
 $procs = @()
@@ -46,6 +47,7 @@ try {
   $fleetAddr = "http://localhost:$($Port + 9)"
   $procAddr2 = "http://localhost:$($Port + 10)"
   $sandAddr = "http://localhost:$($Port + 11)"
+  $depAddr = "http://localhost:$($Port + 12)"
 
   $failures = @()
   function Assert-True($condition, $message) {
@@ -65,6 +67,7 @@ try {
   Assert-True ((Invoke-RestMethod -Uri "$fleetAddr/healthz").status -eq "ok") "fleet-domain adapter is healthy"
   Assert-True ((Invoke-RestMethod -Uri "$procAddr2/healthz").status -eq "ok") "process-domain adapter is healthy"
   Assert-True ((Invoke-RestMethod -Uri "$sandAddr/healthz").status -eq "ok") "sandbox-domain adapter is healthy"
+  Assert-True ((Invoke-RestMethod -Uri "$depAddr/healthz").status -eq "ok") "deployment-domain adapter is healthy"
 
   $order = Invoke-RestMethod -Uri "$orderAddr/v1/orders/order-123"
   Assert-True ($order.fulfillment_status -eq "stockout") "order starts in stockout"
@@ -422,6 +425,42 @@ try {
   $apResult = Invoke-RestMethod -Method Post -Uri "$sandBase/apply" -ContentType "application/json" -Body $ap
   Assert-True ($apResult.proposal.status -eq "released") "policy is applied after the decision"
 
+  # Sequenced deployment flow
+  $depBase = "$depAddr/v1/deployments/dep-0001"
+  $outOfSequence = $null
+  try {
+    $skip = @{ step = "test"; executed_by = "release-automation"; evidence_ref = "evidence://smoke/test"; idempotency_key = "smoke-dep-skip-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$depBase/steps" -ContentType "application/json" -Body $skip | Out-Null
+  } catch { $outOfSequence = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($outOfSequence -eq 409) "out-of-sequence step is rejected (HTTP 409)"
+
+  foreach ($step in @("checkout", "build", "test")) {
+    $body = @{ step = $step; executed_by = "release-automation"; evidence_ref = "evidence://smoke/$step"; idempotency_key = "smoke-dep-$step-v1" } | ConvertTo-Json
+    $stepResult = Invoke-RestMethod -Method Post -Uri "$depBase/steps" -ContentType "application/json" -Body $body
+    Assert-True ($stepResult.deployment.status -eq "in-flight") "step '$step' executes in sequence (in-flight)"
+  }
+
+  $pauseDenied = $null
+  try {
+    $noApproval = @{ action = "pause"; idempotency_key = "smoke-dep-pause-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$depBase/deviations" -ContentType "application/json" -Body $noApproval | Out-Null
+  } catch { $pauseDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($pauseDenied -eq 403) "unapproved deviation is rejected (HTTP 403)"
+
+  foreach ($step in @("approve", "production")) {
+    $body = @{ step = $step; executed_by = "release-automation"; evidence_ref = "evidence://smoke/$step"; idempotency_key = "smoke-dep-$step-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$depBase/steps" -ContentType "application/json" -Body $body | Out-Null
+  }
+  $depResult = Invoke-RestMethod -Uri $depBase
+  Assert-True ($depResult.status -eq "released") "terminal step releases the deployment"
+
+  $rerunDenied = $null
+  try {
+    $rerun = @{ step = "checkout"; executed_by = "release-automation"; evidence_ref = "evidence://smoke/checkout"; idempotency_key = "smoke-dep-rerun-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$depBase/steps" -ContentType "application/json" -Body $rerun | Out-Null
+  } catch { $rerunDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($rerunDenied -eq 409) "released deployment is immutable (HTTP 409)"
+
   Write-Host ""
   if ($failures.Count -eq 0) { Write-Host "run-demo-smoke: all adapter-level checks passed." -ForegroundColor Green; exit 0 }
   Write-Host "run-demo-smoke: $($failures.Count) check(s) failed." -ForegroundColor Red
@@ -444,4 +483,5 @@ try {
   Remove-Item "$env:TEMP\smoke-fleet-data.json" -ErrorAction SilentlyContinue
   Remove-Item "$env:TEMP\smoke-process-data.json" -ErrorAction SilentlyContinue
   Remove-Item "$env:TEMP\smoke-sandbox-data.json" -ErrorAction SilentlyContinue
+  Remove-Item "$env:TEMP\smoke-deployment-data.json" -ErrorAction SilentlyContinue
 }

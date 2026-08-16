@@ -26,7 +26,7 @@ Architecture, contracts, schemas, profiles, conformance, governance, internal pl
 | --- | --- |
 | `docs/products.md` | Public overview of the ecosystem products. |
 | `docs/products/` | Per-product public overview pages. |
-| `docs/demo-matrix.md` | Comparison of all eleven runnable demos. |
+| `docs/demo-matrix.md` | Comparison of all twelve runnable demos. |
 | `examples/` | Public, illustrative end-to-end scenarios and local runnable demos. |
 | `examples/run-all-demos.ps1` | Run every runnable demo end to end and stop the stack. |
 | `examples/stop-demo.ps1` | Stop demo processes reliably (path-based). |
@@ -49,7 +49,7 @@ Start with the [getting-started guide](docs/getting-started.md), then explore a 
 
 ## Runnable Demos
 
-All eleven vertical slices have runnable local demos. Each demo drives real local product binaries plus a reference adapter and produces a machine-readable [value report](docs/value-dashboard.md). See the [demo matrix](docs/demo-matrix.md) for the full comparison.
+All twelve vertical slices have runnable local demos. Each demo drives real local product binaries plus a reference adapter and produces a machine-readable [value report](docs/value-dashboard.md). See the [demo matrix](docs/demo-matrix.md) for the full comparison.
 
 | Demo | Adapter | Port | Governance flavor | Value report |
 | --- | --- | --- | --- | --- |
@@ -64,6 +64,7 @@ All eleven vertical slices have runnable local demos. Each demo drives real loca
 | [Fleet mission exception](examples/fleet-mission-local/README.md) | fleet-domain | 8099 | Autonomous boundary + pause-and-review | `fleet-value-report.json` |
 | [Process to outcome](examples/process-to-outcome-local/README.md) | process-domain | 8100 | Stage-sequenced durable process | `process-value-report.json` |
 | [Innovation sandbox](examples/innovation-sandbox-local/README.md) | sandbox-domain | 8101 | Sandbox boundary + evidence-based policy | `sandbox-value-report.json` |
+| [Sequenced deployment](examples/deployment-local/README.md) | deployment-domain | 8102 | Sequenced autonomous execution + approval-required deviations | `deployment-value-report.json` |
 
 ## Quickstart
 
@@ -99,13 +100,14 @@ All eleven vertical slices have runnable local demos. Each demo drives real loca
 - [Integration outage recovery](vertical-slices/integration-outage-recovery.md)
 - [Compliance request to audit](vertical-slices/compliance-request-to-audit.md)
 - [Innovation sandbox to policy](vertical-slices/innovation-sandbox-to-policy.md)
+- [Sequenced deployment](vertical-slices/sequenced-deployment.md)
 - [Business scenario catalog](docs/business-scenarios.md)
 - [Public example design guide](docs/example-design-guide.md)
 - [Glossary](docs/glossary.md)
 
 ## Status
 
-**Stable 1.0.x release series** (current: 1.0.3). All eleven vertical slices have runnable local demos, backed by twelve reference adapters with Go unit tests, continuous integration, structural validation, and an automated release workflow that publishes a tag and GitHub Release for every prepared version. Public content is maintained in this repository; governance-pattern knowledge and internal material live in the private `enterprise-autonomy-ee` repository. See the [repository roadmap](ROADMAP.md) and [release status](docs/release-status.md).
+**Stable 1.0.x release series** (current: 1.0.6). All twelve vertical slices have runnable local demos, backed by thirteen reference adapters with Go unit tests, continuous integration, structural validation, and an automated release workflow that publishes a tag and GitHub Release for every prepared version. Public content is maintained in this repository; governance-pattern knowledge and internal material live in the private `enterprise-autonomy-ee` repository. See the [repository roadmap](ROADMAP.md) and [release status](docs/release-status.md).
 
 ## Releases
 

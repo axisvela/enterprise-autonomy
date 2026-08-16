@@ -1,6 +1,6 @@
 # Public Examples
 
-Public examples illustrate how AxisRobo products can be composed to achieve a measurable outcome. They are adoption-oriented, not deployment blueprints. Every example makes its value explicit through outcome, decision gates, evidence, and effect; see the [value framework](../docs/example-value.md). The [demo matrix](../docs/demo-matrix.md) compares all eleven runnable demos at a glance.
+Public examples illustrate how AxisRobo products can be composed to achieve a measurable outcome. They are adoption-oriented, not deployment blueprints. Every example makes its value explicit through outcome, decision gates, evidence, and effect; see the [value framework](../docs/example-value.md). The [demo matrix](../docs/demo-matrix.md) compares all twelve runnable demos at a glance.
 
 | Example | Type | Description | Value & Effect |
 | --- | --- | --- | --- |
@@ -16,6 +16,7 @@ Public examples illustrate how AxisRobo products can be composed to achieve a me
 | [Fleet mission exception (local)](fleet-mission-local/README.md) | Runnable local demo | Autonomous boundary enforcement and operator-reviewed pauses, with a verified value report. | [Value & Effect](fleet-mission-local/README.md#value--effect) |
 | [Process to outcome (local)](process-to-outcome-local/README.md) | Runnable local demo | Stage-sequenced durable process with terminal-state enforcement, and a verified value report. | [Value & Effect](process-to-outcome-local/README.md#value--effect) |
 | [Innovation sandbox (local)](innovation-sandbox-local/README.md) | Runnable local demo | Bounded sandbox experiments and evidence-based policy, with a verified value report. | [Value & Effect](innovation-sandbox-local/README.md#value--effect) |
+| [Sequenced deployment (local)](deployment-local/README.md) | Runnable local demo | Sequenced autonomous release with approval-required deviations, and a verified value report. | [Value & Effect](deployment-local/README.md#value--effect) |
 
 ## Supporting Material
 
@@ -36,7 +37,7 @@ Public examples illustrate how AxisRobo products can be composed to achieve a me
 Runnable demos execute against real local product binaries and produce observable business artifacts plus a machine-readable value report. Run them individually (`<demo-dir>\run-all.ps1`) or all together:
 
 ```powershell
-.\run-all-demos.ps1                # all four demos, end to end
+.\run-all-demos.ps1                # all twelve demos, end to end
 .\run-all-demos.ps1 -CheckOnly     # verify structure without a database
 .\stop-demo.ps1                    # stop all demo processes (path-based, safe)
 ```

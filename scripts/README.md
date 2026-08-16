@@ -7,8 +7,7 @@ Small validation and reporting utilities for the public examples.
 | [check-links.ps1](check-links.ps1) | Verifies every internal markdown link resolves. Run after content changes. | `0` pass, `1` broken links |
 | [check-examples.ps1](check-examples.ps1) | Verifies a runnable demo's produced artifacts against expectations via its `verify.ps1`. | `0` pass, `1` failure |
 | [report-value.ps1](report-value.ps1) | Aggregates value reports (`.local-data/*-value-report.json`) into a summary table. | `0` (also succeeds when no reports exist) |
-| [run-demo-smoke.ps1](run-demo-smoke.ps1) | Smoke-tests every reference adapter end to end, covering each adapter's governance gates, denial paths, and idempotency. | `0` pass, `1` failure |
-| [version.ps1](version.ps1) | Reads, sets, or bumps the repository version in `VERSION`. | `0` success |
+| [run-demo-smoke.ps1](run-demo-smoke.ps1) | Smoke-tests every reference adapter end to end, covering each adapter's governance gates, denial paths, and idempotency. | `0` pass, `1` failure || [version.ps1](version.ps1) | Reads, sets, or bumps the repository version in `VERSION`. | `0` success |
 | [check-release.ps1](check-release.ps1) | Decides whether a new tag/version is warranted after commits. | `0` no change, `1` new tag needed, `2` prepared and ready to tag |
 | [install-hooks.ps1](install-hooks.ps1) | Installs the pre-commit hook (`.githooks/pre-commit`) via `core.hooksPath`. | `0` success |
 | [check-hooks.ps1](check-hooks.ps1) | Verifies the pre-commit hook is installed and active. | `0` active, `1` not installed |
@@ -87,8 +86,8 @@ The repository includes [`.github/workflows/ci.yml`](../.github/workflows/ci.yml
 1. `check-links.ps1` — breaks the build on broken internal links.
 2. `validate-demos.ps1` — verifies demo structure and script syntax.
 3. `validate-json.ps1` — verifies every JSON plan/workflow parses.
-4. `run-go-tests.ps1` — runs `go vet` and `go test` on all twelve reference adapters.
-5. `run-demo-smoke.ps1` — builds and smoke-tests all twelve reference adapters (70 assertions).
+4. `run-go-tests.ps1` — runs `go vet` and `go test` on all thirteen reference adapters.
+5. `run-demo-smoke.ps1` — builds and smoke-tests all thirteen reference adapters (75 assertions).
 6. `check-hooks.ps1` — verifies the pre-commit hook file is present (config check is local-only).
 7. `version.ps1 get` — reports the current version.
 8. `check-release.ps1` — reports whether a new tag is warranted (informational; exit `1` does not fail the build).

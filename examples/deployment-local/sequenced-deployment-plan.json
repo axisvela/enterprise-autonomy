@@ -1,0 +1,31 @@
+{
+  "goals": [
+    {"id": "goal-dep-0001-release", "owner": "release-lead", "outcome": "dep-0001 reaches the released state only through the sequenced pipeline steps, each citing evidence, with deviations approved by a human", "deadline": "2026-09-02T12:00:00Z"}
+  ],
+  "requirements": [
+    {"id": "req-dep-0001-checkout", "goalId": "goal-dep-0001-release", "capabilityType": "deployment.step", "requiredEffect": "execute-checkout", "dependsOn": []},
+    {"id": "req-dep-0001-build", "goalId": "goal-dep-0001-release", "capabilityType": "deployment.step", "requiredEffect": "execute-build", "dependsOn": ["req-dep-0001-checkout"]},
+    {"id": "req-dep-0001-test", "goalId": "goal-dep-0001-release", "capabilityType": "deployment.step", "requiredEffect": "execute-test", "dependsOn": ["req-dep-0001-build"]},
+    {"id": "req-dep-0001-approve", "goalId": "goal-dep-0001-release", "capabilityType": "deployment.step", "requiredEffect": "execute-approve", "dependsOn": ["req-dep-0001-test"]},
+    {"id": "req-dep-0001-production", "goalId": "goal-dep-0001-release", "capabilityType": "deployment.step", "requiredEffect": "execute-production", "dependsOn": ["req-dep-0001-approve"]}
+  ],
+  "catalog": [
+    {"id": "cap-checkout", "type": "deployment.step", "version": "1.0.0", "effects": ["execute-checkout"], "step": "checkout", "automationAllowed": true, "cost": 0},
+    {"id": "cap-build", "type": "deployment.step", "version": "1.0.0", "effects": ["execute-build"], "step": "build", "automationAllowed": true, "cost": 0},
+    {"id": "cap-test", "type": "deployment.step", "version": "1.0.0", "effects": ["execute-test"], "step": "test", "automationAllowed": true, "cost": 0},
+    {"id": "cap-approve", "type": "deployment.step", "version": "1.0.0", "effects": ["execute-approve"], "step": "approve", "humanOnly": true, "cost": 0},
+    {"id": "cap-production", "type": "deployment.step", "version": "1.0.0", "effects": ["execute-production"], "step": "production", "automationAllowed": true, "terminal": true, "cost": 0}
+  ],
+  "constraints": [
+    {"kind": "step-sequence", "hard": true, "value": "execute-in-order"},
+    {"kind": "evidence-cited", "hard": true, "value": "every-step-cites-evidence"},
+    {"kind": "immutable-release", "hard": true, "value": "released-deployments-are-final"}
+  ],
+  "delegations": {
+    "release-automation": {"delegator": "release-authority", "delegatee": "release-automation", "parentScopes": ["deployment.step"], "delegatedScopes": [], "budgetCeiling": 0, "evidenceDuty": ["evidence://dep/checkout", "evidence://dep/build", "evidence://dep/test", "evidence://dep/production"]}
+  },
+  "authorityGrants": [
+    {"principal": "release-automation", "scopes": ["deployment.step"], "budgetCeiling": 0, "revoked": false},
+    {"principal": "release-lead", "scopes": ["deployment.deviation"], "budgetCeiling": 0, "revoked": false}
+  ]
+}
