@@ -1,0 +1,26 @@
+{
+  "goals": [
+    {"id": "goal-sand-0001-policy", "owner": "reviewer-a", "outcome": "proposal-sandbox-0001 explored inside its sandbox and released only after an evidence-based policy decision", "deadline": "2026-09-03T12:00:00Z"}
+  ],
+  "requirements": [
+    {"id": "req-sand-0001-explore", "goalId": "goal-sand-0001-policy", "capabilityType": "sandbox.experiment", "requiredEffect": "explore", "dependsOn": []},
+    {"id": "req-sand-0001-decide", "goalId": "goal-sand-0001-policy", "capabilityType": "sandbox.policy", "requiredEffect": "decide", "dependsOn": ["req-sand-0001-explore"]},
+    {"id": "req-sand-0001-apply", "goalId": "goal-sand-0001-policy", "capabilityType": "sandbox.apply", "requiredEffect": "apply", "dependsOn": ["req-sand-0001-decide"]}
+  ],
+  "catalog": [
+    {"id": "cap-experiment", "type": "sandbox.experiment", "version": "1.0.0", "effects": ["explore"], "boundaryRequired": true, "cost": 0},
+    {"id": "cap-decide", "type": "sandbox.policy", "version": "1.0.0", "effects": ["decide"], "evidenceRequired": true, "reviewerOnly": true, "immutable": true, "cost": 0},
+    {"id": "cap-apply", "type": "sandbox.apply", "version": "1.0.0", "effects": ["apply"], "policyRequired": true, "cost": 0}
+  ],
+  "constraints": [
+    {"kind": "sandbox-boundary", "hard": true, "value": "report-generation-scope"},
+    {"kind": "evidence-based-policy", "hard": true, "value": "experiment-evidence-required"},
+    {"kind": "policy-immutable", "hard": true, "value": "decisions-are-final"}
+  ],
+  "delegations": {
+    "reviewer-a": {"delegator": "policy-authority", "delegatee": "reviewer-a", "parentScopes": ["sandbox.policy"], "delegatedScopes": ["sandbox.experiment"], "budgetCeiling": 0, "evidenceDuty": ["evidence://sand/exp-001"]}
+  },
+  "authorityGrants": [
+    {"principal": "reviewer-a", "scopes": ["sandbox.experiment", "sandbox.policy", "sandbox.apply"], "budgetCeiling": 0, "revoked": false}
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": "1",
+  "workflow_id": "innovation-sandbox-to-policy",
+  "title": "Innovation Sandbox To Policy",
+  "kind": "approval",
+  "source": "enterprise-autonomy-example",
+  "stages": [
+    {"id": "explore", "title": "Explore In Sandbox", "assignee_spec": {"kind": "capability", "required": ["sandbox.experiment.execute"]}, "inputs": [], "outputs": []},
+    {"id": "decide", "title": "Policy Decision", "assignee_spec": {"kind": "role", "role": "review-group"}, "inputs": [], "outputs": []},
+    {"id": "apply", "title": "Apply Policy", "assignee_spec": {"kind": "capability", "required": ["sandbox.apply.execute"]}, "inputs": [], "outputs": []},
+    {"id": "close", "title": "Confirm Outcome", "assignee_spec": {"kind": "role", "role": "review-group"}, "inputs": [], "outputs": []}
+  ],
+  "transitions": [
+    {"from": "explore", "to": "decide"},
+    {"from": "decide", "to": "apply"},
+    {"from": "apply", "to": "close"}
+  ]
+}
