@@ -33,8 +33,11 @@ jobs:
             git push origin "v$v"
             $body = .\scripts\read-changelog-section.ps1 $v
             if ($LASTEXITCODE -ne 0) { exit 1 }
-            gh release create "v$v" --title "Release v$v" --notes $body
+            $notesFile = Join-Path $env:TEMP ("release-notes-" + [guid]::NewGuid().ToString("N") + ".md")
+            Set-Content -Path $notesFile -Value $body -Encoding UTF8
+            gh release create "v$v" --title "Release v$v" --notes-file $notesFile
             if ($LASTEXITCODE -ne 0) { exit 1 }
+            Remove-Item $notesFile -ErrorAction SilentlyContinue
             Write-Host "release: created tag and release v$v"
           } else {
             Write-Host "release: no prepared release (check-release exit $LASTEXITCODE)"
