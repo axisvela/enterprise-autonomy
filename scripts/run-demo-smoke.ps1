@@ -14,7 +14,8 @@ $adapters = @(
   @{ Name = "simulation-domain"; Dir = "simulation-domain"; Args = "--addr :$($Port + 7) --data-file `"$env:TEMP\smoke-simulation-data.json`""; Check = "/healthz" },
   @{ Name = "compliance-domain"; Dir = "compliance-domain"; Args = "--addr :$($Port + 8) --data-file `"$env:TEMP\smoke-compliance-data.json`""; Check = "/healthz" },
   @{ Name = "fleet-domain"; Dir = "fleet-domain"; Args = "--addr :$($Port + 9) --data-file `"$env:TEMP\smoke-fleet-data.json`""; Check = "/healthz" },
-  @{ Name = "process-domain"; Dir = "process-domain"; Args = "--addr :$($Port + 10) --data-file `"$env:TEMP\smoke-process-data.json`""; Check = "/healthz" }
+  @{ Name = "process-domain"; Dir = "process-domain"; Args = "--addr :$($Port + 10) --data-file `"$env:TEMP\smoke-process-data.json`""; Check = "/healthz" },
+  @{ Name = "sandbox-domain"; Dir = "sandbox-domain"; Args = "--addr :$($Port + 11) --data-file `"$env:TEMP\smoke-sandbox-data.json`""; Check = "/healthz" }
 )
 
 $procs = @()
@@ -44,6 +45,7 @@ try {
   $compAddr = "http://localhost:$($Port + 8)"
   $fleetAddr = "http://localhost:$($Port + 9)"
   $procAddr2 = "http://localhost:$($Port + 10)"
+  $sandAddr = "http://localhost:$($Port + 11)"
 
   $failures = @()
   function Assert-True($condition, $message) {
@@ -62,6 +64,7 @@ try {
   Assert-True ((Invoke-RestMethod -Uri "$compAddr/healthz").status -eq "ok") "compliance-domain adapter is healthy"
   Assert-True ((Invoke-RestMethod -Uri "$fleetAddr/healthz").status -eq "ok") "fleet-domain adapter is healthy"
   Assert-True ((Invoke-RestMethod -Uri "$procAddr2/healthz").status -eq "ok") "process-domain adapter is healthy"
+  Assert-True ((Invoke-RestMethod -Uri "$sandAddr/healthz").status -eq "ok") "sandbox-domain adapter is healthy"
 
   $order = Invoke-RestMethod -Uri "$orderAddr/v1/orders/order-123"
   Assert-True ($order.fulfillment_status -eq "stockout") "order starts in stockout"
@@ -378,6 +381,47 @@ try {
   } catch { $reopenDenied = $_.Exception.Response.StatusCode.value__ }
   Assert-True ($reopenDenied -eq 409) "reopen of a completed process is rejected (HTTP 409)"
 
+  # Innovation sandbox flow
+  $sandBase = "$sandAddr/v1/proposals/proposal-sandbox-0001"
+  $boundaryDenied = $null
+  try {
+    $outside = @{ experiment_id = "exp-out"; scope = "outside-scope"; outcome = "pass"; evidence_ref = "evidence://smoke"; recorded_by = "sandbox-engineer"; idempotency_key = "smoke-sand-out-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$sandBase/experiments" -ContentType "application/json" -Body $outside | Out-Null
+  } catch { $boundaryDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($boundaryDenied -eq 403) "out-of-scope experiment is rejected (HTTP 403)"
+
+  $decDenied = $null
+  try {
+    $premature = @{ decision = "release"; decided_by = "reviewer-a"; rationale = "x"; policy_ref = "policy://smoke"; idempotency_key = "smoke-sand-dec-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$sandBase/decisions" -ContentType "application/json" -Body $premature | Out-Null
+  } catch { $decDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($decDenied -eq 403) "policy decision before evidence is rejected (HTTP 403)"
+
+  $exp = @{ experiment_id = "exp-001"; scope = "report-generation-scope"; outcome = "pass"; evidence_ref = "evidence://smoke"; recorded_by = "sandbox-engineer"; idempotency_key = "smoke-sand-exp-v1" } | ConvertTo-Json
+  $expResult = Invoke-RestMethod -Method Post -Uri "$sandBase/experiments" -ContentType "application/json" -Body $exp
+  Assert-True ($expResult.proposal.status -eq "experimenting") "in-scope experiment is recorded"
+
+  $reviewerDenied = $null
+  try {
+    $outsider = @{ decision = "release"; decided_by = "outsider"; rationale = "x"; policy_ref = "policy://smoke"; idempotency_key = "smoke-sand-dec-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$sandBase/decisions" -ContentType "application/json" -Body $outsider | Out-Null
+  } catch { $reviewerDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($reviewerDenied -eq 403) "non-reviewer policy decision is rejected (HTTP 403)"
+
+  $dec = @{ decision = "release"; decided_by = "reviewer-a"; rationale = "evidence passes"; policy_ref = "policy://smoke"; idempotency_key = "smoke-sand-dec-v1" } | ConvertTo-Json
+  $decResult = Invoke-RestMethod -Method Post -Uri "$sandBase/decisions" -ContentType "application/json" -Body $dec
+  $immutableDenied = $null
+  try {
+    $dec2 = @{ decision = "restrict"; decided_by = "reviewer-a"; rationale = "change"; policy_ref = "policy://smoke"; idempotency_key = "smoke-sand-dec2-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$sandBase/decisions" -ContentType "application/json" -Body $dec2 | Out-Null
+  } catch { $immutableDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($decResult.proposal.status -eq "decided") "reviewer records the policy decision"
+  Assert-True ($immutableDenied -eq 409) "recorded policy decision is immutable (HTTP 409)"
+
+  $ap = @{ applied_by = "reviewer-a"; policy_ref = "policy://smoke"; idempotency_key = "smoke-sand-ap-v1" } | ConvertTo-Json
+  $apResult = Invoke-RestMethod -Method Post -Uri "$sandBase/apply" -ContentType "application/json" -Body $ap
+  Assert-True ($apResult.proposal.status -eq "released") "policy is applied after the decision"
+
   Write-Host ""
   if ($failures.Count -eq 0) { Write-Host "run-demo-smoke: all adapter-level checks passed." -ForegroundColor Green; exit 0 }
   Write-Host "run-demo-smoke: $($failures.Count) check(s) failed." -ForegroundColor Red
@@ -399,4 +443,5 @@ try {
   Remove-Item "$env:TEMP\smoke-compliance-data.json" -ErrorAction SilentlyContinue
   Remove-Item "$env:TEMP\smoke-fleet-data.json" -ErrorAction SilentlyContinue
   Remove-Item "$env:TEMP\smoke-process-data.json" -ErrorAction SilentlyContinue
+  Remove-Item "$env:TEMP\smoke-sandbox-data.json" -ErrorAction SilentlyContinue
 }

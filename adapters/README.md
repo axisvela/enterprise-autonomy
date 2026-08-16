@@ -15,5 +15,6 @@ Reference adapters are local, illustrative integrations used by runnable example
 | [compliance-domain](compliance-domain/README.md) | Simulated compliance-audit views: evidence collection, attestation, and immutable audit packages with completeness gates. | [API.md](compliance-domain/API.md) |
 | [fleet-domain](fleet-domain/README.md) | Simulated physical-mission views: boundary enforcement, exceptions, and operator review with pause-and-review governance. | [API.md](fleet-domain/API.md) |
 | [process-domain](process-domain/README.md) | Simulated durable long-running process views: stage-sequenced advances, terminal-state enforcement, and immutable completion. | [API.md](process-domain/API.md) |
+| [sandbox-domain](sandbox-domain/README.md) | Simulated innovation-sandbox views: bounded experiments, evidence-based policy decisions, and immutable policy apply. | [API.md](sandbox-domain/API.md) |
 
 Use these only for demos and development. Replace them with authorized production integrations before real business use.

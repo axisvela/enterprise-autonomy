@@ -4,6 +4,13 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`.
 
+## 0.16.0 (2026-08-16)
+
+- Added the sandbox-domain reference adapter (innovation proposals, bounded experiments, evidence-based policy decisions, immutable apply) with **sandbox boundary**, **evidence-based policy**, **designated reviewer**, and **immutable policy** governance.
+- Added the runnable innovation-sandbox-to-policy local demo (`examples/innovation-sandbox-local/`) with an 8-step lifecycle, `verify.ps1`, `run-all.ps1`, value report, and a detailed operations guide.
+- Extended `run-demo-smoke.ps1` to all twelve adapters (70 assertions) and wired the sandbox demo into `run-all-demos.ps1`, `report-value.ps1`, `check-examples.ps1`, `validate-demos.ps1`, and `run-go-tests.ps1`.
+- Cross-linked the sandbox demo from the innovation-sandbox-to-policy slice, example index, getting-started, run handbook, and roadmap. **All eleven vertical slices now have runnable demos.**
+
 ## 0.15.0 (2026-08-16)
 
 - Added the process-domain reference adapter (durable process, stage-sequenced advances, terminal-state enforcement, immutable completion) with **durable process lifecycle integrity** governance.

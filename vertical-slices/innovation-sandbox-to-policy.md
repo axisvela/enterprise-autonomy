@@ -58,6 +58,10 @@ A proposed autonomous capability is explored in a controlled simulation before i
 | Decide | release, restrict, or reject | Symbivela, Aegivela | policy decision `decision-proposal-0001` |
 | Apply | capability availability update | Moduregis | capability record updated |
 
+## Runnable Local Demo
+
+For verified local-binary startup commands, configuration, API requests, request bodies, and expected operational outputs, see the [local innovation-sandbox demo](../examples/innovation-sandbox-local/README.md) and its [Detailed Operations Guide](../examples/innovation-sandbox-local/operations-guide.md).
+
 ## Public Boundary
 
 This example omits specific simulation models, thresholds, endpoints, and policy rules.

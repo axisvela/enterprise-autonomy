@@ -15,6 +15,7 @@ Public examples illustrate how AxisRobo products can be composed to achieve a me
 | [Compliance request to audit (local)](compliance-audit-local/README.md) | Runnable local demo | Completeness-gated attestation and immutable audit package, with a verified value report. | [Value & Effect](compliance-audit-local/README.md#value--effect) |
 | [Fleet mission exception (local)](fleet-mission-local/README.md) | Runnable local demo | Autonomous boundary enforcement and operator-reviewed pauses, with a verified value report. | [Value & Effect](fleet-mission-local/README.md#value--effect) |
 | [Process to outcome (local)](process-to-outcome-local/README.md) | Runnable local demo | Stage-sequenced durable process with terminal-state enforcement, and a verified value report. | [Value & Effect](process-to-outcome-local/README.md#value--effect) |
+| [Innovation sandbox (local)](innovation-sandbox-local/README.md) | Runnable local demo | Bounded sandbox experiments and evidence-based policy, with a verified value report. | [Value & Effect](innovation-sandbox-local/README.md#value--effect) |
 
 ## Supporting Material
 
