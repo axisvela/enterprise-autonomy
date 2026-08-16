@@ -1,0 +1,26 @@
+{
+  "goals": [
+    {"id": "goal-iro-0001-recovered", "owner": "integration-owner", "outcome": "work-0001 resumed and completed after the partner-shipping outage, with preservation, verified reconnection, and no silent re-execution", "deadline": "2026-08-28T12:00:00Z"}
+  ],
+  "requirements": [
+    {"id": "req-iro-0001-preserve", "goalId": "goal-iro-0001-recovered", "capabilityType": "recovery.preserve", "requiredEffect": "preserve", "dependsOn": []},
+    {"id": "req-iro-0001-verify", "goalId": "goal-iro-0001-recovered", "capabilityType": "recovery.verify", "requiredEffect": "verify", "dependsOn": []},
+    {"id": "req-iro-0001-resume", "goalId": "goal-iro-0001-recovered", "capabilityType": "recovery.resume", "requiredEffect": "resume", "dependsOn": ["req-iro-0001-preserve", "req-iro-0001-verify"]}
+  ],
+  "catalog": [
+    {"id": "cap-preserve", "type": "recovery.preserve", "version": "1.0.0", "effects": ["preserve"], "cost": 0},
+    {"id": "cap-verify", "type": "recovery.verify", "version": "1.0.0", "effects": ["verify"], "cost": 0},
+    {"id": "cap-resume", "type": "recovery.resume", "version": "1.0.0", "effects": ["resume"], "preservationRequired": true, "verificationRequired": true, "cost": 0}
+  ],
+  "constraints": [
+    {"kind": "preserve-before-resume", "hard": true, "value": "preservation-required"},
+    {"kind": "verify-before-resume", "hard": true, "value": "verification-required"},
+    {"kind": "no-silent-rerun", "hard": true, "value": "completed-actions-are-final"}
+  ],
+  "delegations": {
+    "integration-owner": {"delegator": "integration-authority", "delegatee": "integration-owner", "parentScopes": ["recovery.resume"], "delegatedScopes": ["recovery.preserve", "recovery.verify"], "budgetCeiling": 0, "evidenceDuty": ["evidence://reconnect/partner-shipping"]}
+  },
+  "authorityGrants": [
+    {"principal": "integration-owner", "scopes": ["recovery.preserve", "recovery.verify", "recovery.resume"], "budgetCeiling": 0, "revoked": false}
+  ]
+}

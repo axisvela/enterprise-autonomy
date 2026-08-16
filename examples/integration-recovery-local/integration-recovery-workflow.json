@@ -1,0 +1,20 @@
+{
+  "schema_version": "1",
+  "workflow_id": "integration-outage-recovery",
+  "title": "Integration Outage Recovery",
+  "kind": "approval",
+  "source": "enterprise-autonomy-example",
+  "stages": [
+    {"id": "preserve", "title": "Preserve In-Flight Work", "assignee_spec": {"kind": "role", "role": "integration-owner"}, "inputs": [], "outputs": []},
+    {"id": "verify", "title": "Verify Reconnection", "assignee_spec": {"kind": "role", "role": "integration-owner"}, "inputs": [], "outputs": []},
+    {"id": "resume", "title": "Resume Work", "assignee_spec": {"kind": "capability", "required": ["recovery.resume.execute"]}, "inputs": [], "outputs": []},
+    {"id": "complete", "title": "Complete Work", "assignee_spec": {"kind": "role", "role": "integration-owner"}, "inputs": [], "outputs": []},
+    {"id": "close", "title": "Confirm Outcome", "assignee_spec": {"kind": "role", "role": "integration-owner"}, "inputs": [], "outputs": []}
+  ],
+  "transitions": [
+    {"from": "preserve", "to": "verify"},
+    {"from": "verify", "to": "resume"},
+    {"from": "resume", "to": "complete"},
+    {"from": "complete", "to": "close"}
+  ]
+}
