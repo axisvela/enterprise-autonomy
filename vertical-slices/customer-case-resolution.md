@@ -64,6 +64,10 @@ See the [value framework](../docs/example-value.md).
 | Communicate and confirm | customer status, accepted correction | Symbivela, Limenora | communication record `comm-case-0001` |
 | Close or escalate | outcome + communication evidence | Symbivela, Rheovela | closed case or escalation record |
 
+## Runnable Local Demo
+
+For verified local-binary startup commands, configuration, API requests, request bodies, and expected operational outputs, see the [local customer-case demo](../examples/customer-case-local/README.md) and its [Detailed Operations Guide](../examples/customer-case-local/operations-guide.md).
+
 ## Public Boundary
 
 This example omits customer data, remedy limits, service-level targets, system endpoints, privacy controls, and internal escalation policy.

@@ -90,6 +90,24 @@ Two properties worth noticing:
 1. **Segregation is enforced by the domain, not by a procedure.** The adapter refuses the requester-as-approver regardless of role, before any role logic runs.
 2. **Approval is conjunctive.** A single role's approval is insufficient; the purchase is only reachable after both finance and procurement approvals under the same reference. The purchase and receipt steps are also capability/state-gated (`request_not_approved`, `no_purchase_order`).
 
+## 8. Consent Is a First-Class Gate (Customer-Case Demo)
+
+The [customer-case demo](../examples/customer-case-local/README.md) introduces **customer consent** as a governance input distinct from internal approval:
+
+```
+POST /v1/cases/cs-0001/resolutions
+{"type":"compensation","amount":40,"approved_by":"service-lead",
+ "approval_ref":"approval://cs-0001","consent_ref":"consent://cs-0001", ...}
+-> 403 {"error":"consent_required"}          (before consent is recorded)
+-> 403 {"error":"approval_required_for_compensation"}  (consent yes, approval missing)
+```
+
+Three properties worth noticing:
+
+1. **Consent and approval are separate, conjunctive records.** Money does not move until an approved consent (matching reference) AND a service-lead approval both exist.
+2. **Consent is attributable.** The record carries the customer reference and a `consent_ref` that the resolution must cite exactly (`consent_ref_mismatch` otherwise).
+3. **Facts gate the case.** Only verified facts can be recorded, so a remedy cannot be grounded in unverified claims.
+
 ## Why This Matters
 
 The subtlety is that **governance is distributed and structural**: each product enforces a piece of the policy in its own domain, the pieces reference each other through shared approval/evidence references, and none of them can be bypassed by calling another one. That is what "contract-governed" means in practice.

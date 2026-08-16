@@ -4,6 +4,15 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`.
 
+## 0.4.0 (2026-08-16)
+
+- Added the customer-domain reference adapter (cases, verified facts, consent, resolutions, accounts, notifications) with consent-required and approval-required conjunctive governance.
+- Added the runnable customer-case-resolution local demo (`examples/customer-case-local/`) with an 8-step lifecycle, `verify.ps1`, `run-all.ps1`, value report, and a detailed operations guide.
+- Extended `run-demo-smoke.ps1` to all four adapters (18 assertions) and hardened process cleanup for consecutive CI runs.
+- Added continuous integration (`.github/workflows/ci.yml`) running link, smoke, version, and release checks on every push and pull request.
+- Extended the governance-subtlety guide with the consent-as-first-class-gate pattern.
+- Cross-linked the customer-case demo from the customer slice, example index, getting-started, run handbook, and roadmap.
+
 ## 0.3.0 (2026-08-16)
 
 - Added the procurement-domain reference adapter (requests, budget, suppliers, purchase orders, receipts) with structural segregation of duties and conjunctive role approvals.

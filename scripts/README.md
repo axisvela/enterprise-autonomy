@@ -52,3 +52,14 @@ git push origin main --tags
 ## Automation
 
 These scripts are designed to run in CI or pre-commit checks. Run `check-links.ps1` and `run-demo-smoke.ps1` on every content change, and `check-release.ps1` after every commit.
+
+## Continuous Integration
+
+The repository includes [`.github/workflows/ci.yml`](../.github/workflows/ci.yml). On every push to `main` and on pull requests it runs on a Windows runner:
+
+1. `check-links.ps1` — breaks the build on broken internal links.
+2. `run-demo-smoke.ps1` — builds and smoke-tests all four reference adapters (order, inventory, procurement, customer).
+3. `version.ps1 get` — reports the current version.
+4. `check-release.ps1` — reports whether a new tag is warranted (informational; exit `1` does not fail the build).
+
+`check-examples.ps1` verifies produced demo artifacts after a run; it is intended for post-run verification, not CI without a full demo environment.

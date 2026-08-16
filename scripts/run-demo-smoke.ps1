@@ -6,7 +6,8 @@ $repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 $adapters = @(
   @{ Name = "order-domain"; Dir = "order-domain"; Args = "--addr :$Port --data-file `"$env:TEMP\smoke-order-data.json`""; Check = "/healthz" },
   @{ Name = "inventory-domain"; Dir = "inventory-domain"; Args = "--addr :$($Port + 1) --data-file `"$env:TEMP\smoke-inventory-data.json`""; Check = "/healthz" },
-  @{ Name = "procurement-domain"; Dir = "procurement-domain"; Args = "--addr :$($Port + 2) --data-file `"$env:TEMP\smoke-procurement-data.json`""; Check = "/healthz" }
+  @{ Name = "procurement-domain"; Dir = "procurement-domain"; Args = "--addr :$($Port + 2) --data-file `"$env:TEMP\smoke-procurement-data.json`""; Check = "/healthz" },
+  @{ Name = "customer-domain"; Dir = "customer-domain"; Args = "--addr :$($Port + 3) --data-file `"$env:TEMP\smoke-customer-data.json`""; Check = "/healthz" }
 )
 
 $procs = @()
@@ -26,6 +27,7 @@ try {
   $orderAddr = "http://localhost:$Port"
   $invAddr = "http://localhost:$($Port + 1)"
   $procAddr = "http://localhost:$($Port + 2)"
+  $custAddr = "http://localhost:$($Port + 3)"
 
   $failures = @()
   function Assert-True($condition, $message) {
@@ -36,6 +38,7 @@ try {
   Assert-True ((Invoke-RestMethod -Uri "$orderAddr/healthz").status -eq "ok") "order-domain adapter is healthy"
   Assert-True ((Invoke-RestMethod -Uri "$invAddr/healthz").status -eq "ok") "inventory-domain adapter is healthy"
   Assert-True ((Invoke-RestMethod -Uri "$procAddr/healthz").status -eq "ok") "procurement-domain adapter is healthy"
+  Assert-True ((Invoke-RestMethod -Uri "$custAddr/healthz").status -eq "ok") "customer-domain adapter is healthy"
 
   $order = Invoke-RestMethod -Uri "$orderAddr/v1/orders/order-123"
   Assert-True ($order.fulfillment_status -eq "stockout") "order starts in stockout"
@@ -85,15 +88,48 @@ try {
   $rec = Invoke-RestMethod -Method Post -Uri "$procBase/receipts" -ContentType "application/json" -Body $rcv
   Assert-True ($rec.request.status -eq "closed") "receipt closes the request"
 
+  # Customer case flow
+  $custBase = "$custAddr/v1/cases/cs-0001"
+  $fact = @{ claim = "overcharge confirmed"; source = "billing-system"; verified = $true; idempotency_key = "smoke-cs-fact-v1" } | ConvertTo-Json
+  Invoke-RestMethod -Method Post -Uri "$custBase/facts" -ContentType "application/json" -Body $fact | Out-Null
+
+  $consentDenied = $null
+  try {
+    $premature = @{ type = "compensation"; amount = 40; approved_by = "service-lead"; approval_ref = "approval://smoke"; consent_ref = "consent://smoke"; idempotency_key = "smoke-cs-comp-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$custBase/resolutions" -ContentType "application/json" -Body $premature | Out-Null
+  } catch { $consentDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($consentDenied -eq 403) "compensation without consent is rejected (HTTP 403)"
+
+  $consent = @{ customer = "cust-1001"; decision = "approve"; consent_ref = "consent://smoke"; idempotency_key = "smoke-cs-consent-v1" } | ConvertTo-Json
+  Invoke-RestMethod -Method Post -Uri "$custBase/consent" -ContentType "application/json" -Body $consent | Out-Null
+
+  $approvalDenied = $null
+  try {
+    $noApproval = @{ type = "compensation"; amount = 40; approved_by = ""; approval_ref = ""; consent_ref = "consent://smoke"; idempotency_key = "smoke-cs-comp-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$custBase/resolutions" -ContentType "application/json" -Body $noApproval | Out-Null
+  } catch { $approvalDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($approvalDenied -eq 403) "compensation without approval is rejected (HTTP 403)"
+
+  $res = @{ type = "compensation"; amount = 40; approved_by = "service-lead"; approval_ref = "approval://smoke"; consent_ref = "consent://smoke"; idempotency_key = "smoke-cs-comp-v1" } | ConvertTo-Json
+  $applied = Invoke-RestMethod -Method Post -Uri "$custBase/resolutions" -ContentType "application/json" -Body $res
+  Assert-True ($applied.case.status -eq "resolving") "consented and approved compensation applies"
+
+  $closeBody = @{ closed_by = "service-lead"; idempotency_key = "smoke-cs-close-v1" } | ConvertTo-Json
+  $closed = Invoke-RestMethod -Method Post -Uri "$custBase/close" -ContentType "application/json" -Body $closeBody
+  Assert-True ($closed.case.status -eq "resolved") "case closes after resolution"
+
   Write-Host ""
   if ($failures.Count -eq 0) { Write-Host "run-demo-smoke: all adapter-level checks passed." -ForegroundColor Green; exit 0 }
   Write-Host "run-demo-smoke: $($failures.Count) check(s) failed." -ForegroundColor Red
   exit 1
 } finally {
   foreach ($p in $procs) { Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue }
-  Get-Process | Where-Object { $_.Name -like "smoke-*-adapter" } | Stop-Process -Force -ErrorAction SilentlyContinue
+  Start-Sleep -Milliseconds 500
+  Get-Process | Where-Object { $_.Name -like "smoke-*" -or $_.Name -like "smoke*adapter*" } | Stop-Process -Force -ErrorAction SilentlyContinue
+  Start-Sleep -Milliseconds 300
   Remove-Item "$env:TEMP\smoke-*-adapter.exe" -ErrorAction SilentlyContinue
   Remove-Item "$env:TEMP\smoke-order-data.json" -ErrorAction SilentlyContinue
   Remove-Item "$env:TEMP\smoke-inventory-data.json" -ErrorAction SilentlyContinue
   Remove-Item "$env:TEMP\smoke-procurement-data.json" -ErrorAction SilentlyContinue
+  Remove-Item "$env:TEMP\smoke-customer-data.json" -ErrorAction SilentlyContinue
 }

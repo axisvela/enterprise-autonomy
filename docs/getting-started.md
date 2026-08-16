@@ -20,10 +20,11 @@ The [value framework](example-value.md) explains what makes an example valuable:
 
 ## 5. Run a local demo
 
-Two runnable local demos are available:
+Three runnable local demos are available:
 
 - [Order exception demo](../examples/order-fulfillment-local/README.md) — stockout exception with approvals and value report.
 - [Procurement demo](../examples/procurement-local/README.md) — governed purchasing with segregation of duties.
+- [Customer case demo](../examples/customer-case-local/README.md) — governed customer remedy with consent and approval.
 
 See the [local run handbook](../examples/local-run-handbook.md) for startup guidance.
 

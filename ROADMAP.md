@@ -53,6 +53,8 @@ This roadmap tracks the public content plan for the `enterprise-autonomy` reposi
 - [x] Adapter API references and error semantics
 - [x] Version management harness and commit-time release check
 - [x] Second runnable local demo (procurement) cross-linked from slices and indexes
+- [x] Third runnable local demo (customer case) with consent governance
+- [x] Continuous integration running link, smoke, and version checks on push
 
 ## Guiding Principles
 

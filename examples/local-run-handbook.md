@@ -21,13 +21,10 @@ This handbook covers common steps for running public local demos against real pr
 
 ## One-Command Run
 
-Both runnable demos provide a `run-all.ps1` wrapper that loads the environment, starts the services, runs the scenario, and verifies the outcome in one step:
+All runnable demos provide a `run-all.ps1` wrapper that loads the environment, starts the services, runs the scenario, and verifies the outcome in one step:
 
 ```powershell
-# order-fulfillment-local
-.\run-all.ps1
-
-# procurement-local
+# order-fulfillment-local, procurement-local, customer-case-local
 .\run-all.ps1
 ```
 
@@ -37,6 +34,7 @@ Runnable demos emit a machine-readable value report alongside the business outco
 
 - Order demo: `.local-data/order-value-report.json` (see [evidence schema](order-fulfillment-local/evidence-schema.md)).
 - Procurement demo: `.local-data/procurement-value-report.json` (see [evidence schema](procurement-local/evidence-schema.md)).
+- Customer-case demo: `.local-data/customer-value-report.json` (see [evidence schema](customer-case-local/evidence-schema.md)).
 
 The report records the outcome, KPIs, human gates, and per-product evidence so the effect can be verified. See the [value report template](value-report-template.md).
 

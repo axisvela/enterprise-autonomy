@@ -7,6 +7,7 @@ Public examples illustrate how AxisRobo products can be composed to achieve a me
 | [Mission to execution](mission-to-execution.md) | Designed scenario | Bounded physical inspection with human review. | [Value & Effect](mission-to-execution.md#value--effect) |
 | [Order fulfillment exception (local)](order-fulfillment-local/README.md) | Runnable local demo | End-to-end stockout exception across local binaries with a verified value report. | [Value & Effect](order-fulfillment-local/README.md#value--effect) |
 | [Procurement request to receipt (local)](procurement-local/README.md) | Runnable local demo | Governed purchasing lifecycle with segregation of duties and a verified value report. | [Value & Effect](procurement-local/README.md#value--effect) |
+| [Customer case resolution (local)](customer-case-local/README.md) | Runnable local demo | Governed customer remedy with consent and approval, and a verified value report. | [Value & Effect](customer-case-local/README.md#value--effect) |
 
 ## Supporting Material
 
