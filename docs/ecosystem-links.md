@@ -34,7 +34,6 @@ Public repositories and supporting material for the AxisRobo Enterprise Autonomy
 - [Product overview](products.md)
 - [Technical catalog](technical-catalog.md)
 - [Business scenarios](business-scenarios.md)
-- [Governance patterns](governance-patterns.md)
 - [Reference stacks](../reference-stacks/)
 - [Vertical slices](../vertical-slices/)
 - [Examples](../examples/)

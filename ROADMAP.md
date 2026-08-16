@@ -62,6 +62,7 @@ This roadmap tracks the public content plan for the `enterprise-autonomy` reposi
 - [x] Ninth runnable local demo (fleet mission) with autonomous boundary and pause-and-review
 - [x] Unit tests (go test) for every reference adapter, wired into CI
 - [x] Governance pattern catalog organizing examples vertically by pattern
+- [x] Automated release workflow (tag + GitHub Release when a version is prepared)
 - [x] Continuous integration running link, smoke, and version checks on push
 - [x] Commit-time checks via local git hooks (links + version) and CI
 - [x] Demo orchestration: run all demos with one command, reliable stop, and a value dashboard

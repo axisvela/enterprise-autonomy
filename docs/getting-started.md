@@ -20,7 +20,7 @@ The [value framework](example-value.md) explains what makes an example valuable:
 
 ## 5. Navigate by governance pattern
 
-The [governance patterns catalog](governance-patterns.md) organizes the examples **vertically by pattern** — deny-by-default, shared approval references, segregation of duties, conjunctive authority, consent, human-only decisions, prediction-vs-fact, recovery integrity, evidence-gated release, completeness attestation, and autonomous boundaries. Start with the requirement you need to enforce, then open the matching demo.
+The governance-pattern catalog — which organized the examples vertically by pattern (deny-by-default, shared approval references, segregation of duties, conjunctive authority, consent, human-only decisions, prediction-vs-fact, recovery integrity, evidence-gated release, completeness attestation, and autonomous boundaries) — is maintained in the private **`enterprise-autonomy-ee`** repository. Each runnable demo's README summarizes the governance behaviors it demonstrates.
 
 ## 6. Run a local demo
 
@@ -44,7 +44,7 @@ The [technical catalog](technical-catalog.md) lists binaries, current and planne
 
 ## 8. Check release status
 
-The [release status](release-status.md) page summarizes public release maturity. Each product repository is authoritative for its own releases.
+The [release status](release-status.md) page summarizes public release maturity. Each product repository is authoritative for its own releases. When a new version is prepared (bumped `VERSION` + a `CHANGELOG.md` section), the [release workflow](../.github/workflows/release.yml) creates the tag and a GitHub Release automatically.
 
 ## Boundaries
 

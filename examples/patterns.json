@@ -1,21 +1,4 @@
 {
-  "version": "1.0",
-  "catalog": "https://github.com/axisrobo/enterprise-autonomy/blob/main/docs/governance-patterns.md",
-  "patterns": [
-    {"id": 1, "name": "deny-by-default-no-bypass", "category": "integrity", "demos": ["order-fulfillment-local", "procurement-local", "customer-case-local", "recruitment-local", "predictive-maintenance-local", "integration-recovery-local", "simulation-validation-local", "compliance-audit-local", "fleet-mission-local"]},
-    {"id": 2, "name": "shared-approval-reference", "category": "integrity", "demos": ["order-fulfillment-local", "procurement-local", "customer-case-local", "recruitment-local", "predictive-maintenance-local", "integration-recovery-local", "compliance-audit-local", "fleet-mission-local"]},
-    {"id": 3, "name": "plan-not-authorization", "category": "integrity", "demos": ["order-fulfillment-local", "procurement-local", "customer-case-local", "recruitment-local", "predictive-maintenance-local", "integration-recovery-local", "simulation-validation-local", "compliance-audit-local", "fleet-mission-local"]},
-    {"id": 4, "name": "deny-by-default-runtime", "category": "integrity", "demos": ["order-fulfillment-local", "procurement-local", "customer-case-local", "recruitment-local", "predictive-maintenance-local", "integration-recovery-local", "simulation-validation-local", "compliance-audit-local", "fleet-mission-local"]},
-    {"id": 5, "name": "audit-trail-chain", "category": "integrity", "demos": ["order-fulfillment-local", "procurement-local", "customer-case-local", "recruitment-local", "predictive-maintenance-local", "integration-recovery-local", "simulation-validation-local", "compliance-audit-local", "fleet-mission-local"]},
-    {"id": 6, "name": "idempotency", "category": "integrity", "demos": ["order-fulfillment-local", "procurement-local", "customer-case-local", "recruitment-local", "predictive-maintenance-local", "integration-recovery-local", "simulation-validation-local", "compliance-audit-local", "fleet-mission-local"]},
-    {"id": 7, "name": "segregation-of-duties", "category": "authority", "demos": ["procurement-local"]},
-    {"id": 8, "name": "conjunctive-authority", "category": "authority", "demos": ["procurement-local", "customer-case-local", "predictive-maintenance-local"]},
-    {"id": 9, "name": "consent-gate", "category": "authority", "demos": ["customer-case-local"]},
-    {"id": 10, "name": "automation-cannot-decide", "category": "authority", "demos": ["recruitment-local"]},
-    {"id": 11, "name": "prediction-not-fault-safety-conjunctive", "category": "evidence", "demos": ["predictive-maintenance-local"]},
-    {"id": 12, "name": "recovery-integrity", "category": "recovery", "demos": ["integration-recovery-local"]},
-    {"id": 13, "name": "evidence-gated-release-immutable-simulation", "category": "evidence", "demos": ["simulation-validation-local"]},
-    {"id": 14, "name": "completeness-attestation-immutable-audit", "category": "evidence", "demos": ["compliance-audit-local"]},
-    {"id": 15, "name": "autonomous-boundary-pause-review", "category": "physical", "demos": ["fleet-mission-local"]}
-  ]
+  "status": "moved",
+  "location": "enterprise-autonomy-ee/docs/patterns.json"
 }

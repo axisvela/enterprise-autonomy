@@ -33,9 +33,11 @@ Architecture, contracts, schemas, profiles, conformance, governance, internal pl
 | `vertical-slices/` | End-to-end use cases spanning products. |
 | `adapters/` | Local reference adapters used by runnable examples. |
 | `docs/` | Supporting documentation for adopters and contributors. |
-| `docs/governance-patterns.md` | Examples organized vertically by governance pattern. |
+| `docs/governance-patterns.md` | Pointer to the governance-pattern catalog (moved to the private EE repository). |
 | `docs/governance-subtlety.md` | Deep dive into why the governance is structural. |
 | `scripts/` | Validation, versioning, and release tooling (see [scripts/README.md](scripts/README.md)). |
+| `.github/workflows/ci.yml` | Continuous integration: links, structure, JSON, go tests, smoke, version. |
+| `.github/workflows/release.yml` | Automatic tag + GitHub Release when a version is prepared. |
 | `.githooks/` | Commit-time checks (install with `scripts/install-hooks.ps1`). |
 
 Placeholder indexes in `architecture/`, `contracts/`, `schemas/`, `profiles/`, `conformance/`, `governance/`, and `benchmarks/` mark domains whose authoritative content lives in the private repository.

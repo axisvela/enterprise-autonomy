@@ -1,6 +1,6 @@
 # Value Metrics Catalog
 
-Each example class defines a small set of measurable indicators. Use these when describing an example's **Value & Effect**. The [governance patterns catalog](../docs/governance-patterns.md) maps each class to the governance pattern it demonstrates.
+Each example class defines a small set of measurable indicators. Use these when describing an example's **Value & Effect**. The governance-pattern catalog (maintained in the private **`enterprise-autonomy-ee`** repository) maps each class to the governance pattern it demonstrates.
 
 ## Order Operations
 

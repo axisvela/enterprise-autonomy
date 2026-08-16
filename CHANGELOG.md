@@ -4,6 +4,14 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`.
 
+## 0.14.0 (2026-08-16)
+
+- Added release automation completing the versioning harness: `scripts/read-changelog-section.ps1` (extracts a version's changelog block), `scripts/create-tag.ps1` (annotated tag from `VERSION`, idempotent), and `scripts/create-release.ps1` (`gh release create` with changelog body).
+- Added `.github/workflows/release.yml`, which creates the tag and a GitHub Release automatically on every push to `main` when `check-release.ps1` reports the version is prepared, and skips idempotently when the tag exists.
+- Moved the governance-pattern catalog and its machine-readable matrix (`governance-patterns.md`, `patterns.json`) to the private `enterprise-autonomy-ee` repository; the public files now carry pointers and references were updated.
+- Restored em-dashes corrupted by earlier bulk text edits across product pages and example/API docs.
+- Updated contributing, getting-started, scripts README, repository map, and roadmap for the automated release flow.
+
 ## 0.13.0 (2026-08-16)
 
 - Added the governance patterns catalog (`docs/governance-patterns.md`) organizing the nine runnable demos **vertically by governance pattern** (15 patterns across integrity, authority, evidence, recovery, and physical categories), with a pattern-to-example matrix.

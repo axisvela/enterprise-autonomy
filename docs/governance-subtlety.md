@@ -1,6 +1,6 @@
 # The Subtlety of Governed Autonomy
 
-This page explains, with concrete artifacts from the [order-exception demo](../examples/order-fulfillment-local/README.md), why the ecosystem's design is subtle rather than simply "many services chained together." For a navigation-level view, see the [governance patterns catalog](governance-patterns.md).
+This page explains, with concrete artifacts from the [order-exception demo](../examples/order-fulfillment-local/README.md), why the ecosystem's design is subtle rather than simply "many services chained together." For a navigation-level view of the governance patterns, see the private **`enterprise-autonomy-ee`** repository's governance-pattern catalog.
 
 ## Contents
 
