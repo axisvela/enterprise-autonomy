@@ -69,6 +69,7 @@ This roadmap tracks the public content plan for the `enterprise-autonomy` reposi
 - [x] Commit-time checks via local git hooks (links + version) and CI
 - [x] Demo orchestration: run all demos with one command, reliable stop, and a value dashboard
 - [x] Structural validation (demo structure, script syntax, JSON validity) in CI
+- [x] All eleven vertical slices have runnable local demos
 
 ## Guiding Principles
 

@@ -4,6 +4,13 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`.
 
+## 0.17.0 (2026-08-16)
+
+- Consolidated the public repository: rewrote the top-level README as the project front door with a demo matrix and quickstart.
+- Added `docs/demo-matrix.md` comparing all eleven runnable demos (adapter, port, governance flavor, value report, operations guide).
+- Updated navigation (getting-started, adoption guide, examples index, value dashboard, ecosystem links) for the completed demo set.
+- Status: all eleven vertical slices now have runnable demos, backed by twelve reference adapters with unit tests, CI, and automated releases.
+
 ## 0.16.0 (2026-08-16)
 
 - Added the sandbox-domain reference adapter (innovation proposals, bounded experiments, evidence-based policy decisions, immutable apply) with **sandbox boundary**, **evidence-based policy**, **designated reviewer**, and **immutable policy** governance.
