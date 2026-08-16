@@ -32,4 +32,4 @@ The governance-pattern catalog organizing these demos vertically by governance b
 
 ## Version
 
-This demo set is part of the public repository's **1.0.0** stable release.
+This demo set is part of the public repository's **1.0.x** stable release series (current: 1.0.3). See [release status](release-status.md) and [CHANGELOG.md](../CHANGELOG.md).

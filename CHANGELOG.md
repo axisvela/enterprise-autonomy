@@ -4,6 +4,11 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`. `1.0.0` is the first stable release of the public introduction and examples repository.
 
+## 1.0.4 (2026-08-16)
+
+- Documented the new release tooling in `scripts/README.md` (table entries, release flow preview step, CI step list) and refreshed the release flow in `CONTRIBUTING.md`.
+- Refreshed stale release references across `README.md`, `docs/release-status.md`, and `docs/demo-matrix.md` from "at 1.0.0" to the current 1.0.x series, and corrected adapter/assertion counts to all twelve adapters / 70 assertions.
+
 ## 1.0.3 (2026-08-16)
 
 - Added `scripts/check-releases.ps1`: verifies every release tag has a matching GitHub Release (excluding the in-flight current version), preventing the tag-without-release regression from recurring.

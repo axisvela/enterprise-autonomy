@@ -2,7 +2,7 @@
 
 This page summarizes the public maturity of each product's local surface. Product repositories are authoritative for their own release versions and availability.
 
-> **This public repository is at 1.0.0** — a stable release of the introduction and examples content. Releases are tagged `vX.Y.Z` and published to GitHub Releases; see the [demo matrix](demo-matrix.md) for the full runnable-demo set.
+> **This public repository is at 1.0.3** — the first stable release series (1.0.x) of the introduction and examples content. Releases are tagged `vX.Y.Z` and published to GitHub Releases with their CHANGELOG body; every version tag has a matching release. See the [demo matrix](demo-matrix.md) for the full runnable-demo set and [CHANGELOG.md](../CHANGELOG.md) for the release history.
 
 | Product | Local binary available | Maturity notes |
 | --- | --- | --- |
