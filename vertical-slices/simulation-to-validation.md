@@ -47,6 +47,10 @@ See the [value framework](../docs/example-value.md).
 | Validate | repeatable validation, release assurance | Tekmovela | validation report `assurance-eval-0001` |
 | Decide | revise, approve, or reject | Symbivela, Aegivela | decision `decision-eval-0001` |
 
+## Runnable Local Demo
+
+For verified local-binary startup commands, configuration, API requests, request bodies, and expected operational outputs, see the [local simulation-validation demo](../examples/simulation-validation-local/README.md) and its [Detailed Operations Guide](../examples/simulation-validation-local/operations-guide.md).
+
 ## Public Boundary
 
 This scenario describes an outcome-level workflow only. It does not disclose simulation models, operational thresholds, policy rules, test fixtures, or internal decision logic.

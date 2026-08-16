@@ -11,6 +11,7 @@ Public examples illustrate how AxisRobo products can be composed to achieve a me
 | [Recruitment requisition to offer (local)](recruitment-local/README.md) | Runnable local demo | Human-only hiring decisions with an automation boundary, and a verified value report. | [Value & Effect](recruitment-local/README.md#value--effect) |
 | [Predictive maintenance (local)](predictive-maintenance-local/README.md) | Runnable local demo | Safety-reviewed intervention with prediction-vs-fact integrity, and a verified value report. | [Value & Effect](predictive-maintenance-local/README.md#value--effect) |
 | [Integration outage recovery (local)](integration-recovery-local/README.md) | Runnable local demo | Preserved, verified recovery with no silent re-execution, and a verified value report. | [Value & Effect](integration-recovery-local/README.md#value--effect) |
+| [Simulation to validation (local)](simulation-validation-local/README.md) | Runnable local demo | Evidence-gated release with immutable simulation evidence, and a verified value report. | [Value & Effect](simulation-validation-local/README.md#value--effect) |
 
 ## Supporting Material
 

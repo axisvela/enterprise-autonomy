@@ -11,5 +11,6 @@ Reference adapters are local, illustrative integrations used by runnable example
 | [recruitment-domain](recruitment-domain/README.md) | Simulated recruiting views: requisitions, candidates, human-only decisions, and offers with an automation-cannot-decide boundary. | [API.md](recruitment-domain/API.md) |
 | [maintenance-domain](maintenance-domain/README.md) | Simulated predictive-maintenance views: signals, validation, decisions, safety reviews, and work orders with prediction-vs-fact and safety conjunctive gates. | [API.md](maintenance-domain/API.md) |
 | [integration-domain](integration-domain/README.md) | Simulated integration-outage recovery views: preservation, reconnection verification, resume, and completion with no-silent-rerun. | [API.md](integration-domain/API.md) |
+| [simulation-domain](simulation-domain/README.md) | Simulated possible-world validation: scenarios, immutable simulation evidence, review decisions, and release with evidence-gated governance. | [API.md](simulation-domain/API.md) |
 
 Use these only for demos and development. Replace them with authorized production integrations before real business use.

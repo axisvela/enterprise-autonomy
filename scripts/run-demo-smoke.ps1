@@ -10,7 +10,8 @@ $adapters = @(
   @{ Name = "customer-domain"; Dir = "customer-domain"; Args = "--addr :$($Port + 3) --data-file `"$env:TEMP\smoke-customer-data.json`""; Check = "/healthz" },
   @{ Name = "recruitment-domain"; Dir = "recruitment-domain"; Args = "--addr :$($Port + 4) --data-file `"$env:TEMP\smoke-recruitment-data.json`""; Check = "/healthz" },
   @{ Name = "maintenance-domain"; Dir = "maintenance-domain"; Args = "--addr :$($Port + 5) --data-file `"$env:TEMP\smoke-maintenance-data.json`""; Check = "/healthz" },
-  @{ Name = "integration-domain"; Dir = "integration-domain"; Args = "--addr :$($Port + 6) --data-file `"$env:TEMP\smoke-integration-data.json`""; Check = "/healthz" }
+  @{ Name = "integration-domain"; Dir = "integration-domain"; Args = "--addr :$($Port + 6) --data-file `"$env:TEMP\smoke-integration-data.json`""; Check = "/healthz" },
+  @{ Name = "simulation-domain"; Dir = "simulation-domain"; Args = "--addr :$($Port + 7) --data-file `"$env:TEMP\smoke-simulation-data.json`""; Check = "/healthz" }
 )
 
 $procs = @()
@@ -36,6 +37,7 @@ try {
   $recAddr = "http://localhost:$($Port + 4)"
   $maintAddr = "http://localhost:$($Port + 5)"
   $intAddr = "http://localhost:$($Port + 6)"
+  $simAddr = "http://localhost:$($Port + 7)"
 
   $failures = @()
   function Assert-True($condition, $message) {
@@ -50,6 +52,7 @@ try {
   Assert-True ((Invoke-RestMethod -Uri "$recAddr/healthz").status -eq "ok") "recruitment-domain adapter is healthy"
   Assert-True ((Invoke-RestMethod -Uri "$maintAddr/healthz").status -eq "ok") "maintenance-domain adapter is healthy"
   Assert-True ((Invoke-RestMethod -Uri "$intAddr/healthz").status -eq "ok") "integration-domain adapter is healthy"
+  Assert-True ((Invoke-RestMethod -Uri "$simAddr/healthz").status -eq "ok") "simulation-domain adapter is healthy"
 
   $order = Invoke-RestMethod -Uri "$orderAddr/v1/orders/order-123"
   Assert-True ($order.fulfillment_status -eq "stockout") "order starts in stockout"
@@ -224,6 +227,43 @@ try {
   Assert-True ($compResult.work.status -eq "completed") "work completes after verified resume"
   Assert-True ($rerunDenied -eq 409) "silent re-execution is rejected (HTTP 409)"
 
+  # Simulation validation flow
+  $simBase = "$simAddr/v1/proposals/proposal-sim-0001"
+  $decDenied = $null
+  try {
+    $prematureDec = @{ decision = "approve"; decided_by = "reviewer-a"; rationale = "premature"; decision_ref = "decision://smoke"; idempotency_key = "smoke-sim-dec-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$simBase/decisions" -ContentType "application/json" -Body $prematureDec | Out-Null
+  } catch { $decDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($decDenied -eq 403) "decision without simulation evidence is rejected (HTTP 403)"
+
+  $sc = @{ scenario_id = "scn-collision"; description = "collision avoidance"; idempotency_key = "smoke-sim-scn-v1" } | ConvertTo-Json
+  Invoke-RestMethod -Method Post -Uri "$simBase/scenarios" -ContentType "application/json" -Body $sc | Out-Null
+  $run = @{ run_id = "run-001"; outcome = "pass"; evidence_ref = "evidence://smoke"; recorded_by = "simulation-engineer"; idempotency_key = "smoke-sim-run-v1" } | ConvertTo-Json
+  $runResult = Invoke-RestMethod -Method Post -Uri "$simBase/runs" -ContentType "application/json" -Body $run
+  Assert-True ($runResult.run.immutable -eq $true) "simulation evidence is recorded immutable"
+
+  $immutableDenied = $null
+  try {
+    $run2 = @{ run_id = "run-002"; outcome = "fail"; evidence_ref = "evidence://smoke-2"; recorded_by = "simulation-engineer"; idempotency_key = "smoke-sim-run2-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$simBase/runs" -ContentType "application/json" -Body $run2 | Out-Null
+  } catch { $immutableDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($immutableDenied -eq 409) "immutable evidence cannot be replaced (HTTP 409)"
+
+  $nonMember = $null
+  try {
+    $outsider = @{ decision = "approve"; decided_by = "outsider"; rationale = "x"; decision_ref = "decision://smoke"; idempotency_key = "smoke-sim-dec-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$simBase/decisions" -ContentType "application/json" -Body $outsider | Out-Null
+  } catch { $nonMember = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($nonMember -eq 403) "non-review-group decision is rejected (HTTP 403)"
+
+  $dec = @{ decision = "approve"; decided_by = "reviewer-a"; rationale = "evidence passes"; decision_ref = "decision://smoke"; idempotency_key = "smoke-sim-dec-v1" } | ConvertTo-Json
+  $decResult = Invoke-RestMethod -Method Post -Uri "$simBase/decisions" -ContentType "application/json" -Body $dec
+  Assert-True ($decResult.proposal.status -eq "decided") "review-group decision is recorded"
+
+  $rel = @{ released_by = "reviewer-a"; decision_ref = "decision://smoke"; idempotency_key = "smoke-sim-rel-v1" } | ConvertTo-Json
+  $relResult = Invoke-RestMethod -Method Post -Uri "$simBase/release" -ContentType "application/json" -Body $rel
+  Assert-True ($relResult.proposal.status -eq "released") "evidence-gated release completes"
+
   Write-Host ""
   if ($failures.Count -eq 0) { Write-Host "run-demo-smoke: all adapter-level checks passed." -ForegroundColor Green; exit 0 }
   Write-Host "run-demo-smoke: $($failures.Count) check(s) failed." -ForegroundColor Red
@@ -241,4 +281,5 @@ try {
   Remove-Item "$env:TEMP\smoke-recruitment-data.json" -ErrorAction SilentlyContinue
   Remove-Item "$env:TEMP\smoke-maintenance-data.json" -ErrorAction SilentlyContinue
   Remove-Item "$env:TEMP\smoke-integration-data.json" -ErrorAction SilentlyContinue
+  Remove-Item "$env:TEMP\smoke-simulation-data.json" -ErrorAction SilentlyContinue
 }

@@ -167,6 +167,28 @@ Three properties worth noticing:
 2. **Verify-before-resume.** Resume requires an integration-owner reconnection check that verified the integration — preservation alone is insufficient.
 3. **No silent re-execution.** A completed action is final; a new completion is rejected (`409`), and only the same idempotency key replays. Recovery is durable, never duplicated.
 
+## 12. Evidence-Gated Release and Immutable Simulation (Simulation Demo)
+
+The [simulation-to-validation demo](../examples/simulation-validation-local/README.md) shows that going live is a governed decision grounded in evidence:
+
+```
+POST /v1/proposals/proposal-sim-0001/decisions     (no simulation run yet)
+-> 403 {"error":"simulation_evidence_required_before_decision"}
+
+POST /v1/proposals/proposal-sim-0001/runs          (evidence already recorded)
+-> 409 {"error":"evidence_already_recorded_immutable"}
+
+POST /v1/proposals/proposal-sim-0001/release       (wrong decision reference)
+-> 403 {"error":"decision_ref_mismatch"}
+```
+
+Four properties worth noticing:
+
+1. **Evidence-before-decision.** A review decision cannot exist before recorded simulation evidence — the review cannot precede the run.
+2. **Immutable evidence.** Simulation runs are recorded once and cannot be replaced (`409`); the evidence set is final.
+3. **Review-group authority.** Only designated reviewers may decide (`403 not_review_group_member`).
+4. **Approval-gated release.** Release requires an `approve` decision citing the exact reference; a wrong reference is rejected.
+
 ## Why This Matters
 
 The subtlety is that **governance is distributed and structural**: each product enforces a piece of the policy in its own domain, the pieces reference each other through shared approval/evidence references, and none of them can be bypassed by calling another one. That is what "contract-governed" means in practice.

@@ -4,6 +4,14 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`.
 
+## 0.9.0 (2026-08-16)
+
+- Added the simulation-domain reference adapter (proposals, scenarios, immutable simulation runs, review decisions, release) with **evidence-before-decision**, **immutable evidence**, and **approval-gated release**.
+- Added the runnable simulation-to-validation local demo (`examples/simulation-validation-local/`) with an 8-step lifecycle, `verify.ps1`, `run-all.ps1`, value report, and a detailed operations guide.
+- Extended `run-demo-smoke.ps1` to all eight adapters (41 assertions) and wired the simulation demo into `run-all-demos.ps1`, `report-value.ps1`, `check-examples.ps1`, and `validate-demos.ps1`.
+- Extended the governance-subtlety guide with the evidence-gated release and immutable-evidence pattern.
+- Cross-linked the simulation demo from the simulation-to-validation slice, example index, getting-started, run handbook, and roadmap.
+
 ## 0.8.0 (2026-08-16)
 
 - Added the integration-domain reference adapter (integration state, preservation, reconnection checks, resume, completion) with **preserve-before-resume**, **verify-before-resume**, and **no-silent-re-execution** recovery integrity.
