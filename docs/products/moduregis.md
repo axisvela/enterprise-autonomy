@@ -19,6 +19,7 @@ Enterprise capability control plane for publishing, discovering, governing, auth
 
 - [Mission-to-execution](../../vertical-slices/mission-to-execution.md) — capability control for physical work
 - [Order fulfillment exception](../../vertical-slices/order-fulfillment-exception.md) — governed capability invocation
+- [Release operations](../../reference-stacks/release-operations.md) — release and compliance notifications
 
 ## Authority
 

@@ -20,6 +20,7 @@ Agent identity, authorization, and security fabric for delegated authority, appr
 - [Order fulfillment exception](../../vertical-slices/order-fulfillment-exception.md) — authorization and approvals
 - [Mission-to-execution](../../vertical-slices/mission-to-execution.md) — identity and authorization
 - [Facility inspection](../../reference-stacks/facility-inspection.md) — delegated authority and approval
+- [Release operations](../../reference-stacks/release-operations.md) — identity, authorization, and approvals
 
 ## Authority
 

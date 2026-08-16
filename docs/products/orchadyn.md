@@ -19,6 +19,7 @@ Enterprise planning compiler that turns governed goals, state, capabilities, and
 
 - [Order fulfillment exception](../../vertical-slices/order-fulfillment-exception.md) — alternate-fulfillment plan generation
 - [Mission-to-execution](../../vertical-slices/mission-to-execution.md) — planning and replanning
+- [Release operations](../../reference-stacks/release-operations.md) — planning under sequence constraints
 - [Local order-exception demo](../../examples/order-fulfillment-local/README.md) — runnable verified planning
 
 ## Authority

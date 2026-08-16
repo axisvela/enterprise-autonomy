@@ -19,6 +19,7 @@ Local-first desktop agent runtime with governed, sandboxed capability use, a den
 
 - [Local order-exception demo](../../examples/order-fulfillment-local/README.md) — runnable deny-by-default agent step with effect ledger
 - [Mission-to-execution](../../vertical-slices/mission-to-execution.md) — governed agent actions
+- [Release operations](../../reference-stacks/release-operations.md) — bounded agent execution (boundary policy)
 
 ## Authority
 

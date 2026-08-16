@@ -90,6 +90,7 @@ All twelve vertical slices have runnable local demos. Each demo drives real loca
 - [Talent acquisition reference stack](reference-stacks/talent-acquisition.md)
 - [Predictive maintenance reference stack](reference-stacks/predictive-maintenance.md)
 - [Engineering assurance reference stack](reference-stacks/engineering-assurance.md)
+- [Release operations reference stack](reference-stacks/release-operations.md)
 - [Mission-to-execution](vertical-slices/mission-to-execution.md)
 - [Simulation-to-validation](vertical-slices/simulation-to-validation.md)
 - [Process-to-outcome](vertical-slices/process-to-outcome.md)

@@ -19,6 +19,7 @@ Dynamic process and durable-workflow platform for recoverable, approvable, and a
 
 - [Order fulfillment exception](../../vertical-slices/order-fulfillment-exception.md) — durable exception process
 - [Process-to-outcome](../../vertical-slices/process-to-outcome.md) — long-running process coordination
+- [Release operations](../../reference-stacks/release-operations.md) — durable release process
 - [Local order-exception demo](../../examples/order-fulfillment-local/README.md) — runnable durable process instance
 
 ## Authority

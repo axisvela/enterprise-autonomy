@@ -20,6 +20,7 @@ Governed integration gateway for APIs, MCP servers, events, webhooks, and partne
 - [Order fulfillment exception](../../vertical-slices/order-fulfillment-exception.md) — order, warehouse, carrier, and customer-system connectivity
 - [Local order-exception demo](../../examples/order-fulfillment-local/README.md) — runnable governed edge gateway
 - [Integration outage recovery](../../vertical-slices/integration-outage-recovery.md) — connectivity resilience
+- [Release operations](../../reference-stacks/release-operations.md) — integration of pipeline systems
 
 ## Authority
 

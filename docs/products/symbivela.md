@@ -19,6 +19,7 @@ Human sovereignty control surface for goals, plan review, approvals, interventio
 
 - [Order fulfillment exception](../../vertical-slices/order-fulfillment-exception.md) — operator review and case authority
 - [Mission-to-execution](../../vertical-slices/mission-to-execution.md) — operator collaboration and approval
+- [Release operations](../../reference-stacks/release-operations.md) — release case and operator workspace
 - [Local order-exception demo](../../examples/order-fulfillment-local/README.md) — runnable workspace and exception cases
 
 ## Authority
