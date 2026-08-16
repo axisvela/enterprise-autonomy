@@ -46,3 +46,5 @@ The [scripts in the repository](../scripts/README.md) verify examples:
 - [check-links.ps1](../scripts/check-links.ps1) — verifies internal documentation links.
 - [check-examples.ps1](../scripts/check-examples.ps1) — verifies produced artifacts against expectations.
 - [run-demo-smoke.ps1](../scripts/run-demo-smoke.ps1) — smoke-tests a runnable demo end to end.
+
+The [governance patterns catalog](governance-patterns.md) organizes the examples vertically by the governance behavior each demonstrates.

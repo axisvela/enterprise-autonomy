@@ -1,6 +1,23 @@
 # The Subtlety of Governed Autonomy
 
-This page explains, with concrete artifacts from the [order-exception demo](../examples/order-fulfillment-local/README.md), why the ecosystem's design is subtle rather than simply "many services chained together."
+This page explains, with concrete artifacts from the [order-exception demo](../examples/order-fulfillment-local/README.md), why the ecosystem's design is subtle rather than simply "many services chained together." For a navigation-level view, see the [governance patterns catalog](governance-patterns.md).
+
+## Contents
+
+1. [No Product Can Change the Order Without a Case](#1-no-product-can-change-the-order-without-a-case)
+2. [One Approval Reference, Three Products](#2-one-approval-reference-three-products)
+3. [A Plan Is a Recommendation, Not an Authorization](#3-a-plan-is-a-recommendation-not-an-authorization)
+4. [Deny-by-Default Runtime](#4-deny-by-default-runtime)
+5. [The Audit Trail Is a Chain, Not a Log](#5-the-audit-trail-is-a-chain-not-a-log)
+6. [Idempotency Makes Re-Runs Safe](#6-idempotency-makes-re-runs-safe)
+7. [Segregation of Duties Is Structural (Procurement Demo)](#7-segregation-of-duties-is-structural-procurement-demo)
+8. [Consent Is a First-Class Gate (Customer-Case Demo)](#8-consent-is-a-first-class-gate-customer-case-demo)
+9. [Automation Cannot Decide (Recruitment Demo)](#9-automation-cannot-decide-recruitment-demo)
+10. [A Prediction Is Not a Fault, and Safety Is Conjunctive (Maintenance Demo)](#10-a-prediction-is-not-a-fault-and-safety-is-conjunctive-maintenance-demo)
+11. [Recovery Integrity: Preserve, Verify, Never Rerun (Integration Demo)](#11-recovery-integrity-preserve-verify-never-rerun-integration-demo)
+12. [Evidence-Gated Release and Immutable Simulation (Simulation Demo)](#12-evidence-gated-release-and-immutable-simulation-simulation-demo)
+13. [Completeness-Gated Attestation and Immutable Audit (Compliance Demo)](#13-completeness-gated-attestation-and-immutable-audit-compliance-demo)
+14. [Autonomous Boundary and Pause-and-Review (Fleet Demo)](#14-autonomous-boundary-and-pause-and-review-fleet-demo)
 
 ## 1. No Product Can Change the Order Without a Case
 

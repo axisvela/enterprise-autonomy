@@ -19,6 +19,8 @@ Public examples illustrate how AxisRobo products can be composed to achieve a me
 
 - [Value framework](../docs/example-value.md) — how examples demonstrate value.
 - [Value dashboard](../docs/value-dashboard.md) — aggregated view of all demo value reports.
+- [Governance patterns](../docs/governance-patterns.md) — examples organized vertically by governance pattern.
+- [Governance subtlety](../docs/governance-subtlety.md) — why the design is structural, not just chained services.
 - [Value report template](value-report-template.md) — machine-readable outcome report.
 - [Value metrics catalog](value-metrics.md) — KPIs by example class.
 - [Input/output conventions](inputs-outputs.md) — shared shape for step I/O.

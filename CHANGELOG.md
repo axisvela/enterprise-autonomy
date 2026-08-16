@@ -4,6 +4,14 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`.
 
+## 0.13.0 (2026-08-16)
+
+- Added the governance patterns catalog (`docs/governance-patterns.md`) organizing the nine runnable demos **vertically by governance pattern** (15 patterns across integrity, authority, evidence, recovery, and physical categories), with a pattern-to-example matrix.
+- Added **Governance Patterns** sections to every demo README and pattern cross-references to every adapter API reference.
+- Added `examples/patterns.json`, a machine-readable pattern-to-example matrix.
+- Updated navigation (getting-started, repository map, ecosystem links, value framework, adoption guide) and added a table of contents to the governance-subtlety deep dive.
+- Updated the repository About (GitHub) with a project description and topics.
+
 ## 0.12.0 (2026-08-16)
 
 - Added Go unit tests (`main_test.go`) for all ten reference adapters, covering each governance gate, denial path, and idempotency behavior.

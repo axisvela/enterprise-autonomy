@@ -18,9 +18,13 @@ Reference stacks, such as [facility inspection](../reference-stacks/facility-ins
 
 The [value framework](example-value.md) explains what makes an example valuable: outcome, accountable owner, decision gates, evidence, and effect. The [value metrics catalog](../examples/value-metrics.md) defines KPIs per example class.
 
-## 5. Run a local demo
+## 5. Navigate by governance pattern
 
-Five runnable local demos are available, each producing a value report:
+The [governance patterns catalog](governance-patterns.md) organizes the examples **vertically by pattern** — deny-by-default, shared approval references, segregation of duties, conjunctive authority, consent, human-only decisions, prediction-vs-fact, recovery integrity, evidence-gated release, completeness attestation, and autonomous boundaries. Start with the requirement you need to enforce, then open the matching demo.
+
+## 6. Run a local demo
+
+Nine runnable local demos are available, each producing a value report:
 
 - [Order exception demo](../examples/order-fulfillment-local/README.md) — stockout exception with approvals and value report.
 - [Procurement demo](../examples/procurement-local/README.md) — governed purchasing with segregation of duties.
@@ -34,11 +38,11 @@ Five runnable local demos are available, each producing a value report:
 
 Run them all end to end with `.\examples\run-all-demos.ps1` (requires a full local stack; use `-CheckOnly` to verify structure without a database). Aggregate the results with `.\scripts\report-value.ps1` into the [value dashboard](value-dashboard.md). See the [local run handbook](../examples/local-run-handbook.md) for startup guidance.
 
-## 6. Learn operational details
+## 7. Learn operational details
 
 The [technical catalog](technical-catalog.md) lists binaries, current and planned ports, databases, and health endpoints. The [port migration guide](port-migration.md) explains the planned port allocation.
 
-## 7. Check release status
+## 8. Check release status
 
 The [release status](release-status.md) page summarizes public release maturity. Each product repository is authoritative for its own releases.
 

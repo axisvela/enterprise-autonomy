@@ -13,10 +13,11 @@ How to approach adopting AxisRobo Enterprise Autonomy products for a governed au
 
 1. **Define the outcome.** Use the [public example design guide](example-design-guide.md) to structure the goal, context, constraints, evidence, and review points.
 2. **Select product roles.** Map needs to product roles using the [product overview](products.md) and relevant [reference stacks](../reference-stacks/).
-3. **Plan the human gates.** Identify every decision that requires review, approval, consent, or escalation.
-4. **Trial in a controlled environment.** Use simulation ([Peiravela](products/peiravela.md)) and engineering assurance ([Tekmovela](products/tekmovela.md)) before live operation.
-5. **Run, review, and improve.** Execute the accepted plan, review evidence at each gate, and expand only after the organization accepts the result.
-6. **Measure the effect.** Define KPIs using the [value metrics catalog](../examples/value-metrics.md), and verify the outcome with the [value framework](example-value.md).
+3. **Select governance patterns.** Use the [governance patterns catalog](governance-patterns.md) to choose the deny-by-default, authority, and evidence/recovery patterns your outcome requires, then adopt the matching runnable demo.
+4. **Plan the human gates.** Identify every decision that requires review, approval, consent, or escalation.
+5. **Trial in a controlled environment.** Use simulation ([Peiravela](products/peiravela.md)) and engineering assurance ([Tekmovela](products/tekmovela.md)) before live operation.
+6. **Run, review, and improve.** Execute the accepted plan, review evidence at each gate, and expand only after the organization accepts the result.
+7. **Measure the effect.** Define KPIs using the [value metrics catalog](../examples/value-metrics.md), and verify the outcome with the [value framework](example-value.md).
 
 ## Scenario Guidance
 

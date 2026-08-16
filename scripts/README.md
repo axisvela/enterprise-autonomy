@@ -82,3 +82,5 @@ The repository includes [`.github/workflows/ci.yml`](../.github/workflows/ci.yml
 8. `check-release.ps1` — reports whether a new tag is warranted (informational; exit `1` does not fail the build).
 
 `check-examples.ps1` verifies produced demo artifacts after a run; it is intended for post-run verification, not CI without a full demo environment.
+
+The [governance patterns catalog](../docs/governance-patterns.md) organizes the demos vertically by pattern, and `examples/patterns.json` carries the same matrix in machine-readable form.

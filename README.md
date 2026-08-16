@@ -33,6 +33,8 @@ Architecture, contracts, schemas, profiles, conformance, governance, internal pl
 | `vertical-slices/` | End-to-end use cases spanning products. |
 | `adapters/` | Local reference adapters used by runnable examples. |
 | `docs/` | Supporting documentation for adopters and contributors. |
+| `docs/governance-patterns.md` | Examples organized vertically by governance pattern. |
+| `docs/governance-subtlety.md` | Deep dive into why the governance is structural. |
 | `scripts/` | Validation, versioning, and release tooling (see [scripts/README.md](scripts/README.md)). |
 | `.githooks/` | Commit-time checks (install with `scripts/install-hooks.ps1`). |
 
