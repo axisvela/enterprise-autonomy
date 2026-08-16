@@ -81,7 +81,7 @@ Post-1.0 changes are additive and follow the same verification and release proce
 - [x] Delegate the release workflow to the shared release scripts (single source of truth for tag and release creation)
 - [x] Deeper release tooling: CI-gated tag↔release consistency check (`check-releases.ps1`) and release-body preview (`release-body-preview.ps1`)
 - [x] New runnable demo: sequenced deployment (twelfth slice) with the deployment-domain adapter covering sequenced autonomous execution and approval-required deviations
-- [ ] Refreshed content and navigation as the example set grows
+- [x] Refreshed content and navigation as the example set grows (demo matrix, getting-started, example index, run handbook, governance-subtlety, version references)
 
 ## Guiding Principles
 
@@ -91,4 +91,4 @@ Post-1.0 changes are additive and follow the same verification and release proce
 
 ## Status
 
-All phases of the initial public roadmap are complete as of **1.0.0**. Post-1.0 work is additive: new runnable demos, deeper tooling, and refreshed content follow the same verification and release process. Every released version now has a matching GitHub tag and release (backfilled for pre-0.14.0 versions).
+All phases of the initial public roadmap are complete as of **1.0.0**, and all Phase 7 post-1.0 additive items are complete as of **1.1.1**. Twelve vertical slices have runnable local demos backed by thirteen reference adapters, with release automation, CI-gated consistency checks, and every released version carrying a matching GitHub tag and release (backfilled for pre-0.14.0 versions).
