@@ -4,6 +4,10 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`. `1.0.0` is the first stable release of the public introduction and examples repository.
 
+## 1.1.1 (2026-08-16)
+
+- Corrected stale version references after the 1.1.0 release: `README.md`, `docs/release-status.md`, and `docs/demo-matrix.md` now point at the 1.x series (current 1.1.0).
+
 ## 1.1.0 (2026-08-16)
 
 - Added the deployment-domain reference adapter (release pipeline, sequenced steps, evidence-cited execution, approved deviations) with **sequenced autonomous execution** governance.

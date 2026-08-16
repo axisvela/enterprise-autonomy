@@ -107,7 +107,7 @@ All twelve vertical slices have runnable local demos. Each demo drives real loca
 
 ## Status
 
-**Stable 1.0.x release series** (current: 1.0.6). All twelve vertical slices have runnable local demos, backed by thirteen reference adapters with Go unit tests, continuous integration, structural validation, and an automated release workflow that publishes a tag and GitHub Release for every prepared version. Public content is maintained in this repository; governance-pattern knowledge and internal material live in the private `enterprise-autonomy-ee` repository. See the [repository roadmap](ROADMAP.md) and [release status](docs/release-status.md).
+**Stable 1.x release series** (current: 1.1.0). All twelve vertical slices have runnable local demos, backed by thirteen reference adapters with Go unit tests, continuous integration, structural validation, and an automated release workflow that publishes a tag and GitHub Release for every prepared version. Public content is maintained in this repository; governance-pattern knowledge and internal material live in the private `enterprise-autonomy-ee` repository. See the [repository roadmap](ROADMAP.md) and [release status](docs/release-status.md).
 
 ## Releases
 
