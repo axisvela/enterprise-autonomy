@@ -8,9 +8,8 @@ Agent identity, authorization, and security fabric for delegated authority, appr
 
 | Item | Detail |
 | --- | --- |
-| Binaries | `aegivela-api` (core, no local `.exe`); EE `aegivela-ee.exe` |
-| Current ports | core `:8080`; EE `:8081` |
-| Planned ports | `1886` core · `1887` EE |
+| Binaries | `aegivela-api` (darwin/linux/windows, amd64+arm64, v0.5.0); EE `aegivela-ee.exe` |
+| Current ports | `1886` core · `1887` EE |
 | Database | PostgreSQL required (`DATABASE_URL`) |
 | Interfaces | HTTP API, PEP SDK library |
 | Health | `GET /healthz` |

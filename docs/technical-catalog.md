@@ -14,7 +14,7 @@ This catalog summarizes the local runnable surfaces of the AxisRobo Enterprise A
 | Ontovela | Digital twin and world model | `ontovela.exe` | `:8080` (`-addr`) | `1856` API | PostgreSQL optional (in-memory default) | HTTP API + SDKs |
 | Praxovela | Governed agent runtime | `axond.exe`; desktop app | `8420` (`AXON_PORT`) | `1866` AXON | SQLite local | HTTP API + desktop app + MCP |
 | Rheovela | Durable workflow platform | `rheo.exe` | `:8080` (`--addr`) | `1876` serve · `1877` console | SQLite default; PostgreSQL in EE | CLI + HTTP API + MCP + EE console |
-| Aegivela | Identity and authorization fabric | `aegivela-api` (EE `aegivela-ee.exe`) | core `:8080`, EE `:8081` | `1886` core · `1887` EE | PostgreSQL (required) | HTTP API + PEP SDK |
+| Aegivela | Identity and authorization fabric | `aegivela-api` (darwin/linux/windows, v0.5.0); EE `aegivela-ee.exe` | `1886` core · `1887` EE | `1886` core · `1887` EE | PostgreSQL (required) | HTTP API + PEP SDK |
 | Limenora | Governed integration gateway | `limenora-edge.exe`, `limenora-enterprise.exe`, `limenora-control.exe` | edge `10255`, enterprise `10256`, control `10257` | `1896` edge · `1897` enterprise · `1898` control | PostgreSQL/Valkey optional | HTTP gateway + CLI |
 | Peiravela | Simulation and experiment control plane | `api-server.exe`, `control-plane.exe` | `:8080` (`PEIRAVELA_API_ADDR`) | `1906` API | PostgreSQL optional (in-memory fallback) | HTTP API + embedded Studio + CLI |
 | Tekmovela | Engineering assurance | `tek.exe` | none (CLI) | `1916` reserved | PostgreSQL for migrations; local file store default | CLI only |
@@ -90,8 +90,8 @@ This catalog summarizes the local runnable surfaces of the AxisRobo Enterprise A
 
 ### Aegivela
 - **Role:** Agent identity, authorization, delegation, approval, revocation, and security evidence fabric.
-- **Binaries:** `aegivela-api` (core, no local `.exe`); EE `aegivela-ee.exe`.
-- **Ports:** core `:8080`; EE `:8081`.
+- **Binaries:** `aegivela-api` (darwin/linux/windows, amd64+arm64, v0.5.0 GitHub release assets); EE `aegivela-ee.exe`.
+- **Ports:** `1886` core · `1887` EE.
 - **Database:** PostgreSQL required (`DATABASE_URL`); `AEGIVELA_INTERNAL_AUTH_TOKEN` required.
 - **Interfaces:** HTTP API (`/v1/policies`, `/v1/attestations`, `/v1/risk/signals`, `/v1/agents`); PEP SDK library.
 - **Health:** `GET /healthz`.

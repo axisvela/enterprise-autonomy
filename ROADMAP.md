@@ -89,7 +89,7 @@ Post-1.1 changes are additive and follow the same verification and release proce
 
 - [x] New vertical slice (inference-request-to-governed-answer) and inference-governance reference stack covering the inference, knowledge, and memory fabrics (Noetivela, Gnosivela, Mnemovela) — the first content for those products
 - [ ] Runnable inference-governance local demo backed by a new inference-domain reference adapter (fourteenth adapter)
-- [ ] Local-surface maturity tracking for products without a shipped binary (Kinetovela, Aegivela core, Harmovela) as the product repositories land releases
+- [ ] Local-surface maturity tracking for products without a shipped binary (Kinetovela, Harmovela) as the product repositories land releases
 - [ ] Port-migration status tracking against the planned port allocation in release-status
 
 ## Guiding Principles

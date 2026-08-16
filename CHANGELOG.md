@@ -4,6 +4,10 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`. `1.0.0` is the first stable release of the public introduction and examples repository.
 
+## 1.1.9 (2026-08-16)
+
+- Corrected the Aegivela local surface to match the published `aegivela-open` v0.5.0 release: multi-platform `aegivela-api` binaries (darwin/linux/windows, amd64+arm64) plus SHA256SUMS, and the ports moved to the planned `1886` core · `1887` EE. Updated `docs/release-status.md`, `docs/products/aegivela.md`, `docs/technical-catalog.md`, and the roadmap's no-binary maturity list.
+
 ## 1.1.8 (2026-08-16)
 
 - Opened **Phase 8 (post-1.1 additive content)** on the roadmap, covering governed-inference content, a future inference-domain demo, product local-surface maturity tracking, and port-migration status tracking.

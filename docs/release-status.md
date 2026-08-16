@@ -15,7 +15,7 @@ This page summarizes the public maturity of each product's local surface. Produc
 | Praxovela | Yes (`axond.exe`, desktop app) | Local SQLite. |
 | Rheovela | Yes (`rheo.exe`) | SQLite default; PostgreSQL backend in EE. |
 | Kinetovela | No compiled `.exe` | Source entrypoint only; health/version only; database not yet wired; frontend planned. |
-| Aegivela | No local `.exe` (core) | EE binary `aegivela-ee.exe`; PostgreSQL required. |
+| Aegivela | Yes (`aegivela-api`) | GitHub release v0.5.0 (darwin/linux/windows); EE binary `aegivela-ee.exe`; PostgreSQL required. |
 | Limenora | Yes (edge, enterprise, control) | Also Rust reference gateway. |
 | Peiravela | Yes (`api-server`, `control-plane`) | Release builds under `bin/`. |
 | Tekmovela | Yes (`tek.exe`) | CLI only; no listener. |
