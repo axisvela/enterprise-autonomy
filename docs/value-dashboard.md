@@ -26,7 +26,7 @@ This prints a table per demo and writes the combined dashboard to `examples\.sta
 
 ## Reading The Dashboard
 
-Each row is the **effect** of one demo: how many products composed the outcome, how many human gates governed it, and how much evidence reconstructs it. Together they show that every runnable example delivers a governed, measurable outcome rather than a chained service call.
+Each row is the **effect** of one demo: how many products composed the outcome, how many human gates governed it, and how much evidence reconstructs it. Together they show that every one of the [eleven runnable demos](demo-matrix.md) delivers a governed, measurable outcome rather than a chained service call.
 
 ## CI And Automation
 

@@ -1,6 +1,6 @@
 # Public Examples
 
-Public examples illustrate how AxisRobo products can be composed to achieve a measurable outcome. They are adoption-oriented, not deployment blueprints. Every example makes its value explicit through outcome, decision gates, evidence, and effect; see the [value framework](../docs/example-value.md).
+Public examples illustrate how AxisRobo products can be composed to achieve a measurable outcome. They are adoption-oriented, not deployment blueprints. Every example makes its value explicit through outcome, decision gates, evidence, and effect; see the [value framework](../docs/example-value.md). The [demo matrix](../docs/demo-matrix.md) compares all eleven runnable demos at a glance.
 
 | Example | Type | Description | Value & Effect |
 | --- | --- | --- | --- |

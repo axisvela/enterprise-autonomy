@@ -24,7 +24,7 @@ The governance-pattern catalog — which organized the examples vertically by pa
 
 ## 6. Run a local demo
 
-Nine runnable local demos are available, each producing a value report:
+Eleven runnable local demos are available, each producing a value report. The [demo matrix](demo-matrix.md) compares them all:
 
 - [Order exception demo](../examples/order-fulfillment-local/README.md) — stockout exception with approvals and value report.
 - [Procurement demo](../examples/procurement-local/README.md) — governed purchasing with segregation of duties.
