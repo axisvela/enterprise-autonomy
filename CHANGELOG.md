@@ -4,6 +4,10 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`. `1.0.0` is the first stable release of the public introduction and examples repository.
 
+## 1.1.5 (2026-08-16)
+
+- Added the deployment-domain adapter to the `adapters/README.md` reference-adapter index, completing the index for all thirteen adapters.
+
 ## 1.1.4 (2026-08-16)
 
 - Added the [release-operations reference stack](reference-stacks/release-operations.md) for the sequenced-deployment scenario (autonomous in-order release execution with human-approved deviations) and cross-linked it from the top-level README, the sequenced-deployment slice, and the Symbivela, Rheovela, Orchadyn, Moduregis, Limenora, Praxovela, and Aegivela product pages.
