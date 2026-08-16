@@ -57,6 +57,10 @@ A governed operation must demonstrate compliance with a defined requirement. The
 | Package | requirement reference + evidence + decisions | Gnosivela, Rheovela | audit package `audit-compliance-0001` |
 | Record | package for inspection, change history | Ontovela | inspection-ready record |
 
+## Runnable Local Demo
+
+For verified local-binary startup commands, configuration, API requests, request bodies, and expected operational outputs, see the [local compliance-audit demo](../examples/compliance-audit-local/README.md) and its [Detailed Operations Guide](../examples/compliance-audit-local/operations-guide.md).
+
 ## Public Boundary
 
 This example omits specific regulations, endpoints, templates, and attestation policy.

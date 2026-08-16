@@ -29,6 +29,7 @@ Five runnable local demos are available, each producing a value report:
 - [Predictive maintenance demo](../examples/predictive-maintenance-local/README.md) — safety-reviewed intervention with prediction-vs-fact integrity.
 - [Integration recovery demo](../examples/integration-recovery-local/README.md) — preserved, verified recovery with no silent re-execution.
 - [Simulation validation demo](../examples/simulation-validation-local/README.md) — evidence-gated release with immutable simulation evidence.
+- [Compliance audit demo](../examples/compliance-audit-local/README.md) — completeness-gated attestation and immutable audit package.
 
 Run them all end to end with `.\examples\run-all-demos.ps1` (requires a full local stack; use `-CheckOnly` to verify structure without a database). Aggregate the results with `.\scripts\report-value.ps1` into the [value dashboard](value-dashboard.md). See the [local run handbook](../examples/local-run-handbook.md) for startup guidance.
 

@@ -189,6 +189,28 @@ Four properties worth noticing:
 3. **Review-group authority.** Only designated reviewers may decide (`403 not_review_group_member`).
 4. **Approval-gated release.** Release requires an `approve` decision citing the exact reference; a wrong reference is rejected.
 
+## 13. Completeness-Gated Attestation and Immutable Audit (Compliance Demo)
+
+The [compliance-audit demo](../examples/compliance-audit-local/README.md) shows that an audit record is a governed, complete artifact:
+
+```
+POST /v1/compliance/compliance-0001/attestations   (only 3 of 4 evidence items)
+-> 403 {"error":"evidence_incomplete_attestation_requires_all_items"}
+
+POST /v1/compliance/compliance-0001/attestations   (outsider)
+-> 403 {"error":"not_designated_attestor"}
+
+POST /v1/compliance/compliance-0001/packages       (released already)
+-> 409 {"error":"package_already_released_immutable"}
+```
+
+Four properties worth noticing:
+
+1. **Completeness gates attestation.** No attestation until every required evidence item is collected — partial evidence cannot be attested.
+2. **Designated attestor.** Only the designated attestor may attest; attestation is conjunctive with completeness.
+3. **Attestation-gated package.** The audit package releases only after an `attest` decision citing the exact reference.
+4. **Immutable package.** A released audit package is final (`409`); the audit record cannot be replaced.
+
 ## Why This Matters
 
 The subtlety is that **governance is distributed and structural**: each product enforces a piece of the policy in its own domain, the pieces reference each other through shared approval/evidence references, and none of them can be bypassed by calling another one. That is what "contract-governed" means in practice.

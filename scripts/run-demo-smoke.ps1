@@ -11,7 +11,8 @@ $adapters = @(
   @{ Name = "recruitment-domain"; Dir = "recruitment-domain"; Args = "--addr :$($Port + 4) --data-file `"$env:TEMP\smoke-recruitment-data.json`""; Check = "/healthz" },
   @{ Name = "maintenance-domain"; Dir = "maintenance-domain"; Args = "--addr :$($Port + 5) --data-file `"$env:TEMP\smoke-maintenance-data.json`""; Check = "/healthz" },
   @{ Name = "integration-domain"; Dir = "integration-domain"; Args = "--addr :$($Port + 6) --data-file `"$env:TEMP\smoke-integration-data.json`""; Check = "/healthz" },
-  @{ Name = "simulation-domain"; Dir = "simulation-domain"; Args = "--addr :$($Port + 7) --data-file `"$env:TEMP\smoke-simulation-data.json`""; Check = "/healthz" }
+  @{ Name = "simulation-domain"; Dir = "simulation-domain"; Args = "--addr :$($Port + 7) --data-file `"$env:TEMP\smoke-simulation-data.json`""; Check = "/healthz" },
+  @{ Name = "compliance-domain"; Dir = "compliance-domain"; Args = "--addr :$($Port + 8) --data-file `"$env:TEMP\smoke-compliance-data.json`""; Check = "/healthz" }
 )
 
 $procs = @()
@@ -38,6 +39,7 @@ try {
   $maintAddr = "http://localhost:$($Port + 5)"
   $intAddr = "http://localhost:$($Port + 6)"
   $simAddr = "http://localhost:$($Port + 7)"
+  $compAddr = "http://localhost:$($Port + 8)"
 
   $failures = @()
   function Assert-True($condition, $message) {
@@ -53,6 +55,7 @@ try {
   Assert-True ((Invoke-RestMethod -Uri "$maintAddr/healthz").status -eq "ok") "maintenance-domain adapter is healthy"
   Assert-True ((Invoke-RestMethod -Uri "$intAddr/healthz").status -eq "ok") "integration-domain adapter is healthy"
   Assert-True ((Invoke-RestMethod -Uri "$simAddr/healthz").status -eq "ok") "simulation-domain adapter is healthy"
+  Assert-True ((Invoke-RestMethod -Uri "$compAddr/healthz").status -eq "ok") "compliance-domain adapter is healthy"
 
   $order = Invoke-RestMethod -Uri "$orderAddr/v1/orders/order-123"
   Assert-True ($order.fulfillment_status -eq "stockout") "order starts in stockout"
@@ -264,6 +267,41 @@ try {
   $relResult = Invoke-RestMethod -Method Post -Uri "$simBase/release" -ContentType "application/json" -Body $rel
   Assert-True ($relResult.proposal.status -eq "released") "evidence-gated release completes"
 
+  # Compliance flow
+  $compBase = "$compAddr/v1/compliance/compliance-0001"
+  $attDenied = $null
+  try {
+    $premature = @{ attested_by = "compliance-lead"; decision = "attest"; attestation_ref = "attestation://smoke"; idempotency_key = "smoke-comp-att-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$compBase/attestations" -ContentType "application/json" -Body $premature | Out-Null
+  } catch { $attDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($attDenied -eq 403) "attestation before complete evidence is rejected (HTTP 403)"
+
+  for ($i = 1; $i -le 4; $i++) {
+    $ev = @{ item_id = "evidence-item-$i"; source = "governed-source-$i"; timestamp = "2026-08-16T14:0$i`:00Z"; evidence_ref = "evidence://smoke/item-$i"; collected_by = "compliance-lead"; idempotency_key = "smoke-comp-ev-$i" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$compBase/evidence" -ContentType "application/json" -Body $ev | Out-Null
+  }
+
+  $nonAttestor = $null
+  try {
+    $outsider = @{ attested_by = "outsider"; decision = "attest"; attestation_ref = "attestation://smoke"; idempotency_key = "smoke-comp-att-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$compBase/attestations" -ContentType "application/json" -Body $outsider | Out-Null
+  } catch { $nonAttestor = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($nonAttestor -eq 403) "non-designated attestor is rejected (HTTP 403)"
+
+  $att = @{ attested_by = "compliance-lead"; decision = "attest"; attestation_ref = "attestation://smoke"; idempotency_key = "smoke-comp-att-v1" } | ConvertTo-Json
+  $attResult = Invoke-RestMethod -Method Post -Uri "$compBase/attestations" -ContentType "application/json" -Body $att
+  Assert-True ($attResult.case.status -eq "attested") "complete evidence is attested by the designated attestor"
+
+  $pkg = @{ released_by = "compliance-lead"; attestation_ref = "attestation://smoke"; idempotency_key = "smoke-comp-pkg-v1" } | ConvertTo-Json
+  $pkgResult = Invoke-RestMethod -Method Post -Uri "$compBase/packages" -ContentType "application/json" -Body $pkg
+  $immutability = $null
+  try {
+    $pkg2 = @{ released_by = "compliance-lead"; attestation_ref = "attestation://smoke"; idempotency_key = "smoke-comp-pkg2-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$compBase/packages" -ContentType "application/json" -Body $pkg2 | Out-Null
+  } catch { $immutability = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($pkgResult.case.status -eq "released") "audit package releases after attestation"
+  Assert-True ($immutability -eq 409) "released audit package is immutable (HTTP 409)"
+
   Write-Host ""
   if ($failures.Count -eq 0) { Write-Host "run-demo-smoke: all adapter-level checks passed." -ForegroundColor Green; exit 0 }
   Write-Host "run-demo-smoke: $($failures.Count) check(s) failed." -ForegroundColor Red
@@ -282,4 +320,5 @@ try {
   Remove-Item "$env:TEMP\smoke-maintenance-data.json" -ErrorAction SilentlyContinue
   Remove-Item "$env:TEMP\smoke-integration-data.json" -ErrorAction SilentlyContinue
   Remove-Item "$env:TEMP\smoke-simulation-data.json" -ErrorAction SilentlyContinue
+  Remove-Item "$env:TEMP\smoke-compliance-data.json" -ErrorAction SilentlyContinue
 }
