@@ -9,6 +9,7 @@ Versioning: the current version lives in `VERSION`. Manage it with `scripts/vers
 - Backfilled GitHub Releases for every pre-0.14.0 version (v0.1.0 through v0.13.0), so each of the 19 tags now has a matching release with its CHANGELOG body. Kept v1.0.0 as the Latest release.
 - Hardened `scripts/create-release.ps1`: idempotent (skips existing releases) and added `-NotLatest` for historical backfills so the newest version stays "Latest".
 - Delegated `.github/workflows/release.yml` to the shared release scripts (`create-tag.ps1` + `create-release.ps1`) so local and CI behavior stay identical.
+- Fixed the automated release path: the runner had no git committer identity and `gh` lacked `GH_TOKEN`; the workflow now sets `github-actions[bot]` identity and passes `github.token` to `gh`. These failures were latent because every earlier release ran the workflow while `check-release` reported nothing to release.
 - Added a Phase 7 (post-1.0 additive work) backlog to the roadmap and updated the status note.
 
 ## 1.0.0 (2026-08-16)
