@@ -4,6 +4,14 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`.
 
+## 0.8.0 (2026-08-16)
+
+- Added the integration-domain reference adapter (integration state, preservation, reconnection checks, resume, completion) with **preserve-before-resume**, **verify-before-resume**, and **no-silent-re-execution** recovery integrity.
+- Added the runnable integration-outage-recovery local demo (`examples/integration-recovery-local/`) with an 8-step lifecycle, `verify.ps1`, `run-all.ps1`, value report, and a detailed operations guide.
+- Extended `run-demo-smoke.ps1` to all seven adapters (34 assertions) and wired the integration demo into `run-all-demos.ps1`, `report-value.ps1`, `check-examples.ps1`, and `validate-demos.ps1`.
+- Extended the governance-subtlety guide with the recovery-integrity pattern (preserve, verify, never rerun).
+- Cross-linked the integration demo from the integration-outage-recovery slice, example index, getting-started, run handbook, and roadmap.
+
 ## 0.7.0 (2026-08-16)
 
 - Added the maintenance-domain reference adapter (signals, validation, decisions, safety reviews, work orders) with **prediction-vs-fact integrity** and a **safety conjunctive gate** for intrusive work.

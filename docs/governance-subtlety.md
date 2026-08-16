@@ -146,6 +146,27 @@ Three properties worth noticing:
 2. **Safety is conjunctive.** Intrusive work (`repair`/`stop`) requires both a maintenance decision and an approved safety review by the safety authority; either missing factor denies the work order.
 3. **Decisions scope the work.** `monitor`, `inspect`, and `defer` never produce a work order; only `repair`/`stop` do, and only after all gates pass.
 
+## 11. Recovery Integrity: Preserve, Verify, Never Rerun (Integration Demo)
+
+The [integration-outage-recovery demo](../examples/integration-recovery-local/README.md) shows recovery as a governed sequence rather than a "resume button":
+
+```
+POST /v1/work/work-0001/resume      (work still inflight)
+-> 403 {"error":"work_not_preserved"}
+
+POST /v1/work/work-0001/resume      (work preserved, integration still down)
+-> 403 {"error":"integration_not_verified"}
+
+POST /v1/work/work-0001/complete    (already completed, different key)
+-> 409 {"error":"action_already_completed_no_silent_rerun"}
+```
+
+Three properties worth noticing:
+
+1. **Preserve-before-resume.** In-flight work must be preserved under a durable reference before any resume is possible.
+2. **Verify-before-resume.** Resume requires an integration-owner reconnection check that verified the integration — preservation alone is insufficient.
+3. **No silent re-execution.** A completed action is final; a new completion is rejected (`409`), and only the same idempotency key replays. Recovery is durable, never duplicated.
+
 ## Why This Matters
 
 The subtlety is that **governance is distributed and structural**: each product enforces a piece of the policy in its own domain, the pieces reference each other through shared approval/evidence references, and none of them can be bypassed by calling another one. That is what "contract-governed" means in practice.

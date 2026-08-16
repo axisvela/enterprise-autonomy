@@ -27,6 +27,7 @@ Five runnable local demos are available, each producing a value report:
 - [Customer case demo](../examples/customer-case-local/README.md) — governed customer remedy with consent and approval.
 - [Recruitment demo](../examples/recruitment-local/README.md) — human-only hiring decisions with an automation boundary.
 - [Predictive maintenance demo](../examples/predictive-maintenance-local/README.md) — safety-reviewed intervention with prediction-vs-fact integrity.
+- [Integration recovery demo](../examples/integration-recovery-local/README.md) — preserved, verified recovery with no silent re-execution.
 
 Run them all end to end with `.\examples\run-all-demos.ps1` (requires a full local stack; use `-CheckOnly` to verify structure without a database). Aggregate the results with `.\scripts\report-value.ps1` into the [value dashboard](value-dashboard.md). See the [local run handbook](../examples/local-run-handbook.md) for startup guidance.
 

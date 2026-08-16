@@ -7,7 +7,7 @@ param(
 # database or product binaries.
 
 $failures = @()
-$demoDirs = @("order-fulfillment-local", "procurement-local", "customer-case-local", "recruitment-local", "predictive-maintenance-local")
+$demoDirs = @("order-fulfillment-local", "procurement-local", "customer-case-local", "recruitment-local", "predictive-maintenance-local", "integration-recovery-local")
 
 foreach ($name in $demoDirs) {
   $dir = Join-Path $Root "examples\$name"

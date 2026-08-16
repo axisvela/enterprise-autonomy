@@ -70,6 +70,10 @@ See the [value framework](../docs/example-value.md).
 | Confirm | completed actions + outage evidence | Symbivela, Limenora | closure record `close-outage-0001` |
 | Escalate (exception) | persistent outage with evidence | Symbivela | escalation record `esc-outage-0001` |
 
+## Runnable Local Demo
+
+For verified local-binary startup commands, configuration, API requests, request bodies, and expected operational outputs, see the [local integration-recovery demo](../examples/integration-recovery-local/README.md) and its [Detailed Operations Guide](../examples/integration-recovery-local/operations-guide.md).
+
 ## Public Boundary
 
 This example omits partner details, topology, endpoints, credentials, and outage policy.

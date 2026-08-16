@@ -5,7 +5,7 @@ param(
 # Aggregates all runnable demo value reports into a dashboard table and a
 # combined JSON file at examples\.stack\all-demos-report.json.
 
-$demoDirs = @("order-fulfillment-local", "procurement-local", "customer-case-local", "recruitment-local", "predictive-maintenance-local")
+$demoDirs = @("order-fulfillment-local", "procurement-local", "customer-case-local", "recruitment-local", "predictive-maintenance-local", "integration-recovery-local")
 $reports = @()
 foreach ($name in $demoDirs) {
   $reportPath = Join-Path $ExamplesDir "$name\.local-data\*value-report.json"

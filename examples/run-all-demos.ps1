@@ -17,7 +17,8 @@ $demos = @(
   @{ Name = "procurement-local";       Run = "run-procurement.ps1";      Report = "procurement-value-report.json" },
   @{ Name = "customer-case-local";     Run = "run-customer-case.ps1";    Report = "customer-value-report.json" },
   @{ Name = "recruitment-local";       Run = "run-recruitment.ps1";      Report = "recruitment-value-report.json" },
-  @{ Name = "predictive-maintenance-local"; Run = "run-predictive-maintenance.ps1"; Report = "maintenance-value-report.json" }
+  @{ Name = "predictive-maintenance-local"; Run = "run-predictive-maintenance.ps1"; Report = "maintenance-value-report.json" },
+  @{ Name = "integration-recovery-local";  Run = "run-integration-recovery.ps1";   Report = "integration-value-report.json" }
 )
 
 $requiredFiles = @("README.md", "operations-guide.md", "local.env.ps1.example", "evidence-schema.md", "run-all.ps1", "verify.ps1", "start-services.ps1")

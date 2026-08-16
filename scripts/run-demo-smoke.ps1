@@ -9,7 +9,8 @@ $adapters = @(
   @{ Name = "procurement-domain"; Dir = "procurement-domain"; Args = "--addr :$($Port + 2) --data-file `"$env:TEMP\smoke-procurement-data.json`""; Check = "/healthz" },
   @{ Name = "customer-domain"; Dir = "customer-domain"; Args = "--addr :$($Port + 3) --data-file `"$env:TEMP\smoke-customer-data.json`""; Check = "/healthz" },
   @{ Name = "recruitment-domain"; Dir = "recruitment-domain"; Args = "--addr :$($Port + 4) --data-file `"$env:TEMP\smoke-recruitment-data.json`""; Check = "/healthz" },
-  @{ Name = "maintenance-domain"; Dir = "maintenance-domain"; Args = "--addr :$($Port + 5) --data-file `"$env:TEMP\smoke-maintenance-data.json`""; Check = "/healthz" }
+  @{ Name = "maintenance-domain"; Dir = "maintenance-domain"; Args = "--addr :$($Port + 5) --data-file `"$env:TEMP\smoke-maintenance-data.json`""; Check = "/healthz" },
+  @{ Name = "integration-domain"; Dir = "integration-domain"; Args = "--addr :$($Port + 6) --data-file `"$env:TEMP\smoke-integration-data.json`""; Check = "/healthz" }
 )
 
 $procs = @()
@@ -34,6 +35,7 @@ try {
   $custAddr = "http://localhost:$($Port + 3)"
   $recAddr = "http://localhost:$($Port + 4)"
   $maintAddr = "http://localhost:$($Port + 5)"
+  $intAddr = "http://localhost:$($Port + 6)"
 
   $failures = @()
   function Assert-True($condition, $message) {
@@ -47,6 +49,7 @@ try {
   Assert-True ((Invoke-RestMethod -Uri "$custAddr/healthz").status -eq "ok") "customer-domain adapter is healthy"
   Assert-True ((Invoke-RestMethod -Uri "$recAddr/healthz").status -eq "ok") "recruitment-domain adapter is healthy"
   Assert-True ((Invoke-RestMethod -Uri "$maintAddr/healthz").status -eq "ok") "maintenance-domain adapter is healthy"
+  Assert-True ((Invoke-RestMethod -Uri "$intAddr/healthz").status -eq "ok") "integration-domain adapter is healthy"
 
   $order = Invoke-RestMethod -Uri "$orderAddr/v1/orders/order-123"
   Assert-True ($order.fulfillment_status -eq "stockout") "order starts in stockout"
@@ -186,6 +189,41 @@ try {
   $maintResult = Invoke-RestMethod -Method Post -Uri "$maintBase/work-orders" -ContentType "application/json" -Body $woFinal
   Assert-True ($maintResult.work_order.status -eq "scheduled") "safety-reviewed work order is scheduled"
 
+  # Integration recovery flow
+  $intWork = "$intAddr/v1/work/work-0001"
+  $resumeDenied = $null
+  try {
+    $prematureResume = @{ resumed_by = "integration-owner"; idempotency_key = "smoke-int-resume-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$intWork/resume" -ContentType "application/json" -Body $prematureResume | Out-Null
+  } catch { $resumeDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($resumeDenied -eq 403) "resume before preservation is rejected (HTTP 403)"
+
+  $pres = @{ preserved_by = "integration-owner"; preserved_ref = "process://smoke"; idempotency_key = "smoke-int-pres-v1" } | ConvertTo-Json
+  Invoke-RestMethod -Method Post -Uri "$intWork/preserve" -ContentType "application/json" -Body $pres | Out-Null
+
+  $verifyDenied = $null
+  try {
+    $prematureResume2 = @{ resumed_by = "integration-owner"; idempotency_key = "smoke-int-resume-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$intWork/resume" -ContentType "application/json" -Body $prematureResume2 | Out-Null
+  } catch { $verifyDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($verifyDenied -eq 403) "resume before verification is rejected (HTTP 403)"
+
+  $ck = @{ checked_by = "integration-owner"; verified = $true; evidence_ref = "evidence://smoke"; idempotency_key = "smoke-int-check-v1" } | ConvertTo-Json
+  Invoke-RestMethod -Method Post -Uri "$intAddr/v1/integrations/partner-shipping/checks" -ContentType "application/json" -Body $ck | Out-Null
+  $resume = @{ resumed_by = "integration-owner"; idempotency_key = "smoke-int-resume-v1" } | ConvertTo-Json
+  $resumeResult = Invoke-RestMethod -Method Post -Uri "$intWork/resume" -ContentType "application/json" -Body $resume
+  Assert-True ($resumeResult.work.status -eq "resumed") "verified work resumes"
+
+  $comp = @{ completed_by = "integration-owner"; idempotency_key = "smoke-int-comp-v1" } | ConvertTo-Json
+  $compResult = Invoke-RestMethod -Method Post -Uri "$intWork/complete" -ContentType "application/json" -Body $comp
+  $rerunDenied = $null
+  try {
+    $comp2 = @{ completed_by = "integration-owner"; idempotency_key = "smoke-int-comp2-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$intWork/complete" -ContentType "application/json" -Body $comp2 | Out-Null
+  } catch { $rerunDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($compResult.work.status -eq "completed") "work completes after verified resume"
+  Assert-True ($rerunDenied -eq 409) "silent re-execution is rejected (HTTP 409)"
+
   Write-Host ""
   if ($failures.Count -eq 0) { Write-Host "run-demo-smoke: all adapter-level checks passed." -ForegroundColor Green; exit 0 }
   Write-Host "run-demo-smoke: $($failures.Count) check(s) failed." -ForegroundColor Red
@@ -202,4 +240,5 @@ try {
   Remove-Item "$env:TEMP\smoke-customer-data.json" -ErrorAction SilentlyContinue
   Remove-Item "$env:TEMP\smoke-recruitment-data.json" -ErrorAction SilentlyContinue
   Remove-Item "$env:TEMP\smoke-maintenance-data.json" -ErrorAction SilentlyContinue
+  Remove-Item "$env:TEMP\smoke-integration-data.json" -ErrorAction SilentlyContinue
 }
