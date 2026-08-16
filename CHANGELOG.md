@@ -4,6 +4,10 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`. `1.0.0` is the first stable release of the public introduction and examples repository.
 
+## 1.1.3 (2026-08-16)
+
+- Repaired a corrupted row in `scripts/README.md` (the `run-demo-smoke.ps1` and `version.ps1` table rows had merged) and refreshed the closing release-series note.
+
 ## 1.1.2 (2026-08-16)
 
 - Marked the final Phase 7 roadmap item (content and navigation refresh) complete and updated the status section to the twelve-slice, thirteen-adapter, 1.1.x state.

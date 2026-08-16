@@ -7,7 +7,8 @@ Small validation and reporting utilities for the public examples.
 | [check-links.ps1](check-links.ps1) | Verifies every internal markdown link resolves. Run after content changes. | `0` pass, `1` broken links |
 | [check-examples.ps1](check-examples.ps1) | Verifies a runnable demo's produced artifacts against expectations via its `verify.ps1`. | `0` pass, `1` failure |
 | [report-value.ps1](report-value.ps1) | Aggregates value reports (`.local-data/*-value-report.json`) into a summary table. | `0` (also succeeds when no reports exist) |
-| [run-demo-smoke.ps1](run-demo-smoke.ps1) | Smoke-tests every reference adapter end to end, covering each adapter's governance gates, denial paths, and idempotency. | `0` pass, `1` failure || [version.ps1](version.ps1) | Reads, sets, or bumps the repository version in `VERSION`. | `0` success |
+| [run-demo-smoke.ps1](run-demo-smoke.ps1) | Smoke-tests every reference adapter end to end, covering each adapter's governance gates, denial paths, and idempotency. | `0` pass, `1` failure |
+| [version.ps1](version.ps1) | Reads, sets, or bumps the repository version in `VERSION`. | `0` success |
 | [check-release.ps1](check-release.ps1) | Decides whether a new tag/version is warranted after commits. | `0` no change, `1` new tag needed, `2` prepared and ready to tag |
 | [install-hooks.ps1](install-hooks.ps1) | Installs the pre-commit hook (`.githooks/pre-commit`) via `core.hooksPath`. | `0` success |
 | [check-hooks.ps1](check-hooks.ps1) | Verifies the pre-commit hook is installed and active. | `0` active, `1` not installed |
@@ -98,4 +99,4 @@ The repository includes [`.github/workflows/ci.yml`](../.github/workflows/ci.yml
 
 The governance-pattern catalog and its machine-readable matrix (`patterns.json`) are maintained in the private **`enterprise-autonomy-ee`** repository.
 
-The repository is released as **1.0.0** (first stable release, see `CHANGELOG.md`); `VERSION` tracks the current version and the release workflow publishes a tag and GitHub Release for every prepared version.
+The repository started with the **1.0.0** first stable release (see `CHANGELOG.md`); `VERSION` tracks the current version and the release workflow publishes a tag and GitHub Release for every prepared version.
