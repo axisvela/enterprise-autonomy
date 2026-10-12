@@ -138,6 +138,7 @@ func run(ctx context.Context, cfg config) (report, error) {
 	results = append(results, runHappyPath(ctx, egress, upstream.URL, &seenProofHeaders))
 	results = append(results, runMissingProofDenied(ctx, cfg, tokenSource, upstream.URL))
 	results = append(results, runReplayDenied(ctx, tokenSource, upstream.URL, key, cfg))
+	results = append(results, runNoDowngradeDenied(ctx, cfg, tokenSource, upstream.URL, &upstreamHits))
 
 	rep := report{Scenarios: results, Passed: true}
 	for _, s := range results {
@@ -187,9 +188,65 @@ func runMissingProofDenied(ctx context.Context, cfg config, ts *eidovelaTokenSou
 	return res
 }
 
-// runReplayDenied is completed in a later task (it exercises the replay ledger).
-func runReplayDenied(_ context.Context, _ network.AgentTokenSource, _ string, _ ed25519.PrivateKey, _ config) scenarioResult {
-	return scenarioResult{ID: "FP-05", Desc: "replayed resource-proof jti denied", Expected: "407", Actual: "pending"}
+// runReplayDenied presents the same resource-proof jti twice; the gateway's
+// replay ledger must reject the second presentation.
+func runReplayDenied(ctx context.Context, ts network.AgentTokenSource, upstreamURL string, key ed25519.PrivateKey, cfg config) scenarioResult {
+	res := scenarioResult{ID: "FP-05", Desc: "replayed resource-proof jti denied", Expected: "407"}
+	replay := newFixedReplayCarrier(key, cfg.EidovelaIssuer+"/v1/introspect")
+	egress, err := network.NewProxyEgress(cfg.LimenoraURL, ts,
+		network.WithProofCarrier(replay), network.WithCarriage(network.CarriageRequestHeader))
+	if err != nil {
+		res.Actual = "build error: " + err.Error()
+		return res
+	}
+	first, err := egress.Do(ctx, network.GatewayRequest{URL: upstreamURL + "/resource", Method: http.MethodGet})
+	if err != nil {
+		res.Actual = "first use error: " + err.Error()
+		return res
+	}
+	if first.Status != http.StatusOK {
+		res.Actual = fmt.Sprintf("first use status %d, want 200", first.Status)
+		return res
+	}
+	second, err := egress.Do(ctx, network.GatewayRequest{URL: upstreamURL + "/resource", Method: http.MethodGet})
+	if err != nil {
+		res.Actual = "second use error: " + err.Error()
+		return res
+	}
+	if second.Status == http.StatusProxyAuthRequired || second.Status == http.StatusForbidden {
+		res.Actual = fmt.Sprintf("second use denied %d", second.Status)
+		res.Passed = true
+	} else {
+		res.Actual = fmt.Sprintf("second status %d, want 407", second.Status)
+	}
+	return res
+}
+
+// runNoDowngradeDenied proves an agent-selected route with a valid token but no
+// resource proof is denied and the upstream is never contacted (no downgrade,
+// no leak).
+func runNoDowngradeDenied(ctx context.Context, cfg config, ts network.AgentTokenSource, upstreamURL string, hits *int32) scenarioResult {
+	res := scenarioResult{ID: "FP-07", Desc: "proof-less agent route denied; upstream untouched", Expected: "deny, 0 upstream hits"}
+	before := atomic.LoadInt32(hits)
+	raw, err := network.NewProxyEgress(cfg.LimenoraURL, ts, network.WithCarriage(network.CarriageRequestHeader))
+	if err != nil {
+		res.Actual = "build error: " + err.Error()
+		return res
+	}
+	got, err := raw.Do(ctx, network.GatewayRequest{URL: upstreamURL + "/downgrade", Method: http.MethodGet})
+	if err != nil {
+		res.Actual = "error: " + err.Error()
+		return res
+	}
+	denied := got.Status == http.StatusProxyAuthRequired || got.Status == http.StatusForbidden
+	after := atomic.LoadInt32(hits)
+	if denied && after == before {
+		res.Actual = fmt.Sprintf("denied %d, upstream hits unchanged", got.Status)
+		res.Passed = true
+	} else {
+		res.Actual = fmt.Sprintf("status %d, upstream hits %d->%d", got.Status, before, after)
+	}
+	return res
 }
 
 func writeReport(path string, rep report) error {
