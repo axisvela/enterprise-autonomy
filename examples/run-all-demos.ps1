@@ -24,7 +24,9 @@ $demos = @(
   @{ Name = "fleet-mission-local";         Run = "run-fleet-mission.ps1";           Report = "fleet-value-report.json" },
   @{ Name = "process-to-outcome-local";    Run = "run-process-to-outcome.ps1";      Report = "process-value-report.json" },
   @{ Name = "innovation-sandbox-local";    Run = "run-innovation-sandbox.ps1";      Report = "sandbox-value-report.json" },
-  @{ Name = "deployment-local";            Run = "run-sequenced-deployment.ps1";    Report = "deployment-value-report.json" }
+  @{ Name = "deployment-local";            Run = "run-sequenced-deployment.ps1";    Report = "deployment-value-report.json" },
+  @{ Name = "inference-governance-local";  Run = "run-inference-governance.ps1";    Report = "inference-value-report.json" },
+  @{ Name = "agent-federated-presentation-local"; Run = "run-all.ps1"; Report = "fp1-value-report.json"; Required = @("README.md", "local.env.ps1.example", "evidence-schema.md", "run-all.ps1", "verify.ps1", "start-services.ps1") }
 )
 
 $requiredFiles = @("README.md", "operations-guide.md", "local.env.ps1.example", "evidence-schema.md", "run-all.ps1", "verify.ps1", "start-services.ps1")
@@ -37,7 +39,8 @@ foreach ($demo in $demos) {
   if ($name -in $Skip) { Write-Host "run-all-demos: skipping $name (explicit)" -ForegroundColor Yellow; continue }
 
   $dir = Join-Path $PSScriptRoot $name
-  $missing = @($requiredFiles | Where-Object { -not (Test-Path (Join-Path $dir $_)) })
+  $required = if ($demo.ContainsKey("Required")) { $demo["Required"] } else { $requiredFiles }
+  $missing = @($required | Where-Object { -not (Test-Path (Join-Path $dir $_)) })
   $runScript = Join-Path $dir $demo.Run
   if (-not (Test-Path $runScript)) { $missing += $demo.Run }
 

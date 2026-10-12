@@ -7,11 +7,16 @@ param(
 # database or product binaries.
 
 $failures = @()
-$demoDirs = @("order-fulfillment-local", "procurement-local", "customer-case-local", "recruitment-local", "predictive-maintenance-local", "integration-recovery-local", "simulation-validation-local", "compliance-audit-local", "fleet-mission-local", "process-to-outcome-local", "innovation-sandbox-local", "deployment-local")
+$demoDirs = @("order-fulfillment-local", "procurement-local", "customer-case-local", "recruitment-local", "predictive-maintenance-local", "integration-recovery-local", "simulation-validation-local", "compliance-audit-local", "fleet-mission-local", "process-to-outcome-local", "innovation-sandbox-local", "deployment-local", "inference-governance-local", "agent-federated-presentation-local")
+
+$defaultRequired = @("README.md", "operations-guide.md", "local.env.ps1.example", "evidence-schema.md", "run-all.ps1", "verify.ps1", "start-services.ps1")
+$requiredByDemo = @{
+  "agent-federated-presentation-local" = @("README.md", "local.env.ps1.example", "evidence-schema.md", "run-all.ps1", "verify.ps1", "start-services.ps1")
+}
 
 foreach ($name in $demoDirs) {
   $dir = Join-Path $Root "examples\$name"
-  $required = @("README.md", "operations-guide.md", "local.env.ps1.example", "evidence-schema.md", "run-all.ps1", "verify.ps1", "start-services.ps1")
+  $required = if ($requiredByDemo.ContainsKey($name)) { $requiredByDemo[$name] } else { $defaultRequired }
   foreach ($f in $required) {
     if (-not (Test-Path (Join-Path $dir $f))) { $failures += "$name missing $f" }
   }
