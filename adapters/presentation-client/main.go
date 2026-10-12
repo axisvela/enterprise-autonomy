@@ -48,8 +48,8 @@ func loadConfig() config {
 	return config{
 		AdminDSN:       env("FP1_ADMIN_DSN", "postgres://postgres:postgres@localhost:5433/postgres?sslmode=disable"),
 		NomivelaURL:    env("FP1_NOMIVELA_URL", "http://127.0.0.1:1956"),
-		EidovelaURL:    env("FP1_EIDOVELA_URL", "http://localhost:1966"),
-		EidovelaIssuer: env("FP1_EIDOVELA_ISSUER", "http://localhost:1966"),
+		EidovelaURL:    env("FP1_EIDOVELA_URL", "http://127.0.0.1:1966"),
+		EidovelaIssuer: env("FP1_EIDOVELA_ISSUER", "http://127.0.0.1:1966"),
 		LimenoraURL:    env("FP1_LIMENORA_URL", "http://127.0.0.1:1897"),
 		Namespace:      env("FP1_NAMESPACE", "https://registry.fp1.test"),
 		AgentRef:       env("FP1_AGENT_REF", "agent_fp1_e2e"),
@@ -62,7 +62,10 @@ func loadConfig() config {
 func main() {
 	if os.Getenv("FP1_INIT_DB") != "" {
 		admin := env("FP1_ADMIN_DSN", "postgres://postgres:postgres@localhost:5433/postgres?sslmode=disable")
-		if err := ensureDatabases(context.Background(), admin, []string{"fp1_nomivela", "fp1_eidovela", "fp1_limenora"}); err != nil {
+		if err := resetDatabases(context.Background(), admin, []string{"fp1_nomivela", "fp1_eidovela", "fp1_limenora"}); err != nil {
+			log.Fatalf("init-db: %v", err)
+		}
+		if err := ensureDatabaseSearchPath(context.Background(), admin, "fp1_eidovela", "eidovela, public"); err != nil {
 			log.Fatalf("init-db: %v", err)
 		}
 		fmt.Println("fp1 databases ready")
