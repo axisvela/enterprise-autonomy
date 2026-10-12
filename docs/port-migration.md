@@ -23,6 +23,8 @@ Each product owns a block of ten consecutive ports starting at `1806 + productIn
 | 1926–1935 | Symbivela | `1926` API |
 | 1936–1945 | Harmovela | `1936` WS · `1937` SSE · `1938` API |
 | 1946–1955 | Kinetovela | `1946` API |
+| 1956–1965 | Nomivela | `1956` API |
+| 1966–1975 | Eidovela | `1966` API |
 
 ## Rules
 
@@ -36,4 +38,4 @@ Current binaries keep their documented override variables (for example `LISTEN_A
 
 ## Local Demos
 
-Local runnable demos may keep non-conflicting local ports (for example `8082`, `8083`, `8090`) because they run in isolation. See the [local run handbook](../examples/local-run-handbook.md).
+The runnable local demos exercise the planned allocation where the product binaries support it: Moduregis (`1806`), Orchadyn (`1816`), Symbivela (`1926`), and Limenora edge (`1896`) ship those defaults, and the demo stack explicitly overrides Ontovela (`--addr :1856`), Rheovela (`--addr :1876`), and Praxovela (`AXON_PORT=1866`) onto their planned ports. The reference adapters use `8090`–`8103`. No demo service occupies `8080`. See the [local run handbook](../examples/local-run-handbook.md) and [release status](release-status.md#port-migration-status) for the per-product tracking.
