@@ -34,7 +34,7 @@ Each product owns a block of ten consecutive ports starting at `1806 + productIn
 
 ## Env-var Overrides
 
-Current binaries keep their documented override variables (for example `LISTEN_ADDR`, `ORCHADYN_LISTEN_ADDR`, `NOETIVELA_ADDR`, `AXON_PORT`, `AEPD_*_PORT`). Set these to the planned ports when standing up new deployments.
+Current binaries keep their documented override variables (for example `LISTEN_ADDR`, `ORCHADYN_LISTEN_ADDR`, `NOETIVELA_ADDR`, `AXON_PORT`, `NOMIVELA_HTTP_PORT`, `AEPD_*_PORT`). Set these to the planned ports when standing up new deployments. Nomivela now defaults to `1956` (`NOMIVELA_HTTP_PORT`).
 
 ## Local Demos
 

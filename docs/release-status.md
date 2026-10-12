@@ -45,11 +45,11 @@ Tracking against the [planned port allocation](port-migration.md). Product repos
 | Symbivela | `1926` (`SYMBIVELA_ADDR` default since v1.1.1) | `1926` API | Default migrated (v1.1.1) |
 | Harmovela | WS `8787`, SSE `8788`, API `8790` | `1936` WS · `1937` SSE · `1938` API | Not migrated |
 | Kinetovela | `:8080` (`KINETOVELA_LISTEN_ADDR`) | `1946` API | Not migrated |
-| Nomivela | `:8080` (`NOMIVELA_HTTP_PORT`) | `1956` API | Not migrated |
+| Nomivela | `1956` (`NOMIVELA_HTTP_PORT` default) | `1956` API | Default migrated |
 | Eidovela | `127.0.0.1:8080` (`EIDOVELA_LISTEN_ADDR`) | `1966` API | Not migrated |
 
 ## Notes
 
-- Most HTTP services still default to `:8080`; new deployments should use the [planned port allocation](port-migration.md). Moduregis, Orchadyn, Limenora, Aegivela, and Symbivela (v1.1.1) ship planned ports as defaults; the local demo stack runs Ontovela, Praxovela, and Rheovela on their planned ports via documented overrides.
+- Most HTTP services still default to `:8080`; new deployments should use the [planned port allocation](port-migration.md). Moduregis, Orchadyn, Limenora, Aegivela, Symbivela (v1.1.1), and Nomivela ship planned ports as defaults; the local demo stack runs Ontovela, Praxovela, and Rheovela on their planned ports via documented overrides.
 - Health endpoints are `/healthz` or `/health` unless noted in the [technical catalog](technical-catalog.md).
 - Posture varies from PostgreSQL-required to embedded/SQLite-default; see the [technical catalog](technical-catalog.md) for each product.

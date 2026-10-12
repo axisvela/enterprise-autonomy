@@ -21,7 +21,7 @@ This catalog summarizes the local runnable surfaces of the AxisRobo Enterprise A
 | Symbivela | Human–agent collaboration workspace | `symbivela.exe` | `1926` (`SYMBIVELA_ADDR`) | `1926` API | PostgreSQL (required) | HTTP API + React frontend + CLI tools |
 | Harmovela | Coordination protocol runtime | `harmovelad`; `harmovela` CLI | WS `8787`, SSE `8788`, API `8790` | `1936` WS · `1937` SSE · `1938` API | SQLite default; PostgreSQL optional | HTTP + WebSocket + SSE + stdio + CLI + MCP bridge |
 | Kinetovela | Robotics fleet control plane | `kinetovela-api` (darwin/linux/windows amd64, v0.30.0) | `:8080` (`KINETOVELA_LISTEN_ADDR`) | `1946` API | PostgreSQL (documented as authoritative) | HTTP API (mission/fleet operations; adapter tools) |
-| Nomivela | Agent identity registry | `nomivela`; `nomivela-migrate` CLI | `:8080` (`NOMIVELA_HTTP_PORT`) | `1956` API | PostgreSQL (required) | HTTP API + discovery + SDKs |
+| Nomivela | Agent identity registry | `nomivela`; `nomivela-migrate` CLI | `1956` (`NOMIVELA_HTTP_PORT`) | `1956` API | PostgreSQL (required) | HTTP API + discovery + SDKs |
 | Eidovela | Agent identity provider (issuance, introspection) | `eidovelad`; `eidovela-migrate` CLI | `127.0.0.1:8080` (`EIDOVELA_LISTEN_ADDR`) | `1966` API | PostgreSQL optional (in-memory reference store default) | HTTP API + OIDC + SDKs |
 
 ## Per-Product Details
@@ -149,7 +149,7 @@ This catalog summarizes the local runnable surfaces of the AxisRobo Enterprise A
 ### Nomivela
 - **Role:** Agent identity registry of record — namespaces, agents, agent identities (`identityType`/`subjectRef`), authority bindings, workload registrations, and agent instances, with dual lifecycle epochs.
 - **Binaries:** `nomivela`; `nomivela-migrate` CLI.
-- **Port:** `:8080` default (`NOMIVELA_HTTP_PORT`); planned `1956`.
+- **Port:** `1956` default (`NOMIVELA_HTTP_PORT`).
 - **Database:** PostgreSQL required (`NOMIVELA_DATABASE_URL`); migrations via `NOMIVELA_MIGRATE=true` or `nomivela-migrate`.
 - **Interfaces:** HTTP registry API (`/v1/agents`, `/v1/agent-identities`, `/v1/workload-registrations`, `/v1/registry-context`); signed discovery (`/.well-known/agent-iam`); read-only EIDOVELA compat projection (`/v1/compat/eidovela/*`); Open SDKs (Go/Java/Python).
 - **Health:** `GET /healthz`, `/readyz`.
@@ -164,7 +164,7 @@ This catalog summarizes the local runnable surfaces of the AxisRobo Enterprise A
 
 ## Conventions
 
-- Most HTTP services default to `:8080`; multi-plane products split control and data planes (Noetivela `8080/8081`, Limenora `1896-10257`, Harmovela `8787-8790`). Moduregis, Orchadyn, Limenora edge, Aegivela, and Symbivela (v1.1.1) default to their planned ports; the local demo stack runs Ontovela (`1856`), Praxovela (`1866`), and Rheovela (`1876`) on their planned ports via overrides.
+- Most HTTP services default to `:8080`; multi-plane products split control and data planes (Noetivela `8080/8081`, Limenora `1896-10257`, Harmovela `8787-8790`). Moduregis, Orchadyn, Limenora edge, Aegivela, Symbivela (v1.1.1), and Nomivela default to their planned ports; the local demo stack runs Ontovela (`1856`), Praxovela (`1866`), and Rheovela (`1876`) on their planned ports via overrides.
 - Health endpoints are `/healthz` or `/health`; Symbivela additionally exposes `/ready` and `/metrics`.
 - Database posture varies: PostgreSQL-required (Moduregis, Orchadyn, Aegivela, Symbivela, Nomivela), PostgreSQL-optional with in-memory default (Gnosivela, Ontovela, Peiravela, Eidovela), and embedded/SQLite-default (Mnemovela, Praxovela, Rheovela, Harmovela).
 - Interfaces range from HTTP-only, CLI-only (Tekmovela), and desktop (Praxovela) to web consoles (Moduregis, Symbivela, Peiravela, Mnemovela, Rheovela-EE).
