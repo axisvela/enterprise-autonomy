@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"net/url"
 	"strings"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
@@ -49,14 +48,3 @@ func validDBName(name string) bool {
 }
 
 func quoteIdent(name string) string { return `"` + strings.ReplaceAll(name, `"`, `""`) + `"` }
-
-// withDatabase returns a copy of dsn with its path replaced by the named
-// database, preserving the rest of the URL.
-func withDatabase(dsn, name string) (string, error) {
-	u, err := url.Parse(dsn)
-	if err != nil {
-		return "", err
-	}
-	u.Path = "/" + name
-	return u.String(), nil
-}

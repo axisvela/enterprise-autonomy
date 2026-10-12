@@ -138,7 +138,7 @@ func run(ctx context.Context, cfg config) (report, error) {
 	results = append(results, runHappyPath(ctx, egress, upstream.URL, &seenProofHeaders))
 	results = append(results, runMissingProofDenied(ctx, cfg, tokenSource, upstream.URL))
 	results = append(results, runReplayDenied(ctx, tokenSource, upstream.URL, key, cfg))
-	results = append(results, runNoDowngradeDenied(ctx, cfg, tokenSource, upstream.URL, &upstreamHits))
+	results = append(results, runProviderDenied(ctx, cfg, tokenSource, eClient, ids.AgentID, key, upstream.URL, &upstreamHits))
 
 	rep := report{Scenarios: results, Passed: true}
 	for _, s := range results {
@@ -222,18 +222,23 @@ func runReplayDenied(ctx context.Context, ts network.AgentTokenSource, upstreamU
 	return res
 }
 
-// runNoDowngradeDenied proves an agent-selected route with a valid token but no
-// resource proof is denied and the upstream is never contacted (no downgrade,
-// no leak).
-func runNoDowngradeDenied(ctx context.Context, cfg config, ts network.AgentTokenSource, upstreamURL string, hits *int32) scenarioResult {
-	res := scenarioResult{ID: "FP-07", Desc: "proof-less agent route denied; upstream untouched", Expected: "deny, 0 upstream hits"}
+// runProviderDenied disables the agent at EIDOVELA and proves a selected agent
+// route is denied with no downgrade and no upstream contact when the provider
+// reports the identity inactive.
+func runProviderDenied(ctx context.Context, cfg config, ts network.AgentTokenSource, eClient *eidovela.Client, agentID string, key ed25519.PrivateKey, upstreamURL string, hits *int32) scenarioResult {
+	res := scenarioResult{ID: "FP-07", Desc: "provider denies a disabled agent; no downgrade, upstream untouched", Expected: "deny, 0 upstream hits"}
 	before := atomic.LoadInt32(hits)
-	raw, err := network.NewProxyEgress(cfg.LimenoraURL, ts, network.WithCarriage(network.CarriageRequestHeader))
+	if _, err := eClient.SetAuthenticationState(ctx, agentID, "disable", "fp1-e2e"); err != nil {
+		res.Actual = "disable error: " + err.Error()
+		return res
+	}
+	carrier := newProofCarrier(key, cfg.EidovelaIssuer+"/v1/introspect")
+	egress, err := network.NewProxyEgress(cfg.LimenoraURL, ts, network.WithProofCarrier(carrier), network.WithCarriage(network.CarriageRequestHeader))
 	if err != nil {
 		res.Actual = "build error: " + err.Error()
 		return res
 	}
-	got, err := raw.Do(ctx, network.GatewayRequest{URL: upstreamURL + "/downgrade", Method: http.MethodGet})
+	got, err := egress.Do(ctx, network.GatewayRequest{URL: upstreamURL + "/denied", Method: http.MethodGet})
 	if err != nil {
 		res.Actual = "error: " + err.Error()
 		return res

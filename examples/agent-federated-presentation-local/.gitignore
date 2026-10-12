@@ -1,0 +1,3 @@
+.local-data/
+.local-logs/
+local.env.ps1

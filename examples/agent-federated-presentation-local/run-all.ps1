@@ -1,9 +1,10 @@
 param([switch]$CheckOnly)
 
 $ErrorActionPreference = "Stop"
-. "$PSScriptRoot\local.env.ps1"
 
 if ($CheckOnly) { Write-Host "structure OK"; exit 0 }
+
+. "$PSScriptRoot\local.env.ps1"
 
 & "$PSScriptRoot\start-services.ps1"
 try {
