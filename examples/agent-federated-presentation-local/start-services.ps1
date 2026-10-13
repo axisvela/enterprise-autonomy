@@ -1,4 +1,4 @@
-param()
+param([switch]$Rebuild)
 
 $ErrorActionPreference = "Stop"
 if (-not $AxisRoboHome -or -not $env:FP1_ADMIN_DSN) { throw "Load local.env.ps1 before running this script." }
@@ -7,7 +7,11 @@ $logDir = Join-Path $PSScriptRoot ".local-logs"
 $dataDir = Join-Path $PSScriptRoot ".local-data"
 New-Item -ItemType Directory -Force -Path $logDir, $dataDir | Out-Null
 
+# Build-Go builds the binary, but skips when it already exists unless -Rebuild is
+# passed: rebuilding the three product binaries on every start is the dominant
+# startup cost. Pass -Rebuild after changing product source.
 function Build-Go($dir, $out, $pkg) {
+  if ((Test-Path $out) -and -not $Rebuild) { Write-Output "[start-services] skip build $([IO.Path]::GetFileName($out)) (exists; use -Rebuild to force)"; return }
   $prev = $env:GOWORK
   $env:GOWORK = "off"
   Push-Location $dir
@@ -71,4 +75,4 @@ foreach ($c in $checks) {
   }
   if (-not $ready) { throw "Service not ready: $c" }
 }
-Write-Host "FP-1 services ready."
+Write-Output "FP-1 services ready."
