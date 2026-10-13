@@ -8,7 +8,7 @@ Open asynchronous coordination protocol for autonomous-system events, tasks, sta
 
 | Item | Detail |
 | --- | --- |
-| Binaries | `harmovelad` (daemon), `harmovela` (CLI); TS/Python/Java equivalents; no local `.exe` |
+| Binaries | `harmovelad` (daemon), `harmovela` (CLI); TS/Python/Java equivalents; protocol-first, no compiled binary expected |
 | Current ports | WebSocket `8787`, SSE `8788`, HTTP API `8790` |
 | Planned ports | `1936` WS · `1937` SSE · `1938` API |
 | Database | SQLite default; PostgreSQL optional |

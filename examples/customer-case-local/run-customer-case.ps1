@@ -19,9 +19,9 @@ $symbiHeaders = @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $Serv
 
 # Step 1: open the case (Symbivela workspace + case, adapter case is seeded)
 $workspace = @{ workspace_id = "customer-service"; name = "Customer Service"; owner_id = $ServiceLead } | ConvertTo-Json
-Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $ServiceLead; "Idempotency-Key" = "customer-service-workspace-v1" } -ContentType "application/json" -Body $workspace | Out-Null
+Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $ServiceLead; "Idempotency-Key" = "customer-service-workspace-v1" } -ContentType "application/json" -Body $workspace | Out-Null
 $case = @{ workspace_id = "customer-service"; case_id = "cs-0001-billing"; subject_ref = "case://cs-0001"; problem = "Billing overcharge reported by the customer."; evidence_refs = "account://acct-2001"; candidate_actions = "explanation,correction,compensation,refund,credit,escalation"; deadline = "2026-08-22T12:00:00Z" } | ConvertTo-Json
-$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
+$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
 $gates += @{ gate = "case-opened"; owner = $ServiceLead; decision = "open" }
 $evidence += @{ product = "symbivela"; artifact = $caseResult.case_id; state = $caseResult.status }
 $outcome.steps += @{ index = 1; title = "Open the case"; product = "symbivela"; artifact = $caseResult.case_id }
@@ -31,7 +31,7 @@ Write-Step 1 "Open the case" "Symbivela case '$($caseResult.case_id)' is '$($cas
 $fact = @{ claim = "billing overcharge confirmed against acct-2001"; source = "billing-system"; verified = $true; idempotency_key = "cs-fact-v1" } | ConvertTo-Json
 $factResult = Invoke-RestMethod -Method Post -Uri "$custBase/facts" -ContentType "application/json" -Body $fact
 $assertion = @{ id = "assertion-acct-2001-overcharge"; subject_id = "acct-2001"; property = "billing_status"; value = "overcharge"; state_kind = "observed"; event_time = "2026-08-16T10:00:00Z"; system_time = "2026-08-16T10:00:01Z"; source = "billing-system"; evidence_ref = "evidence://billing/acct-2001" } | ConvertTo-Json
-$state = Invoke-RestMethod -Method Post -Uri "http://localhost:8082/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
+$state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $account = Invoke-RestMethod -Uri "http://localhost:8093/v1/accounts/acct-2001"
 $evidence += @{ product = "customer-domain"; artifact = $factResult.fact.id; state = "verified" }
 $evidence += @{ product = "ontovela"; artifact = "assertion-acct-2001-overcharge"; state = "observed" }
@@ -70,7 +70,7 @@ $rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "customer-case-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "customer-case-workflow.json") | Out-Null
 $process = @{ workflow = "customer-case-resolution"; project = "cs-0001"; actor = $ServiceLead } | ConvertTo-Json
-$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:8083/api/v1/instances" -ContentType "application/json" -Body $process
+$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/instances" -ContentType "application/json" -Body $process
 $evidence += @{ product = "rheovela"; artifact = $instance.id; state = "open" }
 $outcome.steps += @{ index = 5; title = "Create the durable case process"; product = "rheovela"; artifact = $instance.id }
 Write-Step 5 "Create the durable case process" "Rheovela opened process instance '$($instance.id)' for 'customer-case-resolution'. Stages: verify-facts, consent, approve, resolve, close."

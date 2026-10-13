@@ -19,9 +19,9 @@ $symbiHeaders = @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $Oper
 
 # Step 1: open the process case (Symbivela)
 $workspace = @{ workspace_id = "process-ops"; name = "Process Operations"; owner_id = $Operator } | ConvertTo-Json
-Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $Operator; "Idempotency-Key" = "process-ops-workspace-v1" } -ContentType "application/json" -Body $workspace | Out-Null
+Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $Operator; "Idempotency-Key" = "process-ops-workspace-v1" } -ContentType "application/json" -Body $workspace | Out-Null
 $case = @{ workspace_id = "process-ops"; case_id = "proc-0001-outcome"; subject_ref = "process://proc-0001"; problem = "Drive the onboarding process through its sequenced stages to a terminal outcome."; evidence_refs = "process://proc-0001"; candidate_actions = "advance,complete"; deadline = "2026-09-02T12:00:00Z" } | ConvertTo-Json
-$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
+$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
 $gates += @{ gate = "case-opened"; owner = $Operator; decision = "open" }
 $evidence += @{ product = "symbivela"; artifact = $caseResult.case_id; state = $caseResult.status }
 $outcome.steps += @{ index = 1; title = "Open the process case"; product = "symbivela"; artifact = $caseResult.case_id }
@@ -30,7 +30,7 @@ Write-Step 1 "Open the process case" "Symbivela case '$($caseResult.case_id)' is
 # Step 2: record the process context (adapter + Ontovela)
 $process = Invoke-RestMethod -Uri $procBase
 $assertion = @{ id = "assertion-proc-0001-initiated"; subject_id = $ProcessId; property = "process_status"; value = "initiated"; state_kind = "observed"; event_time = "2026-08-16T18:00:00Z"; system_time = "2026-08-16T18:00:01Z"; source = "process-control"; evidence_ref = "evidence://process/proc-0001" } | ConvertTo-Json
-$state = Invoke-RestMethod -Method Post -Uri "http://localhost:8082/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
+$state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $evidence += @{ product = "process-domain"; artifact = $process.id; state = $process.status }
 $evidence += @{ product = "ontovela"; artifact = "assertion-proc-0001-initiated"; state = "observed" }
 $outcome.steps += @{ index = 2; title = "Record the process context"; product = "ontovela"; artifact = "assertion-proc-0001-initiated" }
@@ -75,7 +75,7 @@ $rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "process-to-outcome-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "process-to-outcome-workflow.json") | Out-Null
 $processBody = @{ workflow = "process-to-outcome"; project = $ProcessId; actor = $Operator } | ConvertTo-Json
-$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:8083/api/v1/instances" -ContentType "application/json" -Body $processBody
+$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/instances" -ContentType "application/json" -Body $processBody
 $evidence += @{ product = "rheovela"; artifact = $instance.id; state = "open" }
 $outcome.steps += @{ index = 6; title = "Wrap the process durably"; product = "rheovela"; artifact = $instance.id }
 Write-Step 6 "Wrap the process durably" "Rheovela opened process instance '$($instance.id)' for 'process-to-outcome'. Stages: request, review, approve, complete."

@@ -26,7 +26,7 @@ Architecture, contracts, schemas, profiles, conformance, governance, internal pl
 | --- | --- |
 | `docs/products.md` | Public overview of the ecosystem products. |
 | `docs/products/` | Per-product public overview pages. |
-| `docs/demo-matrix.md` | Comparison of all twelve runnable demos. |
+| `docs/demo-matrix.md` | Comparison of all thirteen runnable demos. |
 | `examples/` | Public, illustrative end-to-end scenarios and local runnable demos. |
 | `examples/run-all-demos.ps1` | Run every runnable demo end to end and stop the stack. |
 | `examples/stop-demo.ps1` | Stop demo processes reliably (path-based). |
@@ -49,7 +49,7 @@ Start with the [getting-started guide](docs/getting-started.md), then explore a 
 
 ## Runnable Demos
 
-Twelve of the thirteen vertical slices have runnable local demos. Each demo drives real local product binaries plus a reference adapter and produces a machine-readable [value report](docs/value-dashboard.md). See the [demo matrix](docs/demo-matrix.md) for the full comparison.
+Thirteen of the fourteen vertical slices have runnable local demos. Each demo drives real local product binaries plus a reference adapter and produces a machine-readable [value report](docs/value-dashboard.md). See the [demo matrix](docs/demo-matrix.md) for the full comparison.
 
 | Demo | Adapter | Port | Governance flavor | Value report |
 | --- | --- | --- | --- | --- |
@@ -65,6 +65,7 @@ Twelve of the thirteen vertical slices have runnable local demos. Each demo driv
 | [Process to outcome](examples/process-to-outcome-local/README.md) | process-domain | 8100 | Stage-sequenced durable process | `process-value-report.json` |
 | [Innovation sandbox](examples/innovation-sandbox-local/README.md) | sandbox-domain | 8101 | Sandbox boundary + evidence-based policy | `sandbox-value-report.json` |
 | [Sequenced deployment](examples/deployment-local/README.md) | deployment-domain | 8102 | Sequenced autonomous execution + approval-required deviations | `deployment-value-report.json` |
+| [Inference governance](examples/inference-governance-local/README.md) | inference-domain | 8103 | Governed inference: selection under policy + human review for high impact + immutable audit | `inference-value-report.json` |
 
 ## Quickstart
 
@@ -110,7 +111,7 @@ Twelve of the thirteen vertical slices have runnable local demos. Each demo driv
 
 ## Status
 
-**Stable 1.x release series** (current: 1.1.9). Thirteen vertical slices describe end-to-end scenarios; twelve have runnable local demos, backed by thirteen reference adapters with Go unit tests, continuous integration, structural validation, and an automated release workflow that publishes a tag and GitHub Release for every prepared version. Public content is maintained in this repository; governance-pattern knowledge and internal material live in the private `enterprise-autonomy-ee` repository. See the [repository roadmap](ROADMAP.md) and [release status](docs/release-status.md).
+**Stable 1.x release series** (current: 1.1.9). Fourteen vertical slices describe end-to-end scenarios; thirteen have runnable local demos, backed by fourteen reference adapters with Go unit tests, continuous integration, structural validation, and an automated release workflow that publishes a tag and GitHub Release for every prepared version. Public content is maintained in this repository; governance-pattern knowledge and internal material live in the private `enterprise-autonomy-ee` repository. See the [repository roadmap](ROADMAP.md) and [release status](docs/release-status.md).
 
 ## Releases
 

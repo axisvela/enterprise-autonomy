@@ -1,10 +1,10 @@
-# Procurement Demo â€” Detailed Operations Guide
+# Procurement Demo â€?Detailed Operations Guide
 
 Step-by-step walkthrough of the procurement demo with the **exact requests and responses** each script issues. Read it alongside the [README](README.md).
 
 ## How To Read This Guide
 
-Each step documents its **Purpose**, the exact **Request** (method, URL, headers, body), the **Response** fields the script reads, and **What to notice** â€” the governance behavior it demonstrates.
+Each step documents its **Purpose**, the exact **Request** (method, URL, headers, body), the **Response** fields the script reads, and **What to notice** â€?the governance behavior it demonstrates.
 
 Values are concrete: requester `e-1001`, procurement owner `procurement-owner`, finance approver `finance-lead`, receiver `warehouse-receiver`, supplier `supplier-b`, approval reference `approval://preq-0001`.
 
@@ -12,13 +12,13 @@ Values are concrete: requester `e-1001`, procurement owner `procurement-owner`, 
 
 | Service | Address | Health |
 | --- | --- | --- |
-| Limenora Edge | `http://localhost:10255` | `GET /healthz` |
-| Ontovela | `http://localhost:8082` | `GET /healthz` |
-| Rheovela | `http://localhost:8083` | `GET /api/v1/health` |
-| Symbivela | `http://localhost:8080` | `GET /ready` |
-| Praxovela AXON Core | `http://127.0.0.1:8420` | `GET /health` |
+| Limenora Edge | `http://localhost:1896` | `GET /healthz` |
+| Ontovela | `http://localhost:1856` | `GET /healthz` |
+| Rheovela | `http://localhost:1876` | `GET /api/v1/health` |
+| Symbivela | `http://localhost:1926` | `GET /ready` |
+| Praxovela AXON Core | `http://127.0.0.1:1866` | `GET /health` |
 | Procurement-domain adapter | `http://localhost:8092` | `GET /healthz` |
-| Moduregis | `http://localhost:8084` | `GET /v1/health` |
+| Moduregis | `http://localhost:1806` | `GET /v1/health` |
 | Orchadyn API (optional) | `http://localhost:1816` | `GET /healthz` |
 
 ## Seed Data
@@ -38,7 +38,7 @@ Copy `local.env.ps1.example` to `local.env.ps1`, set the checkout root and conne
 
 Expected final line: `All local services are ready.`
 
-## Step 1 â€” Submit the request (procurement-domain adapter)
+## Step 1 â€?Submit the request (procurement-domain adapter)
 
 **Purpose.** The requester submits the request; the adapter records the action and moves the request to `submitted`.
 
@@ -51,24 +51,24 @@ Body:
 
 **Response fields read by the script:** `request.status` (expected `submitted`).
 
-**What to notice.** Submit is a governed action with an idempotency key. A requester who does not match the seeded owner is rejected (`403 requester_mismatch`) â€” the adapter does not accept arbitrary submit attribution.
+**What to notice.** Submit is a governed action with an idempotency key. A requester who does not match the seeded owner is rejected (`403 requester_mismatch`) â€?the adapter does not accept arbitrary submit attribution.
 
-## Step 2 â€” Open the governed case (Symbivela)
+## Step 2 â€?Open the governed case (Symbivela)
 
 **Purpose.** Create the human authority that gates the purchase.
 
-**Request 2a â€” create the workspace.**
+**Request 2a â€?create the workspace.**
 ```
-POST http://localhost:8080/v1/workspaces
+POST http://localhost:1926/v1/workspaces
 Headers: X-SYMBIVELA-Tenant: tenant-a, X-SYMBIVELA-Actor: procurement-owner,
          Idempotency-Key: procurement-ops-workspace-v1
 Body:
 {"workspace_id":"procurement-ops","name":"Procurement Operations","owner_id":"procurement-owner"}
 ```
 
-**Request 2b â€” open the case.**
+**Request 2b â€?open the case.**
 ```
-POST http://localhost:8080/v1/exception-cases
+POST http://localhost:1926/v1/exception-cases
 Headers: X-SYMBIVELA-Tenant: tenant-a, X-SYMBIVELA-Actor: procurement-owner,
          Idempotency-Key: preq-0001-case-v1
 Body:
@@ -81,13 +81,13 @@ Body:
 
 **What to notice.** The case names the accountable owner, the permitted supplier choices, and the budget evidence. No purchase may proceed without it.
 
-## Step 3 â€” Record budget context (Ontovela)
+## Step 3 â€?Record budget context (Ontovela)
 
 **Purpose.** Establish the budget as an authoritative observed fact and confirm availability from the adapter.
 
-**Request 3a â€” assertion.**
+**Request 3a â€?assertion.**
 ```
-POST http://localhost:8082/v1/assertions
+POST http://localhost:1856/v1/assertions
 Headers: X-Tenant-ID: tenant-a, Idempotency-Key: preq-0001-budget-v1
 Body:
 {"id":"assertion-budget-0001-available","subject_id":"budget-0001","property":"availability",
@@ -95,7 +95,7 @@ Body:
  "system_time":"2026-08-16T09:00:01Z","source":"finance-system","evidence_ref":"evidence://finance/budget-0001"}
 ```
 
-**Request 3b â€” budget view.**
+**Request 3b â€?budget view.**
 ```
 GET http://localhost:8092/v1/budget/budget-0001
 ```
@@ -103,11 +103,11 @@ Response: `{"id":"budget-0001","cost_center":"CC-1001","available":5000,"currenc
 
 **What to notice.** The world model records the budget fact with evidence; the adapter's view is the operational source the purchase will actually draw against. Two layers, one consistent fact.
 
-## Step 4 â€” Approve with segregation of duties (procurement-domain adapter)
+## Step 4 â€?Approve with segregation of duties (procurement-domain adapter)
 
 **Purpose.** Prove the requester cannot approve their own request, then record both required approvals.
 
-**Request 4a â€” self-approval attempt (expect rejection).**
+**Request 4a â€?self-approval attempt (expect rejection).**
 ```
 POST http://localhost:8092/v1/requests/preq-0001/approvals
 Body:
@@ -116,7 +116,7 @@ Body:
 ```
 The adapter responds `403 Forbidden` with `{"error":"segregation_of_duties_requester_cannot_approve_own_request"}`.
 
-**Request 4b â€” finance approval.**
+**Request 4b â€?finance approval.**
 ```
 POST http://localhost:8092/v1/requests/preq-0001/approvals
 Body:
@@ -124,7 +124,7 @@ Body:
  "idempotency_key":"proc-fin-v1"}
 ```
 
-**Request 4c â€” procurement approval.**
+**Request 4c â€?procurement approval.**
 ```
 POST http://localhost:8092/v1/requests/preq-0001/approvals
 Body:
@@ -139,32 +139,32 @@ Body:
 1. **Segregation of duties is structural**: the adapter refuses the requester as an approver before any role logic runs.
 2. **Both roles must approve**: a single role's approval leaves the request in `submitted`; the status becomes `approved` only when finance and procurement have both approved under the same reference.
 
-## Step 5 â€” Create the durable procurement process (Rheovela)
+## Step 5 â€?Create the durable procurement process (Rheovela)
 
 **Purpose.** Wrap the lifecycle in a recoverable, capability-gated process.
 
-**Input file â€” `procurement-workflow.json`.** Stages: `validate (requester) â†’ approve (finance-lead, procurement-owner) â†’ purchase (capability procurement.purchase.execute) â†’ receive (warehouse-receiver) â†’ close (procurement-owner)`.
+**Input file â€?`procurement-workflow.json`.** Stages: `validate (requester) â†?approve (finance-lead, procurement-owner) â†?purchase (capability procurement.purchase.execute) â†?receive (warehouse-receiver) â†?close (procurement-owner)`.
 
-**CLI â€” validate and define.**
+**CLI â€?validate and define.**
 ```powershell
 rheo workflow validate procurement-workflow.json
 rheo workflow define --file procurement-workflow.json
 ```
 
-**Request â€” open an instance.**
+**Request â€?open an instance.**
 ```
-POST http://localhost:8083/api/v1/instances
+POST http://localhost:1876/api/v1/instances
 Body:
 {"workflow":"procurement-request-to-receipt","project":"preq-0001","actor":"procurement-owner"}
 ```
 
 **What to notice.** The `purchase` stage is capability-gated (`procurement.purchase.execute`): executing a purchase outside the process is not expressible in the workflow.
 
-## Step 6 â€” Generate a sourcing plan (Orchadyn, optional)
+## Step 6 â€?Generate a sourcing plan (Orchadyn, optional)
 
 **Purpose.** Produce a verified recommendation for supplier selection. A plan is not an authorization.
 
-**Input file â€” `procurement-plan.json`.** Goal `goal-preq-0001-sourced` owned by `procurement-owner`; catalog offers `cap-preferred-supplier` (supplier-b, cost 220) and `cap-standard-supplier` (supplier-a, cost 240); hard budget ceiling 5000; soft preference for `supplier-b`; delegation with `evidenceDuty: ["approval://preq-0001"]`.
+**Input file â€?`procurement-plan.json`.** Goal `goal-preq-0001-sourced` owned by `procurement-owner`; catalog offers `cap-preferred-supplier` (supplier-b, cost 220) and `cap-standard-supplier` (supplier-a, cost 240); hard budget ceiling 5000; soft preference for `supplier-b`; delegation with `evidenceDuty: ["approval://preq-0001"]`.
 
 **Request.**
 ```
@@ -174,11 +174,11 @@ Body: (contents of procurement-plan.json)
 
 **What to notice.** The plan respects the hard budget and prefers the cheaper supplier, but remains a recommendation pending the human decisions already recorded.
 
-## Step 7 â€” Execute the approved purchase (procurement-domain adapter)
+## Step 7 â€?Execute the approved purchase (procurement-domain adapter)
 
 **Purpose.** Show the purchase requires both approvals, then issue the PO.
 
-**Request 7a â€” unapproved purchase attempt (expect rejection).**
+**Request 7a â€?unapproved purchase attempt (expect rejection).**
 ```
 POST http://localhost:8092/v1/requests/preq-0001/purchase-actions
 Body:
@@ -187,7 +187,7 @@ Body:
 ```
 The adapter responds `400 Bad Request` with `{"error":"supplier_approved_by_approval_ref_and_idempotency_key_are_required"}`.
 
-**Request 7b â€” approved purchase.**
+**Request 7b â€?approved purchase.**
 ```
 POST http://localhost:8092/v1/requests/preq-0001/purchase-actions
 Body:
@@ -197,9 +197,9 @@ Body:
 
 **Response fields read by the script:** `po.id` (`po-preq-0001-supplier-b`), `po.amount` (220), `request.status` (`ordered`).
 
-**What to notice.** The purchase is **approval-cited**: it requires both recorded approvals and carries the exact `approval_ref`. The budget is decremented by the supplier price (5000 â†’ 4780).
+**What to notice.** The purchase is **approval-cited**: it requires both recorded approvals and carries the exact `approval_ref`. The budget is decremented by the supplier price (5000 â†?4780).
 
-## Step 8 â€” Receive, close, and emit the value report
+## Step 8 â€?Receive, close, and emit the value report
 
 **Purpose.** Confirm the receipt, close the request, and reconstruct the lifecycle from evidence.
 
@@ -214,7 +214,7 @@ Body:
 
 **Outputs written to `.local-data/`:** `procurement-outcome.json` and `procurement-value-report.json`.
 
-**What to notice.** The receipt requires an existing PO â€” you cannot close a request that was never purchased. The value report's denial entries (`self-approval-rejected`, `unapproved-purchase-rejected`) make the governance effect measurable.
+**What to notice.** The receipt requires an existing PO â€?you cannot close a request that was never purchased. The value report's denial entries (`self-approval-rejected`, `unapproved-purchase-rejected`) make the governance effect measurable.
 
 ## Output Artifacts
 

@@ -1,10 +1,10 @@
-# Customer-Case Demo â€” Detailed Operations Guide
+# Customer-Case Demo â€?Detailed Operations Guide
 
 Step-by-step walkthrough of the customer-case demo with the **exact requests and responses** each script issues. Read it alongside the [README](README.md).
 
 ## How To Read This Guide
 
-Each step documents its **Purpose**, the exact **Request** (method, URL, headers, body), the **Response** fields the script reads, and **What to notice** â€” the governance behavior it demonstrates.
+Each step documents its **Purpose**, the exact **Request** (method, URL, headers, body), the **Response** fields the script reads, and **What to notice** â€?the governance behavior it demonstrates.
 
 Values are concrete: customer `cust-1001`, service lead `service-lead`, consent reference `consent://cs-0001`, approval reference `approval://cs-0001`, compensation `40`.
 
@@ -12,13 +12,13 @@ Values are concrete: customer `cust-1001`, service lead `service-lead`, consent 
 
 | Service | Address | Health |
 | --- | --- | --- |
-| Limenora Edge | `http://localhost:10255` | `GET /healthz` |
-| Ontovela | `http://localhost:8082` | `GET /healthz` |
-| Rheovela | `http://localhost:8083` | `GET /api/v1/health` |
-| Symbivela | `http://localhost:8080` | `GET /ready` |
-| Praxovela AXON Core | `http://127.0.0.1:8420` | `GET /health` |
+| Limenora Edge | `http://localhost:1896` | `GET /healthz` |
+| Ontovela | `http://localhost:1856` | `GET /healthz` |
+| Rheovela | `http://localhost:1876` | `GET /api/v1/health` |
+| Symbivela | `http://localhost:1926` | `GET /ready` |
+| Praxovela AXON Core | `http://127.0.0.1:1866` | `GET /health` |
 | Customer-domain adapter | `http://localhost:8093` | `GET /healthz` |
-| Moduregis | `http://localhost:8084` | `GET /v1/health` |
+| Moduregis | `http://localhost:1806` | `GET /v1/health` |
 | Orchadyn API (optional) | `http://localhost:1816` | `GET /healthz` |
 
 ## Seed Data
@@ -37,22 +37,22 @@ Copy `local.env.ps1.example` to `local.env.ps1`, set the checkout root and conne
 
 Expected final line: `All local services are ready.`
 
-## Step 1 â€” Open the case (Symbivela)
+## Step 1 â€?Open the case (Symbivela)
 
 **Purpose.** Create the human authority that gates any customer commitment.
 
-**Request 1a â€” workspace.**
+**Request 1a â€?workspace.**
 ```
-POST http://localhost:8080/v1/workspaces
+POST http://localhost:1926/v1/workspaces
 Headers: X-SYMBIVELA-Tenant: tenant-a, X-SYMBIVELA-Actor: service-lead,
          Idempotency-Key: customer-service-workspace-v1
 Body:
 {"workspace_id":"customer-service","name":"Customer Service","owner_id":"service-lead"}
 ```
 
-**Request 1b â€” case.**
+**Request 1b â€?case.**
 ```
-POST http://localhost:8080/v1/exception-cases
+POST http://localhost:1926/v1/exception-cases
 Headers: X-SYMBIVELA-Tenant: tenant-a, X-SYMBIVELA-Actor: service-lead,
          Idempotency-Key: cs-0001-case-v1
 Body:
@@ -64,11 +64,11 @@ Body:
 
 **What to notice.** The case enumerates the permitted remedies. No remedy may be committed outside this case.
 
-## Step 2 â€” Verify the facts (customer-domain adapter + Ontovela)
+## Step 2 â€?Verify the facts (customer-domain adapter + Ontovela)
 
 **Purpose.** Establish verified facts and assert the account context before any remedy.
 
-**Request 2a â€” record a verified fact.**
+**Request 2a â€?record a verified fact.**
 ```
 POST http://localhost:8093/v1/cases/cs-0001/facts
 Body:
@@ -77,9 +77,9 @@ Body:
 ```
 Response: `fact.id` (`fact-cs-fact-v1`). An `unverified` claim is rejected (`422 unverified_claim_requires_investigation`).
 
-**Request 2b â€” account assertion.**
+**Request 2b â€?account assertion.**
 ```
-POST http://localhost:8082/v1/assertions
+POST http://localhost:1856/v1/assertions
 Headers: X-Tenant-ID: tenant-a, Idempotency-Key: cs-0001-account-v1
 Body:
 {"id":"assertion-acct-2001-overcharge","subject_id":"acct-2001","property":"billing_status",
@@ -87,7 +87,7 @@ Body:
  "system_time":"2026-08-16T10:00:01Z","source":"billing-system","evidence_ref":"evidence://billing/acct-2001"}
 ```
 
-**Request 2c â€” account view.**
+**Request 2c â€?account view.**
 ```
 GET http://localhost:8093/v1/accounts/acct-2001
 ```
@@ -95,11 +95,11 @@ Response: `{"id":"acct-2001","customer":"cust-1001","balance":120,"currency":"US
 
 **What to notice.** The adapter refuses unverified claims; the world model asserts the account fact with evidence. A remedy can only be grounded in verified facts.
 
-## Step 3 â€” Capture customer consent (customer-domain adapter)
+## Step 3 â€?Capture customer consent (customer-domain adapter)
 
 **Purpose.** Prove compensation requires consent, then record it.
 
-**Request 3a â€” compensation without consent (expect rejection).**
+**Request 3a â€?compensation without consent (expect rejection).**
 ```
 POST http://localhost:8093/v1/cases/cs-0001/resolutions
 Body:
@@ -109,7 +109,7 @@ Body:
 ```
 The adapter responds `403 Forbidden` with `{"error":"consent_required"}`.
 
-**Request 3b â€” record consent.**
+**Request 3b â€?record consent.**
 ```
 POST http://localhost:8093/v1/cases/cs-0001/consent
 Body:
@@ -120,11 +120,11 @@ Response: `case.status` (`consented`). A wrong customer is rejected (`403 custom
 
 **What to notice.** Consent is a first-class, idempotent record tied to a reference the resolution must cite. Money cannot move before it exists.
 
-## Step 4 â€” Approve the resolution (service-lead authority)
+## Step 4 â€?Approve the resolution (service-lead authority)
 
-**Purpose.** Prove the second conjunctive requirement â€” service-lead approval â€” then confirm the gate.
+**Purpose.** Prove the second conjunctive requirement â€?service-lead approval â€?then confirm the gate.
 
-**Request 4a â€” compensation without approval (expect rejection).**
+**Request 4a â€?compensation without approval (expect rejection).**
 ```
 POST http://localhost:8093/v1/cases/cs-0001/resolutions
 Body:
@@ -135,32 +135,32 @@ The adapter responds `403 Forbidden` with `{"error":"approval_required_for_compe
 
 **What to notice.** Consent alone is insufficient; the resolution requires **both** a matching consent reference and a service-lead approval. This is conjunctive authority: either missing factor denies the money movement.
 
-## Step 5 â€” Create the durable case process (Rheovela)
+## Step 5 â€?Create the durable case process (Rheovela)
 
 **Purpose.** Wrap the lifecycle in a recoverable, capability-gated process.
 
-**Input file â€” `customer-case-workflow.json`.** Stages: `verify-facts (service-agent) â†’ consent (customer) â†’ approve (service-lead) â†’ resolve (capability customer.resolution.execute) â†’ close (service-lead)`.
+**Input file â€?`customer-case-workflow.json`.** Stages: `verify-facts (service-agent) â†?consent (customer) â†?approve (service-lead) â†?resolve (capability customer.resolution.execute) â†?close (service-lead)`.
 
-**CLI â€” validate and define.**
+**CLI â€?validate and define.**
 ```powershell
 rheo workflow validate customer-case-workflow.json
 rheo workflow define --file customer-case-workflow.json
 ```
 
-**Request â€” open an instance.**
+**Request â€?open an instance.**
 ```
-POST http://localhost:8083/api/v1/instances
+POST http://localhost:1876/api/v1/instances
 Body:
 {"workflow":"customer-case-resolution","project":"cs-0001","actor":"service-lead"}
 ```
 
 **What to notice.** The `resolve` stage is capability-gated (`customer.resolution.execute`); the workflow models consent and approval as explicit stages, mirroring the adapter's conjunctive enforcement.
 
-## Step 6 â€” Generate a resolution plan (Orchadyn, optional)
+## Step 6 â€?Generate a resolution plan (Orchadyn, optional)
 
 **Purpose.** Produce a verified recommendation. A plan is not an authorization.
 
-**Input file â€” `customer-case-plan.json`.** Goal `goal-cs-0001-resolved` owned by `service-lead`; catalog `cap-compensation` with `consentRequired: true` and `approvalRequired: true`; hard constraints for consent, approval, and a compensation ceiling of 100; delegation with `evidenceDuty: ["consent://cs-0001", "approval://cs-0001"]`.
+**Input file â€?`customer-case-plan.json`.** Goal `goal-cs-0001-resolved` owned by `service-lead`; catalog `cap-compensation` with `consentRequired: true` and `approvalRequired: true`; hard constraints for consent, approval, and a compensation ceiling of 100; delegation with `evidenceDuty: ["consent://cs-0001", "approval://cs-0001"]`.
 
 **Request.**
 ```
@@ -170,7 +170,7 @@ Body: (contents of customer-case-plan.json)
 
 **What to notice.** The plan itself encodes the consent and approval constraints, so even the recommendation is bounded by the governance model.
 
-## Step 7 â€” Apply the resolution (customer-domain adapter)
+## Step 7 â€?Apply the resolution (customer-domain adapter)
 
 **Purpose.** Apply the consented, approved compensation.
 
@@ -183,11 +183,11 @@ Body:
  "idempotency_key":"cs-comp-v1"}
 ```
 
-**Response fields read by the script:** `resolution.id`, `case.status` (`resolving`). The account is credited: balance `120 â†’ 80`.
+**Response fields read by the script:** `resolution.id`, `case.status` (`resolving`). The account is credited: balance `120 â†?80`.
 
 **What to notice.** The resolution carries both references (`consent_ref` and `approval_ref`), so the money movement is traceable to both the customer's consent and the service-lead's approval.
 
-## Step 8 â€” Close and emit the value report
+## Step 8 â€?Close and emit the value report
 
 **Purpose.** Close the case only after a resolution, then reconstruct the lifecycle from evidence.
 

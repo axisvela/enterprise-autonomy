@@ -1,10 +1,10 @@
-# Integration Recovery Demo â€” Detailed Operations Guide
+# Integration Recovery Demo â€?Detailed Operations Guide
 
 Step-by-step walkthrough of the integration-outage-recovery demo with the **exact requests and responses** each script issues. Read it alongside the [README](README.md).
 
 ## How To Read This Guide
 
-Each step documents its **Purpose**, the exact **Request** (method, URL, headers, body), the **Response** fields the script reads, and **What to notice** â€” the governance behavior it demonstrates.
+Each step documents its **Purpose**, the exact **Request** (method, URL, headers, body), the **Response** fields the script reads, and **What to notice** â€?the governance behavior it demonstrates.
 
 Values are concrete: integration owner `integration-owner`, integration `partner-shipping`, in-flight work `work-0001`, preservation reference `process://work-0001`, evidence reference `evidence://reconnect/partner-shipping`.
 
@@ -12,13 +12,13 @@ Values are concrete: integration owner `integration-owner`, integration `partner
 
 | Service | Address | Health |
 | --- | --- | --- |
-| Limenora Edge | `http://localhost:10255` | `GET /healthz` |
-| Ontovela | `http://localhost:8082` | `GET /healthz` |
-| Rheovela | `http://localhost:8083` | `GET /api/v1/health` |
-| Symbivela | `http://localhost:8080` | `GET /ready` |
-| Praxovela AXON Core | `http://127.0.0.1:8420` | `GET /health` |
+| Limenora Edge | `http://localhost:1896` | `GET /healthz` |
+| Ontovela | `http://localhost:1856` | `GET /healthz` |
+| Rheovela | `http://localhost:1876` | `GET /api/v1/health` |
+| Symbivela | `http://localhost:1926` | `GET /ready` |
+| Praxovela AXON Core | `http://127.0.0.1:1866` | `GET /health` |
 | Integration-domain adapter | `http://localhost:8096` | `GET /healthz` |
-| Moduregis | `http://localhost:8084` | `GET /v1/health` |
+| Moduregis | `http://localhost:1806` | `GET /v1/health` |
 | Orchadyn API (optional) | `http://localhost:1816` | `GET /healthz` |
 
 ## Seed Data
@@ -37,22 +37,22 @@ Copy `local.env.ps1.example` to `local.env.ps1`, set the checkout root and conne
 
 Expected final line: `All local services are ready.`
 
-## Step 1 â€” Open the outage case (Symbivela)
+## Step 1 â€?Open the outage case (Symbivela)
 
 **Purpose.** Create the human authority that governs recovery of in-flight work.
 
-**Request 1a â€” workspace.**
+**Request 1a â€?workspace.**
 ```
-POST http://localhost:8080/v1/workspaces
+POST http://localhost:1926/v1/workspaces
 Headers: X-SYMBIVELA-Tenant: tenant-a, X-SYMBIVELA-Actor: integration-owner,
          Idempotency-Key: integration-ops-workspace-v1
 Body:
 {"workspace_id":"integration-ops","name":"Integration Operations","owner_id":"integration-owner"}
 ```
 
-**Request 1b â€” case.**
+**Request 1b â€?case.**
 ```
-POST http://localhost:8080/v1/exception-cases
+POST http://localhost:1926/v1/exception-cases
 Headers: X-SYMBIVELA-Tenant: tenant-a, X-SYMBIVELA-Actor: integration-owner,
          Idempotency-Key: iro-0001-case-v1
 Body:
@@ -64,25 +64,25 @@ Body:
 
 **What to notice.** The case governs the recovery lifecycle, including the escalation path.
 
-## Step 2 â€” Detect the outage and record in-flight work (adapter + Ontovela)
+## Step 2 â€?Detect the outage and record in-flight work (adapter + Ontovela)
 
 **Purpose.** Assert the outage with evidence and confirm the integration and work views.
 
-**Request 2a â€” integration view.**
+**Request 2a â€?integration view.**
 ```
 GET http://localhost:8096/v1/integrations/partner-shipping
 ```
 Response: `{"id":"partner-shipping","status":"down","outage_since":"2026-08-16T10:00:00Z",...}`.
 
-**Request 2b â€” work view.**
+**Request 2b â€?work view.**
 ```
 GET http://localhost:8096/v1/work/work-0001
 ```
 Response: `{"id":"work-0001","affects":"order-123","status":"inflight",...}`.
 
-**Request 2c â€” outage assertion.**
+**Request 2c â€?outage assertion.**
 ```
-POST http://localhost:8082/v1/assertions
+POST http://localhost:1856/v1/assertions
 Headers: X-Tenant-ID: tenant-a, Idempotency-Key: iro-0001-outage-v1
 Body:
 {"id":"assertion-partner-shipping-down","subject_id":"partner-shipping","property":"integration_status",
@@ -93,11 +93,11 @@ Body:
 
 **What to notice.** The outage is an evidence-bearing observed fact; the in-flight work is recorded as `inflight`.
 
-## Step 3 â€” Show resume requires preservation (work-order gate)
+## Step 3 â€?Show resume requires preservation (work-order gate)
 
 **Purpose.** Prove preserve-before-resume is structural.
 
-**Request â€” resume before preservation (expect rejection).**
+**Request â€?resume before preservation (expect rejection).**
 ```
 POST http://localhost:8096/v1/work/work-0001/resume
 Body:
@@ -105,9 +105,9 @@ Body:
 ```
 The adapter responds `403 Forbidden` with `{"error":"work_not_preserved"}`.
 
-**What to notice.** Resume is impossible until the work is preserved â€” no recovery order can bypass preservation.
+**What to notice.** Resume is impossible until the work is preserved â€?no recovery order can bypass preservation.
 
-## Step 4 â€” Preserve the in-flight work
+## Step 4 â€?Preserve the in-flight work
 
 **Purpose.** Record the work under a durable preservation reference.
 
@@ -121,11 +121,11 @@ Response: `work.status` (`preserved`).
 
 **What to notice.** Preservation ties the work to a durable reference so it survives the outage window.
 
-## Step 5 â€” Verify the reconnection (integration owner)
+## Step 5 â€?Verify the reconnection (integration owner)
 
 **Purpose.** Prove verify-before-resume, then record the reconnection check.
 
-**Request 5a â€” resume before verification (expect rejection).**
+**Request 5a â€?resume before verification (expect rejection).**
 ```
 POST http://localhost:8096/v1/work/work-0001/resume
 Body:
@@ -133,7 +133,7 @@ Body:
 ```
 The adapter responds `403 Forbidden` with `{"error":"integration_not_verified"}`.
 
-**Request 5b â€” reconnection check.**
+**Request 5b â€?reconnection check.**
 ```
 POST http://localhost:8096/v1/integrations/partner-shipping/checks
 Body:
@@ -144,32 +144,32 @@ Response: `integration.status` (`checked`). Only the integration owner may check
 
 **What to notice.** Preservation alone is insufficient; the integration must be verified by the owner before any resume.
 
-## Step 6 â€” Create the durable recovery process (Rheovela)
+## Step 6 â€?Create the durable recovery process (Rheovela)
 
 **Purpose.** Wrap the lifecycle in a recoverable, capability-gated process.
 
-**Input file â€” `integration-recovery-workflow.json`.** Stages: `preserve (integration-owner) â†’ verify (integration-owner) â†’ resume (capability recovery.resume.execute) â†’ complete (integration-owner) â†’ close (integration-owner)`.
+**Input file â€?`integration-recovery-workflow.json`.** Stages: `preserve (integration-owner) â†?verify (integration-owner) â†?resume (capability recovery.resume.execute) â†?complete (integration-owner) â†?close (integration-owner)`.
 
-**CLI â€” validate and define.**
+**CLI â€?validate and define.**
 ```powershell
 rheo workflow validate integration-recovery-workflow.json
 rheo workflow define --file integration-recovery-workflow.json
 ```
 
-**Request â€” open an instance.**
+**Request â€?open an instance.**
 ```
-POST http://localhost:8083/api/v1/instances
+POST http://localhost:1876/api/v1/instances
 Body:
 {"workflow":"integration-outage-recovery","project":"work-0001","actor":"integration-owner"}
 ```
 
-**What to notice.** The `resume` stage is capability-gated; the workflow mirrors the preserve â†’ verify â†’ resume ordering.
+**What to notice.** The `resume` stage is capability-gated; the workflow mirrors the preserve â†?verify â†?resume ordering.
 
-## Step 7 â€” Generate a recovery plan (Orchadyn, optional)
+## Step 7 â€?Generate a recovery plan (Orchadyn, optional)
 
 **Purpose.** Produce a verified recommendation. A plan is not an authorization.
 
-**Input file â€” `integration-recovery-plan.json`.** Goal `goal-iro-0001-recovered`; catalog `cap-resume` with `preservationRequired: true` and `verificationRequired: true`; hard constraints for preserve-before-resume, verify-before-resume, and no-silent-rerun.
+**Input file â€?`integration-recovery-plan.json`.** Goal `goal-iro-0001-recovered`; catalog `cap-resume` with `preservationRequired: true` and `verificationRequired: true`; hard constraints for preserve-before-resume, verify-before-resume, and no-silent-rerun.
 
 **Request.**
 ```
@@ -179,11 +179,11 @@ Body: (contents of integration-recovery-plan.json)
 
 **What to notice.** The plan encodes the recovery ordering constraints, so even the recommendation respects preserve-and-verify-before-resume.
 
-## Step 8 â€” Resume, complete, and prove no silent re-execution
+## Step 8 â€?Resume, complete, and prove no silent re-execution
 
 **Purpose.** Complete recovery and demonstrate that a completed action cannot be re-executed.
 
-**Request 8a â€” resume.**
+**Request 8a â€?resume.**
 ```
 POST http://localhost:8096/v1/work/work-0001/resume
 Body:
@@ -191,7 +191,7 @@ Body:
 ```
 Response: `work.status` (`resumed`).
 
-**Request 8b â€” complete.**
+**Request 8b â€?complete.**
 ```
 POST http://localhost:8096/v1/work/work-0001/complete
 Body:
@@ -199,7 +199,7 @@ Body:
 ```
 Response: `work.status` (`completed`).
 
-**Request 8c â€” repeat completion (expect rejection).**
+**Request 8c â€?repeat completion (expect rejection).**
 ```
 POST http://localhost:8096/v1/work/work-0001/complete
 Body:
@@ -207,7 +207,7 @@ Body:
 ```
 The adapter responds `409 Conflict` with `{"error":"action_already_completed_no_silent_rerun"}`.
 
-**What to notice.** The recovery ends with a durable, non-re-executable outcome â€” the `silent-rerun-rejected` denial makes that measurable.
+**What to notice.** The recovery ends with a durable, non-re-executable outcome â€?the `silent-rerun-rejected` denial makes that measurable.
 
 ## Output Artifacts
 

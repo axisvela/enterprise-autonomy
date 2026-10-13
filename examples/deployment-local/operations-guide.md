@@ -1,4 +1,4 @@
-# Sequenced-Deployment Local Demo â€” Detailed Operations Guide
+# Sequenced-Deployment Local Demo â€?Detailed Operations Guide
 
 `dep-0001` for the `release-pipeline` workflow runs through a governed sequenced lifecycle: case, pipeline context, **sequence gate**, **evidence-cited autonomous steps**, **deviation gate**, durable process, pipeline plan, and **immutable release**.
 
@@ -12,19 +12,19 @@ All commands below assume the services are running (see the [README](README.md))
 
 ## Step-by-Step Requests and Expected Responses
 
-### Step 1 â€” Open the deployment case (Symbivela)
+### Step 1 â€?Open the deployment case (Symbivela)
 
 ```powershell
 $workspace = @{ workspace_id = "deployment-ops"; name = "Deployment Operations"; owner_id = $Operator } | ConvertTo-Json
-Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $Operator; "Idempotency-Key" = "deployment-ops-workspace-v1" } -ContentType "application/json" -Body $workspace
+Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $Operator; "Idempotency-Key" = "deployment-ops-workspace-v1" } -ContentType "application/json" -Body $workspace
 
 $case = @{ workspace_id = "deployment-ops"; case_id = "dep-0001-release"; subject_ref = "deployment://dep-0001"; problem = "..."; evidence_refs = "deployment://dep-0001"; candidate_actions = "steps,deviations,release"; deadline = "2026-09-02T12:00:00Z" } | ConvertTo-Json
-Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
+Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
 ```
 
 **Expected:** Symbivela returns a case with `case_id: dep-0001-release` in state `open`. The release outcome is driven by the sequenced pipeline.
 
-### Step 2 â€” Record the pipeline context (adapter + Ontovela)
+### Step 2 â€?Record the pipeline context (adapter + Ontovela)
 
 ```powershell
 curl.exe "http://localhost:8102/v1/deployments/dep-0001"
@@ -41,12 +41,12 @@ Then assert the initiated state to Ontovela:
 
 ```powershell
 $assertion = @{ id = "assertion-dep-0001-initiated"; subject_id = $DeploymentId; property = "deployment_status"; value = "initiated"; state_kind = "observed"; event_time = "2026-08-16T18:00:00Z"; system_time = "2026-08-16T18:00:01Z"; source = "deployment-control"; evidence_ref = "evidence://deployment/dep-0001" } | ConvertTo-Json
-Invoke-RestMethod -Method Post -Uri "http://localhost:8082/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
+Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 ```
 
 **Expected:** Ontovela returns a stored assertion (`observed`).
 
-### Step 3 â€” Sequence gate (deployment-domain, denied)
+### Step 3 â€?Sequence gate (deployment-domain, denied)
 
 An autonomous executor attempts to skip ahead to `test` before `checkout`:
 
@@ -61,7 +61,7 @@ Invoke-RestMethod -Method Post -Uri "http://localhost:8102/v1/deployments/dep-00
 {"error":"step_out_of_sequence_next_is_checkout"}
 ```
 
-### Step 4 â€” Execute the sequenced autonomous steps
+### Step 4 â€?Execute the sequenced autonomous steps
 
 Each step cites its evidence:
 
@@ -72,9 +72,9 @@ Invoke-RestMethod -Method Post -Uri "http://localhost:8102/v1/deployments/dep-00
 
 Repeat for `build` and `test` with matching evidence refs and idempotency keys.
 
-**Expected:** each returns `200` with `status: in-flight`, `current_step` advancing `checkout â†’ build â†’ test`.
+**Expected:** each returns `200` with `status: in-flight`, `current_step` advancing `checkout â†?build â†?test`.
 
-### Step 5 â€” Deviation gate (deployment-domain, denied)
+### Step 5 â€?Deviation gate (deployment-domain, denied)
 
 An unapproved pause is attempted:
 
@@ -89,18 +89,18 @@ Invoke-RestMethod -Method Post -Uri "http://localhost:8102/v1/deployments/dep-00
 {"error":"deviation_requires_human_approval"}
 ```
 
-### Step 6 â€” Durable process wrapper (Rheovela)
+### Step 6 â€?Durable process wrapper (Rheovela)
 
 ```powershell
 $rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
 & $rheo workflow define --file ".\sequenced-deployment-workflow.json"
 $processBody = @{ workflow = "sequenced-deployment"; project = $DeploymentId; actor = $Operator } | ConvertTo-Json
-Invoke-RestMethod -Method Post -Uri "http://localhost:8083/api/v1/instances" -ContentType "application/json" -Body $processBody
+Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/instances" -ContentType "application/json" -Body $processBody
 ```
 
 **Expected:** Rheovela returns an instance id, e.g. `inst-...`, in state `open`.
 
-### Step 7 â€” Plan (Orchadyn, optional)
+### Step 7 â€?Plan (Orchadyn, optional)
 
 ```powershell
 $plan = Get-Content -Raw ".\sequenced-deployment-plan.json"
@@ -109,7 +109,7 @@ Invoke-RestMethod -Method Post -Uri "http://localhost:1816/plans:generate" -Cont
 
 **Expected:** Orchadyn returns a verified plan listing the sequenced capabilities and 0 violations (when configured).
 
-### Step 8 â€” Terminal step and release immutability
+### Step 8 â€?Terminal step and release immutability
 
 Execute `approve` and `production`:
 

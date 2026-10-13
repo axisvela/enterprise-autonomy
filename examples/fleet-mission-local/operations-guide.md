@@ -1,10 +1,10 @@
-# Fleet Mission Demo â€” Detailed Operations Guide
+# Fleet Mission Demo â€?Detailed Operations Guide
 
 Step-by-step walkthrough of the fleet-mission-exception demo with the **exact requests and responses** each script issues. Read it alongside the [README](README.md).
 
 ## How To Read This Guide
 
-Each step documents its **Purpose**, the exact **Request** (method, URL, headers, body), the **Response** fields the script reads, and **What to notice** â€” the governance behavior it demonstrates.
+Each step documents its **Purpose**, the exact **Request** (method, URL, headers, body), the **Response** fields the script reads, and **What to notice** â€?the governance behavior it demonstrates.
 
 Values are concrete: operator `ops-lead`, mission `mission-alpha-001`, boundary `zone-alpha`, approval reference `approval://mission-alpha-001`.
 
@@ -12,13 +12,13 @@ Values are concrete: operator `ops-lead`, mission `mission-alpha-001`, boundary 
 
 | Service | Address | Health |
 | --- | --- | --- |
-| Limenora Edge | `http://localhost:10255` | `GET /healthz` |
-| Ontovela | `http://localhost:8082` | `GET /healthz` |
-| Rheovela | `http://localhost:8083` | `GET /api/v1/health` |
-| Symbivela | `http://localhost:8080` | `GET /ready` |
-| Praxovela AXON Core | `http://127.0.0.1:8420` | `GET /health` |
+| Limenora Edge | `http://localhost:1896` | `GET /healthz` |
+| Ontovela | `http://localhost:1856` | `GET /healthz` |
+| Rheovela | `http://localhost:1876` | `GET /api/v1/health` |
+| Symbivela | `http://localhost:1926` | `GET /ready` |
+| Praxovela AXON Core | `http://127.0.0.1:1866` | `GET /health` |
 | Fleet-domain adapter | `http://localhost:8099` | `GET /healthz` |
-| Moduregis | `http://localhost:8084` | `GET /v1/health` |
+| Moduregis | `http://localhost:1806` | `GET /v1/health` |
 | Orchadyn API (optional) | `http://localhost:1816` | `GET /healthz` |
 
 ## Seed Data
@@ -36,22 +36,22 @@ Copy `local.env.ps1.example` to `local.env.ps1`, set the checkout root and conne
 
 Expected final line: `All local services are ready.`
 
-## Step 1 â€” Open the mission case (Symbivela)
+## Step 1 â€?Open the mission case (Symbivela)
 
 **Purpose.** Create the human authority that governs the mission.
 
-**Request 1a â€” workspace.**
+**Request 1a â€?workspace.**
 ```
-POST http://localhost:8080/v1/workspaces
+POST http://localhost:1926/v1/workspaces
 Headers: X-SYMBIVELA-Tenant: tenant-a, X-SYMBIVELA-Actor: ops-lead,
          Idempotency-Key: fleet-ops-workspace-v1
 Body:
 {"workspace_id":"fleet-ops","name":"Fleet Operations","owner_id":"ops-lead"}
 ```
 
-**Request 1b â€” case.**
+**Request 1b â€?case.**
 ```
-POST http://localhost:8080/v1/exception-cases
+POST http://localhost:1926/v1/exception-cases
 Headers: X-SYMBIVELA-Tenant: tenant-a, X-SYMBIVELA-Actor: ops-lead,
          Idempotency-Key: fleet-0001-case-v1
 Body:
@@ -63,19 +63,19 @@ Body:
 
 **What to notice.** The case frames the mission as bounded with exception pause-and-review.
 
-## Step 2 â€” Record the mission context (adapter + Ontovela)
+## Step 2 â€?Record the mission context (adapter + Ontovela)
 
 **Purpose.** Assert the mission boundary with evidence.
 
-**Request 2a â€” mission view.**
+**Request 2a â€?mission view.**
 ```
 GET http://localhost:8099/v1/missions/mission-alpha-001
 ```
 Response: `{"id":"mission-alpha-001","zone":"zone-alpha","objective":"inspect racks","status":"planned","operator":"ops-lead","boundary":["zone-alpha"],"actions":[]}`.
 
-**Request 2b â€” boundary assertion.**
+**Request 2b â€?boundary assertion.**
 ```
-POST http://localhost:8082/v1/assertions
+POST http://localhost:1856/v1/assertions
 Headers: X-Tenant-ID: tenant-a, Idempotency-Key: fleet-0001-zone-v1
 Body:
 {"id":"assertion-mission-alpha-001-bounded","subject_id":"mission-alpha-001","property":"mission_boundary",
@@ -85,11 +85,11 @@ Body:
 
 **What to notice.** The boundary is an evidence-bearing fact; the mission is scoped to `zone-alpha`.
 
-## Step 3 â€” Start and enforce the boundary
+## Step 3 â€?Start and enforce the boundary
 
 **Purpose.** Prove boundary enforcement is autonomous.
 
-**Request 3a â€” start.**
+**Request 3a â€?start.**
 ```
 POST http://localhost:8099/v1/missions/mission-alpha-001/start
 Body:
@@ -97,7 +97,7 @@ Body:
 ```
 Response: `mission.status` (`running`).
 
-**Request 3b â€” out-of-boundary telemetry (expect rejection).**
+**Request 3b â€?out-of-boundary telemetry (expect rejection).**
 ```
 POST http://localhost:8099/v1/missions/mission-alpha-001/telemetry
 Body:
@@ -105,7 +105,7 @@ Body:
 ```
 The adapter responds `403 Forbidden` with `{"error":"boundary_deviation_mission_frozen"}`.
 
-**Request 3c â€” in-bound telemetry.**
+**Request 3c â€?in-bound telemetry.**
 ```
 POST http://localhost:8099/v1/missions/mission-alpha-001/telemetry
 Body:
@@ -114,7 +114,7 @@ Body:
 
 **What to notice.** Boundary enforcement needs no human: out-of-bound telemetry is frozen automatically, and the mission continues only inside its boundary.
 
-## Step 4 â€” Pause on the exception
+## Step 4 â€?Pause on the exception
 
 **Purpose.** An exception always pauses the mission for review.
 
@@ -126,13 +126,13 @@ Body:
 ```
 Response: `exception.type` (`obstacle`), `mission.status` (`paused`).
 
-**What to notice.** The mission cannot continue past an exception â€” pause is automatic.
+**What to notice.** The mission cannot continue past an exception â€?pause is automatic.
 
-## Step 5 â€” Review and resume the mission (operator-gated)
+## Step 5 â€?Review and resume the mission (operator-gated)
 
 **Purpose.** Prove only the operator may review, then resume with an approval reference.
 
-**Request 5a â€” non-operator review (expect rejection).**
+**Request 5a â€?non-operator review (expect rejection).**
 ```
 POST http://localhost:8099/v1/missions/mission-alpha-001/reviews
 Body:
@@ -140,7 +140,7 @@ Body:
 ```
 The adapter responds `403 Forbidden` with `{"error":"not_mission_operator"}`.
 
-**Request 5b â€” operator review.**
+**Request 5b â€?operator review.**
 ```
 POST http://localhost:8099/v1/missions/mission-alpha-001/reviews
 Body:
@@ -148,34 +148,34 @@ Body:
 ```
 Response: `review.decision` (`resume`), `mission.status` (`resumed`).
 
-**What to notice.** Resume is approval-cited and operator-gated â€” the mission does not continue on its own.
+**What to notice.** Resume is approval-cited and operator-gated â€?the mission does not continue on its own.
 
-## Step 6 â€” Create the durable mission process (Rheovela)
+## Step 6 â€?Create the durable mission process (Rheovela)
 
 **Purpose.** Wrap the lifecycle in a recoverable, capability-gated process.
 
-**Input file â€” `fleet-mission-workflow.json`.** Stages: `start (ops-lead) â†’ pause (capability fleet.exception.pause) â†’ review (ops-lead) â†’ resume (capability fleet.resume.execute) â†’ close (ops-lead)`.
+**Input file â€?`fleet-mission-workflow.json`.** Stages: `start (ops-lead) â†?pause (capability fleet.exception.pause) â†?review (ops-lead) â†?resume (capability fleet.resume.execute) â†?close (ops-lead)`.
 
-**CLI â€” validate and define.**
+**CLI â€?validate and define.**
 ```powershell
 rheo workflow validate fleet-mission-workflow.json
 rheo workflow define --file fleet-mission-workflow.json
 ```
 
-**Request â€” open an instance.**
+**Request â€?open an instance.**
 ```
-POST http://localhost:8083/api/v1/instances
+POST http://localhost:1876/api/v1/instances
 Body:
 {"workflow":"fleet-mission-exception","project":"mission-alpha-001","actor":"ops-lead"}
 ```
 
-**What to notice.** The `pause` and `resume` stages are capability-gated; the workflow mirrors start â†’ pause â†’ review â†’ resume ordering.
+**What to notice.** The `pause` and `resume` stages are capability-gated; the workflow mirrors start â†?pause â†?review â†?resume ordering.
 
-## Step 7 â€” Generate a mission plan (Orchadyn, optional)
+## Step 7 â€?Generate a mission plan (Orchadyn, optional)
 
 **Purpose.** Produce a verified recommendation. A plan is not an authorization.
 
-**Input file â€” `fleet-mission-plan.json`.** Goal `goal-fleet-0001-safe`; catalog `cap-boundary` with `autonomous: true`; `cap-review` with `pauseRequired: true` and `operatorOnly: true`.
+**Input file â€?`fleet-mission-plan.json`.** Goal `goal-fleet-0001-safe`; catalog `cap-boundary` with `autonomous: true`; `cap-review` with `pauseRequired: true` and `operatorOnly: true`.
 
 **Request.**
 ```
@@ -185,7 +185,7 @@ Body: (contents of fleet-mission-plan.json)
 
 **What to notice.** The plan encodes the autonomous boundary and pause-and-review constraints.
 
-## Step 8 â€” Complete and emit the value report
+## Step 8 â€?Complete and emit the value report
 
 **Purpose.** Complete the active mission and reconstruct the lifecycle from evidence.
 

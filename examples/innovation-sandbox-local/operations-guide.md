@@ -1,10 +1,10 @@
-# Innovation Sandbox Demo â€” Detailed Operations Guide
+# Innovation Sandbox Demo â€?Detailed Operations Guide
 
 Step-by-step walkthrough of the innovation-sandbox-to-policy demo with the **exact requests and responses** each script issues. Read it alongside the [README](README.md).
 
 ## How To Read This Guide
 
-Each step documents its **Purpose**, the exact **Request** (method, URL, headers, body), the **Response** fields the script reads, and **What to notice** â€” the governance behavior it demonstrates.
+Each step documents its **Purpose**, the exact **Request** (method, URL, headers, body), the **Response** fields the script reads, and **What to notice** â€?the governance behavior it demonstrates.
 
 Values are concrete: reviewer `reviewer-a`, sandbox engineer `sandbox-engineer`, proposal `proposal-sandbox-0001`, sandbox scope `report-generation-scope`, policy reference `policy://sand-0001`.
 
@@ -12,13 +12,13 @@ Values are concrete: reviewer `reviewer-a`, sandbox engineer `sandbox-engineer`,
 
 | Service | Address | Health |
 | --- | --- | --- |
-| Limenora Edge | `http://localhost:10255` | `GET /healthz` |
-| Ontovela | `http://localhost:8082` | `GET /healthz` |
-| Rheovela | `http://localhost:8083` | `GET /api/v1/health` |
-| Symbivela | `http://localhost:8080` | `GET /ready` |
-| Praxovela AXON Core | `http://127.0.0.1:8420` | `GET /health` |
+| Limenora Edge | `http://localhost:1896` | `GET /healthz` |
+| Ontovela | `http://localhost:1856` | `GET /healthz` |
+| Rheovela | `http://localhost:1876` | `GET /api/v1/health` |
+| Symbivela | `http://localhost:1926` | `GET /ready` |
+| Praxovela AXON Core | `http://127.0.0.1:1866` | `GET /health` |
 | Sandbox-domain adapter | `http://localhost:8101` | `GET /healthz` |
-| Moduregis | `http://localhost:8084` | `GET /v1/health` |
+| Moduregis | `http://localhost:1806` | `GET /v1/health` |
 | Orchadyn API (optional) | `http://localhost:1816` | `GET /healthz` |
 
 ## Seed Data
@@ -36,22 +36,22 @@ Copy `local.env.ps1.example` to `local.env.ps1`, set the checkout root and conne
 
 Expected final line: `All local services are ready.`
 
-## Step 1 â€” Open the sandbox case (Symbivela)
+## Step 1 â€?Open the sandbox case (Symbivela)
 
 **Purpose.** Create the human authority that governs exploration and policy.
 
-**Request 1a â€” workspace.**
+**Request 1a â€?workspace.**
 ```
-POST http://localhost:8080/v1/workspaces
+POST http://localhost:1926/v1/workspaces
 Headers: X-SYMBIVELA-Tenant: tenant-a, X-SYMBIVELA-Actor: reviewer-a,
          Idempotency-Key: innovation-sandbox-workspace-v1
 Body:
 {"workspace_id":"innovation-sandbox","name":"Innovation Sandbox","owner_id":"reviewer-a"}
 ```
 
-**Request 1b â€” case.**
+**Request 1b â€?case.**
 ```
-POST http://localhost:8080/v1/exception-cases
+POST http://localhost:1926/v1/exception-cases
 Headers: X-SYMBIVELA-Tenant: tenant-a, X-SYMBIVELA-Actor: reviewer-a,
          Idempotency-Key: sand-0001-case-v1
 Body:
@@ -63,19 +63,19 @@ Body:
 
 **What to notice.** The case frames exploration as sandbox-bounded and policy as evidence-based.
 
-## Step 2 â€” Record the sandbox context (adapter + Ontovela)
+## Step 2 â€?Record the sandbox context (adapter + Ontovela)
 
 **Purpose.** Assert the sandbox scope with evidence.
 
-**Request 2a â€” proposal view.**
+**Request 2a â€?proposal view.**
 ```
 GET http://localhost:8101/v1/proposals/proposal-sandbox-0001
 ```
 Response: `{"id":"proposal-sandbox-0001","capability":"batch-report-generation","sandbox_scope":"report-generation-scope","status":"proposed","review_group":["reviewer-a","reviewer-b"],"experiments":[]}`.
 
-**Request 2b â€” scope assertion.**
+**Request 2b â€?scope assertion.**
 ```
-POST http://localhost:8082/v1/assertions
+POST http://localhost:1856/v1/assertions
 Headers: X-Tenant-ID: tenant-a, Idempotency-Key: sand-0001-scope-v1
 Body:
 {"id":"assertion-sand-0001-scoped","subject_id":"proposal-sandbox-0001","property":"sandbox_scope",
@@ -85,11 +85,11 @@ Body:
 
 **What to notice.** The sandbox scope is an evidence-bearing fact; experiments are confined to it.
 
-## Step 3 â€” Show the sandbox boundary
+## Step 3 â€?Show the sandbox boundary
 
 **Purpose.** Prove sandbox confinement is structural.
 
-**Request â€” out-of-scope experiment (expect rejection).**
+**Request â€?out-of-scope experiment (expect rejection).**
 ```
 POST http://localhost:8101/v1/proposals/proposal-sandbox-0001/experiments
 Body:
@@ -98,13 +98,13 @@ Body:
 ```
 The adapter responds `403 Forbidden` with `{"error":"sandbox_boundary_experiment_outside_scope"}`.
 
-**What to notice.** Experiments cannot escape the sandbox scope â€” confinement is structural, not procedural.
+**What to notice.** Experiments cannot escape the sandbox scope â€?confinement is structural, not procedural.
 
-## Step 4 â€” Show policy needs experiment evidence
+## Step 4 â€?Show policy needs experiment evidence
 
 **Purpose.** Prove evidence-based policy.
 
-**Request â€” decision before evidence (expect rejection).**
+**Request â€?decision before evidence (expect rejection).**
 ```
 POST http://localhost:8101/v1/proposals/proposal-sandbox-0001/decisions
 Body:
@@ -115,7 +115,7 @@ The adapter responds `403 Forbidden` with `{"error":"experiment_evidence_require
 
 **What to notice.** A policy decision cannot precede sandbox evidence.
 
-## Step 5 â€” Record the sandbox experiment
+## Step 5 â€?Record the sandbox experiment
 
 **Purpose.** Record evidence inside the sandbox.
 
@@ -130,32 +130,32 @@ Response: `experiment.id` (`experiment-exp-001`), `proposal.status` (`experiment
 
 **What to notice.** The experiment is recorded with evidence inside the sandbox scope.
 
-## Step 6 â€” Create the durable sandbox process (Rheovela)
+## Step 6 â€?Create the durable sandbox process (Rheovela)
 
 **Purpose.** Wrap the lifecycle in a recoverable, capability-gated process.
 
-**Input file â€” `innovation-sandbox-workflow.json`.** Stages: `explore (capability sandbox.experiment.execute) â†’ decide (review-group) â†’ apply (capability sandbox.apply.execute) â†’ close (review-group)`.
+**Input file â€?`innovation-sandbox-workflow.json`.** Stages: `explore (capability sandbox.experiment.execute) â†?decide (review-group) â†?apply (capability sandbox.apply.execute) â†?close (review-group)`.
 
-**CLI â€” validate and define.**
+**CLI â€?validate and define.**
 ```powershell
 rheo workflow validate innovation-sandbox-workflow.json
 rheo workflow define --file innovation-sandbox-workflow.json
 ```
 
-**Request â€” open an instance.**
+**Request â€?open an instance.**
 ```
-POST http://localhost:8083/api/v1/instances
+POST http://localhost:1876/api/v1/instances
 Body:
 {"workflow":"innovation-sandbox-to-policy","project":"proposal-sandbox-0001","actor":"reviewer-a"}
 ```
 
-**What to notice.** The `explore` and `apply` stages are capability-gated; the workflow mirrors explore â†’ decide â†’ apply.
+**What to notice.** The `explore` and `apply` stages are capability-gated; the workflow mirrors explore â†?decide â†?apply.
 
-## Step 7 â€” Generate a sandbox plan (Orchadyn, optional)
+## Step 7 â€?Generate a sandbox plan (Orchadyn, optional)
 
 **Purpose.** Produce a verified recommendation. A plan is not an authorization.
 
-**Input file â€” `innovation-sandbox-plan.json`.** Catalog `cap-experiment` with `boundaryRequired: true`; `cap-decide` with `evidenceRequired`, `reviewerOnly`, and `immutable`; hard sandbox-boundary, evidence-based-policy, and policy-immutable constraints.
+**Input file â€?`innovation-sandbox-plan.json`.** Catalog `cap-experiment` with `boundaryRequired: true`; `cap-decide` with `evidenceRequired`, `reviewerOnly`, and `immutable`; hard sandbox-boundary, evidence-based-policy, and policy-immutable constraints.
 
 **Request.**
 ```
@@ -165,11 +165,11 @@ Body: (contents of innovation-sandbox-plan.json)
 
 **What to notice.** The plan encodes the sandbox boundary and evidence requirement.
 
-## Step 8 â€” Decide and apply the policy; show immutability
+## Step 8 â€?Decide and apply the policy; show immutability
 
 **Purpose.** Record the policy decision, apply it, and prove the decision is immutable.
 
-**Request 8a â€” non-reviewer decision (expect rejection).**
+**Request 8a â€?non-reviewer decision (expect rejection).**
 ```
 POST http://localhost:8101/v1/proposals/proposal-sandbox-0001/decisions
 Body:
@@ -177,7 +177,7 @@ Body:
 ```
 The adapter responds `403 Forbidden` with `{"error":"not_designated_reviewer"}`.
 
-**Request 8b â€” policy decision.**
+**Request 8b â€?policy decision.**
 ```
 POST http://localhost:8101/v1/proposals/proposal-sandbox-0001/decisions
 Body:
@@ -186,7 +186,7 @@ Body:
 ```
 Response: `decision.decision` (`release`), `proposal.status` (`decided`).
 
-**Request 8c â€” second decision (expect rejection).**
+**Request 8c â€?second decision (expect rejection).**
 ```
 POST http://localhost:8101/v1/proposals/proposal-sandbox-0001/decisions
 Body:
@@ -194,7 +194,7 @@ Body:
 ```
 The adapter responds `409 Conflict` with `{"error":"policy_already_recorded_immutable"}`.
 
-**Request 8d â€” apply.**
+**Request 8d â€?apply.**
 ```
 POST http://localhost:8101/v1/proposals/proposal-sandbox-0001/apply
 Body:

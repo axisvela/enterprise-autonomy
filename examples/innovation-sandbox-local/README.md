@@ -17,14 +17,14 @@ The run script prints a **step-by-step business report** and a **Value & Effect 
 
 ## The Scenario In Business Terms
 
-1. **Open** â€” the reviewer opens a governed sandbox case.
-2. **Context** â€” the sandbox scope is asserted with evidence.
-3. **Sandbox gate** â€” an out-of-scope experiment is rejected.
-4. **Policy gate** â€” a decision before experiment evidence is rejected.
-5. **Explore** â€” a sandbox experiment is recorded inside the scope.
-6. **Process** â€” a durable sandbox process is opened.
-7. **Plan** â€” a verified sandbox plan is generated (recommendation only).
-8. **Decide and apply** â€” the reviewer records the policy and applies it; a second decision is rejected.
+1. **Open** â€?the reviewer opens a governed sandbox case.
+2. **Context** â€?the sandbox scope is asserted with evidence.
+3. **Sandbox gate** â€?an out-of-scope experiment is rejected.
+4. **Policy gate** â€?a decision before experiment evidence is rejected.
+5. **Explore** â€?a sandbox experiment is recorded inside the scope.
+6. **Process** â€?a durable sandbox process is opened.
+7. **Plan** â€?a verified sandbox plan is generated (recommendation only).
+8. **Decide and apply** â€?the reviewer records the policy and applies it; a second decision is rejected.
 
 ## What This Demo Does
 
@@ -62,13 +62,13 @@ Copy `local.env.ps1.example` to `local.env.ps1` and set your checkout root and c
 
 | Service | Local address | Health check |
 | --- | --- | --- |
-| Limenora Edge | `http://localhost:10255` | `GET /healthz` |
-| Ontovela | `http://localhost:8082` | `GET /healthz` |
-| Rheovela | `http://localhost:8083` | `GET /api/v1/health` |
-| Symbivela | `http://localhost:8080` | `GET /ready` |
-| Praxovela AXON Core | `http://127.0.0.1:8420` | `GET /health` |
+| Limenora Edge | `http://localhost:1896` | `GET /healthz` |
+| Ontovela | `http://localhost:1856` | `GET /healthz` |
+| Rheovela | `http://localhost:1876` | `GET /api/v1/health` |
+| Symbivela | `http://localhost:1926` | `GET /ready` |
+| Praxovela AXON Core | `http://127.0.0.1:1866` | `GET /health` |
 | Sandbox-domain adapter | `http://localhost:8101` | `GET /healthz` |
-| Moduregis | `http://localhost:8084` | `GET /v1/health` |
+| Moduregis | `http://localhost:1806` | `GET /v1/health` |
 | Orchadyn API (optional) | `http://localhost:1816` | `GET /healthz` |
 
 ## Run The Scenario

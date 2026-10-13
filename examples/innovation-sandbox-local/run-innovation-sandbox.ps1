@@ -19,9 +19,9 @@ $symbiHeaders = @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $Revi
 
 # Step 1: open the sandbox case (Symbivela)
 $workspace = @{ workspace_id = "innovation-sandbox"; name = "Innovation Sandbox"; owner_id = $Reviewer } | ConvertTo-Json
-Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $Reviewer; "Idempotency-Key" = "innovation-sandbox-workspace-v1" } -ContentType "application/json" -Body $workspace | Out-Null
+Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $Reviewer; "Idempotency-Key" = "innovation-sandbox-workspace-v1" } -ContentType "application/json" -Body $workspace | Out-Null
 $case = @{ workspace_id = "innovation-sandbox"; case_id = "sand-0001-policy"; subject_ref = "proposal://proposal-sandbox-0001"; problem = "Explore batch-report-generation inside its sandbox and record an evidence-based policy decision."; evidence_refs = "scope://report-generation-scope"; candidate_actions = "release,restrict,reject"; deadline = "2026-09-03T12:00:00Z" } | ConvertTo-Json
-$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
+$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
 $gates += @{ gate = "case-opened"; owner = $Reviewer; decision = "open" }
 $evidence += @{ product = "symbivela"; artifact = $caseResult.case_id; state = $caseResult.status }
 $outcome.steps += @{ index = 1; title = "Open the sandbox case"; product = "symbivela"; artifact = $caseResult.case_id }
@@ -30,7 +30,7 @@ Write-Step 1 "Open the sandbox case" "Symbivela case '$($caseResult.case_id)' is
 # Step 2: record the proposal context (adapter + Ontovela)
 $proposal = Invoke-RestMethod -Uri $sandBase
 $assertion = @{ id = "assertion-sand-0001-scoped"; subject_id = $ProposalId; property = "sandbox_scope"; value = $SandboxScope; state_kind = "observed"; event_time = "2026-08-16T19:00:00Z"; system_time = "2026-08-16T19:00:01Z"; source = "innovation-control"; evidence_ref = "evidence://sandbox/proposal-sandbox-0001" } | ConvertTo-Json
-$state = Invoke-RestMethod -Method Post -Uri "http://localhost:8082/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
+$state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $gates += @{ gate = "sandbox-scoped"; owner = $Reviewer; decision = "scoped"; scope = $SandboxScope }
 $evidence += @{ product = "sandbox-domain"; artifact = $proposal.id; state = $proposal.status }
 $evidence += @{ product = "ontovela"; artifact = "assertion-sand-0001-scoped"; state = "observed" }
@@ -72,7 +72,7 @@ $rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "innovation-sandbox-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "innovation-sandbox-workflow.json") | Out-Null
 $processBody = @{ workflow = "innovation-sandbox-to-policy"; project = $ProposalId; actor = $Reviewer } | ConvertTo-Json
-$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:8083/api/v1/instances" -ContentType "application/json" -Body $processBody
+$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/instances" -ContentType "application/json" -Body $processBody
 $evidence += @{ product = "rheovela"; artifact = $instance.id; state = "open" }
 $outcome.steps += @{ index = 6; title = "Create the durable sandbox process"; product = "rheovela"; artifact = $instance.id }
 Write-Step 6 "Create the durable sandbox process" "Rheovela opened process instance '$($instance.id)' for 'innovation-sandbox-to-policy'. Stages: explore, decide, apply, close."

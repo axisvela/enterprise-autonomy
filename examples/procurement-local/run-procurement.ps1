@@ -26,9 +26,9 @@ Write-Step 1 "Submit the request" "Requester $Requester submitted preq-0001 ($($
 
 # Step 2: open the governed case (Symbivela)
 $workspace = @{ workspace_id = "procurement-ops"; name = "Procurement Operations"; owner_id = $ProcurementOwner } | ConvertTo-Json
-Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $ProcurementOwner; "Idempotency-Key" = "procurement-ops-workspace-v1" } -ContentType "application/json" -Body $workspace | Out-Null
+Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $ProcurementOwner; "Idempotency-Key" = "procurement-ops-workspace-v1" } -ContentType "application/json" -Body $workspace | Out-Null
 $case = @{ workspace_id = "procurement-ops"; case_id = "preq-0001-purchase"; subject_ref = "request://preq-0001"; problem = "Purchasing required for item within budget envelope."; evidence_refs = "budget://budget-0001"; candidate_actions = "preferred-supplier,standard-supplier,reject"; deadline = "2026-08-20T12:00:00Z" } | ConvertTo-Json
-$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
+$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
 $gates += @{ gate = "case-opened"; owner = $ProcurementOwner; decision = "open" }
 $evidence += @{ product = "symbivela"; artifact = $caseResult.case_id; state = $caseResult.status }
 $outcome.steps += @{ index = 2; title = "Open the governed case"; product = "symbivela"; artifact = $caseResult.case_id }
@@ -36,7 +36,7 @@ Write-Step 2 "Open the governed case" "Symbivela case '$($caseResult.case_id)' i
 
 # Step 3: record budget context (Ontovela)
 $assertion = @{ id = "assertion-budget-0001-available"; subject_id = "budget-0001"; property = "availability"; value = "available"; state_kind = "observed"; event_time = "2026-08-16T09:00:00Z"; system_time = "2026-08-16T09:00:01Z"; source = "finance-system"; evidence_ref = "evidence://finance/budget-0001" } | ConvertTo-Json
-$state = Invoke-RestMethod -Method Post -Uri "http://localhost:8082/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
+$state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $budget = Invoke-RestMethod -Uri "http://localhost:8092/v1/budget/budget-0001"
 $evidence += @{ product = "ontovela"; artifact = "assertion-budget-0001-available"; state = "observed" }
 $evidence += @{ product = "procurement-domain"; artifact = "budget-0001"; state = "available" }
@@ -67,7 +67,7 @@ $rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "procurement-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "procurement-workflow.json") | Out-Null
 $process = @{ workflow = "procurement-request-to-receipt"; project = "preq-0001"; actor = $ProcurementOwner } | ConvertTo-Json
-$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:8083/api/v1/instances" -ContentType "application/json" -Body $process
+$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/instances" -ContentType "application/json" -Body $process
 $evidence += @{ product = "rheovela"; artifact = $instance.id; state = "open" }
 $outcome.steps += @{ index = 5; title = "Create the durable procurement process"; product = "rheovela"; artifact = $instance.id }
 Write-Step 5 "Create the durable procurement process" "Rheovela opened process instance '$($instance.id)' for 'procurement-request-to-receipt'. Stages: validate, approve, purchase, receive, close."

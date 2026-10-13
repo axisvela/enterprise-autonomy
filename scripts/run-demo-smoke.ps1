@@ -16,7 +16,8 @@ $adapters = @(
   @{ Name = "fleet-domain"; Dir = "fleet-domain"; Args = "--addr :$($Port + 9) --data-file `"$env:TEMP\smoke-fleet-data.json`""; Check = "/healthz" },
   @{ Name = "process-domain"; Dir = "process-domain"; Args = "--addr :$($Port + 10) --data-file `"$env:TEMP\smoke-process-data.json`""; Check = "/healthz" },
   @{ Name = "sandbox-domain"; Dir = "sandbox-domain"; Args = "--addr :$($Port + 11) --data-file `"$env:TEMP\smoke-sandbox-data.json`""; Check = "/healthz" },
-  @{ Name = "deployment-domain"; Dir = "deployment-domain"; Args = "--addr :$($Port + 12) --data-file `"$env:TEMP\smoke-deployment-data.json`""; Check = "/healthz" }
+  @{ Name = "deployment-domain"; Dir = "deployment-domain"; Args = "--addr :$($Port + 12) --data-file `"$env:TEMP\smoke-deployment-data.json`""; Check = "/healthz" },
+  @{ Name = "inference-domain"; Dir = "inference-domain"; Args = "--addr :$($Port + 13) --data-file `"$env:TEMP\smoke-inference-data.json`""; Check = "/healthz" }
 )
 
 $procs = @()
@@ -48,6 +49,7 @@ try {
   $procAddr2 = "http://localhost:$($Port + 10)"
   $sandAddr = "http://localhost:$($Port + 11)"
   $depAddr = "http://localhost:$($Port + 12)"
+  $infAddr = "http://localhost:$($Port + 13)"
 
   $failures = @()
   function Assert-True($condition, $message) {
@@ -68,6 +70,7 @@ try {
   Assert-True ((Invoke-RestMethod -Uri "$procAddr2/healthz").status -eq "ok") "process-domain adapter is healthy"
   Assert-True ((Invoke-RestMethod -Uri "$sandAddr/healthz").status -eq "ok") "sandbox-domain adapter is healthy"
   Assert-True ((Invoke-RestMethod -Uri "$depAddr/healthz").status -eq "ok") "deployment-domain adapter is healthy"
+  Assert-True ((Invoke-RestMethod -Uri "$infAddr/healthz").status -eq "ok") "inference-domain adapter is healthy"
 
   $order = Invoke-RestMethod -Uri "$orderAddr/v1/orders/order-123"
   Assert-True ($order.fulfillment_status -eq "stockout") "order starts in stockout"
@@ -461,6 +464,63 @@ try {
   } catch { $rerunDenied = $_.Exception.Response.StatusCode.value__ }
   Assert-True ($rerunDenied -eq 409) "released deployment is immutable (HTTP 409)"
 
+  # Governed inference flow
+  $infBase = "$infAddr/v1/inferences/inf-0001"
+  $routeDenied = $null
+  try {
+    $unauth = @{ model = "model-alpha"; endpoint = "endpoint-production"; policy_ref = "policy://smoke"; idempotency_key = "smoke-inf-route-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$infBase/route" -ContentType "application/json" -Body $unauth | Out-Null
+  } catch { $routeDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($routeDenied -eq 403) "route before authorization is rejected (HTTP 403)"
+
+  $auth = @{ authorized_by = "inference-owner"; authorization_ref = "authorization://smoke"; idempotency_key = "smoke-inf-auth-v1" } | ConvertTo-Json
+  Invoke-RestMethod -Method Post -Uri "$infBase/authorize" -ContentType "application/json" -Body $auth | Out-Null
+
+  $policyDenied = $null
+  try {
+    $badModel = @{ model = "model-forbidden"; endpoint = "endpoint-production"; policy_ref = "policy://smoke"; idempotency_key = "smoke-inf-bad-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$infBase/route" -ContentType "application/json" -Body $badModel | Out-Null
+  } catch { $policyDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($policyDenied -eq 403) "out-of-policy model is rejected (HTTP 403)"
+
+  $route = @{ model = "model-alpha"; endpoint = "endpoint-production"; policy_ref = "policy://smoke"; idempotency_key = "smoke-inf-route-v1" } | ConvertTo-Json
+  $routeResult = Invoke-RestMethod -Method Post -Uri "$infBase/route" -ContentType "application/json" -Body $route
+  Assert-True ($routeResult.inference.status -eq "routed") "in-policy route is selected"
+
+  $ansDenied = $null
+  try {
+    $premature = @{ answer_ref = "answer://smoke"; produced_by = "inference-runtime"; idempotency_key = "smoke-inf-ans-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$infBase/answers" -ContentType "application/json" -Body $premature | Out-Null
+  } catch { $ansDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($ansDenied -eq 403) "answer before grounding is rejected (HTTP 403)"
+
+  $ground = @{ claim_refs = @("claim://smoke/1"); memory_ref = "memory://smoke"; idempotency_key = "smoke-inf-ground-v1" } | ConvertTo-Json
+  Invoke-RestMethod -Method Post -Uri "$infBase/ground" -ContentType "application/json" -Body $ground | Out-Null
+
+  $reviewDenied = $null
+  try {
+    $unreviewed = @{ answer_ref = "answer://smoke"; produced_by = "inference-runtime"; idempotency_key = "smoke-inf-ans-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$infBase/answers" -ContentType "application/json" -Body $unreviewed | Out-Null
+  } catch { $reviewDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($reviewDenied -eq 403) "high-impact answer before review is rejected (HTTP 403)"
+
+  $review = @{ reviewed_by = "inference-owner"; decision = "approve"; review_ref = "review://smoke"; idempotency_key = "smoke-inf-review-v1" } | ConvertTo-Json
+  Invoke-RestMethod -Method Post -Uri "$infBase/reviews" -ContentType "application/json" -Body $review | Out-Null
+  $answer = @{ answer_ref = "answer://smoke"; produced_by = "inference-runtime"; idempotency_key = "smoke-inf-ans-v1" } | ConvertTo-Json
+  $answerResult = Invoke-RestMethod -Method Post -Uri "$infBase/answers" -ContentType "application/json" -Body $answer
+  Assert-True ($answerResult.inference.status -eq "answered") "reviewed, grounded answer is produced"
+
+  $audit = @{ audited_by = "inference-owner"; audit_ref = "audit://smoke"; idempotency_key = "smoke-inf-audit-v1" } | ConvertTo-Json
+  $auditResult = Invoke-RestMethod -Method Post -Uri "$infBase/audit" -ContentType "application/json" -Body $audit
+  Assert-True ($auditResult.inference.status -eq "audited") "audited inference is recorded"
+
+  $immutDenied = $null
+  try {
+    $late = @{ model = "model-beta"; endpoint = "endpoint-production"; policy_ref = "policy://smoke"; idempotency_key = "smoke-inf-late-v1" } | ConvertTo-Json
+    Invoke-RestMethod -Method Post -Uri "$infBase/route" -ContentType "application/json" -Body $late | Out-Null
+  } catch { $immutDenied = $_.Exception.Response.StatusCode.value__ }
+  Assert-True ($immutDenied -eq 409) "audited inference is immutable (HTTP 409)"
+
   Write-Host ""
   if ($failures.Count -eq 0) { Write-Host "run-demo-smoke: all adapter-level checks passed." -ForegroundColor Green; exit 0 }
   Write-Host "run-demo-smoke: $($failures.Count) check(s) failed." -ForegroundColor Red
@@ -484,4 +544,5 @@ try {
   Remove-Item "$env:TEMP\smoke-process-data.json" -ErrorAction SilentlyContinue
   Remove-Item "$env:TEMP\smoke-sandbox-data.json" -ErrorAction SilentlyContinue
   Remove-Item "$env:TEMP\smoke-deployment-data.json" -ErrorAction SilentlyContinue
+  Remove-Item "$env:TEMP\smoke-inference-data.json" -ErrorAction SilentlyContinue
 }

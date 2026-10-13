@@ -19,6 +19,7 @@ Local-first cognition runtime for durable, auditable memory, context, ontology, 
 
 - [Inference request to governed answer](../../vertical-slices/inference-request-to-governed-answer.md) — durable, auditable memory and context
 - [Inference governance](../../reference-stacks/inference-governance.md) — memory context for grounded answers
+- [Local inference-governance demo](../../examples/inference-governance-local/README.md) — runnable memory-grounded answers via the inference-domain adapter
 - Optional memory and context backing for agent runtimes (for example Praxovela via `AXON_MEMORY_URL`)
 
 ## Authority

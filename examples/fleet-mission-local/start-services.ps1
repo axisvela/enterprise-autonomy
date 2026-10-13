@@ -9,9 +9,9 @@ $dataDir = Join-Path $PSScriptRoot ".local-data"
 New-Item -ItemType Directory -Force -Path $logDir, $dataDir, (Join-Path $PSScriptRoot ".praxovela") | Out-Null
 
 $services = @(
-  @{ Name = "limenora"; File = Join-Path $AxisRoboHome "tmp\release\v0.8.0\windows-amd64\limenora-edge.exe"; Args = "--port 10255 --data-dir `"$dataDir\limenora`"" },
-  @{ Name = "ontovela"; File = Join-Path $AxisRoboHome "ONTOVELA\backend\ontovela.exe"; Args = "serve --addr :8082" },
-  @{ Name = "rheovela"; File = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"; Args = "serve --addr :8083 --db `"$dataDir\rheovela.db`"" },
+  @{ Name = "limenora"; File = Join-Path $AxisRoboHome "tmp\release\v0.8.0\windows-amd64\limenora-edge.exe"; Args = "--port 1896 --data-dir `"$dataDir\limenora`"" },
+  @{ Name = "ontovela"; File = Join-Path $AxisRoboHome "ONTOVELA\backend\ontovela.exe"; Args = "serve --addr :1856" },
+  @{ Name = "rheovela"; File = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"; Args = "serve --addr :1876 --db `"$dataDir\rheovela.db`"" },
   @{ Name = "symbivela"; File = Join-Path $AxisRoboHome "SYMBIVELA\backend\symbivela.exe"; Args = "" }
 )
 
@@ -22,12 +22,15 @@ foreach ($service in $services) {
   Start-Process @startArgs
 }
 
+$previousAxonPort = $env:AXON_PORT
+$env:AXON_PORT = "1866"
 $praxovela = Join-Path $AxisRoboHome "PRAXOVELA\packages\axon-core\axond.exe"
 if (-not (Test-Path $praxovela)) { throw "Binary not found: $praxovela" }
 $previousBoundaries = $env:PRAXOVELA_BOUNDARIES
 $env:PRAXOVELA_BOUNDARIES = Join-Path $PSScriptRoot "fleet-boundaries.yaml"
 Start-Process -FilePath $praxovela -WorkingDirectory (Join-Path $AxisRoboHome "PRAXOVELA") -RedirectStandardOutput "$logDir\praxovela.out.log" -RedirectStandardError "$logDir\praxovela.err.log" -WindowStyle Hidden
 $env:PRAXOVELA_BOUNDARIES = $previousBoundaries
+$env:AXON_PORT = $previousAxonPort
 
 if ($OrchadynBinary) {
   $orchadynReleaseDir = Join-Path $PSScriptRoot ".orchadyn-release"
@@ -125,14 +128,14 @@ if (-not (Test-Path $adapterBinary)) {
 }
 Start-Process -FilePath $adapterBinary -ArgumentList "--addr :8099 --data-file `"$dataDir\fleet-domain-data.json`"" -RedirectStandardOutput "$logDir\fleet-domain.out.log" -RedirectStandardError "$logDir\fleet-domain.err.log" -WindowStyle Hidden
 
-$checks = @("http://localhost:10255/healthz", "http://localhost:8082/healthz", "http://localhost:8083/api/v1/health", "http://localhost:8080/ready", "http://127.0.0.1:8420/health", "http://localhost:8099/healthz")
+$checks = @("http://localhost:1896/healthz", "http://localhost:1856/healthz", "http://localhost:1876/api/v1/health", "http://localhost:1926/ready", "http://127.0.0.1:1866/health", "http://localhost:8099/healthz")
 if ($OrchadynBinary) { $checks += "http://localhost$($OrchadynListenAddr)/healthz" }
 foreach ($check in $checks) {
   $ready = $false
   for ($attempt = 0; $attempt -lt 20 -and -not $ready; $attempt++) {
     try {
       $params = @{ Uri = $check; UseBasicParsing = $true }
-      if ($check -like "http://localhost:8082*") { $params.Headers = @{ "X-Tenant-ID" = $TenantId } }
+      if ($check -like "http://localhost:1856*") { $params.Headers = @{ "X-Tenant-ID" = $TenantId } }
       Invoke-WebRequest @params | Out-Null
       $ready = $true
     } catch { Start-Sleep -Seconds 1 }

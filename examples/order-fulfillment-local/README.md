@@ -17,14 +17,14 @@ The run script prints a **step-by-step business report**, a **Value & Effect sum
 
 ## The Scenario In Business Terms
 
-1. **Detect** â€” inventory reports `stockout` for the order.
-2. **Review** â€” an operator opens a governed exception case; nothing may change the order without it.
-3. **Replan** â€” a verified alternate-fulfillment plan is generated (recommendation only).
-4. **Process** â€” a durable exception process is opened so the resolution survives restarts.
-5. **Reserve** â€” the alternate warehouse inventory is reserved under the same approval.
-6. **Handoff** â€” Praxovela records the operator's action under a deny-by-default policy.
-7. **Approve and act** â€” the operator applies the approved fulfillment action to the order adapter.
-8. **Verify** â€” final order state and pending customer notification are confirmed.
+1. **Detect** â€?inventory reports `stockout` for the order.
+2. **Review** â€?an operator opens a governed exception case; nothing may change the order without it.
+3. **Replan** â€?a verified alternate-fulfillment plan is generated (recommendation only).
+4. **Process** â€?a durable exception process is opened so the resolution survives restarts.
+5. **Reserve** â€?the alternate warehouse inventory is reserved under the same approval.
+6. **Handoff** â€?Praxovela records the operator's action under a deny-by-default policy.
+7. **Approve and act** â€?the operator applies the approved fulfillment action to the order adapter.
+8. **Verify** â€?final order state and pending customer notification are confirmed.
 
 ## What This Demo Does
 
@@ -79,14 +79,14 @@ The script starts:
 
 | Service | Local address | Health check |
 | --- | --- | --- |
-| Limenora Edge | `http://localhost:10255` | `GET /healthz` |
-| Ontovela | `http://localhost:8082` | `GET /healthz` |
-| Rheovela | `http://localhost:8083` | `GET /api/v1/health` |
-| Symbivela | `http://localhost:8080` | `GET /ready` |
-| Praxovela AXON Core | `http://127.0.0.1:8420` | `GET /health` |
+| Limenora Edge | `http://localhost:1896` | `GET /healthz` |
+| Ontovela | `http://localhost:1856` | `GET /healthz` |
+| Rheovela | `http://localhost:1876` | `GET /api/v1/health` |
+| Symbivela | `http://localhost:1926` | `GET /ready` |
+| Praxovela AXON Core | `http://127.0.0.1:1866` | `GET /health` |
 | Order-domain adapter | `http://localhost:8090` | `GET /healthz` |
 | Inventory-domain adapter | `http://localhost:8091` | `GET /healthz` |
-| Moduregis | `http://localhost:8084` | `GET /v1/health` |
+| Moduregis | `http://localhost:1806` | `GET /v1/health` |
 | Orchadyn API (optional) | `http://localhost:1816` | `GET /healthz` |
 
 `GET /ready` must return `{"status":"ready","postgres":"ok"}` before running the scenario. Logs are written to `.local-logs/`.
@@ -105,8 +105,8 @@ The `order-ops` workspace is created with `$Actor` as its owner so that actor ha
 To inspect live state yourself:
 
 ```powershell
-curl.exe -H "X-Tenant-ID: $TenantId" "http://localhost:8082/v1/twins/order-123/state/fulfillment_status"
-curl.exe -H "X-SYMBIVELA-Tenant: $TenantId" -H "X-SYMBIVELA-Actor: $Actor" "http://localhost:8080/v1/exception-cases/order-123-stockout"
+curl.exe -H "X-Tenant-ID: $TenantId" "http://localhost:1856/v1/twins/order-123/state/fulfillment_status"
+curl.exe -H "X-SYMBIVELA-Tenant: $TenantId" -H "X-SYMBIVELA-Actor: $Actor" "http://localhost:1926/v1/exception-cases/order-123-stockout"
 curl.exe "http://localhost:8090/v1/orders/order-123"
 curl.exe "http://localhost:8091/v1/inventory/sku-inspection-kit"
 ```

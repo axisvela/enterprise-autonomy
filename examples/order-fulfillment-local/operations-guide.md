@@ -1,4 +1,4 @@
-# Order-Exception Demo â€” Detailed Operations Guide
+# Order-Exception Demo â€?Detailed Operations Guide
 
 This guide walks through the local order-exception demo step by step with the **exact requests and responses** each script issues. Read it alongside the [README](README.md), which describes the scenario and prerequisites.
 
@@ -6,10 +6,10 @@ This guide walks through the local order-exception demo step by step with the **
 
 Each step is documented with the same structure:
 
-- **Purpose** â€” why the step exists and what it proves.
-- **Request** â€” the exact HTTP method, URL, headers, and body the script sends.
-- **Response** â€” the fields the script reads and what they mean.
-- **What to notice** â€” the subtle governance behavior the step demonstrates.
+- **Purpose** â€?why the step exists and what it proves.
+- **Request** â€?the exact HTTP method, URL, headers, and body the script sends.
+- **Response** â€?the fields the script reads and what they mean.
+- **What to notice** â€?the subtle governance behavior the step demonstrates.
 
 Values are concrete: the tenant is `tenant-a`, the operator is `operations-lead`, and the order is `order-123`.
 
@@ -17,14 +17,14 @@ Values are concrete: the tenant is `tenant-a`, the operator is `operations-lead`
 
 | Service | Address | Health |
 | --- | --- | --- |
-| Limenora Edge | `http://localhost:10255` | `GET /healthz` |
-| Ontovela | `http://localhost:8082` | `GET /healthz` |
-| Rheovela | `http://localhost:8083` | `GET /api/v1/health` |
-| Symbivela | `http://localhost:8080` | `GET /ready` |
-| Praxovela AXON Core | `http://127.0.0.1:8420` | `GET /health` |
+| Limenora Edge | `http://localhost:1896` | `GET /healthz` |
+| Ontovela | `http://localhost:1856` | `GET /healthz` |
+| Rheovela | `http://localhost:1876` | `GET /api/v1/health` |
+| Symbivela | `http://localhost:1926` | `GET /ready` |
+| Praxovela AXON Core | `http://127.0.0.1:1866` | `GET /health` |
 | Order-domain adapter | `http://localhost:8090` | `GET /healthz` |
 | Inventory-domain adapter | `http://localhost:8091` | `GET /healthz` |
-| Moduregis | `http://localhost:8084` | `GET /v1/health` |
+| Moduregis | `http://localhost:1806` | `GET /v1/health` |
 | Orchadyn API (optional) | `http://localhost:1816` | `GET /healthz` |
 
 ## Headers and Idempotency
@@ -61,7 +61,7 @@ $OrchadynBinary = "$PSScriptRoot\.orchadyn-release\orchadyn-api.exe"
 $OrchadynMigrateBinary = "$PSScriptRoot\.orchadyn-release\orchadyn-migrate.exe"
 $OrchadynSource = "D:\profile\paper-code\ORCHADYN"
 $env:MODUREGIS_DATABASE_URL = "postgres://moduregis:moduregis@localhost:5433/moduregis?sslmode=disable"
-$ModuregisListenAddr = ":8084"
+$ModuregisListenAddr = ":1806"
 $OrchadynListenAddr = ":1816"
 ```
 
@@ -94,22 +94,22 @@ All local services are ready.
 
 If a service never becomes ready, the script throws with the failing URL; check `.local-logs/` for the specific service log.
 
-## Step 1 â€” Detect the stockout (Ontovela)
+## Step 1 â€?Detect the stockout (Ontovela)
 
 **Purpose.** Establish the authoritative operational fact that the order promise is at risk. No product may act on this fact without a case (Step 2).
 
-**Request 1a â€” bind the source.**
+**Request 1a â€?bind the source.**
 ```
-POST http://localhost:8082/v1/source-bindings
+POST http://localhost:1856/v1/source-bindings
 Header: X-Tenant-ID: tenant-a
 Body:
 {"id":"inventory-order-status","source":"inventory","property":"fulfillment_status","authority_rank":10,"max_lag_seconds":60}
 ```
 This tells Ontovela that the `inventory` source is authoritative (`authority_rank: 10`) for `fulfillment_status` and that its observations must be fresher than 60 seconds.
 
-**Request 1b â€” record the observation.**
+**Request 1b â€?record the observation.**
 ```
-POST http://localhost:8082/v1/assertions
+POST http://localhost:1856/v1/assertions
 Headers: X-Tenant-ID: tenant-a, Idempotency-Key: order-123-stockout-v1
 Body:
 {"id":"assertion-order-123-stockout","subject_id":"order-123","property":"fulfillment_status",
@@ -117,22 +117,22 @@ Body:
  "system_time":"2026-08-15T12:00:01Z","source":"inventory","evidence_ref":"evidence://inventory/order-123"}
 ```
 
-**Request 1c â€” resolve the twin state.**
+**Request 1c â€?resolve the twin state.**
 ```
-GET http://localhost:8082/v1/twins/order-123/state/fulfillment_status
+GET http://localhost:1856/v1/twins/order-123/state/fulfillment_status
 Header: X-Tenant-ID: tenant-a
 ```
 The resolved value is the latest state trusted under the source binding.
 
 **What to notice.** The observation is *evidence-bearing*: it carries an `evidence_ref`, event time, and system time. Later steps never re-assert the fact; they cite it. This is the seed of the audit trail.
 
-## Step 2 â€” Open the human exception case (Symbivela)
+## Step 2 â€?Open the human exception case (Symbivela)
 
 **Purpose.** Create the human authority that gates every change to the order. Until this case exists, **no product may change the order**.
 
-**Request 2a â€” create the workspace.**
+**Request 2a â€?create the workspace.**
 ```
-POST http://localhost:8080/v1/workspaces
+POST http://localhost:1926/v1/workspaces
 Headers: X-SYMBIVELA-Tenant: tenant-a, X-SYMBIVELA-Actor: operations-lead,
          Idempotency-Key: order-ops-workspace-v1
 Body:
@@ -140,9 +140,9 @@ Body:
 ```
 The workspace grants `operations-lead` case-operation authority.
 
-**Request 2b â€” open the exception case.**
+**Request 2b â€?open the exception case.**
 ```
-POST http://localhost:8080/v1/exception-cases
+POST http://localhost:1926/v1/exception-cases
 Headers: X-SYMBIVELA-Tenant: tenant-a, X-SYMBIVELA-Actor: operations-lead,
          Idempotency-Key: order-123-case-v1
 Body:
@@ -157,13 +157,13 @@ Body:
 
 **What to notice.** The case is the *control surface*, not a log. It names the accountable actor, the permitted `candidate_actions`, the evidence that supports it, and a deadline. Everything that follows is authorized through this case.
 
-## Step 3 â€” Generate a verified replan (Orchadyn, optional)
+## Step 3 â€?Generate a verified replan (Orchadyn, optional)
 
 **Purpose.** Produce a verified recommendation for resolving the exception. A plan is *not* an authorization.
 
-**Input file â€” `order-exception-plan.json`.** It defines:
+**Input file â€?`order-exception-plan.json`.** It defines:
 
-- **Goal:** `goal-order-123-fulfilled` owned by `operations-lead` â€” *"order-123 fulfilled without an unapproved customer promise change"*.
+- **Goal:** `goal-order-123-fulfilled` owned by `operations-lead` â€?*"order-123 fulfilled without an unapproved customer promise change"*.
 - **Requirements:** source from an approved location, then fulfill.
 - **Catalog:** `cap-alternate-location` (`order.sourcing`, cost 10) and `cap-fulfill` (`order.fulfillment`, cost 20), both region `warehouse-b`.
 - **Constraints:** hard `region = warehouse-b` and hard budget ceiling 50.
@@ -179,15 +179,15 @@ Body: (contents of order-exception-plan.json)
 
 **What to notice.** Three subtleties:
 
-1. The plan is bounded by **hard constraints** (region, budget) and a **delegation chain** with an evidence duty â€” the plan can only recommend what the authority structure permits.
+1. The plan is bounded by **hard constraints** (region, budget) and a **delegation chain** with an evidence duty â€?the plan can only recommend what the authority structure permits.
 2. The goal itself forbids an *unapproved* promise change, so even a correct plan still waits for a human decision.
-3. If `$OrchadynBinary` is `$null`, the demo runs without plan generation and reports "skip plan generation" â€” the scenario stays complete, proving the governance chain does not depend on any single product.
+3. If `$OrchadynBinary` is `$null`, the demo runs without plan generation and reports "skip plan generation" â€?the scenario stays complete, proving the governance chain does not depend on any single product.
 
-## Step 4 â€” Create the durable exception process (Rheovela)
+## Step 4 â€?Create the durable exception process (Rheovela)
 
 **Purpose.** Wrap the resolution in a recoverable, approvable process so the work survives restarts and stays auditable.
 
-**Input file â€” `order-exception.json`.** Defines the `order-exception` approval workflow with stages:
+**Input file â€?`order-exception.json`.** Defines the `order-exception` approval workflow with stages:
 
 ```
 validate  (role order-operations)  -> approve (role operations-lead)
@@ -195,15 +195,15 @@ approve   (role operations-lead)   -> execute (capability order.exception.execut
 execute   (capability)             -> close   (role order-operations)
 ```
 
-**CLI â€” validate and define the workflow.**
+**CLI â€?validate and define the workflow.**
 ```powershell
 rheo workflow validate order-exception.json
 rheo workflow define --file order-exception.json
 ```
 
-**Request â€” open an instance.**
+**Request â€?open an instance.**
 ```
-POST http://localhost:8083/api/v1/instances
+POST http://localhost:1876/api/v1/instances
 Body:
 {"workflow":"order-exception","project":"order-123","actor":"operations-lead"}
 ```
@@ -212,9 +212,9 @@ Body:
 
 **What to notice.** The workflow is *capability-gated*: the `execute` stage requires `order.exception.execute`. Durable process plus capability gating means the approved action cannot be executed outside the process, and the whole resolution survives restarts.
 
-## Step 5 â€” Reserve inventory at the alternate warehouse (inventory-domain adapter)
+## Step 5 â€?Reserve inventory at the alternate warehouse (inventory-domain adapter)
 
-**Purpose.** Show that even a supporting system change requires the same approval â€” the reserve is not a private action.
+**Purpose.** Show that even a supporting system change requires the same approval â€?the reserve is not a private action.
 
 **Request.**
 ```
@@ -229,14 +229,14 @@ Body:
 
 **What to notice.** Two behaviors:
 
-1. The adapter **requires** `approved_by` and `approval_ref` â€” it has no unauthored path. An unapproved reserve is rejected before touching stock.
+1. The adapter **requires** `approved_by` and `approval_ref` â€?it has no unauthored path. An unapproved reserve is rejected before touching stock.
 2. The reserve is **idempotent** (same `idempotency_key` replays without double-reserving) and **cannot go negative** (a delta beyond availability returns HTTP 422).
 
-## Step 6 â€” Record an auditable handoff (Praxovela)
+## Step 6 â€?Record an auditable handoff (Praxovela)
 
 **Purpose.** Record, under a deny-by-default policy, the fact that the remaining external actions are performed by an authorized operator in the organization's business systems.
 
-**Boundaries â€” `praxovela-boundaries.yaml` and `praxovela-policy.yaml`.** Network is `allow: false`; the policy allows exactly two local operations:
+**Boundaries â€?`praxovela-boundaries.yaml` and `praxovela-policy.yaml`.** Network is `allow: false`; the policy allows exactly two local operations:
 
 ```yaml
 rules:
@@ -252,17 +252,17 @@ rules:
     action: allow
 ```
 
-**Request â€” open a session.**
+**Request â€?open a session.**
 ```
-POST http://127.0.0.1:8420/v1/sessions
+POST http://127.0.0.1:1866/v1/sessions
 Body:
 {"workspace":"order-fulfillment-local","message":"Record order-123 stockout handoff"}
 ```
 Response: `session_id`.
 
-**Request â€” write the handoff.**
+**Request â€?write the handoff.**
 ```
-POST http://127.0.0.1:8420/v1/agent/tools/execute
+POST http://127.0.0.1:1866/v1/agent/tools/execute
 Body (call object):
 {"session_id":"<session_id>",
  "call":{"call_id":"order-123-stockout-handoff-v1","name":"file.write","operation":"write",
@@ -273,15 +273,15 @@ Body (call object):
                   "content":"{\"order_id\":\"order-123\",\"exception_case_id\":\"order-123-stockout\",\"status\":\"escalated\",\"action\":\"manual-external-order-action-required\",\"note\":\"An authorized operator performs the approved action in the business system.\"}\n"}}}
 ```
 
-**Request â€” read it back to verify.** The same endpoint with `file.read` on the same resource.
+**Request â€?read it back to verify.** The same endpoint with `file.read` on the same resource.
 
-**What to notice.** This is deny-by-default in action: the runtime holds the policy file path in its policy, network is disabled, and only the single handoff file is reachable. The **effect ledger** records what was touched and what was *not* exposed â€” the agent could not have touched anything else even if asked.
+**What to notice.** This is deny-by-default in action: the runtime holds the policy file path in its policy, network is disabled, and only the single handoff file is reachable. The **effect ledger** records what was touched and what was *not* exposed â€?the agent could not have touched anything else even if asked.
 
-## Step 7 â€” Show the governance effect, then apply the approved action (order-domain adapter)
+## Step 7 â€?Show the governance effect, then apply the approved action (order-domain adapter)
 
 **Purpose.** Prove the adapter enforces approval, then apply the operator's approved decision.
 
-**Request 7a â€” attempt an *unapproved* action (expect rejection).**
+**Request 7a â€?attempt an *unapproved* action (expect rejection).**
 ```
 POST http://localhost:8090/v1/orders/order-123/fulfillment-actions
 Body:
@@ -293,7 +293,7 @@ The adapter responds `400 Bad Request` with:
 {"error":"action_approved_by_approval_ref_and_idempotency_key_are_required"}
 ```
 
-**Request 7b â€” apply the *approved* action.**
+**Request 7b â€?apply the *approved* action.**
 ```
 POST http://localhost:8090/v1/orders/order-123/fulfillment-actions
 Body:
@@ -306,10 +306,10 @@ Body:
 
 **What to notice.** The rejection and the success are *both* part of the demo's value:
 
-1. The adapter has **no bypass path** â€” an empty approval is not treated as "no approval required".
+1. The adapter has **no bypass path** â€?an empty approval is not treated as "no approval required".
 2. The approved action carries the **exact approval reference** (`approval://order-123-stockout`) that Step 2's case and Step 3's delegation both cite, so the state change is traceable to the human decision.
 
-## Step 8 â€” Verify the outcome and emit the value report
+## Step 8 â€?Verify the outcome and emit the value report
 
 **Purpose.** Confirm the final state and reconstruct the whole story from per-product evidence.
 
@@ -320,8 +320,8 @@ GET http://localhost:8090/v1/notifications/order-123     -> pending notification
 ```
 
 **Outputs written to `.local-data/`:**
-- `order-outcome.json` â€” the business outcome (final order state, notifications, steps).
-- `order-value-report.json` â€” the machine-readable value report (example, outcome, KPIs, gates, evidence, steps).
+- `order-outcome.json` â€?the business outcome (final order state, notifications, steps).
+- `order-value-report.json` â€?the machine-readable value report (example, outcome, KPIs, gates, evidence, steps).
 
 **What to notice.** The audit trail is **not one artifact but a chain**: Ontovela assertion + Symbivela case + Orchadyn plan + Rheovela instance + Praxovela effect ledger + inventory reservation + order action + notification. Each product owns one link; together they reconstruct the decision, the approval, and the effect.
 
@@ -405,7 +405,7 @@ The demo starts from fixed seed data so every run is reproducible:
 - **Order** (`order-123`): `sku = sku-inspection-kit`, `quantity = 1`, `warehouse = warehouse-a`, `fulfillment_status = stockout`, `payment_status = authorized`, `carrier_status = not_dispatched`.
 - **Inventory** (`sku-inspection-kit`): `warehouse-a = 0` available, `warehouse-b = 10` available.
 - **Plan** (`order-exception-plan.json`): goal, two requirements, two catalog capabilities (cost 10 and 20), hard region/budget constraints, and a delegation chain with evidence duty.
-- **Workflow** (`order-exception.json`): `validate â†’ approve â†’ execute â†’ close` with role and capability assignments.
+- **Workflow** (`order-exception.json`): `validate â†?approve â†?execute â†?close` with role and capability assignments.
 
 **Idempotency.** Every mutating call carries a stable key:
 

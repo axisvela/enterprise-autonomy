@@ -20,9 +20,9 @@ $symbiHeaders = @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $Inte
 
 # Step 1: open the outage case (Symbivela)
 $workspace = @{ workspace_id = "integration-ops"; name = "Integration Operations"; owner_id = $IntegrationOwner } | ConvertTo-Json
-Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $IntegrationOwner; "Idempotency-Key" = "integration-ops-workspace-v1" } -ContentType "application/json" -Body $workspace | Out-Null
+Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $IntegrationOwner; "Idempotency-Key" = "integration-ops-workspace-v1" } -ContentType "application/json" -Body $workspace | Out-Null
 $case = @{ workspace_id = "integration-ops"; case_id = "iro-0001-outage"; subject_ref = "integration://partner-shipping"; problem = "Partner shipping integration is down; in-flight work must be preserved and verified before resume."; evidence_refs = "integration://partner-shipping"; candidate_actions = "preserve,verify,resume,complete,escalate"; deadline = "2026-08-28T12:00:00Z" } | ConvertTo-Json
-$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
+$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
 $gates += @{ gate = "case-opened"; owner = $IntegrationOwner; decision = "open" }
 $evidence += @{ product = "symbivela"; artifact = $caseResult.case_id; state = $caseResult.status }
 $outcome.steps += @{ index = 1; title = "Open the outage case"; product = "symbivela"; artifact = $caseResult.case_id }
@@ -32,7 +32,7 @@ Write-Step 1 "Open the outage case" "Symbivela case '$($caseResult.case_id)' is 
 $integration = Invoke-RestMethod -Uri $intBase
 $work = Invoke-RestMethod -Uri $workBase
 $assertion = @{ id = "assertion-partner-shipping-down"; subject_id = $IntegrationId; property = "integration_status"; value = "down"; state_kind = "observed"; event_time = "2026-08-16T10:00:00Z"; system_time = "2026-08-16T10:00:01Z"; source = "integration-monitor"; evidence_ref = "evidence://monitor/partner-shipping" } | ConvertTo-Json
-$state = Invoke-RestMethod -Method Post -Uri "http://localhost:8082/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
+$state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $evidence += @{ product = "integration-domain"; artifact = $integration.id; state = $integration.status }
 $evidence += @{ product = "integration-domain"; artifact = $work.id; state = $work.status }
 $evidence += @{ product = "ontovela"; artifact = "assertion-partner-shipping-down"; state = "observed" }
@@ -78,7 +78,7 @@ $rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "integration-recovery-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "integration-recovery-workflow.json") | Out-Null
 $process = @{ workflow = "integration-outage-recovery"; project = $WorkId; actor = $IntegrationOwner } | ConvertTo-Json
-$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:8083/api/v1/instances" -ContentType "application/json" -Body $process
+$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/instances" -ContentType "application/json" -Body $process
 $evidence += @{ product = "rheovela"; artifact = $instance.id; state = "open" }
 $outcome.steps += @{ index = 6; title = "Create the durable recovery process"; product = "rheovela"; artifact = $instance.id }
 Write-Step 6 "Create the durable recovery process" "Rheovela opened process instance '$($instance.id)' for 'integration-outage-recovery'. Stages: preserve, verify, resume, complete, close."

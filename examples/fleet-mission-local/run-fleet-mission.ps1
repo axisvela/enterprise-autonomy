@@ -19,9 +19,9 @@ $symbiHeaders = @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $Oper
 
 # Step 1: open the mission case (Symbivela)
 $workspace = @{ workspace_id = "fleet-ops"; name = "Fleet Operations"; owner_id = $Operator } | ConvertTo-Json
-Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $Operator; "Idempotency-Key" = "fleet-ops-workspace-v1" } -ContentType "application/json" -Body $workspace | Out-Null
+Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $Operator; "Idempotency-Key" = "fleet-ops-workspace-v1" } -ContentType "application/json" -Body $workspace | Out-Null
 $case = @{ workspace_id = "fleet-ops"; case_id = "fleet-0001-mission"; subject_ref = "mission://mission-alpha-001"; problem = "Bounded inspection of zone-alpha; exceptions must pause for operator review."; evidence_refs = "zone://zone-alpha"; candidate_actions = "resume,adjust,cancel"; deadline = "2026-08-31T12:00:00Z" } | ConvertTo-Json
-$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
+$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
 $gates += @{ gate = "case-opened"; owner = $Operator; decision = "open" }
 $evidence += @{ product = "symbivela"; artifact = $caseResult.case_id; state = $caseResult.status }
 $outcome.steps += @{ index = 1; title = "Open the mission case"; product = "symbivela"; artifact = $caseResult.case_id }
@@ -30,7 +30,7 @@ Write-Step 1 "Open the mission case" "Symbivela case '$($caseResult.case_id)' is
 # Step 2: record the mission context (adapter + Ontovela)
 $mission = Invoke-RestMethod -Uri $fleetBase
 $assertion = @{ id = "assertion-mission-alpha-001-bounded"; subject_id = $MissionId; property = "mission_boundary"; value = $Boundary; state_kind = "observed"; event_time = "2026-08-16T16:00:00Z"; system_time = "2026-08-16T16:00:01Z"; source = "fleet-control"; evidence_ref = "evidence://fleet/mission-alpha-001" } | ConvertTo-Json
-$state = Invoke-RestMethod -Method Post -Uri "http://localhost:8082/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
+$state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $gates += @{ gate = "mission-bounded"; owner = $Operator; decision = "bounded"; boundary = $Boundary }
 $evidence += @{ product = "fleet-domain"; artifact = $mission.id; state = $mission.status }
 $evidence += @{ product = "ontovela"; artifact = "assertion-mission-alpha-001-bounded"; state = "observed" }
@@ -82,7 +82,7 @@ $rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "fleet-mission-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "fleet-mission-workflow.json") | Out-Null
 $process = @{ workflow = "fleet-mission-exception"; project = $MissionId; actor = $Operator } | ConvertTo-Json
-$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:8083/api/v1/instances" -ContentType "application/json" -Body $process
+$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/instances" -ContentType "application/json" -Body $process
 $evidence += @{ product = "rheovela"; artifact = $instance.id; state = "open" }
 $outcome.steps += @{ index = 6; title = "Create the durable mission process"; product = "rheovela"; artifact = $instance.id }
 Write-Step 6 "Create the durable mission process" "Rheovela opened process instance '$($instance.id)' for 'fleet-mission-exception'. Stages: start, pause, review, resume, close."

@@ -19,19 +19,19 @@ $workspaceHeaders = @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $
 
 # Step 1: observe the stockout signal
 $binding = @{ id = "inventory-order-status"; source = "inventory"; property = "fulfillment_status"; authority_rank = 10; max_lag_seconds = 60 } | ConvertTo-Json
-Invoke-RestMethod -Method Post -Uri "http://localhost:8082/v1/source-bindings" -Headers @{ "X-Tenant-ID" = $TenantId } -ContentType "application/json" -Body $binding | Out-Null
+Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/source-bindings" -Headers @{ "X-Tenant-ID" = $TenantId } -ContentType "application/json" -Body $binding | Out-Null
 $assertion = @{ id = "assertion-order-123-stockout"; subject_id = "order-123"; property = "fulfillment_status"; value = "stockout"; state_kind = "observed"; event_time = "2026-08-15T12:00:00Z"; system_time = "2026-08-15T12:00:01Z"; source = "inventory"; evidence_ref = "evidence://inventory/order-123" } | ConvertTo-Json
-$state = Invoke-RestMethod -Method Post -Uri "http://localhost:8082/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
-$resolved = Invoke-RestMethod -Method Get -Uri "http://localhost:8082/v1/twins/order-123/state/fulfillment_status" -Headers @{ "X-Tenant-ID" = $TenantId }
+$state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
+$resolved = Invoke-RestMethod -Method Get -Uri "http://localhost:1856/v1/twins/order-123/state/fulfillment_status" -Headers @{ "X-Tenant-ID" = $TenantId }
 $evidence += @{ product = "ontovela"; artifact = "assertion-order-123-stockout"; state = "observed" }
 $outcome.steps += @{ index = 1; title = "Detect the stockout"; product = "ontovela"; artifact = "assertion-order-123-stockout" }
 Write-Step 1 "Detect the stockout" "Order order-123 is observed as '$($resolved.value)' by the inventory source in Ontovela. This is the authoritative signal that the original promise is at risk."
 
 # Step 2: open the human case
 $workspace = @{ workspace_id = "order-ops"; name = "Order Operations"; owner_id = $Actor } | ConvertTo-Json
-Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/workspaces" -Headers $workspaceHeaders -ContentType "application/json" -Body $workspace | Out-Null
+Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/workspaces" -Headers $workspaceHeaders -ContentType "application/json" -Body $workspace | Out-Null
 $case = @{ workspace_id = "order-ops"; case_id = "order-123-stockout"; subject_ref = "order://order-123"; problem = "Assigned warehouse has no inventory for the promised item."; evidence_refs = "evidence://inventory/order-123"; candidate_actions = "alternate-location,split-shipment,approved-substitute"; deadline = "2026-08-16T12:00:00Z" } | ConvertTo-Json
-$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
+$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
 $gates += @{ gate = "case-opened"; owner = $Actor; decision = "open" }
 $evidence += @{ product = "symbivela"; artifact = $caseResult.case_id; state = $caseResult.status }
 $outcome.steps += @{ index = 2; title = "Open the human exception case"; product = "symbivela"; artifact = $caseResult.case_id }
@@ -56,7 +56,7 @@ $rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "order-exception.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "order-exception.json") | Out-Null
 $process = @{ workflow = "order-exception"; project = "order-123"; actor = $Actor } | ConvertTo-Json
-$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:8083/api/v1/instances" -ContentType "application/json" -Body $process
+$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/instances" -ContentType "application/json" -Body $process
 $evidence += @{ product = "rheovela"; artifact = $instance.id; state = "open" }
 $outcome.steps += @{ index = 4; title = "Create the durable exception process"; product = "rheovela"; artifact = $instance.id }
 Write-Step 4 "Create the durable exception process" "Rheovela opened process instance '$($instance.id)' for workflow 'order-exception'. The resolution steps (validate, approve, execute, close) survive restarts and stay auditable."
@@ -72,13 +72,13 @@ Write-Step 5 "Reserve inventory at the alternate warehouse" "The inventory adapt
 
 # Step 6: record the auditable handoff in Praxovela
 $session = @{ workspace = "order-fulfillment-local"; message = "Record order-123 stockout handoff" } | ConvertTo-Json
-$sessionResult = Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8420/v1/sessions" -ContentType "application/json" -Body $session
+$sessionResult = Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:1866/v1/sessions" -ContentType "application/json" -Body $session
 $handoffPath = Join-Path $PSScriptRoot ".praxovela\order-123-stockout-handoff.json"
 $handoffContent = @{ order_id = "order-123"; exception_case_id = "order-123-stockout"; status = "escalated"; action = "manual-external-order-action-required"; note = "An authorized operator performs the approved action in the business system." } | ConvertTo-Json -Compress
 $writeCall = @{ session_id = $sessionResult.session_id; call = @{ call_id = "order-123-stockout-handoff-v1"; name = "file.write"; operation = "write"; resource = $handoffPath; risk = "medium"; reason = "Record the approved manual order-exception handoff."; idempotency_key = "order-123-stockout-handoff-v1"; input = @{ path = $handoffPath; content = "$handoffContent`n" } } } | ConvertTo-Json -Depth 6
-$writeResult = Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8420/v1/agent/tools/execute" -ContentType "application/json" -Body $writeCall
+$writeResult = Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:1866/v1/agent/tools/execute" -ContentType "application/json" -Body $writeCall
 $readCall = @{ session_id = $sessionResult.session_id; call = @{ call_id = "order-123-stockout-handoff-read-v1"; name = "file.read"; operation = "read"; resource = $handoffPath; risk = "low"; reason = "Verify the locally recorded order-exception handoff."; input = @{ path = $handoffPath } } } | ConvertTo-Json -Depth 6
-$readResult = Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8420/v1/agent/tools/execute" -ContentType "application/json" -Body $readCall
+$readResult = Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:1866/v1/agent/tools/execute" -ContentType "application/json" -Body $readCall
 $evidence += @{ product = "praxovela"; artifact = "order-123-stockout-handoff-v1"; state = "effect-ledgered" }
 $outcome.steps += @{ index = 6; title = "Record an auditable handoff"; product = "praxovela"; artifact = "order-123-stockout-handoff-v1" }
 Write-Step 6 "Record an auditable handoff" "Praxovela wrote and re-read the handoff under a deny-by-default policy. The effect ledger records that only the handoff file was touched; no other resource was exposed."

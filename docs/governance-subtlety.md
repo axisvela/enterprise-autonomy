@@ -21,6 +21,7 @@ This page explains, with concrete artifacts from the [order-exception demo](../e
 15. [Durable Process Lifecycle Integrity (Process-To-Outcome Demo)](#15-durable-process-lifecycle-integrity-process-to-outcome-demo)
 16. [Sandbox Boundary, Evidence-Based Policy, and Immutable Policy (Innovation Sandbox Demo)](#16-sandbox-boundary-evidence-based-policy-and-immutable-policy-innovation-sandbox-demo)
 17. [Sequenced Autonomous Execution (Sequenced-Deployment Demo)](#17-sequenced-autonomous-execution-sequenced-deployment-demo)
+18. [Governed Inference: Selection Under Policy, Grounding, and Human Review (Inference-Governance Demo)](#18-governed-inference-selection-under-policy-grounding-and-human-review-inference-governance-demo)
 
 ## 1. No Product Can Change the Order Without a Case
 
@@ -319,6 +320,34 @@ Four properties worth noticing:
 2. **Evidence-cited steps.** Every step carries an `evidence_ref` recorded by the executor, so each advance is traceable to the artifact it consumed; an evidence-less step is rejected (`400`).
 3. **Deviations require human approval.** Pause, skip, and rollback are off-sequence by definition; any of them needs an `approved_by` and `approval_ref`, and an unapproved deviation is denied (`403`) before any state changes.
 4. **Released immutability.** Once the terminal step runs, the deployment is `released` and final; no further step or deviation is accepted (`409`), and only the same idempotency key replays. Automation stays on a leash: it may run the whole sequence, but it cannot skip, reorder, or reopen it without a human.
+
+## 18. Governed Inference: Selection Under Policy, Grounding, and Human Review (Inference-Governance Demo)
+
+The [inference-governance demo](../examples/inference-governance-local/README.md) shows that even an inference result — which looks like a single model call — is a governed sequence with its own gates:
+
+```
+POST /v1/inferences/inf-0001/route   (route before any authorization)
+-> 403 {"error":"authorization_required_before_route"}
+
+POST /v1/inferences/inf-0001/route   (model outside the allowed catalog)
+-> 403 {"error":"model_out_of_policy_model-forbidden"}
+
+POST /v1/inferences/inf-0001/answers (answer before route + grounding)
+-> 403 {"error":"route_and_grounding_required_before_answer"}
+
+POST /v1/inferences/inf-0001/answers (high-impact answer before human review)
+-> 403 {"error":"human_review_required_before_answer"}
+
+POST /v1/inferences/inf-0001/route   (re-route after the audit)
+-> 409 {"error":"inference_audited_immutable"}
+```
+
+Four properties worth noticing:
+
+1. **Authorization precedes selection.** No model or endpoint is ever selected until the request carries an `authorization_ref`; the route endpoint rejects a pre-authorization selection outright (`403`). Selection is not "whatever the runtime can reach"; it is a governed act.
+2. **Selection is under policy.** Only models and endpoints in the allowed catalog are selectable; an out-of-policy model is named and rejected (`model_out_of_policy_model-forbidden`). The policy reference is recorded on the route, so each answer states which selection policy governed it.
+3. **Grounding is a gate, not a decoration.** An answer cannot be produced without accepted claims (`claim_refs`) and durable memory (`memory_ref`), and a high-impact request cannot be answered before a human review approves (`403 human_review_required_before_answer`). The automation cannot talk its way out of either gate.
+4. **The audit is immutable.** Once the result is recorded as `audited`, no further mutation is accepted (`409`). An inference result is an auditable decision with the same immutability as a released deployment — a model call stops being a throwaway and becomes evidence.
 
 ## Why This Matters
 

@@ -8,11 +8,11 @@ Physical-autonomy and robotics fleet control plane for bounded, observable, and 
 
 | Item | Detail |
 | --- | --- |
-| Binaries | `kinetovela-api` (source entrypoint; no local compiled `.exe`) |
+| Binaries | `kinetovela-api` (darwin/linux/windows amd64, GitHub release v0.30.0); adapter-quickstart, adapter-tck, multi-vendor-acceptance, offline-autonomy tools |
 | Current port | `:8080` (`KINETOVELA_LISTEN_ADDR`) |
 | Planned port | `1946` API |
-| Database | PostgreSQL documented as authoritative; not yet wired in shipped binary |
-| Interfaces | HTTP API (health and version only in current binary); frontend planned but not implemented |
+| Database | PostgreSQL documented as authoritative |
+| Interfaces | HTTP API; frontend Operations Center planned but not implemented |
 | Health | `GET /healthz` |
 
 ## Where It Fits

@@ -17,14 +17,14 @@ The run script prints a **step-by-step business report** and a **Value & Effect 
 
 ## The Scenario In Business Terms
 
-1. **Open** â€” the reviewer opens a governed validation case.
-2. **Compile** â€” the simulation engineer compiles scenarios and the scope is asserted.
-3. **Evidence gate** â€” a decision before evidence is rejected.
-4. **Record** â€” the immutable simulation run is recorded; a second run is rejected.
-5. **Decide** â€” the reviewer approves; a non-member decision is rejected.
-6. **Process** â€” a durable validation process is opened.
-7. **Plan** â€” a verified validation plan is generated (recommendation only).
-8. **Release** â€” the proposal releases only after the approve decision citing the exact reference.
+1. **Open** â€?the reviewer opens a governed validation case.
+2. **Compile** â€?the simulation engineer compiles scenarios and the scope is asserted.
+3. **Evidence gate** â€?a decision before evidence is rejected.
+4. **Record** â€?the immutable simulation run is recorded; a second run is rejected.
+5. **Decide** â€?the reviewer approves; a non-member decision is rejected.
+6. **Process** â€?a durable validation process is opened.
+7. **Plan** â€?a verified validation plan is generated (recommendation only).
+8. **Release** â€?the proposal releases only after the approve decision citing the exact reference.
 
 ## What This Demo Does
 
@@ -63,13 +63,13 @@ Copy `local.env.ps1.example` to `local.env.ps1` and set your checkout root and c
 
 | Service | Local address | Health check |
 | --- | --- | --- |
-| Limenora Edge | `http://localhost:10255` | `GET /healthz` |
-| Ontovela | `http://localhost:8082` | `GET /healthz` |
-| Rheovela | `http://localhost:8083` | `GET /api/v1/health` |
-| Symbivela | `http://localhost:8080` | `GET /ready` |
-| Praxovela AXON Core | `http://127.0.0.1:8420` | `GET /health` |
+| Limenora Edge | `http://localhost:1896` | `GET /healthz` |
+| Ontovela | `http://localhost:1856` | `GET /healthz` |
+| Rheovela | `http://localhost:1876` | `GET /api/v1/health` |
+| Symbivela | `http://localhost:1926` | `GET /ready` |
+| Praxovela AXON Core | `http://127.0.0.1:1866` | `GET /health` |
 | Simulation-domain adapter | `http://localhost:8097` | `GET /healthz` |
-| Moduregis | `http://localhost:8084` | `GET /v1/health` |
+| Moduregis | `http://localhost:1806` | `GET /v1/health` |
 | Orchadyn API (optional) | `http://localhost:1816` | `GET /healthz` |
 
 ## Run The Scenario

@@ -16,14 +16,14 @@ The run script prints a **step-by-step business report** and a **Value & Effect 
 
 ## The Scenario In Business Terms
 
-1. **Submit** â€” the requester submits `preq-0001` against a cost center and budget.
-2. **Review** â€” the procurement owner opens a governed case.
-3. **Context** â€” the budget is recorded as available in the world model.
-4. **Approve** â€” finance approves the budget and procurement approves the supplier; self-approval is denied.
-5. **Process** â€” a durable request-to-receipt process is opened.
-6. **Plan** â€” a verified sourcing plan is generated (recommendation only).
-7. **Purchase** â€” the approved purchase issues PO `po-preq-0001-supplier-b`; unapproved purchases are rejected.
-8. **Receive and close** â€” receipt is confirmed, the request closes, and the value report is emitted.
+1. **Submit** â€?the requester submits `preq-0001` against a cost center and budget.
+2. **Review** â€?the procurement owner opens a governed case.
+3. **Context** â€?the budget is recorded as available in the world model.
+4. **Approve** â€?finance approves the budget and procurement approves the supplier; self-approval is denied.
+5. **Process** â€?a durable request-to-receipt process is opened.
+6. **Plan** â€?a verified sourcing plan is generated (recommendation only).
+7. **Purchase** â€?the approved purchase issues PO `po-preq-0001-supplier-b`; unapproved purchases are rejected.
+8. **Receive and close** â€?receipt is confirmed, the request closes, and the value report is emitted.
 
 ## What This Demo Does
 
@@ -60,13 +60,13 @@ Copy `local.env.ps1.example` to `local.env.ps1` and set your checkout root and c
 
 | Service | Local address | Health check |
 | --- | --- | --- |
-| Limenora Edge | `http://localhost:10255` | `GET /healthz` |
-| Ontovela | `http://localhost:8082` | `GET /healthz` |
-| Rheovela | `http://localhost:8083` | `GET /api/v1/health` |
-| Symbivela | `http://localhost:8080` | `GET /ready` |
-| Praxovela AXON Core | `http://127.0.0.1:8420` | `GET /health` |
+| Limenora Edge | `http://localhost:1896` | `GET /healthz` |
+| Ontovela | `http://localhost:1856` | `GET /healthz` |
+| Rheovela | `http://localhost:1876` | `GET /api/v1/health` |
+| Symbivela | `http://localhost:1926` | `GET /ready` |
+| Praxovela AXON Core | `http://127.0.0.1:1866` | `GET /health` |
 | Procurement-domain adapter | `http://localhost:8092` | `GET /healthz` |
-| Moduregis | `http://localhost:8084` | `GET /v1/health` |
+| Moduregis | `http://localhost:1806` | `GET /v1/health` |
 | Orchadyn API (optional) | `http://localhost:1816` | `GET /healthz` |
 
 ## Run The Scenario

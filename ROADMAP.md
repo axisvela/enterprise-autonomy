@@ -83,14 +83,14 @@ Post-1.0 changes are additive and follow the same verification and release proce
 - [x] New runnable demo: sequenced deployment (twelfth slice) with the deployment-domain adapter covering sequenced autonomous execution and approval-required deviations
 - [x] Refreshed content and navigation as the example set grows (demo matrix, getting-started, example index, run handbook, governance-subtlety, version references)
 
-## Phase 8 — Post-1.1 additive content (in progress)
+## Phase 8 — Post-1.1 additive content (complete)
 
 Post-1.1 changes are additive and follow the same verification and release process. Completed items land here as they ship.
 
 - [x] New vertical slice (inference-request-to-governed-answer) and inference-governance reference stack covering the inference, knowledge, and memory fabrics (Noetivela, Gnosivela, Mnemovela) — the first content for those products
-- [ ] Runnable inference-governance local demo backed by a new inference-domain reference adapter (fourteenth adapter)
-- [ ] Local-surface maturity tracking for products without a shipped binary (Kinetovela, Harmovela) as the product repositories land releases
-- [ ] Port-migration status tracking against the planned port allocation in release-status
+- [x] Runnable inference-governance local demo backed by the inference-domain reference adapter (fourteenth adapter)
+- [x] Local-surface maturity tracking for products without a shipped binary: Kinetovela published multi-platform binaries (v0.30.0); Harmovela is protocol-first (daemon + CLI + language equivalents, no compiled binary expected)
+- [x] Port-migration status tracking against the planned port allocation in release-status
 
 ## Guiding Principles
 
@@ -100,4 +100,4 @@ Post-1.1 changes are additive and follow the same verification and release proce
 
 ## Status
 
-All phases of the initial public roadmap are complete as of **1.0.0**, and all Phase 7 post-1.0 additive items are complete as of **1.1.6**. Thirteen vertical slices describe end-to-end scenarios; twelve have runnable local demos backed by thirteen reference adapters, with release automation, CI-gated consistency checks, and every released version carrying a matching GitHub tag and release (backfilled for pre-0.14.0 versions). Phase 8 tracks additive content and maturity-tracking work after 1.1.x.
+All phases of the initial public roadmap are complete as of **1.0.0**, all Phase 7 post-1.0 additive items are complete as of **1.1.6**, and all Phase 8 additive items are complete as of **1.1.10**. Fourteen vertical slices describe end-to-end scenarios; thirteen have runnable local demos backed by fourteen reference adapters, with release automation, CI-gated consistency checks, and every released version carrying a matching GitHub tag and release (backfilled for pre-0.14.0 versions). Phase 8 added the governed-inference slice, stack, and demo; closed the Kinetovela/Harmovela maturity-tracking item; and added port-migration status tracking to release-status. The local demo stack now runs on the planned port allocation (Moduregis `1806`, Orchadyn `1816`, Ontovela `1856`, Praxovela `1866`, Rheovela `1876`, Symbivela `1926`, Limenora edge `1896`), so no demo service occupies `8080`; remaining products track against the planned allocation in [release status](docs/release-status.md#port-migration-status).

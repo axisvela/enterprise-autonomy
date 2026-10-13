@@ -8,7 +8,7 @@
 
 The run script prints a **step-by-step business report** and a **Value & Effect summary**, and writes `.local-data/deployment-outcome.json` and `.local-data/deployment-value-report.json`. You can see:
 
-- **The sequenced release lifecycle**: how `dep-0001` moves from `initiated` through `checkout â†’ build â†’ test â†’ approve â†’ production` to `released`.
+- **The sequenced release lifecycle**: how `dep-0001` moves from `initiated` through `checkout â†?build â†?test â†?approve â†?production` to `released`.
 - **Sequence integrity**: an out-of-sequence step is rejected.
 - **Evidence-cited execution**: each autonomous step cites the evidence it produced.
 - **Approval-required deviations**: an unapproved pause is rejected.
@@ -17,14 +17,14 @@ The run script prints a **step-by-step business report** and a **Value & Effect 
 
 ## The Scenario In Business Terms
 
-1. **Open** â€” the release lead opens a governed deployment case.
-2. **Context** â€” the pipeline state is asserted with evidence.
-3. **Sequence gate** â€” an out-of-sequence step is rejected.
-4. **Execute** â€” autonomous steps advance the pipeline, each citing evidence.
-5. **Deviation gate** â€” an unapproved pause is rejected.
-6. **Durable wrap** â€” the deployment is wrapped in a durable Rheovela instance.
-7. **Plan** â€” a verified deployment plan is generated (recommendation only).
-8. **Release** â€” the pipeline reaches the terminal step; a re-run is rejected.
+1. **Open** â€?the release lead opens a governed deployment case.
+2. **Context** â€?the pipeline state is asserted with evidence.
+3. **Sequence gate** â€?an out-of-sequence step is rejected.
+4. **Execute** â€?autonomous steps advance the pipeline, each citing evidence.
+5. **Deviation gate** â€?an unapproved pause is rejected.
+6. **Durable wrap** â€?the deployment is wrapped in a durable Rheovela instance.
+7. **Plan** â€?a verified deployment plan is generated (recommendation only).
+8. **Release** â€?the pipeline reaches the terminal step; a re-run is rejected.
 
 ## What This Demo Does
 
@@ -61,13 +61,13 @@ Copy `local.env.ps1.example` to `local.env.ps1` and set your checkout root and c
 
 | Service | Local address | Health check |
 | --- | --- | --- |
-| Limenora Edge | `http://localhost:10255` | `GET /healthz` |
-| Ontovela | `http://localhost:8082` | `GET /healthz` |
-| Rheovela | `http://localhost:8083` | `GET /api/v1/health` |
-| Symbivela | `http://localhost:8080` | `GET /ready` |
-| Praxovela AXON Core | `http://127.0.0.1:8420` | `GET /health` |
+| Limenora Edge | `http://localhost:1896` | `GET /healthz` |
+| Ontovela | `http://localhost:1856` | `GET /healthz` |
+| Rheovela | `http://localhost:1876` | `GET /api/v1/health` |
+| Symbivela | `http://localhost:1926` | `GET /ready` |
+| Praxovela AXON Core | `http://127.0.0.1:1866` | `GET /health` |
 | Deployment-domain adapter | `http://localhost:8102` | `GET /healthz` |
-| Moduregis | `http://localhost:8084` | `GET /v1/health` |
+| Moduregis | `http://localhost:1806` | `GET /v1/health` |
 | Orchadyn API (optional) | `http://localhost:1816` | `GET /healthz` |
 
 ## Run The Scenario

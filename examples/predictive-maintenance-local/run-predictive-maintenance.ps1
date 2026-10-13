@@ -19,9 +19,9 @@ $symbiHeaders = @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $Main
 
 # Step 1: open the maintenance case (Symbivela)
 $workspace = @{ workspace_id = "maintenance"; name = "Maintenance Operations"; owner_id = $MaintenanceManager } | ConvertTo-Json
-Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $MaintenanceManager; "Idempotency-Key" = "maintenance-workspace-v1" } -ContentType "application/json" -Body $workspace | Out-Null
+Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $MaintenanceManager; "Idempotency-Key" = "maintenance-workspace-v1" } -ContentType "application/json" -Body $workspace | Out-Null
 $case = @{ workspace_id = "maintenance"; case_id = "pm-0001-intervention"; subject_ref = "signal://signal-pm-0001"; problem = "Elevated risk signal for cooling pump 01; intervention must be validated and safety-reviewed."; evidence_refs = "asset://asset-pump-01"; candidate_actions = "monitor,inspect,repair,defer,stop"; deadline = "2026-08-26T12:00:00Z" } | ConvertTo-Json
-$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
+$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
 $gates += @{ gate = "case-opened"; owner = $MaintenanceManager; decision = "open" }
 $evidence += @{ product = "symbivela"; artifact = $caseResult.case_id; state = $caseResult.status }
 $outcome.steps += @{ index = 1; title = "Open the maintenance case"; product = "symbivela"; artifact = $caseResult.case_id }
@@ -31,7 +31,7 @@ Write-Step 1 "Open the maintenance case" "Symbivela case '$($caseResult.case_id)
 $signal = Invoke-RestMethod -Uri $maintBase
 $asset = Invoke-RestMethod -Uri "http://localhost:8095/v1/assets/$AssetId"
 $assertion = @{ id = "assertion-asset-pump-01-risk"; subject_id = $AssetId; property = "risk_level"; value = "elevated"; state_kind = "observed"; event_time = "2026-08-16T12:00:00Z"; system_time = "2026-08-16T12:00:01Z"; source = "condition-monitoring"; evidence_ref = "evidence://monitoring/signal-pm-0001" } | ConvertTo-Json
-$state = Invoke-RestMethod -Method Post -Uri "http://localhost:8082/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
+$state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $evidence += @{ product = "maintenance-domain"; artifact = $signal.id; state = $signal.status }
 $evidence += @{ product = "ontovela"; artifact = "assertion-asset-pump-01-risk"; state = "observed" }
 $outcome.steps += @{ index = 2; title = "Record the risk-signal context"; product = "ontovela"; artifact = "assertion-asset-pump-01-risk" }
@@ -87,7 +87,7 @@ $rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "predictive-maintenance-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "predictive-maintenance-workflow.json") | Out-Null
 $process = @{ workflow = "predictive-maintenance-to-work-order"; project = $SignalId; actor = $MaintenanceManager } | ConvertTo-Json
-$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:8083/api/v1/instances" -ContentType "application/json" -Body $process
+$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/instances" -ContentType "application/json" -Body $process
 $evidence += @{ product = "rheovela"; artifact = $instance.id; state = "open" }
 $outcome.steps += @{ index = 6; title = "Create the durable maintenance process"; product = "rheovela"; artifact = $instance.id }
 Write-Step 6 "Create the durable maintenance process" "Rheovela opened process instance '$($instance.id)' for 'predictive-maintenance-to-work-order'. Stages: validate, decide, safety, schedule, close."

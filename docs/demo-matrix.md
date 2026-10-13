@@ -1,6 +1,6 @@
 # Demo Matrix
 
-Twelve of the thirteen vertical slices have runnable local demos. Each demo drives real local product binaries plus one reference adapter, and produces a machine-readable value report.
+Thirteen of the fourteen vertical slices have runnable local demos. Each demo drives real local product binaries plus one reference adapter, and produces a machine-readable value report.
 
 ## Full Matrix
 
@@ -18,6 +18,7 @@ Twelve of the thirteen vertical slices have runnable local demos. Each demo driv
 | 10 | [Process to outcome](../examples/process-to-outcome-local/README.md) | [process-to-outcome](../vertical-slices/process-to-outcome.md) | process-domain (8100) | Stage-sequenced durable process; terminal-state enforcement | `process-value-report.json` | [guide](../examples/process-to-outcome-local/operations-guide.md) |
 | 11 | [Innovation sandbox](../examples/innovation-sandbox-local/README.md) | [innovation-sandbox-to-policy](../vertical-slices/innovation-sandbox-to-policy.md) | sandbox-domain (8101) | Sandbox boundary; evidence-based policy; immutable policy | `sandbox-value-report.json` | [guide](../examples/innovation-sandbox-local/operations-guide.md) |
 | 12 | [Sequenced deployment](../examples/deployment-local/README.md) | [sequenced-deployment](../vertical-slices/sequenced-deployment.md) | deployment-domain (8102) | Sequenced autonomous execution; approval-required deviations | `deployment-value-report.json` | [guide](../examples/deployment-local/operations-guide.md) |
+| 13 | [Inference governance](../examples/inference-governance-local/README.md) | [inference-request-to-governed-answer](../vertical-slices/inference-request-to-governed-answer.md) | inference-domain (8103) | Governed inference; selection under policy; human review for high impact; immutable audit | `inference-value-report.json` | [guide](../examples/inference-governance-local/operations-guide.md) |
 
 ## Common Stack
 
@@ -25,7 +26,7 @@ Every demo reuses the same local product stack: Limenora edge, Ontovela, Rheovel
 
 ## Value Reports
 
-Each demo writes its value report to `.local-data/`. Aggregate them with `.\scripts\report-value.ps1` into the [value dashboard](value-dashboard.md), which compares products involved, gates passed, evidence artifacts, and time-to-resolve across all twelve demos.
+Each demo writes its value report to `.local-data/`. Aggregate them with `.\scripts\report-value.ps1` into the [value dashboard](value-dashboard.md), which compares products involved, gates passed, evidence artifacts, and time-to-resolve across all thirteen demos.
 
 ## Governance
 

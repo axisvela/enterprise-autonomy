@@ -1,10 +1,10 @@
-# Recruitment Demo â€” Detailed Operations Guide
+# Recruitment Demo â€?Detailed Operations Guide
 
 Step-by-step walkthrough of the recruitment demo with the **exact requests and responses** each script issues. Read it alongside the [README](README.md).
 
 ## How To Read This Guide
 
-Each step documents its **Purpose**, the exact **Request** (method, URL, headers, body), the **Response** fields the script reads, and **What to notice** â€” the governance behavior it demonstrates.
+Each step documents its **Purpose**, the exact **Request** (method, URL, headers, body), the **Response** fields the script reads, and **What to notice** â€?the governance behavior it demonstrates.
 
 Values are concrete: hiring manager `hiring-manager-1`, TA lead `ta-lead-1`, panel `panel-1`, candidate `cand-a`, automated actor `recruiter-assistant`, decision reference `decision://req-0001`, offer reference `offer://req-0001`.
 
@@ -12,13 +12,13 @@ Values are concrete: hiring manager `hiring-manager-1`, TA lead `ta-lead-1`, pan
 
 | Service | Address | Health |
 | --- | --- | --- |
-| Limenora Edge | `http://localhost:10255` | `GET /healthz` |
-| Ontovela | `http://localhost:8082` | `GET /healthz` |
-| Rheovela | `http://localhost:8083` | `GET /api/v1/health` |
-| Symbivela | `http://localhost:8080` | `GET /ready` |
-| Praxovela AXON Core | `http://127.0.0.1:8420` | `GET /health` |
+| Limenora Edge | `http://localhost:1896` | `GET /healthz` |
+| Ontovela | `http://localhost:1856` | `GET /healthz` |
+| Rheovela | `http://localhost:1876` | `GET /api/v1/health` |
+| Symbivela | `http://localhost:1926` | `GET /ready` |
+| Praxovela AXON Core | `http://127.0.0.1:1866` | `GET /health` |
 | Recruitment-domain adapter | `http://localhost:8094` | `GET /healthz` |
-| Moduregis | `http://localhost:8084` | `GET /v1/health` |
+| Moduregis | `http://localhost:1806` | `GET /v1/health` |
 | Orchadyn API (optional) | `http://localhost:1816` | `GET /healthz` |
 
 ## Seed Data
@@ -36,22 +36,22 @@ Copy `local.env.ps1.example` to `local.env.ps1`, set the checkout root and conne
 
 Expected final line: `All local services are ready.`
 
-## Step 1 â€” Open the requisition case (Symbivela)
+## Step 1 â€?Open the requisition case (Symbivela)
 
 **Purpose.** Create the human authority that governs the hiring lifecycle.
 
-**Request 1a â€” workspace.**
+**Request 1a â€?workspace.**
 ```
-POST http://localhost:8080/v1/workspaces
+POST http://localhost:1926/v1/workspaces
 Headers: X-SYMBIVELA-Tenant: tenant-a, X-SYMBIVELA-Actor: hiring-manager-1,
          Idempotency-Key: talent-acquisition-workspace-v1
 Body:
 {"workspace_id":"talent-acquisition","name":"Talent Acquisition","owner_id":"hiring-manager-1"}
 ```
 
-**Request 1b â€” case.**
+**Request 1b â€?case.**
 ```
-POST http://localhost:8080/v1/exception-cases
+POST http://localhost:1926/v1/exception-cases
 Headers: X-SYMBIVELA-Tenant: tenant-a, X-SYMBIVELA-Actor: hiring-manager-1,
          Idempotency-Key: req-0001-case-v1
 Body:
@@ -63,11 +63,11 @@ Body:
 
 **What to notice.** The case names the accountable owner and states the human-only policy up front.
 
-## Step 2 â€” Validate the requisition (recruitment-domain adapter + Ontovela)
+## Step 2 â€?Validate the requisition (recruitment-domain adapter + Ontovela)
 
 **Purpose.** Record structured, job-related criteria and assert the validated state.
 
-**Request 2a â€” validate.**
+**Request 2a â€?validate.**
 ```
 POST http://localhost:8094/v1/requisitions/req-0001/validate
 Body:
@@ -76,9 +76,9 @@ Body:
 ```
 Response: `requisition.status` (`validated`). A non-TA-lead validator is rejected (`403 only_ta_lead_can_validate`).
 
-**Request 2b â€” role context assertion.**
+**Request 2b â€?role context assertion.**
 ```
-POST http://localhost:8082/v1/assertions
+POST http://localhost:1856/v1/assertions
 Headers: X-Tenant-ID: tenant-a, Idempotency-Key: req-0001-role-v1
 Body:
 {"id":"assertion-req-0001-validated","subject_id":"req-0001","property":"hiring_status",
@@ -88,11 +88,11 @@ Body:
 
 **What to notice.** Criteria are recorded before any candidate assessment, and the validated state is asserted in the world model with evidence.
 
-## Step 3 â€” Show automation cannot decide (recruitment-domain adapter)
+## Step 3 â€?Show automation cannot decide (recruitment-domain adapter)
 
 **Purpose.** Prove the human-decision boundary is structural.
 
-**Request â€” automated shortlist attempt (expect rejection).**
+**Request â€?automated shortlist attempt (expect rejection).**
 ```
 POST http://localhost:8094/v1/requisitions/req-0001/decisions
 Body:
@@ -104,7 +104,7 @@ The adapter responds `403 Forbidden` with `{"error":"automation_cannot_make_hiri
 
 **What to notice.** The denial runs **before** stage or candidate checks. Automation can administer, schedule, and organize evidence, but it cannot record any hiring decision.
 
-## Step 4 â€” Record the human shortlist decision
+## Step 4 â€?Record the human shortlist decision
 
 **Purpose.** The panel advances the candidate with a human attribution and rationale.
 
@@ -118,34 +118,34 @@ Body:
 ```
 Response: `requisition.status` (`shortlisting`).
 
-**What to notice.** Every decision requires `decided_by`, `rationale`, and `decision_ref` â€” no unattributed screening.
+**What to notice.** Every decision requires `decided_by`, `rationale`, and `decision_ref` â€?no unattributed screening.
 
-## Step 5 â€” Create the durable hiring process (Rheovela)
+## Step 5 â€?Create the durable hiring process (Rheovela)
 
 **Purpose.** Wrap the lifecycle in a recoverable, capability-gated process.
 
-**Input file â€” `recruitment-workflow.json`.** Stages: `validate (ta-lead) â†’ shortlist (panel) â†’ selection (hiring-manager) â†’ offer (capability recruitment.offer.execute) â†’ close (ta-lead)`.
+**Input file â€?`recruitment-workflow.json`.** Stages: `validate (ta-lead) â†?shortlist (panel) â†?selection (hiring-manager) â†?offer (capability recruitment.offer.execute) â†?close (ta-lead)`.
 
-**CLI â€” validate and define.**
+**CLI â€?validate and define.**
 ```powershell
 rheo workflow validate recruitment-workflow.json
 rheo workflow define --file recruitment-workflow.json
 ```
 
-**Request â€” open an instance.**
+**Request â€?open an instance.**
 ```
-POST http://localhost:8083/api/v1/instances
+POST http://localhost:1876/api/v1/instances
 Body:
 {"workflow":"recruitment-requisition-to-offer","project":"req-0001","actor":"ta-lead-1"}
 ```
 
 **What to notice.** The `offer` stage is capability-gated; the workflow stages mirror the human-decision lifecycle.
 
-## Step 6 â€” Generate a hiring plan (Orchadyn, optional)
+## Step 6 â€?Generate a hiring plan (Orchadyn, optional)
 
 **Purpose.** Produce a verified recommendation. A plan is not an authorization.
 
-**Input file â€” `recruitment-plan.json`.** Goal `goal-req-0001-filled`; catalog selection capabilities marked `humanOnly: true`; hard constraint `automation-cannot-decide`; delegation with `evidenceDuty: ["decision://req-0001"]`.
+**Input file â€?`recruitment-plan.json`.** Goal `goal-req-0001-filled`; catalog selection capabilities marked `humanOnly: true`; hard constraint `automation-cannot-decide`; delegation with `evidenceDuty: ["decision://req-0001"]`.
 
 **Request.**
 ```
@@ -155,11 +155,11 @@ Body: (contents of recruitment-plan.json)
 
 **What to notice.** The plan's catalog encodes the human-only constraint, so even the recommendation respects the boundary.
 
-## Step 7 â€” Record selection and offer, then issue the offer
+## Step 7 â€?Record selection and offer, then issue the offer
 
 **Purpose.** The hiring manager records both human decisions; the TA lead issues the offer.
 
-**Request 7a â€” selection decision.**
+**Request 7a â€?selection decision.**
 ```
 POST http://localhost:8094/v1/requisitions/req-0001/decisions
 Body:
@@ -168,7 +168,7 @@ Body:
  "idempotency_key":"rec-sel-v1"}
 ```
 
-**Request 7b â€” offer decision.**
+**Request 7b â€?offer decision.**
 ```
 POST http://localhost:8094/v1/requisitions/req-0001/decisions
 Body:
@@ -177,7 +177,7 @@ Body:
  "idempotency_key":"rec-of-v1"}
 ```
 
-**Request 7c â€” issue the offer.**
+**Request 7c â€?issue the offer.**
 ```
 POST http://localhost:8094/v1/requisitions/req-0001/offers
 Body:
@@ -188,7 +188,7 @@ Response: `offer.id` (`offer-rec-offer-v1`), `requisition.status` (`closed`).
 
 **What to notice.** The offer is gated on an offer-stage human decision for the same candidate (`403 no_offer_decision_for_candidate` otherwise) and on the lifecycle position (`409 offer_decision_required_first`).
 
-## Step 8 â€” Confirm the outcome and emit the value report
+## Step 8 â€?Confirm the outcome and emit the value report
 
 **Purpose.** Confirm the closed state and reconstruct the lifecycle from evidence.
 
@@ -247,6 +247,6 @@ Example KPIs: `products_involved` 5, `gates_passed` 4, `evidence_artifacts` 9, `
 | `Load local.env.ps1 before running this script.` | Env not sourced | `. .\local.env.ps1` first. |
 | `Service did not become ready: http://localhost:8094/healthz` | Adapter build failed or port busy | Check `.local-logs\recruitment-domain.err.log`; confirm `go` on PATH. |
 | `403 automation_cannot_make_hiring_decisions` | Automated actor tried to decide | This is the *expected* denial; use human `actor_type`. |
-| `409 <stage>_required_first` | Decision out of lifecycle order | Follow validate â†’ shortlist â†’ selection â†’ offer. |
+| `409 <stage>_required_first` | Decision out of lifecycle order | Follow validate â†?shortlist â†?selection â†?offer. |
 | `403 only_ta_lead_can_validate` | Non-TA-lead validation | Validate with `ta-lead-1`. |
 | `403 no_offer_decision_for_candidate` | Offer without offer-stage decision | Record the offer decision for the candidate first. |

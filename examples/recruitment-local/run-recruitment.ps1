@@ -19,9 +19,9 @@ $symbiHeaders = @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $Hiri
 
 # Step 1: open the requisition case (Symbivela)
 $workspace = @{ workspace_id = "talent-acquisition"; name = "Talent Acquisition"; owner_id = $HiringManager } | ConvertTo-Json
-Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $HiringManager; "Idempotency-Key" = "talent-acquisition-workspace-v1" } -ContentType "application/json" -Body $workspace | Out-Null
+Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $HiringManager; "Idempotency-Key" = "talent-acquisition-workspace-v1" } -ContentType "application/json" -Body $workspace | Out-Null
 $case = @{ workspace_id = "talent-acquisition"; case_id = "req-0001-hire"; subject_ref = "requisition://req-0001"; problem = "Hire Senior Platform Engineer with human-only selection decisions."; evidence_refs = "budget://budget-rec-0001"; candidate_actions = "advance,reject,offer,hold"; deadline = "2026-08-25T12:00:00Z" } | ConvertTo-Json
-$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
+$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
 $gates += @{ gate = "case-opened"; owner = $HiringManager; decision = "open" }
 $evidence += @{ product = "symbivela"; artifact = $caseResult.case_id; state = $caseResult.status }
 $outcome.steps += @{ index = 1; title = "Open the requisition case"; product = "symbivela"; artifact = $caseResult.case_id }
@@ -31,7 +31,7 @@ Write-Step 1 "Open the requisition case" "Symbivela case '$($caseResult.case_id)
 $validate = @{ validated_by = $TALead; criteria = @("platform-expertise", "systems-ownership"); idempotency_key = "rec-val-v1" } | ConvertTo-Json
 $valResult = Invoke-RestMethod -Method Post -Uri "$recBase/validate" -ContentType "application/json" -Body $validate
 $assertion = @{ id = "assertion-req-0001-validated"; subject_id = "req-0001"; property = "hiring_status"; value = "validated"; state_kind = "observed"; event_time = "2026-08-16T11:00:00Z"; system_time = "2026-08-16T11:00:01Z"; source = "talent-system"; evidence_ref = "evidence://talent/req-0001" } | ConvertTo-Json
-$state = Invoke-RestMethod -Method Post -Uri "http://localhost:8082/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
+$state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $evidence += @{ product = "recruitment-domain"; artifact = "validate-rec-val-v1"; state = $valResult.requisition.status }
 $evidence += @{ product = "ontovela"; artifact = "assertion-req-0001-validated"; state = "observed" }
 $outcome.steps += @{ index = 2; title = "Validate the requisition"; product = "recruitment-domain"; artifact = "validate-rec-val-v1" }
@@ -61,7 +61,7 @@ $rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "recruitment-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "recruitment-workflow.json") | Out-Null
 $process = @{ workflow = "recruitment-requisition-to-offer"; project = "req-0001"; actor = $TALead } | ConvertTo-Json
-$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:8083/api/v1/instances" -ContentType "application/json" -Body $process
+$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/instances" -ContentType "application/json" -Body $process
 $evidence += @{ product = "rheovela"; artifact = $instance.id; state = "open" }
 $outcome.steps += @{ index = 5; title = "Create the durable hiring process"; product = "rheovela"; artifact = $instance.id }
 Write-Step 5 "Create the durable hiring process" "Rheovela opened process instance '$($instance.id)' for 'recruitment-requisition-to-offer'. Stages: validate, shortlist, selection, offer, close."

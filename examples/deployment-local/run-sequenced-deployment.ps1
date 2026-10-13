@@ -19,9 +19,9 @@ $symbiHeaders = @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $Oper
 
 # Step 1: open the deployment case (Symbivela)
 $workspace = @{ workspace_id = "deployment-ops"; name = "Deployment Operations"; owner_id = $Operator } | ConvertTo-Json
-Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $Operator; "Idempotency-Key" = "deployment-ops-workspace-v1" } -ContentType "application/json" -Body $workspace | Out-Null
+Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $Operator; "Idempotency-Key" = "deployment-ops-workspace-v1" } -ContentType "application/json" -Body $workspace | Out-Null
 $case = @{ workspace_id = "deployment-ops"; case_id = "dep-0001-release"; subject_ref = "deployment://dep-0001"; problem = "Advance the release pipeline strictly in sequence, citing evidence at every step, and require human approval for any deviation."; evidence_refs = "deployment://dep-0001"; candidate_actions = "steps,deviations,release"; deadline = "2026-09-02T12:00:00Z" } | ConvertTo-Json
-$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
+$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
 $gates += @{ gate = "case-opened"; owner = $Operator; decision = "open" }
 $evidence += @{ product = "symbivela"; artifact = $caseResult.case_id; state = $caseResult.status }
 $outcome.steps += @{ index = 1; title = "Open the deployment case"; product = "symbivela"; artifact = $caseResult.case_id }
@@ -30,7 +30,7 @@ Write-Step 1 "Open the deployment case" "Symbivela case '$($caseResult.case_id)'
 # Step 2: record the deployment context (adapter + Ontovela)
 $deployment = Invoke-RestMethod -Uri $depBase
 $assertion = @{ id = "assertion-dep-0001-initiated"; subject_id = $DeploymentId; property = "deployment_status"; value = "initiated"; state_kind = "observed"; event_time = "2026-08-16T18:00:00Z"; system_time = "2026-08-16T18:00:01Z"; source = "deployment-control"; evidence_ref = "evidence://deployment/dep-0001" } | ConvertTo-Json
-$state = Invoke-RestMethod -Method Post -Uri "http://localhost:8082/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
+$state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $evidence += @{ product = "deployment-domain"; artifact = $deployment.id; state = $deployment.status }
 $evidence += @{ product = "ontovela"; artifact = "assertion-dep-0001-initiated"; state = "observed" }
 $outcome.steps += @{ index = 2; title = "Record the deployment context"; product = "ontovela"; artifact = "assertion-dep-0001-initiated" }
@@ -75,7 +75,7 @@ $rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "sequenced-deployment-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "sequenced-deployment-workflow.json") | Out-Null
 $processBody = @{ workflow = "sequenced-deployment"; project = $DeploymentId; actor = $Operator } | ConvertTo-Json
-$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:8083/api/v1/instances" -ContentType "application/json" -Body $processBody
+$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/instances" -ContentType "application/json" -Body $processBody
 $evidence += @{ product = "rheovela"; artifact = $instance.id; state = "open" }
 $outcome.steps += @{ index = 6; title = "Wrap the deployment durably"; product = "rheovela"; artifact = $instance.id }
 Write-Step 6 "Wrap the deployment durably" "Rheovela opened process instance '$($instance.id)' for 'sequenced-deployment'. Steps: checkout, build, test, approve, production."

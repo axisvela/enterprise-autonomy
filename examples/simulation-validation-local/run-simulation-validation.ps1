@@ -19,9 +19,9 @@ $symbiHeaders = @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $Revi
 
 # Step 1: open the review case (Symbivela)
 $workspace = @{ workspace_id = "validation-review"; name = "Validation Review"; owner_id = $Reviewer } | ConvertTo-Json
-Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $Reviewer; "Idempotency-Key" = "validation-review-workspace-v1" } -ContentType "application/json" -Body $workspace | Out-Null
+Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $Reviewer; "Idempotency-Key" = "validation-review-workspace-v1" } -ContentType "application/json" -Body $workspace | Out-Null
 $case = @{ workspace_id = "validation-review"; case_id = "sim-0001-validation"; subject_ref = "proposal://proposal-sim-0001"; problem = "Automated zone inspection must be validated by simulation evidence before release."; evidence_refs = "scope://zone-alpha"; candidate_actions = "approve,reject,revise"; deadline = "2026-08-29T12:00:00Z" } | ConvertTo-Json
-$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
+$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
 $gates += @{ gate = "case-opened"; owner = $Reviewer; decision = "open" }
 $evidence += @{ product = "symbivela"; artifact = $caseResult.case_id; state = $caseResult.status }
 $outcome.steps += @{ index = 1; title = "Open the review case"; product = "symbivela"; artifact = $caseResult.case_id }
@@ -31,7 +31,7 @@ Write-Step 1 "Open the review case" "Symbivela case '$($caseResult.case_id)' is 
 $scenario = @{ scenario_id = "scn-collision"; description = "collision avoidance in zone-alpha"; idempotency_key = "sim-scn-v1" } | ConvertTo-Json
 $scResult = Invoke-RestMethod -Method Post -Uri "$simBase/scenarios" -ContentType "application/json" -Body $scenario
 $assertion = @{ id = "assertion-proposal-sim-0001-scoped"; subject_id = $ProposalId; property = "validation_scope"; value = "zone-alpha"; state_kind = "observed"; event_time = "2026-08-16T13:00:00Z"; system_time = "2026-08-16T13:00:01Z"; source = "validation-system"; evidence_ref = "evidence://validation/proposal-sim-0001" } | ConvertTo-Json
-$state = Invoke-RestMethod -Method Post -Uri "http://localhost:8082/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
+$state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $gates += @{ gate = "scenarios-compiled"; owner = $SimulationEngineer; decision = "compiled"; scenario = $scResult.scenario.id }
 $evidence += @{ product = "simulation-domain"; artifact = $scResult.scenario.id; state = "compiled" }
 $evidence += @{ product = "ontovela"; artifact = "assertion-proposal-sim-0001-scoped"; state = "observed" }
@@ -84,7 +84,7 @@ $rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "simulation-validation-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "simulation-validation-workflow.json") | Out-Null
 $process = @{ workflow = "simulation-to-validation"; project = $ProposalId; actor = $Reviewer } | ConvertTo-Json
-$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:8083/api/v1/instances" -ContentType "application/json" -Body $process
+$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/instances" -ContentType "application/json" -Body $process
 $evidence += @{ product = "rheovela"; artifact = $instance.id; state = "open" }
 $outcome.steps += @{ index = 6; title = "Create the durable validation process"; product = "rheovela"; artifact = $instance.id }
 Write-Step 6 "Create the durable validation process" "Rheovela opened process instance '$($instance.id)' for 'simulation-to-validation'. Stages: compile, run, decide, release, close."

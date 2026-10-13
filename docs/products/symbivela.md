@@ -8,9 +8,9 @@ Human sovereignty control surface for goals, plan review, approvals, interventio
 
 | Item | Detail |
 | --- | --- |
-| Binaries | `symbivela` (local `symbivela.exe`), plus `symbivela-audit`, `symbivela-bench`, `symbivela-migrate` |
-| Current port | `:8080` (fixed) |
-| Planned port | `1926` API |
+| Binaries | `symbivela` (local `symbivela.exe`, v1.1.1), plus `symbivela-audit`, `symbivela-bench`, `symbivela-migrate` |
+| Current port | `1926` API (default since v1.1.1; override `SYMBIVELA_ADDR` or `--addr`); frontend dev `1927` (`SYMBIVELA_WEB_PORT`) |
+| Planned port | `1926` API · `1927` frontend |
 | Database | PostgreSQL required (`DATABASE_URL`) |
 | Interfaces | HTTP API, React/Vite frontend, CLI tools |
 | Health | `GET /health`, `/ready`, `/metrics` |

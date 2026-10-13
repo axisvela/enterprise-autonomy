@@ -16,14 +16,14 @@ The run script prints a **step-by-step business report** and a **Value & Effect 
 
 ## The Scenario In Business Terms
 
-1. **Open** â€” the compliance lead opens a governed case.
-2. **Context** â€” the requirement and its four required evidence items are asserted.
-3. **Completeness gate** â€” attestation before all evidence is rejected.
-4. **Collect** â€” all four evidence items are collected from governed sources.
-5. **Attest** â€” the designated attestor attests; a non-attestor is rejected.
-6. **Process** â€” a durable compliance process is opened.
-7. **Plan** â€” a verified compliance plan is generated (recommendation only).
-8. **Release** â€” the audit package releases after attestation citing the exact reference; released packages are immutable.
+1. **Open** â€?the compliance lead opens a governed case.
+2. **Context** â€?the requirement and its four required evidence items are asserted.
+3. **Completeness gate** â€?attestation before all evidence is rejected.
+4. **Collect** â€?all four evidence items are collected from governed sources.
+5. **Attest** â€?the designated attestor attests; a non-attestor is rejected.
+6. **Process** â€?a durable compliance process is opened.
+7. **Plan** â€?a verified compliance plan is generated (recommendation only).
+8. **Release** â€?the audit package releases after attestation citing the exact reference; released packages are immutable.
 
 ## What This Demo Does
 
@@ -62,13 +62,13 @@ Copy `local.env.ps1.example` to `local.env.ps1` and set your checkout root and c
 
 | Service | Local address | Health check |
 | --- | --- | --- |
-| Limenora Edge | `http://localhost:10255` | `GET /healthz` |
-| Ontovela | `http://localhost:8082` | `GET /healthz` |
-| Rheovela | `http://localhost:8083` | `GET /api/v1/health` |
-| Symbivela | `http://localhost:8080` | `GET /ready` |
-| Praxovela AXON Core | `http://127.0.0.1:8420` | `GET /health` |
+| Limenora Edge | `http://localhost:1896` | `GET /healthz` |
+| Ontovela | `http://localhost:1856` | `GET /healthz` |
+| Rheovela | `http://localhost:1876` | `GET /api/v1/health` |
+| Symbivela | `http://localhost:1926` | `GET /ready` |
+| Praxovela AXON Core | `http://127.0.0.1:1866` | `GET /health` |
 | Compliance-domain adapter | `http://localhost:8098` | `GET /healthz` |
-| Moduregis | `http://localhost:8084` | `GET /v1/health` |
+| Moduregis | `http://localhost:1806` | `GET /v1/health` |
 | Orchadyn API (optional) | `http://localhost:1816` | `GET /healthz` |
 
 ## Run The Scenario

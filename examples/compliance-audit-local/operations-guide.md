@@ -1,10 +1,10 @@
-# Compliance Audit Demo â€” Detailed Operations Guide
+# Compliance Audit Demo â€?Detailed Operations Guide
 
 Step-by-step walkthrough of the compliance-request-to-audit demo with the **exact requests and responses** each script issues. Read it alongside the [README](README.md).
 
 ## How To Read This Guide
 
-Each step documents its **Purpose**, the exact **Request** (method, URL, headers, body), the **Response** fields the script reads, and **What to notice** â€” the governance behavior it demonstrates.
+Each step documents its **Purpose**, the exact **Request** (method, URL, headers, body), the **Response** fields the script reads, and **What to notice** â€?the governance behavior it demonstrates.
 
 Values are concrete: compliance lead `compliance-lead`, case `compliance-0001`, requirement `SOC2-1`, attestation reference `attestation://comp-0001`.
 
@@ -12,13 +12,13 @@ Values are concrete: compliance lead `compliance-lead`, case `compliance-0001`, 
 
 | Service | Address | Health |
 | --- | --- | --- |
-| Limenora Edge | `http://localhost:10255` | `GET /healthz` |
-| Ontovela | `http://localhost:8082` | `GET /healthz` |
-| Rheovela | `http://localhost:8083` | `GET /api/v1/health` |
-| Symbivela | `http://localhost:8080` | `GET /ready` |
-| Praxovela AXON Core | `http://127.0.0.1:8420` | `GET /health` |
+| Limenora Edge | `http://localhost:1896` | `GET /healthz` |
+| Ontovela | `http://localhost:1856` | `GET /healthz` |
+| Rheovela | `http://localhost:1876` | `GET /api/v1/health` |
+| Symbivela | `http://localhost:1926` | `GET /ready` |
+| Praxovela AXON Core | `http://127.0.0.1:1866` | `GET /health` |
 | Compliance-domain adapter | `http://localhost:8098` | `GET /healthz` |
-| Moduregis | `http://localhost:8084` | `GET /v1/health` |
+| Moduregis | `http://localhost:1806` | `GET /v1/health` |
 | Orchadyn API (optional) | `http://localhost:1816` | `GET /healthz` |
 
 ## Seed Data
@@ -36,22 +36,22 @@ Copy `local.env.ps1.example` to `local.env.ps1`, set the checkout root and conne
 
 Expected final line: `All local services are ready.`
 
-## Step 1 â€” Open the compliance case (Symbivela)
+## Step 1 â€?Open the compliance case (Symbivela)
 
 **Purpose.** Create the human authority that governs evidence collection and attestation.
 
-**Request 1a â€” workspace.**
+**Request 1a â€?workspace.**
 ```
-POST http://localhost:8080/v1/workspaces
+POST http://localhost:1926/v1/workspaces
 Headers: X-SYMBIVELA-Tenant: tenant-a, X-SYMBIVELA-Actor: compliance-lead,
          Idempotency-Key: compliance-workspace-v1
 Body:
 {"workspace_id":"compliance","name":"Compliance Operations","owner_id":"compliance-lead"}
 ```
 
-**Request 1b â€” case.**
+**Request 1b â€?case.**
 ```
-POST http://localhost:8080/v1/exception-cases
+POST http://localhost:1926/v1/exception-cases
 Headers: X-SYMBIVELA-Tenant: tenant-a, X-SYMBIVELA-Actor: compliance-lead,
          Idempotency-Key: comp-0001-case-v1
 Body:
@@ -63,19 +63,19 @@ Body:
 
 **What to notice.** The case frames the audit as completeness-gated.
 
-## Step 2 â€” Record the requirement context (adapter + Ontovela)
+## Step 2 â€?Record the requirement context (adapter + Ontovela)
 
 **Purpose.** Assert the requirement and confirm the required evidence set.
 
-**Request 2a â€” case view.**
+**Request 2a â€?case view.**
 ```
 GET http://localhost:8098/v1/compliance/compliance-0001
 ```
 Response: `{"id":"compliance-0001","requirement":"SOC2-1","status":"open","attestor":"compliance-lead","required_items":["evidence-item-1",...],"evidence":{}}`.
 
-**Request 2b â€” requirement assertion.**
+**Request 2b â€?requirement assertion.**
 ```
-POST http://localhost:8082/v1/assertions
+POST http://localhost:1856/v1/assertions
 Headers: X-Tenant-ID: tenant-a, Idempotency-Key: comp-0001-req-v1
 Body:
 {"id":"assertion-compliance-0001-req","subject_id":"compliance-0001","property":"requirement",
@@ -86,11 +86,11 @@ Body:
 
 **What to notice.** The required evidence set is fixed; completeness is measured against it.
 
-## Step 3 â€” Show completeness gates attestation
+## Step 3 â€?Show completeness gates attestation
 
 **Purpose.** Prove attestation requires all evidence.
 
-**Request â€” attestation before evidence (expect rejection).**
+**Request â€?attestation before evidence (expect rejection).**
 ```
 POST http://localhost:8098/v1/compliance/compliance-0001/attestations
 Body:
@@ -99,13 +99,13 @@ Body:
 ```
 The adapter responds `403 Forbidden` with `{"error":"evidence_incomplete_attestation_requires_all_items"}`.
 
-**What to notice.** Attestation cannot precede complete evidence â€” completeness is a hard gate.
+**What to notice.** Attestation cannot precede complete evidence â€?completeness is a hard gate.
 
-## Step 4 â€” Collect the required evidence
+## Step 4 â€?Collect the required evidence
 
 **Purpose.** Collect all four items from governed sources.
 
-**Request â€” one item (repeated for items 1-4).**
+**Request â€?one item (repeated for items 1-4).**
 ```
 POST http://localhost:8098/v1/compliance/compliance-0001/evidence
 Body:
@@ -113,15 +113,15 @@ Body:
  "evidence_ref":"evidence://comp/item-1","collected_by":"compliance-lead","idempotency_key":"comp-ev-1"}
 ```
 
-After all four, `case.status` â†’ `evidence`. An unknown item is rejected (`400 unknown_evidence_item`); a duplicate is rejected (`409 evidence_item_already_collected`).
+After all four, `case.status` â†?`evidence`. An unknown item is rejected (`400 unknown_evidence_item`); a duplicate is rejected (`409 evidence_item_already_collected`).
 
-**What to notice.** Each item carries a governed source and timestamp â€” evidence is attributable, not asserted.
+**What to notice.** Each item carries a governed source and timestamp â€?evidence is attributable, not asserted.
 
-## Step 5 â€” Attest the evidence set (designated attestor)
+## Step 5 â€?Attest the evidence set (designated attestor)
 
 **Purpose.** Prove only the designated attestor may attest, then record the attestation.
 
-**Request 5a â€” non-attestor (expect rejection).**
+**Request 5a â€?non-attestor (expect rejection).**
 ```
 POST http://localhost:8098/v1/compliance/compliance-0001/attestations
 Body:
@@ -130,7 +130,7 @@ Body:
 ```
 The adapter responds `403 Forbidden` with `{"error":"not_designated_attestor"}`.
 
-**Request 5b â€” attestation.**
+**Request 5b â€?attestation.**
 ```
 POST http://localhost:8098/v1/compliance/compliance-0001/attestations
 Body:
@@ -141,32 +141,32 @@ Response: `attestation.decision` (`attest`), `case.status` (`attested`).
 
 **What to notice.** Attestation is conjunctive: complete evidence AND the designated attestor.
 
-## Step 6 â€” Create the durable compliance process (Rheovela)
+## Step 6 â€?Create the durable compliance process (Rheovela)
 
 **Purpose.** Wrap the lifecycle in a recoverable, capability-gated process.
 
-**Input file â€” `compliance-audit-workflow.json`.** Stages: `collect (compliance-lead) â†’ attest (compliance-lead) â†’ package (capability compliance.package.assemble) â†’ release (capability compliance.package.release) â†’ close (compliance-lead)`.
+**Input file â€?`compliance-audit-workflow.json`.** Stages: `collect (compliance-lead) â†?attest (compliance-lead) â†?package (capability compliance.package.assemble) â†?release (capability compliance.package.release) â†?close (compliance-lead)`.
 
-**CLI â€” validate and define.**
+**CLI â€?validate and define.**
 ```powershell
 rheo workflow validate compliance-audit-workflow.json
 rheo workflow define --file compliance-audit-workflow.json
 ```
 
-**Request â€” open an instance.**
+**Request â€?open an instance.**
 ```
-POST http://localhost:8083/api/v1/instances
+POST http://localhost:1876/api/v1/instances
 Body:
 {"workflow":"compliance-request-to-audit","project":"compliance-0001","actor":"compliance-lead"}
 ```
 
-**What to notice.** The `package` and `release` stages are capability-gated; the workflow mirrors collect â†’ attest â†’ package ordering.
+**What to notice.** The `package` and `release` stages are capability-gated; the workflow mirrors collect â†?attest â†?package ordering.
 
-## Step 7 â€” Generate a compliance plan (Orchadyn, optional)
+## Step 7 â€?Generate a compliance plan (Orchadyn, optional)
 
 **Purpose.** Produce a verified recommendation. A plan is not an authorization.
 
-**Input file â€” `compliance-audit-plan.json`.** Goal `goal-comp-0001-attested`; catalog `cap-attest` with `completenessRequired: true` and `attestorOnly: true`; `cap-package` with `attestationRequired: true` and `immutable: true`.
+**Input file â€?`compliance-audit-plan.json`.** Goal `goal-comp-0001-attested`; catalog `cap-attest` with `completenessRequired: true` and `attestorOnly: true`; `cap-package` with `attestationRequired: true` and `immutable: true`.
 
 **Request.**
 ```
@@ -176,11 +176,11 @@ Body: (contents of compliance-audit-plan.json)
 
 **What to notice.** The plan encodes completeness and attestation requirements, so even the recommendation respects the gates.
 
-## Step 8 â€” Release the audit package and emit the value report
+## Step 8 â€?Release the audit package and emit the value report
 
 **Purpose.** Release the immutable package after attestation citing the exact reference.
 
-**Request 8a â€” wrong reference (expect rejection).**
+**Request 8a â€?wrong reference (expect rejection).**
 ```
 POST http://localhost:8098/v1/compliance/compliance-0001/packages
 Body:
@@ -188,7 +188,7 @@ Body:
 ```
 The adapter responds `403 Forbidden` with `{"error":"attestation_ref_mismatch"}`.
 
-**Request 8b â€” release.**
+**Request 8b â€?release.**
 ```
 POST http://localhost:8098/v1/compliance/compliance-0001/packages
 Body:
@@ -196,7 +196,7 @@ Body:
 ```
 Response: `package_id` (`package-comp-pkg-v1`), `case.status` (`released`).
 
-**Request 8c â€” second package (expect rejection).**
+**Request 8c â€?second package (expect rejection).**
 ```
 POST http://localhost:8098/v1/compliance/compliance-0001/packages
 Body:

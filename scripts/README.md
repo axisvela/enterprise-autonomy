@@ -87,8 +87,8 @@ The repository includes [`.github/workflows/ci.yml`](../.github/workflows/ci.yml
 1. `check-links.ps1` — breaks the build on broken internal links.
 2. `validate-demos.ps1` — verifies demo structure and script syntax.
 3. `validate-json.ps1` — verifies every JSON plan/workflow parses.
-4. `run-go-tests.ps1` — runs `go vet` and `go test` on all thirteen reference adapters.
-5. `run-demo-smoke.ps1` — builds and smoke-tests all thirteen reference adapters (75 assertions).
+4. `run-go-tests.ps1` — runs `go vet` and `go test` on all fourteen reference adapters.
+5. `run-demo-smoke.ps1` — builds and smoke-tests all fourteen reference adapters (83 assertions).
 6. `check-hooks.ps1` — verifies the pre-commit hook file is present (config check is local-only).
 7. `version.ps1 get` — reports the current version.
 8. `check-release.ps1` — reports whether a new tag is warranted (informational; exit `1` does not fail the build).

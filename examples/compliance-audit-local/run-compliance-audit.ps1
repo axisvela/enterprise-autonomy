@@ -19,9 +19,9 @@ $symbiHeaders = @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $Comp
 
 # Step 1: open the compliance case (Symbivela)
 $workspace = @{ workspace_id = "compliance"; name = "Compliance Operations"; owner_id = $ComplianceLead } | ConvertTo-Json
-Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $ComplianceLead; "Idempotency-Key" = "compliance-workspace-v1" } -ContentType "application/json" -Body $workspace | Out-Null
+Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/workspaces" -Headers @{ "X-SYMBIVELA-Tenant" = $TenantId; "X-SYMBIVELA-Actor" = $ComplianceLead; "Idempotency-Key" = "compliance-workspace-v1" } -ContentType "application/json" -Body $workspace | Out-Null
 $case = @{ workspace_id = "compliance"; case_id = "comp-0001-audit"; subject_ref = "compliance://compliance-0001"; problem = "Assemble the audit package for SOC2-1 with complete evidence and a designated attestation."; evidence_refs = "requirement://SOC2-1"; candidate_actions = "collect,attest,defer,release"; deadline = "2026-08-30T12:00:00Z" } | ConvertTo-Json
-$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:8080/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
+$caseResult = Invoke-RestMethod -Method Post -Uri "http://localhost:1926/v1/exception-cases" -Headers $symbiHeaders -ContentType "application/json" -Body $case
 $gates += @{ gate = "case-opened"; owner = $ComplianceLead; decision = "open" }
 $evidence += @{ product = "symbivela"; artifact = $caseResult.case_id; state = $caseResult.status }
 $outcome.steps += @{ index = 1; title = "Open the compliance case"; product = "symbivela"; artifact = $caseResult.case_id }
@@ -30,7 +30,7 @@ Write-Step 1 "Open the compliance case" "Symbivela case '$($caseResult.case_id)'
 # Step 2: record the requirement context (adapter + Ontovela)
 $compCase = Invoke-RestMethod -Uri $compBase
 $assertion = @{ id = "assertion-compliance-0001-req"; subject_id = $ComplianceCaseId; property = "requirement"; value = $Requirement; state_kind = "observed"; event_time = "2026-08-16T15:00:00Z"; system_time = "2026-08-16T15:00:01Z"; source = "compliance-system"; evidence_ref = "evidence://compliance/compliance-0001" } | ConvertTo-Json
-$state = Invoke-RestMethod -Method Post -Uri "http://localhost:8082/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
+$state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $gates += @{ gate = "requirement-context"; owner = $ComplianceLead; decision = "scoped"; requirement = $Requirement }
 $evidence += @{ product = "compliance-domain"; artifact = $compCase.id; state = $compCase.status }
 $evidence += @{ product = "ontovela"; artifact = "assertion-compliance-0001-req"; state = "observed" }
@@ -80,7 +80,7 @@ $rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "compliance-audit-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "compliance-audit-workflow.json") | Out-Null
 $process = @{ workflow = "compliance-request-to-audit"; project = $ComplianceCaseId; actor = $ComplianceLead } | ConvertTo-Json
-$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:8083/api/v1/instances" -ContentType "application/json" -Body $process
+$instance = Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/instances" -ContentType "application/json" -Body $process
 $evidence += @{ product = "rheovela"; artifact = $instance.id; state = "open" }
 $outcome.steps += @{ index = 6; title = "Create the durable compliance process"; product = "rheovela"; artifact = $instance.id }
 Write-Step 6 "Create the durable compliance process" "Rheovela opened process instance '$($instance.id)' for 'compliance-request-to-audit'. Stages: collect, attest, package, release, close."

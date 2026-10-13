@@ -8,7 +8,7 @@
 
 The run script prints a **step-by-step business report** and a **Value & Effect summary**, and writes `.local-data/process-outcome.json` and `.local-data/process-value-report.json`. You can see:
 
-- **The durable process lifecycle**: how `proc-0001` moves from `initiated` through `request â†’ review â†’ approve â†’ complete` to `completed`.
+- **The durable process lifecycle**: how `proc-0001` moves from `initiated` through `request â†?review â†?approve â†?complete` to `completed`.
 - **Stage-sequenced gating**: an out-of-order advance is rejected.
 - **Terminal-state enforcement**: completion before the terminal stage is rejected.
 - **Completed-process immutability**: a reopen after completion is rejected.
@@ -16,14 +16,14 @@ The run script prints a **step-by-step business report** and a **Value & Effect 
 
 ## The Scenario In Business Terms
 
-1. **Open** â€” the operator opens a governed process case.
-2. **Context** â€” the process state is asserted with evidence.
-3. **Stage gate** â€” an out-of-order advance is rejected.
-4. **Advance** â€” the process advances through its sequenced stages with human attribution.
-5. **Outcome gate** â€” completion before the terminal stage is rejected.
-6. **Durable wrap** â€” the process is wrapped in a durable Rheovela instance.
-7. **Plan** â€” a verified process plan is generated (recommendation only).
-8. **Complete** â€” the outcome completes at the terminal stage; a reopen is rejected.
+1. **Open** â€?the operator opens a governed process case.
+2. **Context** â€?the process state is asserted with evidence.
+3. **Stage gate** â€?an out-of-order advance is rejected.
+4. **Advance** â€?the process advances through its sequenced stages with human attribution.
+5. **Outcome gate** â€?completion before the terminal stage is rejected.
+6. **Durable wrap** â€?the process is wrapped in a durable Rheovela instance.
+7. **Plan** â€?a verified process plan is generated (recommendation only).
+8. **Complete** â€?the outcome completes at the terminal stage; a reopen is rejected.
 
 ## What This Demo Does
 
@@ -60,13 +60,13 @@ Copy `local.env.ps1.example` to `local.env.ps1` and set your checkout root and c
 
 | Service | Local address | Health check |
 | --- | --- | --- |
-| Limenora Edge | `http://localhost:10255` | `GET /healthz` |
-| Ontovela | `http://localhost:8082` | `GET /healthz` |
-| Rheovela | `http://localhost:8083` | `GET /api/v1/health` |
-| Symbivela | `http://localhost:8080` | `GET /ready` |
-| Praxovela AXON Core | `http://127.0.0.1:8420` | `GET /health` |
+| Limenora Edge | `http://localhost:1896` | `GET /healthz` |
+| Ontovela | `http://localhost:1856` | `GET /healthz` |
+| Rheovela | `http://localhost:1876` | `GET /api/v1/health` |
+| Symbivela | `http://localhost:1926` | `GET /ready` |
+| Praxovela AXON Core | `http://127.0.0.1:1866` | `GET /health` |
 | Process-domain adapter | `http://localhost:8100` | `GET /healthz` |
-| Moduregis | `http://localhost:8084` | `GET /v1/health` |
+| Moduregis | `http://localhost:1806` | `GET /v1/health` |
 | Orchadyn API (optional) | `http://localhost:1816` | `GET /healthz` |
 
 ## Run The Scenario

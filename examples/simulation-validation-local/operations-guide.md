@@ -1,10 +1,10 @@
-# Simulation Validation Demo â€” Detailed Operations Guide
+# Simulation Validation Demo â€?Detailed Operations Guide
 
 Step-by-step walkthrough of the simulation-to-validation demo with the **exact requests and responses** each script issues. Read it alongside the [README](README.md).
 
 ## How To Read This Guide
 
-Each step documents its **Purpose**, the exact **Request** (method, URL, headers, body), the **Response** fields the script reads, and **What to notice** â€” the governance behavior it demonstrates.
+Each step documents its **Purpose**, the exact **Request** (method, URL, headers, body), the **Response** fields the script reads, and **What to notice** â€?the governance behavior it demonstrates.
 
 Values are concrete: reviewer `reviewer-a`, simulation engineer `simulation-engineer`, proposal `proposal-sim-0001`, decision reference `decision://sim-0001`, evidence reference `evidence://sim/run-001`.
 
@@ -12,13 +12,13 @@ Values are concrete: reviewer `reviewer-a`, simulation engineer `simulation-engi
 
 | Service | Address | Health |
 | --- | --- | --- |
-| Limenora Edge | `http://localhost:10255` | `GET /healthz` |
-| Ontovela | `http://localhost:8082` | `GET /healthz` |
-| Rheovela | `http://localhost:8083` | `GET /api/v1/health` |
-| Symbivela | `http://localhost:8080` | `GET /ready` |
-| Praxovela AXON Core | `http://127.0.0.1:8420` | `GET /health` |
+| Limenora Edge | `http://localhost:1896` | `GET /healthz` |
+| Ontovela | `http://localhost:1856` | `GET /healthz` |
+| Rheovela | `http://localhost:1876` | `GET /api/v1/health` |
+| Symbivela | `http://localhost:1926` | `GET /ready` |
+| Praxovela AXON Core | `http://127.0.0.1:1866` | `GET /health` |
 | Simulation-domain adapter | `http://localhost:8097` | `GET /healthz` |
-| Moduregis | `http://localhost:8084` | `GET /v1/health` |
+| Moduregis | `http://localhost:1806` | `GET /v1/health` |
 | Orchadyn API (optional) | `http://localhost:1816` | `GET /healthz` |
 
 ## Seed Data
@@ -36,22 +36,22 @@ Copy `local.env.ps1.example` to `local.env.ps1`, set the checkout root and conne
 
 Expected final line: `All local services are ready.`
 
-## Step 1 â€” Open the review case (Symbivela)
+## Step 1 â€?Open the review case (Symbivela)
 
 **Purpose.** Create the human authority that governs validation and release.
 
-**Request 1a â€” workspace.**
+**Request 1a â€?workspace.**
 ```
-POST http://localhost:8080/v1/workspaces
+POST http://localhost:1926/v1/workspaces
 Headers: X-SYMBIVELA-Tenant: tenant-a, X-SYMBIVELA-Actor: reviewer-a,
          Idempotency-Key: validation-review-workspace-v1
 Body:
 {"workspace_id":"validation-review","name":"Validation Review","owner_id":"reviewer-a"}
 ```
 
-**Request 1b â€” case.**
+**Request 1b â€?case.**
 ```
-POST http://localhost:8080/v1/exception-cases
+POST http://localhost:1926/v1/exception-cases
 Headers: X-SYMBIVELA-Tenant: tenant-a, X-SYMBIVELA-Actor: reviewer-a,
          Idempotency-Key: sim-0001-case-v1
 Body:
@@ -63,11 +63,11 @@ Body:
 
 **What to notice.** The case frames release as evidence-gated.
 
-## Step 2 â€” Compile the simulation scenarios (adapter + Ontovela)
+## Step 2 â€?Compile the simulation scenarios (adapter + Ontovela)
 
 **Purpose.** Compile the scenario set and assert the validation scope.
 
-**Request 2a â€” compile scenario.**
+**Request 2a â€?compile scenario.**
 ```
 POST http://localhost:8097/v1/proposals/proposal-sim-0001/scenarios
 Body:
@@ -75,9 +75,9 @@ Body:
 ```
 Response: `scenario.id` (`scn-collision`).
 
-**Request 2b â€” scope assertion.**
+**Request 2b â€?scope assertion.**
 ```
-POST http://localhost:8082/v1/assertions
+POST http://localhost:1856/v1/assertions
 Headers: X-Tenant-ID: tenant-a, Idempotency-Key: sim-0001-scope-v1
 Body:
 {"id":"assertion-proposal-sim-0001-scoped","subject_id":"proposal-sim-0001","property":"validation_scope",
@@ -88,11 +88,11 @@ Body:
 
 **What to notice.** The scope is asserted with evidence before any run; validation is scoped to `zone-alpha`.
 
-## Step 3 â€” Show evidence is required before a decision
+## Step 3 â€?Show evidence is required before a decision
 
 **Purpose.** Prove evidence-before-decision is structural.
 
-**Request â€” decision before evidence (expect rejection).**
+**Request â€?decision before evidence (expect rejection).**
 ```
 POST http://localhost:8097/v1/proposals/proposal-sim-0001/decisions
 Body:
@@ -101,13 +101,13 @@ Body:
 ```
 The adapter responds `403 Forbidden` with `{"error":"simulation_evidence_required_before_decision"}`.
 
-**What to notice.** No decision exists until simulation evidence is recorded â€” the review cannot precede the run.
+**What to notice.** No decision exists until simulation evidence is recorded â€?the review cannot precede the run.
 
-## Step 4 â€” Record the immutable simulation run
+## Step 4 â€?Record the immutable simulation run
 
 **Purpose.** Record evidence that cannot be replaced.
 
-**Request 4a â€” record the run.**
+**Request 4a â€?record the run.**
 ```
 POST http://localhost:8097/v1/proposals/proposal-sim-0001/runs
 Body:
@@ -116,7 +116,7 @@ Body:
 ```
 Response: `run.id` (`run-run-001`), `run.immutable` (`true`), `proposal.status` (`evidence`).
 
-**Request 4b â€” second run (expect rejection).**
+**Request 4b â€?second run (expect rejection).**
 ```
 POST http://localhost:8097/v1/proposals/proposal-sim-0001/runs
 Body:
@@ -127,11 +127,11 @@ The adapter responds `409 Conflict` with `{"error":"evidence_already_recorded_im
 
 **What to notice.** Simulation evidence is **immutable**: once recorded, it cannot be replaced or supplemented with a different run.
 
-## Step 5 â€” Record the review decision (review group)
+## Step 5 â€?Record the review decision (review group)
 
 **Purpose.** Prove review-group authority, then record the approve decision.
 
-**Request 5a â€” non-member decision (expect rejection).**
+**Request 5a â€?non-member decision (expect rejection).**
 ```
 POST http://localhost:8097/v1/proposals/proposal-sim-0001/decisions
 Body:
@@ -140,7 +140,7 @@ Body:
 ```
 The adapter responds `403 Forbidden` with `{"error":"not_review_group_member"}`.
 
-**Request 5b â€” reviewer decision.**
+**Request 5b â€?reviewer decision.**
 ```
 POST http://localhost:8097/v1/proposals/proposal-sim-0001/decisions
 Body:
@@ -151,32 +151,32 @@ Response: `decision.decision` (`approve`), `proposal.status` (`decided`).
 
 **What to notice.** Only designated review-group members may decide, and the decision is grounded in the recorded evidence.
 
-## Step 6 â€” Create the durable validation process (Rheovela)
+## Step 6 â€?Create the durable validation process (Rheovela)
 
 **Purpose.** Wrap the lifecycle in a recoverable, capability-gated process.
 
-**Input file â€” `simulation-validation-workflow.json`.** Stages: `compile (simulation-engineer) â†’ run (capability simulation.run.execute) â†’ decide (review-group) â†’ release (capability simulation.release.execute) â†’ close (review-group)`.
+**Input file â€?`simulation-validation-workflow.json`.** Stages: `compile (simulation-engineer) â†?run (capability simulation.run.execute) â†?decide (review-group) â†?release (capability simulation.release.execute) â†?close (review-group)`.
 
-**CLI â€” validate and define.**
+**CLI â€?validate and define.**
 ```powershell
 rheo workflow validate simulation-validation-workflow.json
 rheo workflow define --file simulation-validation-workflow.json
 ```
 
-**Request â€” open an instance.**
+**Request â€?open an instance.**
 ```
-POST http://localhost:8083/api/v1/instances
+POST http://localhost:1876/api/v1/instances
 Body:
 {"workflow":"simulation-to-validation","project":"proposal-sim-0001","actor":"reviewer-a"}
 ```
 
-**What to notice.** The `run` and `release` stages are capability-gated; the workflow mirrors the evidence â†’ decide â†’ release ordering.
+**What to notice.** The `run` and `release` stages are capability-gated; the workflow mirrors the evidence â†?decide â†?release ordering.
 
-## Step 7 â€” Generate a validation plan (Orchadyn, optional)
+## Step 7 â€?Generate a validation plan (Orchadyn, optional)
 
 **Purpose.** Produce a verified recommendation. A plan is not an authorization.
 
-**Input file â€” `simulation-validation-plan.json`.** Goal `goal-sim-0001-validated`; catalog `cap-review` with `evidenceRequired: true` and `humanOnly: true`; hard constraints for evidence-before-decision and evidence-immutability.
+**Input file â€?`simulation-validation-plan.json`.** Goal `goal-sim-0001-validated`; catalog `cap-review` with `evidenceRequired: true` and `humanOnly: true`; hard constraints for evidence-before-decision and evidence-immutability.
 
 **Request.**
 ```
@@ -186,11 +186,11 @@ Body: (contents of simulation-validation-plan.json)
 
 **What to notice.** The plan encodes the evidence requirement, so even the recommendation respects evidence-before-decision.
 
-## Step 8 â€” Release and emit the value report
+## Step 8 â€?Release and emit the value report
 
 **Purpose.** Release only after the approve decision citing the exact reference.
 
-**Request 8a â€” wrong reference (expect rejection).**
+**Request 8a â€?wrong reference (expect rejection).**
 ```
 POST http://localhost:8097/v1/proposals/proposal-sim-0001/release
 Body:
@@ -198,7 +198,7 @@ Body:
 ```
 The adapter responds `403 Forbidden` with `{"error":"decision_ref_mismatch"}`.
 
-**Request 8b â€” release.**
+**Request 8b â€?release.**
 ```
 POST http://localhost:8097/v1/proposals/proposal-sim-0001/release
 Body:
@@ -208,7 +208,7 @@ Response: `proposal.status` (`released`).
 
 **Outputs written to `.local-data/`:** `simulation-outcome.json` and `simulation-value-report.json`.
 
-**What to notice.** Release is approval-gated and references the exact decision â€” the four denial records make the evidence-gated model measurable.
+**What to notice.** Release is approval-gated and references the exact decision â€?the four denial records make the evidence-gated model measurable.
 
 ## Output Artifacts
 

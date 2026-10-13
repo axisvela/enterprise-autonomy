@@ -1,10 +1,10 @@
-# Process-To-Outcome Demo â€” Detailed Operations Guide
+# Process-To-Outcome Demo â€?Detailed Operations Guide
 
 Step-by-step walkthrough of the process-to-outcome demo with the **exact requests and responses** each script issues. Read it alongside the [README](README.md).
 
 ## How To Read This Guide
 
-Each step documents its **Purpose**, the exact **Request** (method, URL, headers, body), the **Response** fields the script reads, and **What to notice** â€” the governance behavior it demonstrates.
+Each step documents its **Purpose**, the exact **Request** (method, URL, headers, body), the **Response** fields the script reads, and **What to notice** â€?the governance behavior it demonstrates.
 
 Values are concrete: operator `ops-lead`, process `proc-0001`, decision reference `decision://proc-0001`.
 
@@ -12,18 +12,18 @@ Values are concrete: operator `ops-lead`, process `proc-0001`, decision referenc
 
 | Service | Address | Health |
 | --- | --- | --- |
-| Limenora Edge | `http://localhost:10255` | `GET /healthz` |
-| Ontovela | `http://localhost:8082` | `GET /healthz` |
-| Rheovela | `http://localhost:8083` | `GET /api/v1/health` |
-| Symbivela | `http://localhost:8080` | `GET /ready` |
-| Praxovela AXON Core | `http://127.0.0.1:8420` | `GET /health` |
+| Limenora Edge | `http://localhost:1896` | `GET /healthz` |
+| Ontovela | `http://localhost:1856` | `GET /healthz` |
+| Rheovela | `http://localhost:1876` | `GET /api/v1/health` |
+| Symbivela | `http://localhost:1926` | `GET /ready` |
+| Praxovela AXON Core | `http://127.0.0.1:1866` | `GET /health` |
 | Process-domain adapter | `http://localhost:8100` | `GET /healthz` |
-| Moduregis | `http://localhost:8084` | `GET /v1/health` |
+| Moduregis | `http://localhost:1806` | `GET /v1/health` |
 | Orchadyn API (optional) | `http://localhost:1816` | `GET /healthz` |
 
 ## Seed Data
 
-- **Process** (`proc-0001`): workflow `onboarding`, stages `request â†’ review â†’ approve â†’ complete`, current stage `request`, status `initiated`.
+- **Process** (`proc-0001`): workflow `onboarding`, stages `request â†?review â†?approve â†?complete`, current stage `request`, status `initiated`.
 
 ## Setup
 
@@ -36,22 +36,22 @@ Copy `local.env.ps1.example` to `local.env.ps1`, set the checkout root and conne
 
 Expected final line: `All local services are ready.`
 
-## Step 1 â€” Open the process case (Symbivela)
+## Step 1 â€?Open the process case (Symbivela)
 
 **Purpose.** Create the human authority that governs the process outcome.
 
-**Request 1a â€” workspace.**
+**Request 1a â€?workspace.**
 ```
-POST http://localhost:8080/v1/workspaces
+POST http://localhost:1926/v1/workspaces
 Headers: X-SYMBIVELA-Tenant: tenant-a, X-SYMBIVELA-Actor: ops-lead,
          Idempotency-Key: process-ops-workspace-v1
 Body:
 {"workspace_id":"process-ops","name":"Process Operations","owner_id":"ops-lead"}
 ```
 
-**Request 1b â€” case.**
+**Request 1b â€?case.**
 ```
-POST http://localhost:8080/v1/exception-cases
+POST http://localhost:1926/v1/exception-cases
 Headers: X-SYMBIVELA-Tenant: tenant-a, X-SYMBIVELA-Actor: ops-lead,
          Idempotency-Key: proc-0001-case-v1
 Body:
@@ -63,19 +63,19 @@ Body:
 
 **What to notice.** The case governs the process outcome; the process itself is the source of truth for stage order.
 
-## Step 2 â€” Record the process context (adapter + Ontovela)
+## Step 2 â€?Record the process context (adapter + Ontovela)
 
 **Purpose.** Assert the process state with evidence.
 
-**Request 2a â€” process view.**
+**Request 2a â€?process view.**
 ```
 GET http://localhost:8100/v1/processes/proc-0001
 ```
 Response: `{"id":"proc-0001","workflow":"onboarding","stages":["request","review","approve","complete"],"current_stage":"request","status":"initiated","advances":[]}`.
 
-**Request 2b â€” process assertion.**
+**Request 2b â€?process assertion.**
 ```
-POST http://localhost:8082/v1/assertions
+POST http://localhost:1856/v1/assertions
 Headers: X-Tenant-ID: tenant-a, Idempotency-Key: proc-0001-flow-v1
 Body:
 {"id":"assertion-proc-0001-initiated","subject_id":"proc-0001","property":"process_status",
@@ -85,11 +85,11 @@ Body:
 
 **What to notice.** The process state is evidence-bearing; the defined stage order is fixed.
 
-## Step 3 â€” Show stages advance in order
+## Step 3 â€?Show stages advance in order
 
 **Purpose.** Prove stage-sequenced gating.
 
-**Request â€” out-of-order advance (expect rejection).**
+**Request â€?out-of-order advance (expect rejection).**
 ```
 POST http://localhost:8100/v1/processes/proc-0001/advance
 Body:
@@ -100,11 +100,11 @@ The adapter responds `409 Conflict` with `{"error":"stage_mismatch_next_is_revie
 
 **What to notice.** The process can only advance to the exact next stage; a skip is rejected structurally.
 
-## Step 4 â€” Advance through the stages
+## Step 4 â€?Advance through the stages
 
-**Purpose.** Advance `request â†’ review â†’ approve â†’ complete` with human attribution.
+**Purpose.** Advance `request â†?review â†?approve â†?complete` with human attribution.
 
-**Request â€” one advance (repeated for each pair).**
+**Request â€?one advance (repeated for each pair).**
 ```
 POST http://localhost:8100/v1/processes/proc-0001/advance
 Body:
@@ -114,13 +114,13 @@ Body:
 
 After the final advance, `current_stage = complete`, `status = awaiting-outcome`.
 
-**What to notice.** Every advance carries `decided_by`, `rationale`, and `decision_ref` â€” no unattributed stage movement.
+**What to notice.** Every advance carries `decided_by`, `rationale`, and `decision_ref` â€?no unattributed stage movement.
 
-## Step 5 â€” Show the outcome needs the terminal stage
+## Step 5 â€?Show the outcome needs the terminal stage
 
 **Purpose.** Prove terminal-state enforcement.
 
-**Request â€” complete before terminal (expect rejection).** *(Demonstrated by attempting completion before the final advance in the script; shown here for the gate.)*
+**Request â€?complete before terminal (expect rejection).** *(Demonstrated by attempting completion before the final advance in the script; shown here for the gate.)*
 ```
 POST http://localhost:8100/v1/processes/proc-0001/complete
 Body:
@@ -128,34 +128,34 @@ Body:
 ```
 The adapter responds `403 Forbidden` with `{"error":"outcome_not_reached_terminal_stage_required"}`.
 
-**What to notice.** The outcome is unreachable until the terminal stage â€” completion cannot short-circuit the process.
+**What to notice.** The outcome is unreachable until the terminal stage â€?completion cannot short-circuit the process.
 
-## Step 6 â€” Wrap the process durably (Rheovela)
+## Step 6 â€?Wrap the process durably (Rheovela)
 
 **Purpose.** Wrap the lifecycle in a recoverable, capability-gated process.
 
-**Input file â€” `process-to-outcome-workflow.json`.** Stages: `request (ops-lead) â†’ review (ops-lead) â†’ approve (ops-lead) â†’ complete (capability process.complete.execute)`.
+**Input file â€?`process-to-outcome-workflow.json`.** Stages: `request (ops-lead) â†?review (ops-lead) â†?approve (ops-lead) â†?complete (capability process.complete.execute)`.
 
-**CLI â€” validate and define.**
+**CLI â€?validate and define.**
 ```powershell
 rheo workflow validate process-to-outcome-workflow.json
 rheo workflow define --file process-to-outcome-workflow.json
 ```
 
-**Request â€” open an instance.**
+**Request â€?open an instance.**
 ```
-POST http://localhost:8083/api/v1/instances
+POST http://localhost:1876/api/v1/instances
 Body:
 {"workflow":"process-to-outcome","project":"proc-0001","actor":"ops-lead"}
 ```
 
 **What to notice.** The `complete` stage is capability-gated; the durable wrapper mirrors the sequenced stages.
 
-## Step 7 â€” Generate a process plan (Orchadyn, optional)
+## Step 7 â€?Generate a process plan (Orchadyn, optional)
 
 **Purpose.** Produce a verified recommendation. A plan is not an authorization.
 
-**Input file â€” `process-to-outcome-plan.json`.** Catalog marks the four stages with `humanOnly`/`terminal`; hard constraints for stage-sequence, terminal-state, and immutable-outcome.
+**Input file â€?`process-to-outcome-plan.json`.** Catalog marks the four stages with `humanOnly`/`terminal`; hard constraints for stage-sequence, terminal-state, and immutable-outcome.
 
 **Request.**
 ```
@@ -165,11 +165,11 @@ Body: (contents of process-to-outcome-plan.json)
 
 **What to notice.** The plan encodes the stage sequence, so even the recommendation respects the ordering.
 
-## Step 8 â€” Complete the outcome and show immutability
+## Step 8 â€?Complete the outcome and show immutability
 
 **Purpose.** Complete at the terminal stage and prove the process is immutable.
 
-**Request 8a â€” complete.**
+**Request 8a â€?complete.**
 ```
 POST http://localhost:8100/v1/processes/proc-0001/complete
 Body:
@@ -177,7 +177,7 @@ Body:
 ```
 Response: `process.status` (`completed`).
 
-**Request 8b â€” reopen (expect rejection).**
+**Request 8b â€?reopen (expect rejection).**
 ```
 POST http://localhost:8100/v1/processes/proc-0001/advance
 Body:

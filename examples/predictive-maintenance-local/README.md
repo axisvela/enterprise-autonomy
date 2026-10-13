@@ -16,14 +16,14 @@ The run script prints a **step-by-step business report** and a **Value & Effect 
 
 ## The Scenario In Business Terms
 
-1. **Open** â€” the maintenance manager opens a governed case.
-2. **Context** â€” the elevated risk signal and asset state are asserted.
-3. **Prediction gate** â€” a work order on an unvalidated signal is rejected.
-4. **Validate and decide** â€” the maintenance manager validates the signal and records a `repair` decision; an unconfirmed `stop` is rejected.
-5. **Safety review** â€” the safety authority approves intrusive work; without it the work order is rejected.
-6. **Process** â€” a durable maintenance process is opened.
-7. **Plan** â€” a verified maintenance plan is generated (recommendation only).
-8. **Schedule** â€” the approved, safety-reviewed work order is created and the value report is emitted.
+1. **Open** â€?the maintenance manager opens a governed case.
+2. **Context** â€?the elevated risk signal and asset state are asserted.
+3. **Prediction gate** â€?a work order on an unvalidated signal is rejected.
+4. **Validate and decide** â€?the maintenance manager validates the signal and records a `repair` decision; an unconfirmed `stop` is rejected.
+5. **Safety review** â€?the safety authority approves intrusive work; without it the work order is rejected.
+6. **Process** â€?a durable maintenance process is opened.
+7. **Plan** â€?a verified maintenance plan is generated (recommendation only).
+8. **Schedule** â€?the approved, safety-reviewed work order is created and the value report is emitted.
 
 ## What This Demo Does
 
@@ -61,13 +61,13 @@ Copy `local.env.ps1.example` to `local.env.ps1` and set your checkout root and c
 
 | Service | Local address | Health check |
 | --- | --- | --- |
-| Limenora Edge | `http://localhost:10255` | `GET /healthz` |
-| Ontovela | `http://localhost:8082` | `GET /healthz` |
-| Rheovela | `http://localhost:8083` | `GET /api/v1/health` |
-| Symbivela | `http://localhost:8080` | `GET /ready` |
-| Praxovela AXON Core | `http://127.0.0.1:8420` | `GET /health` |
+| Limenora Edge | `http://localhost:1896` | `GET /healthz` |
+| Ontovela | `http://localhost:1856` | `GET /healthz` |
+| Rheovela | `http://localhost:1876` | `GET /api/v1/health` |
+| Symbivela | `http://localhost:1926` | `GET /ready` |
+| Praxovela AXON Core | `http://127.0.0.1:1866` | `GET /health` |
 | Maintenance-domain adapter | `http://localhost:8095` | `GET /healthz` |
-| Moduregis | `http://localhost:8084` | `GET /v1/health` |
+| Moduregis | `http://localhost:1806` | `GET /v1/health` |
 | Orchadyn API (optional) | `http://localhost:1816` | `GET /healthz` |
 
 ## Run The Scenario

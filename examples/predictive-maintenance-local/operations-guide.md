@@ -1,10 +1,10 @@
-# Predictive Maintenance Demo â€” Detailed Operations Guide
+# Predictive Maintenance Demo â€?Detailed Operations Guide
 
 Step-by-step walkthrough of the predictive-maintenance demo with the **exact requests and responses** each script issues. Read it alongside the [README](README.md).
 
 ## How To Read This Guide
 
-Each step documents its **Purpose**, the exact **Request** (method, URL, headers, body), the **Response** fields the script reads, and **What to notice** â€” the governance behavior it demonstrates.
+Each step documents its **Purpose**, the exact **Request** (method, URL, headers, body), the **Response** fields the script reads, and **What to notice** â€?the governance behavior it demonstrates.
 
 Values are concrete: maintenance manager `maintenance-manager`, safety authority `safety-authority`, signal `signal-pm-0001`, asset `asset-pump-01`, decision reference `decision://pm-0001`, safety reference `safety://pm-0001`, approval reference `approval://pm-0001`.
 
@@ -12,13 +12,13 @@ Values are concrete: maintenance manager `maintenance-manager`, safety authority
 
 | Service | Address | Health |
 | --- | --- | --- |
-| Limenora Edge | `http://localhost:10255` | `GET /healthz` |
-| Ontovela | `http://localhost:8082` | `GET /healthz` |
-| Rheovela | `http://localhost:8083` | `GET /api/v1/health` |
-| Symbivela | `http://localhost:8080` | `GET /ready` |
-| Praxovela AXON Core | `http://127.0.0.1:8420` | `GET /health` |
+| Limenora Edge | `http://localhost:1896` | `GET /healthz` |
+| Ontovela | `http://localhost:1856` | `GET /healthz` |
+| Rheovela | `http://localhost:1876` | `GET /api/v1/health` |
+| Symbivela | `http://localhost:1926` | `GET /ready` |
+| Praxovela AXON Core | `http://127.0.0.1:1866` | `GET /health` |
 | Maintenance-domain adapter | `http://localhost:8095` | `GET /healthz` |
-| Moduregis | `http://localhost:8084` | `GET /v1/health` |
+| Moduregis | `http://localhost:1806` | `GET /v1/health` |
 | Orchadyn API (optional) | `http://localhost:1816` | `GET /healthz` |
 
 ## Seed Data
@@ -37,22 +37,22 @@ Copy `local.env.ps1.example` to `local.env.ps1`, set the checkout root and conne
 
 Expected final line: `All local services are ready.`
 
-## Step 1 â€” Open the maintenance case (Symbivela)
+## Step 1 â€?Open the maintenance case (Symbivela)
 
 **Purpose.** Create the human authority that governs the intervention.
 
-**Request 1a â€” workspace.**
+**Request 1a â€?workspace.**
 ```
-POST http://localhost:8080/v1/workspaces
+POST http://localhost:1926/v1/workspaces
 Headers: X-SYMBIVELA-Tenant: tenant-a, X-SYMBIVELA-Actor: maintenance-manager,
          Idempotency-Key: maintenance-workspace-v1
 Body:
 {"workspace_id":"maintenance","name":"Maintenance Operations","owner_id":"maintenance-manager"}
 ```
 
-**Request 1b â€” case.**
+**Request 1b â€?case.**
 ```
-POST http://localhost:8080/v1/exception-cases
+POST http://localhost:1926/v1/exception-cases
 Headers: X-SYMBIVELA-Tenant: tenant-a, X-SYMBIVELA-Actor: maintenance-manager,
          Idempotency-Key: pm-0001-case-v1
 Body:
@@ -64,19 +64,19 @@ Body:
 
 **What to notice.** The case names the accountable owner and the permitted actions, and frames the signal as requiring validation and safety review.
 
-## Step 2 â€” Record the risk-signal context (adapter + Ontovela)
+## Step 2 â€?Record the risk-signal context (adapter + Ontovela)
 
 **Purpose.** Assert the elevated risk with evidence and confirm the signal and asset views.
 
-**Request 2a â€” signal view.**
+**Request 2a â€?signal view.**
 ```
 GET http://localhost:8095/v1/signals/signal-pm-0001
 ```
 Response: `{"id":"signal-pm-0001","asset":"asset-pump-01","level":"elevated","status":"pending","confirmed":false}`.
 
-**Request 2b â€” asset assertion.**
+**Request 2b â€?asset assertion.**
 ```
-POST http://localhost:8082/v1/assertions
+POST http://localhost:1856/v1/assertions
 Headers: X-Tenant-ID: tenant-a, Idempotency-Key: pm-0001-asset-v1
 Body:
 {"id":"assertion-asset-pump-01-risk","subject_id":"asset-pump-01","property":"risk_level",
@@ -85,13 +85,13 @@ Body:
  "evidence_ref":"evidence://monitoring/signal-pm-0001"}
 ```
 
-**What to notice.** The signal is `pending` and `confirmed=false` â€” the world model asserts the *risk*, not a fault.
+**What to notice.** The signal is `pending` and `confirmed=false` â€?the world model asserts the *risk*, not a fault.
 
-## Step 3 â€” Show a prediction is not a fault (work-order gate)
+## Step 3 â€?Show a prediction is not a fault (work-order gate)
 
 **Purpose.** Prove an unvalidated signal cannot schedule work.
 
-**Request â€” work order on an unvalidated signal (expect rejection).**
+**Request â€?work order on an unvalidated signal (expect rejection).**
 ```
 POST http://localhost:8095/v1/signals/signal-pm-0001/work-orders
 Body:
@@ -102,11 +102,11 @@ The adapter responds `403 Forbidden` with `{"error":"signal_not_validated_predic
 
 **What to notice.** Prediction-vs-fact integrity is structural: no work order exists until the signal is validated, regardless of the approval attached.
 
-## Step 4 â€” Validate the signal and decide (maintenance manager)
+## Step 4 â€?Validate the signal and decide (maintenance manager)
 
 **Purpose.** Validate the signal and record the maintenance decision; prove an unconfirmed prediction cannot stop equipment.
 
-**Request 4a â€” validate.**
+**Request 4a â€?validate.**
 ```
 POST http://localhost:8095/v1/signals/signal-pm-0001/validate
 Body:
@@ -115,7 +115,7 @@ Body:
 ```
 Response: `signal.status` (`validated`). A non-manager validator is rejected (`403 only_maintenance_manager_can_validate`).
 
-**Request 4b â€” unconfirmed stop (expect rejection).**
+**Request 4b â€?unconfirmed stop (expect rejection).**
 ```
 POST http://localhost:8095/v1/signals/signal-pm-0001/decisions
 Body:
@@ -124,7 +124,7 @@ Body:
 ```
 The adapter responds `403 Forbidden` with `{"error":"unconfirmed_prediction_cannot_trigger_stop"}`.
 
-**Request 4c â€” repair decision.**
+**Request 4c â€?repair decision.**
 ```
 POST http://localhost:8095/v1/signals/signal-pm-0001/decisions
 Body:
@@ -135,11 +135,11 @@ Response: `decision.decision` (`repair`).
 
 **What to notice.** Validation distinguishes prediction from confirmed fault; an unconfirmed signal can never escalate to a `stop`, but a validated signal can be decided as `repair`.
 
-## Step 5 â€” Conduct the safety review (safety authority)
+## Step 5 â€?Conduct the safety review (safety authority)
 
 **Purpose.** Prove intrusive work requires an approved safety review, then record it.
 
-**Request 5a â€” work order without safety review (expect rejection).**
+**Request 5a â€?work order without safety review (expect rejection).**
 ```
 POST http://localhost:8095/v1/signals/signal-pm-0001/work-orders
 Body:
@@ -148,7 +148,7 @@ Body:
 ```
 The adapter responds `403 Forbidden` with `{"error":"safety_review_required_for_intrusive_work"}`.
 
-**Request 5b â€” safety review.**
+**Request 5b â€?safety review.**
 ```
 POST http://localhost:8095/v1/signals/signal-pm-0001/safety-reviews
 Body:
@@ -159,32 +159,32 @@ Response: `safety.outcome` (`approve`). Only the safety authority may review (`4
 
 **What to notice.** Safety is **conjunctive**: a repair decision alone is insufficient; the work order is only reachable after an approved safety review by the safety authority.
 
-## Step 6 â€” Create the durable maintenance process (Rheovela)
+## Step 6 â€?Create the durable maintenance process (Rheovela)
 
 **Purpose.** Wrap the lifecycle in a recoverable, capability-gated process.
 
-**Input file â€” `predictive-maintenance-workflow.json`.** Stages: `validate (maintenance-manager) â†’ decide (maintenance-manager) â†’ safety (safety-authority) â†’ schedule (capability maintenance.work.schedule) â†’ close (maintenance-manager)`.
+**Input file â€?`predictive-maintenance-workflow.json`.** Stages: `validate (maintenance-manager) â†?decide (maintenance-manager) â†?safety (safety-authority) â†?schedule (capability maintenance.work.schedule) â†?close (maintenance-manager)`.
 
-**CLI â€” validate and define.**
+**CLI â€?validate and define.**
 ```powershell
 rheo workflow validate predictive-maintenance-workflow.json
 rheo workflow define --file predictive-maintenance-workflow.json
 ```
 
-**Request â€” open an instance.**
+**Request â€?open an instance.**
 ```
-POST http://localhost:8083/api/v1/instances
+POST http://localhost:1876/api/v1/instances
 Body:
 {"workflow":"predictive-maintenance-to-work-order","project":"signal-pm-0001","actor":"maintenance-manager"}
 ```
 
 **What to notice.** The `schedule` stage is capability-gated; the workflow models validation, decision, and safety as explicit stages mirroring the adapter's gates.
 
-## Step 7 â€” Generate a maintenance plan (Orchadyn, optional)
+## Step 7 â€?Generate a maintenance plan (Orchadyn, optional)
 
 **Purpose.** Produce a verified recommendation. A plan is not an authorization.
 
-**Input file â€” `predictive-maintenance-plan.json`.** Goal `goal-pm-0001-safe`; catalog marks `cap-repair` as `intrusive: true, safetyRequired: true`; hard constraints for prediction-integrity and safety; delegation with `evidenceDuty: ["safety://pm-0001", "approval://pm-0001"]`.
+**Input file â€?`predictive-maintenance-plan.json`.** Goal `goal-pm-0001-safe`; catalog marks `cap-repair` as `intrusive: true, safetyRequired: true`; hard constraints for prediction-integrity and safety; delegation with `evidenceDuty: ["safety://pm-0001", "approval://pm-0001"]`.
 
 **Request.**
 ```
@@ -194,7 +194,7 @@ Body: (contents of predictive-maintenance-plan.json)
 
 **What to notice.** The plan's catalog encodes safety-required intrusive work, so even the recommendation respects the safety gate.
 
-## Step 8 â€” Schedule the work order and emit the value report
+## Step 8 â€?Schedule the work order and emit the value report
 
 **Purpose.** Create the approved, safety-reviewed work order and reconstruct the lifecycle from evidence.
 

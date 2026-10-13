@@ -1,6 +1,6 @@
 # Local-Binary Integration Outage Recovery Demo
 
-An outage on `partner-shipping` drives a governed recovery for in-flight work `work-0001`: case, outage context, **preserve-before-resume**, **verify-before-resume**, durable process, recovery plan, resume, and complete â€” with **no silent re-execution**. The demo runs against real local binaries plus the integration-domain reference adapter.
+An outage on `partner-shipping` drives a governed recovery for in-flight work `work-0001`: case, outage context, **preserve-before-resume**, **verify-before-resume**, durable process, recovery plan, resume, and complete â€?with **no silent re-execution**. The demo runs against real local binaries plus the integration-domain reference adapter.
 
 > **Detailed walkthrough:** for the exact request bodies, headers, expected responses, and per-step governance behavior, see the [Detailed Operations Guide](operations-guide.md).
 
@@ -16,14 +16,14 @@ The run script prints a **step-by-step business report** and a **Value & Effect 
 
 ## The Scenario In Business Terms
 
-1. **Open** â€” the integration owner opens a governed outage case.
-2. **Detect** â€” the outage and in-flight work are asserted with evidence.
-3. **Preserve gate** â€” resume before preservation is rejected.
-4. **Preserve** â€” the in-flight work is preserved under a durable reference.
-5. **Verify gate** â€” resume before verification is rejected; the integration is verified.
-6. **Process** â€” a durable recovery process is opened.
-7. **Plan** â€” a verified recovery plan is generated (recommendation only).
-8. **Resume and complete** â€” the work resumes, completes, and a repeat completion is rejected.
+1. **Open** â€?the integration owner opens a governed outage case.
+2. **Detect** â€?the outage and in-flight work are asserted with evidence.
+3. **Preserve gate** â€?resume before preservation is rejected.
+4. **Preserve** â€?the in-flight work is preserved under a durable reference.
+5. **Verify gate** â€?resume before verification is rejected; the integration is verified.
+6. **Process** â€?a durable recovery process is opened.
+7. **Plan** â€?a verified recovery plan is generated (recommendation only).
+8. **Resume and complete** â€?the work resumes, completes, and a repeat completion is rejected.
 
 ## What This Demo Does
 
@@ -61,13 +61,13 @@ Copy `local.env.ps1.example` to `local.env.ps1` and set your checkout root and c
 
 | Service | Local address | Health check |
 | --- | --- | --- |
-| Limenora Edge | `http://localhost:10255` | `GET /healthz` |
-| Ontovela | `http://localhost:8082` | `GET /healthz` |
-| Rheovela | `http://localhost:8083` | `GET /api/v1/health` |
-| Symbivela | `http://localhost:8080` | `GET /ready` |
-| Praxovela AXON Core | `http://127.0.0.1:8420` | `GET /health` |
+| Limenora Edge | `http://localhost:1896` | `GET /healthz` |
+| Ontovela | `http://localhost:1856` | `GET /healthz` |
+| Rheovela | `http://localhost:1876` | `GET /api/v1/health` |
+| Symbivela | `http://localhost:1926` | `GET /ready` |
+| Praxovela AXON Core | `http://127.0.0.1:1866` | `GET /health` |
 | Integration-domain adapter | `http://localhost:8096` | `GET /healthz` |
-| Moduregis | `http://localhost:8084` | `GET /v1/health` |
+| Moduregis | `http://localhost:1806` | `GET /v1/health` |
 | Orchadyn API (optional) | `http://localhost:1816` | `GET /healthz` |
 
 ## Run The Scenario

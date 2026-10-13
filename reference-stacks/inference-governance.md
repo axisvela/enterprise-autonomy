@@ -59,7 +59,7 @@ See the [value framework](../docs/example-value.md).
 
 ## Runnable Local Demo
 
-A runnable inference-governance demo is planned under [Phase 8 of the roadmap](../ROADMAP.md). Until it ships, run each product's own local binaries and follow the [detailed operating procedure](#detailed-operating-procedure) above.
+For verified local-binary startup commands, configuration, API requests, request bodies, and expected operational outputs, see the [local inference-governance demo](../examples/inference-governance-local/README.md) and its [Detailed Operations Guide](../examples/inference-governance-local/operations-guide.md), backed by the [inference-domain reference adapter](../adapters/inference-domain/API.md).
 
 ## Scope Boundary
 
