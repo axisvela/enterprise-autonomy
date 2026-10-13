@@ -1,5 +1,14 @@
 # FP-1 Federated Presentation E2E Implementation Plan
 
+> **Status (2026-10-13):** Parts A/B implemented and exercised against real
+> NOMIVELA/EIDOVELA/LIMENORA binaries (round 1 — see
+> `PRAXOVELA-EE/docs/assessments/2026-10-13-ecosystem-integration-e2e-report.md`).
+> Part C (PRAXOVELA production token source) is wired
+> (`AXON_LIMENORA_TOKEN_SOURCE=eidovela`). The remaining negatives (lifecycle
+> denial, outage, confinement, multi-replica replay, process-level federated
+> CONNECT) are tracked as LIMENORA Wave 12
+> (`LIMENORA/docs/superpowers/plans/2026-10-13-e2e-round2-exit-gates.md`).
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement the plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Ship a public, reproducible FP-1 federated-presentation end-to-end example (`enterprise-autonomy`) plus the production PRAXOVELA `AgentTokenSource` that presents the EIDOVELA-issued token as the LIMENORA agent credential.
