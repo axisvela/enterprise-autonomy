@@ -234,3 +234,11 @@ Known, still-open (tracked, not required for this acceptance):
 ```powershell
 Get-Process nomivela,eidovelad,limenora-server,axond -ErrorAction SilentlyContinue | Stop-Process -Force
 ```
+
+## 8. Related
+
+This runbook covers the enrollment chain. The full five-product acceptance
+(enrollment + LIMENORA→AEGIVELA decision + AEGIVELA→EIDOVELA federated agent
+resolution), with the cross-product fixes and contract conclusions, is recorded
+in the PRAXOVELA-EE assessment:
+`PRAXOVELA-EE/docs/assessments/2026-10-13-ecosystem-integration-e2e-report.md`.
