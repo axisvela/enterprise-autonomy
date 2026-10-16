@@ -9,7 +9,7 @@ Small validation and reporting utilities for the public examples.
 | [report-value.ps1](report-value.ps1) | Aggregates value reports (`.local-data/*-value-report.json`) into a summary table. | `0` (also succeeds when no reports exist) |
 | [run-demo-smoke.ps1](run-demo-smoke.ps1) | Smoke-tests every reference adapter end to end, covering each adapter's governance gates, denial paths, and idempotency. | `0` pass, `1` failure |
 | [version.ps1](version.ps1) | Reads, sets, or bumps the repository version in `VERSION`. | `0` success |
-| [check-release.ps1](check-release.ps1) | Decides whether a new tag/version is warranted after commits. | `0` no change, `1` new tag needed, `2` prepared and ready to tag |
+| [check-release.ps1](check-release.ps1) | Decides whether a new tag/version is warranted after commits. | `0` no change, `1` new tag needed (or `VERSION` already tagged), `2` prepared and ready to tag |
 | [install-hooks.ps1](install-hooks.ps1) | Installs the pre-commit hook (`.githooks/pre-commit`) via `core.hooksPath`. | `0` success |
 | [check-hooks.ps1](check-hooks.ps1) | Verifies the pre-commit hook is installed and active. | `0` active, `1` not installed |
 | [validate-demos.ps1](validate-demos.ps1) | Verifies demo structure (required files) and PowerShell syntax of all scripts. | `0` pass, `1` failure |
@@ -47,8 +47,8 @@ The repository version follows `major.minor.patch` and lives in the `VERSION` fi
 **Commit-time check.** After committing (or in CI), run `check-release.ps1`. It compares `HEAD` against the latest tag and reports:
 
 - `0` — no commits since the last tag; no new release needed.
-- `1` — commits exist; bump `VERSION`, add a `CHANGELOG.md` entry, then tag.
-- `2` — the new version is prepared; create and push the tag.
+- `1` — commits exist; bump `VERSION`, add a `CHANGELOG.md` entry, then tag. Also returned when the current `VERSION` is already tagged, so an already-released version is never re-released.
+- `2` — the new version is prepared and untagged; create and push the tag.
 
 Release flow:
 

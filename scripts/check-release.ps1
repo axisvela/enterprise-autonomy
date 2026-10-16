@@ -8,7 +8,9 @@ if (-not $Root) { $Root = Resolve-Path (Join-Path $PSScriptRoot "..") }
 # Exit codes:
 #   0 - no commits since the last tag (nothing to release)
 #   1 - commits exist since the last tag: a new version/tag is warranted
-#   2 - commits exist and VERSION/CHANGELOG are already prepared for the release
+#       (also returned when the current VERSION is already tagged, so the
+#        release workflow skips instead of failing verify-release)
+#   2 - commits exist, VERSION is untagged, and VERSION/CHANGELOG are prepared
 
 $git = "git"
 Push-Location $Root
@@ -33,14 +35,26 @@ try {
     $versionPrepared = ($content -match "##\s+$([regex]::Escape($version))\s*\(") -or ($content -match "##\s+Unreleased")
   }
 
+  # A version whose tag already exists has already been released; it is not a
+  # new release candidate even if commits have landed since.
+  $tagExists = $false
+  if ($version -match '^[0-9]+\.[0-9]+\.[0-9]+$') {
+    $tagExists = [bool](& $git rev-parse --verify -q "v$version" 2>$null)
+  }
+
   Write-Host "check-release: last tag       = $lastTag"
   Write-Host "check-release: commits since  = $count"
   Write-Host "check-release: VERSION        = $version"
+  Write-Host "check-release: tag exists     = $tagExists"
   Write-Host "check-release: changelog ready= $versionPrepared"
 
   if ($count -eq 0) {
     Write-Host "check-release: no commits since the last tag; no new release needed." -ForegroundColor Green
     exit 0
+  }
+  if ($tagExists) {
+    Write-Host "check-release: v$version is already tagged; bump VERSION for a new release." -ForegroundColor Yellow
+    exit 1
   }
   if ($versionPrepared) {
     Write-Host "check-release: $count commit(s) since $lastTag and $version is prepared. Tag and release." -ForegroundColor Green
