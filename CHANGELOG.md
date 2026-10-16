@@ -4,7 +4,7 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`. `1.0.0` is the first stable release of the public introduction and examples repository.
 
-## 1.1.10 (2026-08-16)
+## 1.1.11 (2026-10-16)
 
 - Added the inference-domain reference adapter (authorization-before-route, policy-based model/endpoint selection, grounding-cited answers, human review for high impact, immutable audit) with **governed inference** governance.
 - Added the runnable inference-governance local demo (`examples/inference-governance-local/`) with a 10-step lifecycle, `verify.ps1`, `run-all.ps1`, value report, and a detailed operations guide. **All thirteen previously-demo-less vertical slices now have runnable demos (fourteen slices, thirteen demos).**
@@ -12,8 +12,12 @@ Versioning: the current version lives in `VERSION`. Manage it with `scripts/vers
 - Cross-linked the inference demo from the inference-request-to-governed-answer slice, inference-governance stack, example index, demo matrix, getting-started, local run handbook, and roadmap, and marked the roadmap's Phase 8 inference-demo item complete.
 - Added a **port-migration status tracking** table to `docs/release-status.md` against the planned port allocation, completing the roadmap's final Phase 8 item.
 - Migrated the local demo stack onto the planned port allocation: Moduregis (`1806`), Orchadyn (`1816`), and Limenora edge (`1896`) ship those defaults, Symbivela v1.1.1 defaults to `1926` (`SYMBIVELA_ADDR`/`--addr`, frontend dev `1927`), and the demo stack now explicitly overrides Ontovela (`--addr :1856`), Rheovela (`--addr :1876`), and Praxovela (`AXON_PORT=1866`). All thirteen runnable demos call `localhost:1896/1856/1876/1926` and `127.0.0.1:1866`; no demo service occupies `8080`. Updated `docs/technical-catalog.md`, `docs/products/symbivela.md`, `docs/release-status.md` (port-migration table: Moduregis/Orchadyn/Limenora/Symbivela **default migrated**, Ontovela/Praxovela/Rheovela **demo-stack migrated**), `docs/port-migration.md`, and every `examples/*-local/` README, operations guide, scenario script, health check, and Praxovela `AXON_PORT`.
-- Refreshed the current-version references in `README.md`, `docs/release-status.md`, and `docs/demo-matrix.md` to the released 1.1.9.
 - Refreshed the Kinetovela and Harmovela local surfaces to match their product repositories: Kinetovela now ships multi-platform binaries (GitHub release v0.30.0: `kinetovela-api` plus adapter TCK/quickstart, multi-vendor-acceptance, and offline-autonomy tools), and Harmovela is protocol-first (daemon + CLI + TS/Python/Java equivalents, no compiled binary expected). Updated `docs/release-status.md`, `docs/products/kinetovela.md`, `docs/products/harmovela.md`, `docs/technical-catalog.md`, and closed the roadmap's Kinetovela/Harmovela maturity-tracking item.
+- Refreshed the current-version references in `README.md`, `docs/release-status.md`, and `docs/demo-matrix.md` to the released 1.1.10.
+
+## 1.1.10 (2026-08-16)
+
+- Refreshed the current-version references in `README.md`, `docs/release-status.md`, and `docs/demo-matrix.md` to the released 1.1.9.
 
 ## 1.1.9 (2026-08-16)
 
