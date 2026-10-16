@@ -1,70 +1,74 @@
-﻿# Run Records 鈥?鎸?case 璁板綍"鍝簺渚嬪瓙鐪熺殑璺戣繃"
+﻿# Run Records — 按 case 记录"哪些例子真的跑过"
 
-`docs/demo-matrix.md` 璇存槑鍝簺渚嬪瓙**鍙繍琛?*锛涙湰椤垫寜 case 璁板綍**瀹為檯鎵ц杩囦粈涔?*銆?瑙傛祴缁撴灉銆佽瘉鎹綅缃笌缁撹銆傝鍒欙細鍙繍琛?鈮?宸茶繍琛岋紱鎶ュ憡閫愬瓧寮曠敤锛涗笉寰楀紩鐢ㄧ鐩樹笂涓嶅瓨鍦ㄧ殑浜х墿銆?
-鐢熸垚鐗╃粺涓€鏀惧湪 `examples/_reports/`锛堜笅鍒掔嚎鍓嶇紑 = 鏈湴浜х墿锛屽凡 git-ignore锛?姝ゅ墠鍙?`examples/.stack/`锛岄殣钘忕洰褰?+ 鍚嶅瓧涓庡疄闄呭唴瀹逛笉绗︼紝鏁呮敼鍚嶏級銆?
----
+`docs/demo-matrix.md` 说明哪些例子**可运行**；本页按 case 记录**实际执行过什么**——观测结果、证据位置与结论。规则：可运行 ≠ 已运行；报告逐字引用；不得引用磁盘上不存在的产物。
 
-## Case R1 鈥?FP-1 鑱旈偊鍛堢幇锛坄agent-federated-presentation-local`锛?
-| 椤?| 鍐呭 |
-| --- | --- |
-| 鐘舵€?| 鉁?宸叉墽琛屽苟閫氳繃锛?/4锛?|
-| 杩愯鏃堕棿 | 2026-10-13 20:44锛坴alue report锛夛紡2026-10-14 09:08锛坙ive report锛夛紝鍐呭瀛楄妭鐩稿悓 |
-| 鐜 | 鏈湴 PostgreSQL `5433`銆丯OMIVELA `1956`銆丒IDOVELA `1966`銆丩IMENORA `1897`锛涚敱 `adapters/presentation-client` 椹卞姩 |
-| 缁撴灉 | FP-01 `200, proofs stripped`锛汧P-02 `407`锛汧P-05 `407`锛堥噸鏀捐鎷掞級锛汧P-07 鎷掔粷涓斾笂娓告湭瑙﹁揪 |
-| 璇佹嵁 | 鏈湴 `.local-data/fp1-{value,live}-report.json`锛坓it-ignore锛?|
-| 璁板綍 | [examples/agent-federated-presentation-local/RUN-RECORD.md](../examples/agent-federated-presentation-local/RUN-RECORD.md)锛堟寜 case 鍒嗚妭锛?|
-| 缁撹 | 璇佹槑"鍚堟硶鍑嵁+鍙岃瘉鏄庘啋涓婃父涓斿墺绂昏瘉鏄?涓庝笁鏉℃嫆缁濊矾寰勶紱涓嶅惈鍚婇攢 SLO銆佸閮?IdP銆佸け璐ョ煩闃?|
-
-## Case R2 鈥?涓氬姟 demo 姹囨€?dashboard锛坄scripts/report-value.ps1`锛?
-| 椤?| 鍐呭 |
-| --- | --- |
-| 鐘舵€?| 鈿狅笍 宸叉墽琛屼絾**鏃犵粨鏋?*锛堜笉绠楅€氳繃锛?|
-| 杩愯鏃堕棿 | 2026-10-12 19:29 |
-| 缁撴灉 | `examples/_reports/all-demos-report.json` 鍐呭涓?`{"generated_at":"鈥?,"demos":[]}` 鈥斺€?**demos 涓虹┖** |
-| 璁板綍 | 鏈〉 |
-| 缁撹 | 璇ユ姹囨€绘棦鏈€氳繃涔熸湭澶辫触浠讳綍 demo锛涘繀椤荤敱鍚庣画姹囨€昏繍琛屾浛鎹紝**涓嶅緱浣滀负璇佹嵁寮曠敤** |
-
-## Case R3 鈥?13 涓笟鍔?demo锛堝彲杩愯锛屼絾鏃犳墽琛岃褰曪級
-
-| 椤?| 鍐呭 |
-| --- | --- |
-| 鐘舵€?| 鉂?鏈伐浣滃尯**鏃犳墽琛岃瘉鎹?* |
-| 渚濇嵁 | [demo-matrix.md](demo-matrix.md) 涓瘡涓?demo 澹扮О浜у嚭 `*-value-report.json`锛屼絾纾佺洏涓婁笉瀛樺湪杩欎簺鎶ュ憡锛堜粎瀛樺湪 Case R1 鐨?FP-1 鎶ュ憡涓?Case R2 鐨勭┖ dashboard锛?|
-| 濡備綍鍙樻垚"鏈夎褰? | 閫愪釜杩愯 `run-all.ps1`锛堟垨鏁翠綋 `scripts/report-value.ps1`锛夛紝鎶婁骇鍑虹殑鎶ュ憡鎸?Case R1 鐨勬牸寮忚惤鎴愬悇渚嬪瓙鑷繁鐨?`RUN-RECORD.md`锛屽苟鍥炲埌鏈〉鍔犱竴琛?|
-| 缁撹 | 浠ｇ爜/閫傞厤鍣?鑴氭湰涓庤璁℃枃妗ｉ綈澶囷紝浣?璺戣繃"杩欎欢浜嬬洰鍓嶅彧鏄?*澹扮О** |
-
-## Case R4 鈥?R6 bridge 鏈湴 bring-up锛坄agent-workflow-bridge-local`锛屾柊澧烇級
-
-| 椤?| 鍐呭 |
-| --- | --- |
-| 鐘舵€?| 鉁?宸叉墽琛屽苟閫氳繃锛? 涓満鏅?case锛?|
-| 杩愯鏃堕棿 | 2026-10-16 |
-| 缁撴灉 | axond 鍚姩鏃ュ織鍑虹幇 `Orchestrator: Rheovela`锛堣琛屽彧鍦ㄧ湡瀹?AEGIVELA 鏂█璁よ瘉鎴愬姛鍚庢墦鍗帮級锛沗POST /v1/instances` 鈫?瀹炰緥 `active`锛沗GET /v1/instances/{id}` 鈫?`active`/`definition_id=expense`锛沗POST .../steps` 鈫?`ok`锛沗GET .../audit` 鈫?閫?|
-| 澶辫触/璐熷悜 | F1 SDK 缂烘潈濞佸ご鈫?01锛堝凡淇級銆丗2 鏂█ TTL 瓒呴檺鈫?00锛堝凡淇級銆丗3 `evidence_ref` 褰㈢姸锛堢粫琛岋級銆丗4 缂虹鎴封啋fail-closed銆丗5 health 200鈮犺璇侀€氳繃銆丗6 婕忚 env鈫?01銆丗7 鏃犲嚟璇佽繙绋嬬洃鍚鎷?|
-| 璁板綍 | [examples/agent-workflow-bridge-local/cases/](../examples/agent-workflow-bridge-local/cases/)锛坈ases 01鈥?5锛?|
+生成物统一放在 `examples/_reports/`（下划线前缀 = 本地产物，已 git-ignore）。此前的 `examples/.stack/` 是隐藏目录，且名字与实际内容不符，故改名。
 
 ---
 
-## Case R5 鈥?鎻掍欢婊氬姩鏇存柊涓庡洖婊氾紙`plugin-rolling-update-local`锛屾柊澧烇級
+## Case R1 — FP-1 联邦呈现（`agent-federated-presentation-local`）
 
-| 椤?| 鍐呭 |
+| 项 | 内容 |
 | --- | --- |
-| 鐘舵€?| 鉁?宸叉墽琛屽苟閫氳繃锛? 涓満鏅?case锛屽浠堕┍鍔級 |
-| 杩愯鏃堕棿 | 2026-10-15 / 2026-10-16 |
-| 缁撴灉 | promote+rollback锛坖ournal `SUCCESS` 浜嬪疄锛夈€乣Assembly.RollbackPlugin`锛堟仮澶嶅苟鍦ㄤ綅浠ｅ彲鍐嶆 invoke锛夈€佺敓浜х鐞嗗櫒鍙戝竷澶辫触鍥炴粴锛堝叡浜浠跺**涓や釜**绠＄悊鍣ㄦ柇瑷€锛夈€丄pply 鍙楃鍚岃〃銆侀儴缃茶繘绋嬬敓鍛藉懆鏈?E2E锛坰tep-01..13锛?|
-| 涓轰粈涔堟槸濂椾欢椹卞姩 | 娌荤悊 HTTP 闈粎鍦ㄨ閰嶆帶鍒堕潰鏃舵寕杞斤紝涓旂湡瀹炲寘闇€绛惧悕+artifact+淇′换鏍癸紱鑳藉姏鏈韩鍦ㄧ湡瀹?host/journal 涓嬪凡鍙畬鍏ㄨ鐩?|
-| 璁板綍 | [examples/plugin-rolling-update-local/](../examples/plugin-rolling-update-local/)锛坈ases 01鈥?4 + RUN-RECORD锛?|
+| 状态 | ✅ 已执行并通过（4/4） |
+| 运行时间 | 2026-10-13 20:44（value report）／2026-10-14 09:08（live report），两次产物内容字节相同 |
+| 环境 | 本地 PostgreSQL `5433`、NOMIVELA `1956`、EIDOVELA `1966`、LIMENORA `1897`；由 `adapters/presentation-client` 驱动 |
+| 结果 | FP-01 `200, proofs stripped`；FP-02 `407`；FP-05 `407`（重放被拒）；FP-07 拒绝且上游未触达 |
+| 证据 | 本地 `.local-data/fp1-{value,live}-report.json`（git-ignore） |
+| 记录 | [examples/agent-federated-presentation-local/RUN-RECORD.md](../examples/agent-federated-presentation-local/RUN-RECORD.md)（按 case 分节） |
+| 结论 | 证明"合法凭据 + 双证明 → 上游且剥离证据"与三条拒绝路径；不含吊销 SLO、外部 IdP、失败矩阵 |
+
+## Case R2 — 业务 demo 汇总 dashboard（`scripts/report-value.ps1`）
+
+| 项 | 内容 |
+| --- | --- |
+| 状态 | ⚠️ 已执行但**无结果**（不算通过） |
+| 运行时间 | 2026-10-12 19:29 |
+| 结果 | `examples/_reports/all-demos-report.json` 内容为 `{"generated_at":"…","demos":[]}` —— **demos 为空** |
+| 记录 | 本页 |
+| 结论 | 该次汇总既未通过也未失败任何 demo；必须由后续汇总运行替换，**不得作为证据引用** |
+
+## Case R3 — 13 个业务 demo（可运行，但无执行记录）
+
+| 项 | 内容 |
+| --- | --- |
+| 状态 | ❌ 本工作区**无执行证据** |
+| 依据 | [demo-matrix.md](demo-matrix.md) 中每个 demo 声称产出 `*-value-report.json`，但磁盘上不存在这些报告（仅存在 Case R1 的 FP-1 报告与 Case R2 的空 dashboard） |
+| 如何变成"有记录" | 逐个运行 `run-all.ps1`（或整体 `scripts/report-value.ps1`），把产出的报告按 Case R1 的格式落成各例子自己的 `RUN-RECORD.md`，并回到本页加一行 |
+| 结论 | 代码/适配器/脚本与设计文档齐备，但"跑过"这件事目前只是**声称** |
+
+## Case R4 — R6 bridge 本地 bring-up（`agent-workflow-bridge-local`，新增）
+
+| 项 | 内容 |
+| --- | --- |
+| 状态 | ✅ 已执行并通过（5 个场景/case） |
+| 运行时间 | 2026-10-16 |
+| 结果 | axond 启动日志出现 `Orchestrator: Rheovela`（该行只在真实 AEGIVELA 断言认证成功后打印）；`POST /v1/instances` → 实例 `active`；`GET /v1/instances/{id}` → `active`/`definition_id=expense`；`POST .../steps` → `ok`；`GET .../audit` → 通 |
+| 失败/负向 | F1 SDK 缺权威头→401（已修）、F2 断言 TTL 超限→400（已修）、F3 `evidence_ref` 形状（绕行）、F4 缺租约→fail-closed、F5 health 200≠认证通过、F6 漏设 env→401、F7 无凭据远程监听被拒 |
+| 记录 | [examples/agent-workflow-bridge-local/cases/](../examples/agent-workflow-bridge-local/cases/)（cases 01–05） |
 
 ---
 
-## Case R6 鈥?韬唤涓庤鑹插垽瀹氾紙`identity-auth-local`锛屾柊澧烇級
+## Case R5 — 插件滚动更新与回滚（`plugin-rolling-update-local`，新增）
 
-| 椤?| 鍐呭 |
+| 项 | 内容 |
 | --- | --- |
-| 鐘舵€?| 鉁?宸叉墽琛屽苟閫氳繃锛? 涓満鏅?case锛屽浠堕┍鍔級 |
-| 杩愯鏃堕棿 | 2026-10-16 |
-| 缁撴灉 | 鏃?閿欏嚟璇?`401`銆佹湰鍦板洖閫€鍙粰鏈€浣庤鑹层€佸鎵圭己鍐崇瓥 `400`锛堜笉榛樿鎵瑰噯锛夈€佹彃浠?toggle 鐣稿舰 body `400`銆佽鑹插眰绾т笌绌?鏈煡瑙掕壊鎷掔粷銆佽法绉熸埛 `404`銆?*杩滅▼鏃犲嚟璇佹嫆缁濆惎鍔?* |
-| 璁板綍 | [examples/identity-auth-local/](../examples/identity-auth-local/)锛坈ases 01鈥?3 + RUN-RECORD锛?|
+| 状态 | ✅ 已执行并通过（4 个场景/case，套件驱动） |
+| 运行时间 | 2026-10-15 / 2026-10-16 |
+| 结果 | promote+rollback（journal `SUCCESS` 事实）、`Assembly.RollbackPlugin`（恢复并原位可再次 invoke）、生产管理器发布失败回滚（共享套件对**两个**管理器断言）、Apply 受管同表、部署进程生命周期 E2E（step-01..13） |
+| 为什么是套件驱动 | 治理 HTTP 面仅在装配控制面时挂载，且真实包需签名 + artifact + 信任根；能力本身在真实 host/journal 下已可完全覆盖 |
+| 记录 | [examples/plugin-rolling-update-local/](../examples/plugin-rolling-update-local/)（cases 01–04 + RUN-RECORD） |
+
+---
+
+## Case R6 — 身份与角色判定（`identity-auth-local`，新增）
+
+| 项 | 内容 |
+| --- | --- |
+| 状态 | ✅ 已执行并通过（3 个场景/case，套件驱动） |
+| 运行时间 | 2026-10-16 |
+| 结果 | 无/错凭据 `401`、本地回退只给最低角色、审批缺决策 `400`（不默认批准）、插件 toggle 畸形 body `400`、角色层级与空/未知角色拒绝、跨租户 `404`、**远程无凭据拒绝启动** |
+| 记录 | [examples/identity-auth-local/](../examples/identity-auth-local/)（cases 01–03 + RUN-RECORD） |
 
 ---
 
