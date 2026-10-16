@@ -51,6 +51,18 @@
 
 ---
 
+## Case R5 — 插件滚动更新与回滚（`plugin-rolling-update-local`，新增）
+
+| 项 | 内容 |
+| --- | --- |
+| 状态 | ✅ 已执行并通过（4 个场景 case，套件驱动） |
+| 运行时间 | 2026-10-15 / 2026-10-16 |
+| 结果 | promote+rollback（journal `SUCCESS` 事实）、`Assembly.RollbackPlugin`（恢复并在位代可再次 invoke）、生产管理器发布失败回滚（共享套件对**两个**管理器断言）、Apply 受管同表、部署进程生命周期 E2E（step-01..13） |
+| 为什么是套件驱动 | 治理 HTTP 面仅在装配控制面时挂载，且真实包需签名+artifact+信任根；能力本身在真实 host/journal 下已可完全覆盖 |
+| 记录 | [examples/plugin-rolling-update-local/](../examples/plugin-rolling-update-local/)（cases 01–04 + RUN-RECORD） |
+
+---
+
 ## 如何记录新运行（规范）
 
 1. 运行例子（`run-all.ps1`）或汇总（`scripts/report-value.ps1`）。
