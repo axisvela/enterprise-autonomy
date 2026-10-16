@@ -1,0 +1,6 @@
+# agent-workflow-bridge-local local state
+
+# Dev keys, database dumps, logs and pid files produced by the launcher.
+.local-data/
+.local-logs/
+local.env.ps1
