@@ -28,14 +28,15 @@
 | 记录 | 本页 |
 | 结论 | 该次汇总既未通过也未失败任何 demo；必须由后续汇总运行替换，**不得作为证据引用** |
 
-## Case R3 — 13 个业务 demo（可运行，但无执行记录）
+## Case R3 — 13 个业务 demo（可运行；**1/13 已跑通**）
 
 | 项 | 内容 |
 | --- | --- |
-| 状态 | ❌ 本工作区**无执行证据** |
-| 依据 | [demo-matrix.md](demo-matrix.md) 中每个 demo 声称产出 `*-value-report.json`，但磁盘上不存在这些报告（仅存在 Case R1 的 FP-1 报告与 Case R2 的空 dashboard） |
-| 如何变成"有记录" | 逐个运行 `run-all.ps1`（或整体 `scripts/report-value.ps1`），把产出的报告按 Case R1 的格式落成各例子自己的 `RUN-RECORD.md`，并回到本页加一行 |
-| 结论 | 代码/适配器/脚本与设计文档齐备，但"跑过"这件事目前只是**声称** |
+| 状态 | 🟡 **1/13 已跑通**（其余仍无执行证据） |
+| 已跑通（2026-10-16） | **`order-fulfillment-local`** —— `run-all.ps1` 端到端 **VERIFY OK（11/11）**，见 [examples/order-fulfillment-local/RUN-RECORD.md](../examples/order-fulfillment-local/RUN-RECORD.md) |
+| 其余依据 | [demo-matrix.md](demo-matrix.md) 中其余 demo 声称产出 `*-value-report.json`，但磁盘上不存在这些报告 |
+| 如何补齐其余 | 逐个运行 `run-all.ps1`，把产出的报告按 Case R1 的格式落成各例子自己的 `RUN-RECORD.md`，并回到本页加一行 |
+| 结论 | 已有 1 个业务 demo 有真实、可审计的执行记录；其余 12 个仍为"可运行但无执行记录" |
 
 ## Case R4 — R6 bridge 本地 bring-up（`agent-workflow-bridge-local`，新增）
 
@@ -93,6 +94,7 @@
 | 残留清理 | 已停止本次留下的 `limenora-edge` 进程（pid 24176），无残留监听 |
 | 准备条件 | 按各 demo 的 `operations-guide.md` / `start-services.ps1` 先构建所需服务二进制（Ontovela、Rheovela、Symbivela、Moduregis、Praxovela AXON，可选 Orchadyn），并配好 `local.env.ps1` |
 | 影响 | 13 个业务 demo 仍为"**可运行但无执行记录**"（见本页 Case R3） |
+| 后续（2026-10-16） | 同日该 demo 已**跑通**（VERIFY OK 11/11）。根因：`$AxisRoboHome` 布局不匹配（仓库在 `axis-vela\` 下）+ 缺 PG 库 `symbivela`/`orchadyn`/`moduregis` + 两处脚本 bug（Rheovela workflow 发布到错误库、verify 的 PS5.1 `.Count`）。见 [examples/order-fulfillment-local/RUN-RECORD.md](../examples/order-fulfillment-local/RUN-RECORD.md) |
 
 ---
 

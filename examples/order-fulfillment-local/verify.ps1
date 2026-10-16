@@ -25,8 +25,8 @@ Assert-True ($report.kpis.products_involved -ge 6) "at least 6 products involved
 Assert-True ($report.kpis.gates_passed -ge 1) "at least one human gate passed"
 Assert-True ($report.kpis.evidence_artifacts -ge 6) "at least 6 evidence artifacts recorded"
 Assert-True ($report.kpis.steps_completed -ge 8) "all 8 business steps completed"
-Assert-True (($report.evidence | Where-Object { $_.state -eq "denied" }).Count -ge 1) "governance-denial evidence is present"
-Assert-True (($report.gates | Where-Object { $_.gate -eq "action-approved" }).Count -eq 1) "action-approved gate recorded"
+Assert-True (@($report.evidence | Where-Object { $_.state -eq "denied" }).Count -ge 1) "governance-denial evidence is present"
+Assert-True (@($report.gates | Where-Object { $_.gate -eq "action-approved" }).Count -eq 1) "action-approved gate recorded"
 Assert-True ($outcome.notifications.Count -ge 1) "pending customer notification recorded"
 
 Write-Host ""

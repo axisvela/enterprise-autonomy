@@ -55,6 +55,9 @@ if ($OrchadynBinary) {
 $rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "order-exception.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "order-exception.json") | Out-Null
+# The `rheo` CLI defines into its own local store, not the running server's --db, so
+# publish the definition to the server as well: the process instance below is created there.
+Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/workflows" -ContentType "application/json" -Body (Get-Content -Raw (Join-Path $PSScriptRoot "order-exception.json")) | Out-Null
 $process = @{ workflow = "order-exception"; project = "order-123"; actor = $Actor } | ConvertTo-Json
 $instance = Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/instances" -ContentType "application/json" -Body $process
 $evidence += @{ product = "rheovela"; artifact = $instance.id; state = "open" }
