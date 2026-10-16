@@ -63,6 +63,27 @@
 
 ---
 
+## Case R6 — 身份与角色判定（`identity-auth-local`，新增）
+
+| 项 | 内容 |
+| --- | --- |
+| 状态 | ✅ 已执行并通过（3 个场景 case，套件驱动） |
+| 运行时间 | 2026-10-16 |
+| 结果 | 无/错凭证 `401`、本地回退只给最低角色、审批缺决策 `400`（不默认批准）、插件 toggle 畸形 body `400`、角色层级与空/未知角色拒绝、跨租户 `404`、**远程无凭证拒绝启动** |
+| 记录 | [examples/identity-auth-local/](../examples/identity-auth-local/)（cases 01–03 + RUN-RECORD） |
+
+---
+
+## Case R7 — 负载矩阵（`praxovela-e2e`，**未执行**）
+
+| 项 | 内容 |
+| --- | --- |
+| 状态 | ❌ 未执行（门槛与跑法已定义） |
+| 门槛 | 1/8/32 并发档、每档 ≥20 样本、每档 p99 < 5s、报告 workload/load/sample count |
+| 记录 | [demo-repository/praxovela-e2e/LOAD-MATRIX.md](../../demo-repository/praxovela-e2e/LOAD-MATRIX.md)（Case C7） |
+
+---
+
 ## 如何记录新运行（规范）
 
 1. 运行例子（`run-all.ps1`）或汇总（`scripts/report-value.ps1`）。
