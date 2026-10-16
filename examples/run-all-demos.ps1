@@ -108,7 +108,7 @@ foreach ($demo in $demos) {
     }
   }
 }
-$stackDir = Join-Path $PSScriptRoot ".stack"
+$stackDir = Join-Path $PSScriptRoot "_reports"
 New-Item -ItemType Directory -Force -Path $stackDir | Out-Null
 $dashboard | ConvertTo-Json -Depth 6 | Set-Content (Join-Path $stackDir "all-demos-report.json")
 
@@ -117,7 +117,7 @@ Write-Host "================ Demo Summary ================" -ForegroundColor Cya
 $results | Format-Table -AutoSize | Out-String | Write-Host
 Write-Host "=============================================="
 if ($dashboard.demos.Count -gt 0) {
-  Write-Host "Combined value dashboard written to examples\.stack\all-demos-report.json" -ForegroundColor Green
+  Write-Host "Combined value dashboard written to examples\_reports\all-demos-report.json" -ForegroundColor Green
 }
 
 if ($anyFailure) {

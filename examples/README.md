@@ -46,7 +46,7 @@ Runnable demos execute against real local product binaries and produce observabl
 Then aggregate the value reports:
 
 ```powershell
-..\scripts\report-value.ps1        # dashboard -> .stack\all-demos-report.json
+..\scripts\report-value.ps1        # dashboard -> _reports\all-demos-report.json
 ```
 
 See the [local run handbook](local-run-handbook.md) for startup and troubleshooting guidance.

@@ -10,7 +10,7 @@ After running the demos (`. \examples\run-all-demos.ps1`), run:
 .\scripts\report-value.ps1
 ```
 
-This prints a table per demo and writes the combined dashboard to `examples\.stack\all-demos-report.json`:
+This prints a table per demo and writes the combined dashboard to `examples\_reports\all-demos-report.json`:
 
 | Column | Meaning |
 | --- | --- |
@@ -30,6 +30,6 @@ Each row is the **effect** of one demo: how many products composed the outcome, 
 
 ## CI And Automation
 
-The dashboard file is gitignored (`.stack/`). CI runs the same checks as the [local tooling](../scripts/README.md) without requiring a database; the full dashboards are produced by running the demos locally.
+The dashboard file is gitignored (`_reports/`, generated output). CI runs the same checks as the [local tooling](../scripts/README.md) without requiring a database; the full dashboards are produced by running the demos locally.
 
 See the [value framework](example-value.md) and the [value report template](../examples/value-report-template.md).

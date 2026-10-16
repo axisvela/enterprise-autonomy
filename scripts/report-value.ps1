@@ -3,7 +3,7 @@ param(
 )
 
 # Aggregates all runnable demo value reports into a dashboard table and a
-# combined JSON file at examples\.stack\all-demos-report.json.
+# combined JSON file at examples\_reports\all-demos-report.json.
 
 $demoDirs = @("order-fulfillment-local", "procurement-local", "customer-case-local", "recruitment-local", "predictive-maintenance-local", "integration-recovery-local", "simulation-validation-local", "compliance-audit-local", "fleet-mission-local", "process-to-outcome-local", "innovation-sandbox-local", "deployment-local", "inference-governance-local")
 $reports = @()
@@ -37,9 +37,9 @@ Write-Host "================ Example Value Dashboard ================" -Foregrou
 $reports | Format-Table Demo, Example, Outcome, Products, Gates, Evidence, Steps, TimeSeconds, Completed -AutoSize | Out-String | Write-Host
 Write-Host "=========================================================="
 
-$stackDir = Join-Path $ExamplesDir ".stack"
+$stackDir = Join-Path $ExamplesDir "_reports"
 New-Item -ItemType Directory -Force -Path $stackDir | Out-Null
 $dashboard = @{ generated_at = (Get-Date).ToString("o"); demos = $reports }
 $dashboard | ConvertTo-Json -Depth 6 | Set-Content (Join-Path $stackDir "all-demos-report.json")
 Write-Host "report-value: aggregated $($reports.Count) value report(s)." -ForegroundColor Green
-Write-Host "Combined dashboard: examples\.stack\all-demos-report.json" -ForegroundColor Green
+Write-Host "Combined dashboard: examples\_reports\all-demos-report.json" -ForegroundColor Green
