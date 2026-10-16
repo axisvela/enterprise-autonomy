@@ -2,6 +2,10 @@
 
 Thirteen of the fourteen vertical slices have runnable local demos. Each demo drives real local product binaries plus one reference adapter, and produces a machine-readable value report.
 
+> **Runnable ≠ run.** This page says which demos *can* run. For which demos have
+> actually been executed (and with what result, or no result), see
+> [run-records.md](run-records.md).
+
 ## Full Matrix
 
 | # | Demo | Slice | Adapter (port) | Governance flavor | Value report | Operations guide |
