@@ -27,10 +27,13 @@ jobs:
       - name: Create tag and release when prepared
         shell: powershell
         run: |
-          # 0 = no changes since last tag; 1 = changes exist, not prepared;
-          # 2 = prepared (VERSION bumped + CHANGELOG section) -> release.
+          # 0 = no changes since last tag; 1 = changes exist, not prepared (or
+          # VERSION already tagged); 2 = prepared (VERSION bumped + CHANGELOG
+          # section) -> release. Only an attempted release may fail the job;
+          # "nothing to release" (0 or 1) exits 0 so the run stays green.
           .\scripts\check-release.ps1
-          if ($LASTEXITCODE -eq 2) {
+          $code = $LASTEXITCODE
+          if ($code -eq 2) {
             .\scripts\verify-release.ps1
             if ($LASTEXITCODE -ne 0) { Write-Host "release: verify-release blocked the release"; exit 1 }
             $v = (.\scripts\version.ps1 get).Trim()
@@ -45,5 +48,6 @@ jobs:
             if ($LASTEXITCODE -ne 0) { exit 1 }
             Write-Host "release: created tag and release v$v"
           } else {
-            Write-Host "release: no prepared release (check-release exit $LASTEXITCODE)"
+            Write-Host "release: no prepared release (check-release exit $code)"
           }
+          exit 0
