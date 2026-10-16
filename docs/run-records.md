@@ -68,13 +68,15 @@
 
 ---
 
-## Case R7 — 负载矩阵（`praxovela-e2e`，**未执行**）
+## Case R7 — 负载矩阵（`praxovela-e2e`，**已执行 2026-10-16，PASS**）
 
 | 项 | 内容 |
 | --- | --- |
-| 状态 | 未执行（门槛与跑法已定义） |
-| 门槛 | 1/8/32 并发档、每档 ≥20 样本、每档 p99 < 5s、报告 workload/load/sample count |
-| 记录 | [demo-repository/praxovela-e2e/LOAD-MATRIX.md](../../demo-repository/praxovela-e2e/LOAD-MATRIX.md)（Case C7） |
+| 状态 | ✅ 已执行并通过（共享栈 + N 路并发驱动器；一次启动 AEGIVELA+LIMENORA+PG） |
+| 运行时间 | 2026-10-16 |
+| 结果 | 档 1/8/32 × 每档 20 回合（20/160/640 样本）：p99 **17.1 / 17.4 / 262.8 ms**、max 451 ms、0 错误/超时、continuation 覆盖 20/20·160/160·640/640；每档 **PASS（p99 < 5s）** |
+| 门槛 | 1/8/32 并发档、每档 ≥20 回合、每档 p99 < 5s、报告 workload/load/sample count |
+| 证据 | [报告](../../demo-repository/praxovela-e2e/_reports/c7-load-matrix-20261016-212009.json) · [门槛与跑法](../../demo-repository/praxovela-e2e/LOAD-MATRIX.md)（Case C7） |
 
 ---
 
