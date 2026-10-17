@@ -16,7 +16,7 @@ Run **2026-10-17** against the deployed stack (axond bridge → `adapters/rheove
 | `claim → complete` | item `done` |
 | `claim → fail` (attempts < max) | item `ready`, `attempts=1`; **reclaim succeeds** → `complete` → `done` |
 | `max_attempts=1`: `claim → fail` | item `failed`; reclaim = **409 not claimable** (terminal) |
-| `POST /api/v1/work-items/{id}/cancel` (Rheovela) | item `cancelled` |
+| `POST /v1/work-items/{id}/cancel` (axond bridge) | item `cancelled` |
 
 `fault-injection-report.json` records `retry_supported=true`.
 
@@ -28,9 +28,9 @@ Run **2026-10-17** against the deployed stack (axond bridge → `adapters/rheove
   (`max_attempts` defaults to 3; set per item).
 - `CancelWorkItem` terminates a `ready`/`claimed`/`failed` item as `cancelled`
   and releases its lease.
-- The axond bridge exposes `claim`/`heartbeat`/`complete`/`fail`. The **cancel**
-  operation exists on Rheovela's API but is **not yet proxied by axond** — a
-  small remaining exposure. Compensation stays a separate process concern.
+- The axond bridge proxies `claim`/`heartbeat`/`complete`/`fail` **and now
+  `cancel`** (SDK → adapter → Rheovela). Compensation stays a separate process
+  concern, not a work-item primitive.
 
 ## Reproduce
 

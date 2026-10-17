@@ -78,6 +78,17 @@ try { Post "/v1/work-items/$ex/claim" @{ lease = '30s' } | Out-Null } catch { $e
 $report.exhausted = @{ work_item = $ex; final_state = $exState; reclaimable = $exReclaimable; reclaim_error = $exErr }
 Write-Output ("[fault-injection] exhausted: final_state={0} reclaimable={1}" -f $exState, $exReclaimable)
 
+# --- 4. cancel via the bridge ----------------------------------------------
+$cx = "wi-cancel-" + [guid]::NewGuid().ToString("N").Substring(0, 8)
+Seed $cx $iid
+$c4 = Post "/v1/work-items/$cx/claim" @{ lease = '30s' }
+Post "/v1/work-items/$cx/cancel" @{} | Out-Null
+$cxState = DbState $cx
+$cxReclaimable = $true
+try { Post "/v1/work-items/$cx/claim" @{ lease = '30s' } | Out-Null } catch { $cxReclaimable = $false }
+$report.cancelled = @{ work_item = $cx; final_state = $cxState; reclaimable = $cxReclaimable }
+Write-Output ("[fault-injection] cancel: final_state={0} reclaimable={1}" -f $cxState, $cxReclaimable)
+
 $out = Join-Path $PSScriptRoot ".local-data\fault-injection-report.json"
 $report | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 $out
 Write-Output "[fault-injection] report: $out"

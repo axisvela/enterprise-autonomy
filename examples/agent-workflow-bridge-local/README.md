@@ -53,10 +53,9 @@ cases/01..06                 # 场景化记录
 
 覆盖：bridge → SDK 适配器 → Rheovela，认证走**真实 AEGIVELA 断言**，含 open/get/step/audit；
 部署态 work-item 的 **claim→complete 闭环**与**重试策略**（`fail` 在 `attempts < max_attempts`
-时回队，达上限终态 `failed`；2026-10-17 部署验证，Case 06）；Rheovela 侧 **cancel**
-（store + `POST /api/v1/work-items/{id}/cancel`）。
+时回队，达上限终态 `failed`；2026-10-17 部署验证，Case 06）；**cancel 已经 axond bridge 代理**
+（SDK → adapter → Rheovela `POST /api/v1/work-items/{id}/cancel`）。
 
-剩余：**cancel 尚未经 axond bridge 暴露**（Rheovela API 已有）；compensation 仍属流程/补偿域，
-不在 work-item 原语内。
+剩余：compensation 仍属流程/补偿域，不在 work-item 原语内。
 
 本目录只含**本机开发**配置；密钥、数据库、工作流都是本地产物，保存在 `.local-data/`（已 git-ignore）。
