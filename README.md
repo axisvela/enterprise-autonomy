@@ -25,6 +25,7 @@ Architecture, contracts, schemas, profiles, conformance, governance, internal pl
 | Path | Purpose |
 | --- | --- |
 | `docs/products.md` | Public overview of the ecosystem products. |
+| `docs/product-maturity-assessment.md` | Product maturity tiers and 3.0 integration sequencing. |
 | `docs/products/` | Per-product public overview pages. |
 | `docs/demo-matrix.md` | Comparison of all thirteen runnable demos. |
 | `examples/` | Public, illustrative end-to-end scenarios and local runnable demos. |
@@ -111,7 +112,7 @@ Thirteen of the fourteen vertical slices have runnable local demos. Each demo dr
 
 ## Status
 
-**Stable 1.x release series** (current: 1.1.11). Fourteen vertical slices describe end-to-end scenarios; thirteen have runnable local demos, backed by fourteen reference adapters with Go unit tests, continuous integration, structural validation, and an automated release workflow that publishes a tag and GitHub Release for every prepared version. Public content is maintained in this repository; governance-pattern knowledge and internal material live in the private `enterprise-autonomy-ee` repository. See the [repository roadmap](ROADMAP.md) and [release status](docs/release-status.md).
+**Stable 1.x release series** (current: 1.1.12). Fourteen vertical slices describe end-to-end scenarios; thirteen have runnable local demos, backed by fourteen reference adapters with Go unit tests, continuous integration, structural validation, and an automated release workflow that publishes a tag and GitHub Release for every prepared version. Public content is maintained in this repository; governance-pattern knowledge and internal material live in the private `enterprise-autonomy-ee` repository. See the [repository roadmap](ROADMAP.md) and [release status](docs/release-status.md).
 
 ## Releases
 
