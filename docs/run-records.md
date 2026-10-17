@@ -1,4 +1,4 @@
-﻿# Run Records — 按 case 记录"哪些例子真的跑过"
+# Run Records — 按 case 记录"哪些例子真的跑过"
 
 `docs/demo-matrix.md` 说明哪些例子**可运行**；本页按 case 记录**实际执行过什么**——观测结果、证据位置与结论。规则：可运行 ≠ 已运行；报告逐字引用；不得引用磁盘上不存在的产物。
 
@@ -83,6 +83,19 @@
 | 结果 | 档 1/8/32 × 每档 20 回合（20/160/640 样本）：p99 **17.1 / 17.4 / 262.8 ms**、max 451 ms、0 错误/超时、continuation 覆盖 20/20·160/160·640/640；每档 **PASS（p99 < 5s）** |
 | 门槛 | 1/8/32 并发档、每档 ≥20 回合、每档 p99 < 5s、报告 workload/load/sample count |
 | 证据 | [报告](../../demo-repository/praxovela-e2e/_reports/c7-load-matrix-20261016-212009.json) · [门槛与跑法](../../demo-repository/praxovela-e2e/LOAD-MATRIX.md)（Case C7） |
+
+---
+
+## Case R8 — Provider 宕机负载矩阵（`praxovela-e2e`，**已执行 2026-10-17，PASS**）
+
+| 项 | 内容 |
+| --- | --- |
+| 状态 | ✅ 已执行并通过（共享栈 + 独立 `outage-driver`；LIMENORA 全程不重启） |
+| 运行时间 | 2026-10-17 |
+| 场景 | 每档 1/8/32 路并发 CONNECT，全部 lane 到达 `200` 基线后杀掉 AEGIVELA；20s 宕机窗口；重启并 `/healthz` 200 后进入 10s 恢复窗口 |
+| 结果 | 三档均 0 次放行（无 `200`）；全部 lane 在窗口内拿到 `502` fail-closed，p99 **24.6 / 30.4 / 73.5 ms**；恢复 p99 **56.8 / 434.7 / 3588.3 ms**；0 failures — 每档 **PASS** |
+| 门槛 | 宕机期间零 `200`；5s 内确定性非 `200`；`/healthz` 恢复后 10s 内全部 lane 回到 `200` |
+| 证据 | [报告](../../demo-repository/praxovela-e2e/_reports/c8-provider-outage-20261017-134438.json) · [跑法](../../demo-repository/praxovela-e2e/STEPS.md)（`provider-outage-load.ps1`） |
 
 ---
 
