@@ -16,13 +16,17 @@ function Wait-Http($url, $seconds = 30) {
   return $false
 }
 
-function Start-Logged($file, $args, $extraEnv) {
+function Start-Logged($file, $argList, $extraEnv) {
   $name = [IO.Path]::GetFileNameWithoutExtension($file)
   $out = Join-Path $logDir "$name.out.log"
   $err = Join-Path $logDir "$name.err.log"
   # Start-Process inherits this session's environment; the caller sets $env:* first.
-  $p = Start-Process -FilePath $file -ArgumentList $args -PassThru `
-        -RedirectStandardOutput $out -RedirectStandardError $err
+  # NOTE: do not name this parameter $args — that is PowerShell's automatic
+  # variable and the argv would be dropped (the process then prints help).
+  # PS 5.1 also rejects an empty -ArgumentList, so only pass it when non-empty.
+  $params = @{ FilePath = $file; PassThru = $true; RedirectStandardOutput = $out; RedirectStandardError = $err }
+  if ($argList) { $params.ArgumentList = $argList }
+  $p = Start-Process @params
   Set-Content -Path (Join-Path $dataDir "$name.pid") -Value $p.Id
   return $p
 }
@@ -42,10 +46,17 @@ if (-not $migrate -and -not $psql) {
   throw "Neither 'migrate' nor 'psql' is on PATH. Apply $env:AEGIVELA_DIR\backend\deploy\postgres\migrations to '$db' first (the schema needs CREATE EXTENSION age)."
 }
 if ($psql) {
-  & psql $env:FP1_ADMIN_DSN -c "CREATE DATABASE $db" 2>$null | Out-Null
-  & psql ("postgres://postgres:postgres@localhost:5432/$db?sslmode=disable") -c "CREATE EXTENSION IF NOT EXISTS age" | Out-Null
+  # Expected "already exists" notices go to stderr; under
+  # $ErrorActionPreference=Stop PS 5.1 turns native stderr into a terminating
+  # error, so run these best-effort calls with Continue.
+  $prevEap = $ErrorActionPreference
+  $ErrorActionPreference = "Continue"
+  try {
+    & psql $env:FP1_ADMIN_DSN -c "CREATE DATABASE $db" 2>$null | Out-Null
+    & psql ("postgres://postgres:postgres@localhost:5432/${db}?sslmode=disable") -c "CREATE EXTENSION IF NOT EXISTS age" 2>$null | Out-Null
+  } finally { $ErrorActionPreference = $prevEap }
 }
-$dbURL = "postgres://postgres:postgres@localhost:5432/$db?sslmode=disable"
+$dbURL = "postgres://postgres:postgres@localhost:5432/${db}?sslmode=disable"
 if ($migrate) {
   & migrate -path (Join-Path $env:AEGIVELA_DIR "backend\deploy\postgres\migrations") -database $dbURL up
 } else {
@@ -67,6 +78,8 @@ $env:AEGIVELA_WORKLOAD_ASSERTION_KEY_ID           = "dev-workload-assertion"
 $env:AEGIVELA_WORKLOAD_ASSERTION_ISSUER           = $env:AEGIVELA_ISSUER
 
 $aegivelaBin = Join-Path $env:AEGIVELA_DIR "bin\aegivela-api"
+# Windows builds carry a .exe suffix; PS cannot activate an extensionless PE.
+if (Test-Path "$aegivelaBin.exe") { $aegivelaBin = "$aegivelaBin.exe" }
 if (-not (Test-Path $aegivelaBin)) { throw "AEGIVELA binary not found: $aegivelaBin (build cmd/aegivela-api)" }
 $aegivela = Start-Logged $aegivelaBin @() $null
 if (-not (Wait-Http "http://127.0.0.1:1886/healthz")) { throw "AEGIVELA did not become healthy; see .local-logs" }
@@ -97,8 +110,12 @@ Write-Output "[start-services] workload binding $($binding.BindingID)"
 $env:RHEO_AUTH_JWKS     = 'http://127.0.0.1:1886/v1/workload-assertions/jwks'
 $env:RHEO_AUTH_ISSUER   = $env:AEGIVELA_ISSUER
 $env:RHEO_AUTH_AUDIENCE = $env:RHEOVELA_AUDIENCE
-$rheoBin = Get-ChildItem (Join-Path $env:RHEOVELA_DIR "dist") -Filter "rheo*" |
+$rheoBin = Get-ChildItem (Join-Path $env:RHEOVELA_DIR "dist") -Filter "rheo-windows-amd64*" |
   Where-Object { $_.Name -notmatch 'SHA256' } | Select-Object -First 1 -ExpandProperty FullName
+if (-not $rheoBin) {
+  $rheoBin = Get-ChildItem (Join-Path $env:RHEOVELA_DIR "dist") -Filter "rheo*" |
+    Where-Object { $_.Name -notmatch 'SHA256' } | Select-Object -First 1 -ExpandProperty FullName
+}
 if (-not $rheoBin) { throw "No rheo binary under $env:RHEOVELA_DIR\dist" }
 $rheo = Start-Logged $rheoBin @('serve', '--addr', $env:RHEOVELA_ADDR, '--db', (Join-Path $dataDir 'rheo.db')) $null
 if (-not (Wait-Http "http://127.0.0.1:8080/api/v1/health")) { throw "Rheovela did not become healthy; see .local-logs" }

@@ -19,6 +19,7 @@ axond bridge (/v1/instances, /v1/work-items)
 | [03](cases/03-rheovela-jwks.md) | Rheovela 用 AEGIVELA JWKS 校验断言并发布工作流 | ✅ 通过 |
 | [04](cases/04-bridge-e2e.md) | axond bridge 部署态 E2E（open/get/step/audit） | ✅ 通过 |
 | [05](cases/05-failure-cases.md) | 失败/负向场景 F1–F7（含 2 个跨仓缺陷、2 个排查陷阱） | 见各条 |
+| [06](cases/06-retry-cancellation.md) | 部署态 work-item 闭环 + 注入失败（claim→complete 通过；fail→failed，不可重领 ⇒ **无重试/取消**，缺口） | ⚠️ 缺口已证 |
 
 结果摘要：axond 启动日志出现 `Orchestrator: Rheovela (...)`（该行只在真实断言认证成功后打印）；
 `POST /v1/instances` → 实例 `active`；`GET /v1/instances/{id}` → `active`/`definition_id=expense`；
@@ -41,16 +42,21 @@ Copy-Item local.env.ps1.example local.env.ps1   # 改成你的 checkout 路径
 
 ```
 start-services.ps1 / stop-services.ps1 / verify.ps1
+fault-injection.ps1          # Case 06：种子 work item + 经部署桥 claim/fail/complete
 local.env.ps1.example        # 路径、端口、dev 凭证、workload 身份
 tools/genkeys/               # 生成 AEGIVELA 需要的 Ed25519 PKCS#8 密钥 + audience 注册表（stdlib-only）
-cases/01..05                 # 场景化记录
+cases/01..06                 # 场景化记录
 .local-data/ .local-logs/    # 运行期产物（git-ignored）
 ```
 
 ## Scope / 诚实边界
 
-覆盖：bridge → SDK 适配器 → Rheovela，认证走**真实 AEGIVELA 断言**，含 open/get/step/audit。
+覆盖：bridge → SDK 适配器 → Rheovela，认证走**真实 AEGIVELA 断言**，含 open/get/step/audit；
+部署态 work-item 的 **claim→complete 闭环**（Case 06）。
 
-未覆盖：业务 work-item → effect → outcome 闭环（重试/取消）、Rheovela worker 循环。
+未覆盖 / 已证缺口：**部署态运行时不做失败重试**——`FailWorkItem` 置 `state='failed'` 且清空
+fencing token，无回队、无尝试计数；也没有 work-item cancel 路由。worker SDK 能消费"会回队"的
+store，但实际 store 不会回队，因此端到端重试未成立（见 Case 06）。Rheovela worker 循环的
+单元测试（`rheovela-open/sdk/go/worker`）只覆盖 SDK 语义。
 
 本目录只含**本机开发**配置；密钥、数据库、工作流都是本地产物，保存在 `.local-data/`（已 git-ignore）。
