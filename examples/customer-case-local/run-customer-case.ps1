@@ -31,6 +31,8 @@ Write-Step 1 "Open the case" "Symbivela case '$($caseResult.case_id)' is '$($cas
 $fact = @{ claim = "billing overcharge confirmed against acct-2001"; source = "billing-system"; verified = $true; idempotency_key = "cs-fact-v1" } | ConvertTo-Json
 $factResult = Invoke-RestMethod -Method Post -Uri "$custBase/facts" -ContentType "application/json" -Body $fact
 $assertion = @{ id = "assertion-acct-2001-overcharge"; subject_id = "acct-2001"; property = "billing_status"; value = "overcharge"; state_kind = "observed"; event_time = "2026-08-16T10:00:00Z"; system_time = "2026-08-16T10:00:01Z"; source = "billing-system"; evidence_ref = "evidence://billing/acct-2001" } | ConvertTo-Json
+$ontoTwin = @{ id = ($assertion | ConvertFrom-Json).subject_id; type_ref = "entity" } | ConvertTo-Json
+try { Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/twins" -Headers @{ "X-Tenant-ID" = $TenantId } -ContentType "application/json" -Body $ontoTwin | Out-Null } catch { }
 $state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $account = Invoke-RestMethod -Uri "http://localhost:8093/v1/accounts/acct-2001"
 $evidence += @{ product = "customer-domain"; artifact = $factResult.fact.id; state = "verified" }

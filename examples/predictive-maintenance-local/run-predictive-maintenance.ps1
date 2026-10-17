@@ -31,6 +31,8 @@ Write-Step 1 "Open the maintenance case" "Symbivela case '$($caseResult.case_id)
 $signal = Invoke-RestMethod -Uri $maintBase
 $asset = Invoke-RestMethod -Uri "http://localhost:8095/v1/assets/$AssetId"
 $assertion = @{ id = "assertion-asset-pump-01-risk"; subject_id = $AssetId; property = "risk_level"; value = "elevated"; state_kind = "observed"; event_time = "2026-08-16T12:00:00Z"; system_time = "2026-08-16T12:00:01Z"; source = "condition-monitoring"; evidence_ref = "evidence://monitoring/signal-pm-0001" } | ConvertTo-Json
+$ontoTwin = @{ id = ($assertion | ConvertFrom-Json).subject_id; type_ref = "entity" } | ConvertTo-Json
+try { Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/twins" -Headers @{ "X-Tenant-ID" = $TenantId } -ContentType "application/json" -Body $ontoTwin | Out-Null } catch { }
 $state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $evidence += @{ product = "maintenance-domain"; artifact = $signal.id; state = $signal.status }
 $evidence += @{ product = "ontovela"; artifact = "assertion-asset-pump-01-risk"; state = "observed" }

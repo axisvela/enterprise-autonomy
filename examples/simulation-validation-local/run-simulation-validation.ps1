@@ -31,6 +31,8 @@ Write-Step 1 "Open the review case" "Symbivela case '$($caseResult.case_id)' is 
 $scenario = @{ scenario_id = "scn-collision"; description = "collision avoidance in zone-alpha"; idempotency_key = "sim-scn-v1" } | ConvertTo-Json
 $scResult = Invoke-RestMethod -Method Post -Uri "$simBase/scenarios" -ContentType "application/json" -Body $scenario
 $assertion = @{ id = "assertion-proposal-sim-0001-scoped"; subject_id = $ProposalId; property = "validation_scope"; value = "zone-alpha"; state_kind = "observed"; event_time = "2026-08-16T13:00:00Z"; system_time = "2026-08-16T13:00:01Z"; source = "validation-system"; evidence_ref = "evidence://validation/proposal-sim-0001" } | ConvertTo-Json
+$ontoTwin = @{ id = ($assertion | ConvertFrom-Json).subject_id; type_ref = "entity" } | ConvertTo-Json
+try { Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/twins" -Headers @{ "X-Tenant-ID" = $TenantId } -ContentType "application/json" -Body $ontoTwin | Out-Null } catch { }
 $state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $gates += @{ gate = "scenarios-compiled"; owner = $SimulationEngineer; decision = "compiled"; scenario = $scResult.scenario.id }
 $evidence += @{ product = "simulation-domain"; artifact = $scResult.scenario.id; state = "compiled" }

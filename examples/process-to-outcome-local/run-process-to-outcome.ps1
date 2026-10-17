@@ -30,6 +30,8 @@ Write-Step 1 "Open the process case" "Symbivela case '$($caseResult.case_id)' is
 # Step 2: record the process context (adapter + Ontovela)
 $process = Invoke-RestMethod -Uri $procBase
 $assertion = @{ id = "assertion-proc-0001-initiated"; subject_id = $ProcessId; property = "process_status"; value = "initiated"; state_kind = "observed"; event_time = "2026-08-16T18:00:00Z"; system_time = "2026-08-16T18:00:01Z"; source = "process-control"; evidence_ref = "evidence://process/proc-0001" } | ConvertTo-Json
+$ontoTwin = @{ id = ($assertion | ConvertFrom-Json).subject_id; type_ref = "entity" } | ConvertTo-Json
+try { Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/twins" -Headers @{ "X-Tenant-ID" = $TenantId } -ContentType "application/json" -Body $ontoTwin | Out-Null } catch { }
 $state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $evidence += @{ product = "process-domain"; artifact = $process.id; state = $process.status }
 $evidence += @{ product = "ontovela"; artifact = "assertion-proc-0001-initiated"; state = "observed" }

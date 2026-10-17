@@ -30,6 +30,8 @@ Write-Step 1 "Open the compliance case" "Symbivela case '$($caseResult.case_id)'
 # Step 2: record the requirement context (adapter + Ontovela)
 $compCase = Invoke-RestMethod -Uri $compBase
 $assertion = @{ id = "assertion-compliance-0001-req"; subject_id = $ComplianceCaseId; property = "requirement"; value = $Requirement; state_kind = "observed"; event_time = "2026-08-16T15:00:00Z"; system_time = "2026-08-16T15:00:01Z"; source = "compliance-system"; evidence_ref = "evidence://compliance/compliance-0001" } | ConvertTo-Json
+$ontoTwin = @{ id = ($assertion | ConvertFrom-Json).subject_id; type_ref = "entity" } | ConvertTo-Json
+try { Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/twins" -Headers @{ "X-Tenant-ID" = $TenantId } -ContentType "application/json" -Body $ontoTwin | Out-Null } catch { }
 $state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $gates += @{ gate = "requirement-context"; owner = $ComplianceLead; decision = "scoped"; requirement = $Requirement }
 $evidence += @{ product = "compliance-domain"; artifact = $compCase.id; state = $compCase.status }

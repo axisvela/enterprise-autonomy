@@ -30,6 +30,8 @@ Write-Step 1 "Open the deployment case" "Symbivela case '$($caseResult.case_id)'
 # Step 2: record the deployment context (adapter + Ontovela)
 $deployment = Invoke-RestMethod -Uri $depBase
 $assertion = @{ id = "assertion-dep-0001-initiated"; subject_id = $DeploymentId; property = "deployment_status"; value = "initiated"; state_kind = "observed"; event_time = "2026-08-16T18:00:00Z"; system_time = "2026-08-16T18:00:01Z"; source = "deployment-control"; evidence_ref = "evidence://deployment/dep-0001" } | ConvertTo-Json
+$ontoTwin = @{ id = ($assertion | ConvertFrom-Json).subject_id; type_ref = "entity" } | ConvertTo-Json
+try { Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/twins" -Headers @{ "X-Tenant-ID" = $TenantId } -ContentType "application/json" -Body $ontoTwin | Out-Null } catch { }
 $state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $evidence += @{ product = "deployment-domain"; artifact = $deployment.id; state = $deployment.status }
 $evidence += @{ product = "ontovela"; artifact = "assertion-dep-0001-initiated"; state = "observed" }

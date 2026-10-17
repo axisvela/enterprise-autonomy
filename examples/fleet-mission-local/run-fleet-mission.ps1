@@ -30,6 +30,8 @@ Write-Step 1 "Open the mission case" "Symbivela case '$($caseResult.case_id)' is
 # Step 2: record the mission context (adapter + Ontovela)
 $mission = Invoke-RestMethod -Uri $fleetBase
 $assertion = @{ id = "assertion-mission-alpha-001-bounded"; subject_id = $MissionId; property = "mission_boundary"; value = $Boundary; state_kind = "observed"; event_time = "2026-08-16T16:00:00Z"; system_time = "2026-08-16T16:00:01Z"; source = "fleet-control"; evidence_ref = "evidence://fleet/mission-alpha-001" } | ConvertTo-Json
+$ontoTwin = @{ id = ($assertion | ConvertFrom-Json).subject_id; type_ref = "entity" } | ConvertTo-Json
+try { Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/twins" -Headers @{ "X-Tenant-ID" = $TenantId } -ContentType "application/json" -Body $ontoTwin | Out-Null } catch { }
 $state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $gates += @{ gate = "mission-bounded"; owner = $Operator; decision = "bounded"; boundary = $Boundary }
 $evidence += @{ product = "fleet-domain"; artifact = $mission.id; state = $mission.status }

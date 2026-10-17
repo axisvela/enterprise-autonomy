@@ -36,6 +36,8 @@ Write-Step 2 "Open the governed case" "Symbivela case '$($caseResult.case_id)' i
 
 # Step 3: record budget context (Ontovela)
 $assertion = @{ id = "assertion-budget-0001-available"; subject_id = "budget-0001"; property = "availability"; value = "available"; state_kind = "observed"; event_time = "2026-08-16T09:00:00Z"; system_time = "2026-08-16T09:00:01Z"; source = "finance-system"; evidence_ref = "evidence://finance/budget-0001" } | ConvertTo-Json
+$ontoTwin = @{ id = ($assertion | ConvertFrom-Json).subject_id; type_ref = "entity" } | ConvertTo-Json
+try { Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/twins" -Headers @{ "X-Tenant-ID" = $TenantId } -ContentType "application/json" -Body $ontoTwin | Out-Null } catch { }
 $state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $budget = Invoke-RestMethod -Uri "http://localhost:8092/v1/budget/budget-0001"
 $evidence += @{ product = "ontovela"; artifact = "assertion-budget-0001-available"; state = "observed" }

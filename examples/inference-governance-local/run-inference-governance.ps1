@@ -30,6 +30,8 @@ Write-Step 1 "Open the inference case" "Symbivela case '$($caseResult.case_id)' 
 # Step 2: record the request context (adapter + Ontovela)
 $inference = Invoke-RestMethod -Uri $infBase
 $assertion = @{ id = "assertion-inf-0001-submitted"; subject_id = $InferenceId; property = "inference_status"; value = "submitted"; state_kind = "observed"; event_time = "2026-08-16T18:00:00Z"; system_time = "2026-08-16T18:00:01Z"; source = "inference-governance"; evidence_ref = "evidence://inference/inf-0001" } | ConvertTo-Json
+$ontoTwin = @{ id = ($assertion | ConvertFrom-Json).subject_id; type_ref = "entity" } | ConvertTo-Json
+try { Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/twins" -Headers @{ "X-Tenant-ID" = $TenantId } -ContentType "application/json" -Body $ontoTwin | Out-Null } catch { }
 $state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $evidence += @{ product = "inference-domain"; artifact = $inference.id; state = $inference.status }
 $evidence += @{ product = "ontovela"; artifact = "assertion-inf-0001-submitted"; state = "observed" }

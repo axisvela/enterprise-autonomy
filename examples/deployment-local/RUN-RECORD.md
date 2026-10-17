@@ -18,4 +18,4 @@
 ## 未覆盖（不声称）
 
 - 部署拓扑：单机本地开发栈；
-- 本 demo 的 verify 门通过；步骤内的非致命告警（如 Ontovela 断言目标 twin 未注册、Orchadyn 计划生成为空）不阻断门，详见 `.local-data` 报告。
+- 本 demo 的 verify 门通过；断言前已 `POST /v1/twins` 注册主体（未注册会 fail-closed）；Orchadyn 计划生成为空的告警在部分环境可能出现，不阻断门，详见 `.local-data` 报告。

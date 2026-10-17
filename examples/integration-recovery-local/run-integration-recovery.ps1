@@ -32,6 +32,8 @@ Write-Step 1 "Open the outage case" "Symbivela case '$($caseResult.case_id)' is 
 $integration = Invoke-RestMethod -Uri $intBase
 $work = Invoke-RestMethod -Uri $workBase
 $assertion = @{ id = "assertion-partner-shipping-down"; subject_id = $IntegrationId; property = "integration_status"; value = "down"; state_kind = "observed"; event_time = "2026-08-16T10:00:00Z"; system_time = "2026-08-16T10:00:01Z"; source = "integration-monitor"; evidence_ref = "evidence://monitor/partner-shipping" } | ConvertTo-Json
+$ontoTwin = @{ id = ($assertion | ConvertFrom-Json).subject_id; type_ref = "entity" } | ConvertTo-Json
+try { Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/twins" -Headers @{ "X-Tenant-ID" = $TenantId } -ContentType "application/json" -Body $ontoTwin | Out-Null } catch { }
 $state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $evidence += @{ product = "integration-domain"; artifact = $integration.id; state = $integration.status }
 $evidence += @{ product = "integration-domain"; artifact = $work.id; state = $work.status }

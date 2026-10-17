@@ -30,6 +30,8 @@ Write-Step 1 "Open the sandbox case" "Symbivela case '$($caseResult.case_id)' is
 # Step 2: record the proposal context (adapter + Ontovela)
 $proposal = Invoke-RestMethod -Uri $sandBase
 $assertion = @{ id = "assertion-sand-0001-scoped"; subject_id = $ProposalId; property = "sandbox_scope"; value = $SandboxScope; state_kind = "observed"; event_time = "2026-08-16T19:00:00Z"; system_time = "2026-08-16T19:00:01Z"; source = "innovation-control"; evidence_ref = "evidence://sandbox/proposal-sandbox-0001" } | ConvertTo-Json
+$ontoTwin = @{ id = ($assertion | ConvertFrom-Json).subject_id; type_ref = "entity" } | ConvertTo-Json
+try { Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/twins" -Headers @{ "X-Tenant-ID" = $TenantId } -ContentType "application/json" -Body $ontoTwin | Out-Null } catch { }
 $state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $gates += @{ gate = "sandbox-scoped"; owner = $Reviewer; decision = "scoped"; scope = $SandboxScope }
 $evidence += @{ product = "sandbox-domain"; artifact = $proposal.id; state = $proposal.status }

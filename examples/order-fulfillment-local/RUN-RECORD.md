@@ -23,7 +23,7 @@
 
 ## 非致命错误（保留、不声称已消除）
 
-- Step 1：`POST /v1/assertions` → `not found: subject twin order-123`（Ontovela 未注册该 twin 断言目标）；场景仍记录 `observed` 并继续。
+- Step 1：断言前已 `POST /v1/twins` 注册 `order-123`（2026-10-16 修复）；未注册时 Ontovela 会 fail-closed（`not found: subject twin`）。
 - Step 6：axond `POST /v1/agent/tools/execute` → `not found` / `bad request: session_id and call are required`（agent 会话未建立）；场景仍记录 `effect-ledgered` 并继续。
 - `start-services.ps1:108` moduregis-migrate 的进度输出以 stderr 呈现（PowerShell 记为错误），迁移实际成功。
 

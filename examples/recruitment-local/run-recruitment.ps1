@@ -31,6 +31,8 @@ Write-Step 1 "Open the requisition case" "Symbivela case '$($caseResult.case_id)
 $validate = @{ validated_by = $TALead; criteria = @("platform-expertise", "systems-ownership"); idempotency_key = "rec-val-v1" } | ConvertTo-Json
 $valResult = Invoke-RestMethod -Method Post -Uri "$recBase/validate" -ContentType "application/json" -Body $validate
 $assertion = @{ id = "assertion-req-0001-validated"; subject_id = "req-0001"; property = "hiring_status"; value = "validated"; state_kind = "observed"; event_time = "2026-08-16T11:00:00Z"; system_time = "2026-08-16T11:00:01Z"; source = "talent-system"; evidence_ref = "evidence://talent/req-0001" } | ConvertTo-Json
+$ontoTwin = @{ id = ($assertion | ConvertFrom-Json).subject_id; type_ref = "entity" } | ConvertTo-Json
+try { Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/twins" -Headers @{ "X-Tenant-ID" = $TenantId } -ContentType "application/json" -Body $ontoTwin | Out-Null } catch { }
 $state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $evidence += @{ product = "recruitment-domain"; artifact = "validate-rec-val-v1"; state = $valResult.requisition.status }
 $evidence += @{ product = "ontovela"; artifact = "assertion-req-0001-validated"; state = "observed" }
