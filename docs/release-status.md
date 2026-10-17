@@ -1,28 +1,30 @@
 # Release Status
 
-This page summarizes the public maturity of each product's local surface. Product repositories are authoritative for their own release versions and availability.
+This page summarizes the public release and local-runtime status of each product. Product repositories are authoritative for their own release versions and availability.
+
+**Maturity tier** is a public summary of core readiness: `A` = mature and integration-ready; `B` = early, improve before integration; `C` = packaging or placeholder. Detailed open/core/EE metrics, test inventories, and roadmap execution are maintained in the private `enterprise-autonomy-ee` repository.
 
 > **This public repository is at 1.1.12** — a stable release series (1.x) of the introduction and examples content. Releases are tagged `vX.Y.Z` and published to GitHub Releases with their CHANGELOG body; every version tag has a matching release. See the [demo matrix](demo-matrix.md) for the full runnable-demo set and [CHANGELOG.md](../CHANGELOG.md) for the release history.
 
-| Product | Local binary available | Maturity notes |
-| --- | --- | --- |
-| Moduregis | Yes (`moduregis-api.exe`, worker, migrate) | Windows release archives under `dist/`; local demo uses v1.0.1. |
-| Orchadyn | Yes (`orchadyn-api`, MCP, migrate) | Release archives under `releases/`; local demo downloads v0.7.0. |
-| Noetivela | Yes (gateway, controller, CLI) | No database required. |
-| Gnosivela | Yes (`gnosivela`, `gnosivela-gen`) | In-memory default; optional PostgreSQL. |
-| Mnemovela | Yes (`mneme-http`, `mneme-grpc`, MCP) | Embedded storage default; PostgreSQL + PGVector in EE. |
-| Ontovela | Yes (`ontovela.exe`) | In-memory default; optional PostgreSQL. |
-| Praxovela | Yes (`axond.exe`, desktop app) | Local SQLite. |
-| Rheovela | Yes (`rheo.exe`) | SQLite default; PostgreSQL backend in EE. |
-| Kinetovela | Yes (`kinetovela-api`, darwin/linux/windows amd64) | GitHub release v0.30.0 publishes multi-platform binaries plus adapter TCK/quickstart, multi-vendor-acceptance, and offline-autonomy tools. |
-| Aegivela | Yes (`aegivela-api`) | GitHub release v0.5.0 (darwin/linux/windows); EE binary `aegivela-ee.exe`; PostgreSQL required. |
-| Limenora | Yes (edge, enterprise, control) | Also Rust reference gateway. Edge default `1896` (`--port`). |
-| Peiravela | Yes (`api-server`, `control-plane`) | Release builds under `bin/`. |
-| Tekmovela | Yes (`tek.exe`) | CLI only; no listener. |
-| Symbivela | Yes (`symbivela.exe`) | v1.1.1: core API on `1926` (`SYMBIVELA_ADDR`); frontend dev `1927`. PostgreSQL required. |
-| Harmovela | Protocol-first; no compiled binary expected | Coordination protocol with `harmovelad` daemon, `harmovela` CLI, and TS/Python/Java equivalents; standalone `.exe` may not be required. |
-| Nomivela | Yes (`nomivela`, `nomivela-migrate`) | Agent identity registry of record; PostgreSQL required; signed discovery (`/.well-known/agent-iam`) and Open SDKs (Go/Java/Python). |
-| Eidovela | Yes (`eidovelad`, `eidovela-migrate`) | Agent identity provider; registry-consumer mode (requires NOMIVELA); PoP tokens and proof-bound introspection; PostgreSQL optional (in-memory reference store default). |
+| Product | Maturity | Local binary available | Maturity notes |
+| --- | :---: | --- | --- |
+| Moduregis | A | Yes (`moduregis-api.exe`, worker, migrate) | Windows release archives under `dist/`; local demo uses v1.0.1. |
+| Orchadyn | A | Yes (`orchadyn-api`, MCP, migrate) | Release archives under `releases/`; local demo downloads v0.7.0. |
+| Noetivela | B | Yes (gateway, controller, CLI) | No database required. Early documentation and integration evidence. |
+| Gnosivela | B | Yes (`gnosivela`, `gnosivela-gen`) | In-memory default; optional PostgreSQL. Early documentation depth. |
+| Mnemovela | A | Yes (`mneme-http`, `mneme-grpc`, MCP) | Embedded storage default; PostgreSQL + PGVector in EE. |
+| Ontovela | B | Yes (`ontovela.exe`) | In-memory default; optional PostgreSQL. Phase 2 still in progress. |
+| Praxovela | A | Yes (`axond.exe`, desktop app) | Local SQLite; 3.0 platform release. |
+| Rheovela | A | Yes (`rheo.exe`) | SQLite default; PostgreSQL backend in EE. |
+| Kinetovela | A | Yes (`kinetovela-api`, darwin/linux/windows amd64) | GitHub release v0.30.0 publishes multi-platform binaries plus adapter TCK/quickstart, multi-vendor-acceptance, and offline-autonomy tools. |
+| Aegivela | A | Yes (`aegivela-api`) | GitHub release v0.5.0 (darwin/linux/windows); EE binary `aegivela-ee.exe`; PostgreSQL required. |
+| Limenora | A | Yes (edge, enterprise, control) | Also Rust reference gateway. Edge default `1896` (`--port`). |
+| Peiravela | A | Yes (`api-server`, `control-plane`) | Release builds under `bin/`. |
+| Tekmovela | A | Yes (`tek.exe`) | CLI only; no listener. |
+| Symbivela | A | Yes (`symbivela.exe`) | v1.1.1: core API on `1926` (`SYMBIVELA_ADDR`); frontend dev `1927`. PostgreSQL required. |
+| Harmovela | A | Protocol-first; no compiled binary expected | Coordination protocol with `harmovelad` daemon, `harmovela` CLI, and TS/Python/Java equivalents; standalone `.exe` may not be required. |
+| Nomivela | A | Yes (`nomivela`, `nomivela-migrate`) | Agent identity registry of record; PostgreSQL required; signed discovery (`/.well-known/agent-iam`) and Open SDKs (Go/Java/Python). |
+| Eidovela | A | Yes (`eidovelad`, `eidovela-migrate`) | Agent identity provider; registry-consumer mode (requires NOMIVELA); PoP tokens and proof-bound introspection; PostgreSQL optional (in-memory reference store default). |
 
 ## Port-Migration Status
 
