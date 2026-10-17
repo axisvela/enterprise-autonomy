@@ -25,8 +25,8 @@ Assert-True ($report.outcome.candidate -eq "cand-a") "candidate recorded"
 Assert-True ($report.kpis.gates_passed -ge 4) "at least 4 human gates passed"
 Assert-True ($report.kpis.evidence_artifacts -ge 8) "at least 8 evidence artifacts recorded"
 Assert-True ($report.kpis.steps_completed -ge 8) "all 8 business steps completed"
-Assert-True (($report.evidence | Where-Object { $_.artifact -eq "automated-decision-rejected" }).Count -eq 1) "automation-denial evidence present"
-Assert-True (($report.gates | Where-Object { $_.gate -eq "offer-decision" }).Count -eq 1) "offer-decision gate recorded"
+Assert-True (@($report.evidence | Where-Object { $_.artifact -eq "automated-decision-rejected" }).Count -eq 1) "automation-denial evidence present"
+Assert-True (@($report.gates | Where-Object { $_.gate -eq "offer-decision" }).Count -eq 1) "offer-decision gate recorded"
 
 Write-Host ""
 if ($failures.Count -eq 0) {

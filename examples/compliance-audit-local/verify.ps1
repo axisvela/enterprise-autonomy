@@ -24,9 +24,9 @@ Assert-True ($report.outcome.package -like "package-*") "audit package was relea
 Assert-True ($report.kpis.gates_passed -ge 4) "at least 4 human gates passed"
 Assert-True ($report.kpis.evidence_artifacts -ge 10) "at least 10 evidence artifacts recorded"
 Assert-True ($report.kpis.steps_completed -ge 8) "all 8 business steps completed"
-Assert-True (($report.evidence | Where-Object { $_.artifact -eq "attestation-without-evidence-rejected" }).Count -eq 1) "completeness denial present"
-Assert-True (($report.evidence | Where-Object { $_.artifact -eq "non-attestor-rejected" }).Count -eq 1) "non-attestor denial present"
-Assert-True (($report.gates | Where-Object { $_.gate -eq "attestation" }).Count -eq 1) "attestation gate recorded"
+Assert-True (@($report.evidence | Where-Object { $_.artifact -eq "attestation-without-evidence-rejected" }).Count -eq 1) "completeness denial present"
+Assert-True (@($report.evidence | Where-Object { $_.artifact -eq "non-attestor-rejected" }).Count -eq 1) "non-attestor denial present"
+Assert-True (@($report.gates | Where-Object { $_.gate -eq "attestation" }).Count -eq 1) "attestation gate recorded"
 
 Write-Host ""
 if ($failures.Count -eq 0) {

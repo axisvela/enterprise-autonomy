@@ -28,15 +28,15 @@
 | 记录 | 本页 |
 | 结论 | 该次汇总既未通过也未失败任何 demo；必须由后续汇总运行替换，**不得作为证据引用** |
 
-## Case R3 — 13 个业务 demo（可运行；**1/13 已跑通**）
+## Case R3 — 13 个业务 demo（**13/13 已跑通**，2026-10-16）
 
 | 项 | 内容 |
 | --- | --- |
-| 状态 | 🟡 **1/13 已跑通**（其余仍无执行证据） |
-| 已跑通（2026-10-16） | **`order-fulfillment-local`** —— `run-all.ps1` 端到端 **VERIFY OK（11/11）**，见 [examples/order-fulfillment-local/RUN-RECORD.md](../examples/order-fulfillment-local/RUN-RECORD.md) |
-| 其余依据 | [demo-matrix.md](demo-matrix.md) 中其余 demo 声称产出 `*-value-report.json`，但磁盘上不存在这些报告 |
-| 如何补齐其余 | 逐个运行 `run-all.ps1`，把产出的报告按 Case R1 的格式落成各例子自己的 `RUN-RECORD.md`，并回到本页加一行 |
-| 结论 | 已有 1 个业务 demo 有真实、可审计的执行记录；其余 12 个仍为"可运行但无执行记录" |
+| 状态 | ✅ **13/13 已跑通**（每个 `verify.ps1` 报 VERIFY OK） |
+| 环境 | PostgreSQL 18.1 `5433`（库 symbivela/orchadyn/moduregis）+ 核心服务（limenora-edge/ontovela/rheo/symbivela/axond/orchadyn/moduregis）+ 各 demo 的 `*-domain` 适配器 |
+| 逐例记录 | 每例 `examples/<demo>/RUN-RECORD.md`（共 13 个） |
+| 关键修复（共享） | ① Rheovela workflow 须 `POST /api/v1/workflows`（`rheo workflow define` 只写 CLI 本地库，非服务端 `--db`）；② `verify.ps1` 的 PS 5.1 `(单对象管道).Count` 须包 `@()` |
+| 结论 | 13 个业务 demo 全部有真实、可审计的执行记录（本地单机栈） |
 
 ## Case R4 — R6 bridge 本地 bring-up（`agent-workflow-bridge-local`，新增）
 

@@ -24,9 +24,9 @@ Assert-True ($report.outcome.compensation -gt 0) "compensation amount recorded"
 Assert-True ($report.kpis.gates_passed -ge 3) "at least 3 human gates passed"
 Assert-True ($report.kpis.evidence_artifacts -ge 8) "at least 8 evidence artifacts recorded"
 Assert-True ($report.kpis.steps_completed -ge 8) "all 8 business steps completed"
-Assert-True (($report.evidence | Where-Object { $_.artifact -eq "compensation-without-consent-rejected" }).Count -eq 1) "consent-denial evidence present"
-Assert-True (($report.evidence | Where-Object { $_.artifact -eq "compensation-without-approval-rejected" }).Count -eq 1) "approval-denial evidence present"
-Assert-True (($report.gates | Where-Object { $_.gate -eq "customer-consent" }).Count -eq 1) "customer-consent gate recorded"
+Assert-True (@($report.evidence | Where-Object { $_.artifact -eq "compensation-without-consent-rejected" }).Count -eq 1) "consent-denial evidence present"
+Assert-True (@($report.evidence | Where-Object { $_.artifact -eq "compensation-without-approval-rejected" }).Count -eq 1) "approval-denial evidence present"
+Assert-True (@($report.gates | Where-Object { $_.gate -eq "customer-consent" }).Count -eq 1) "customer-consent gate recorded"
 
 Write-Host ""
 if ($failures.Count -eq 0) {

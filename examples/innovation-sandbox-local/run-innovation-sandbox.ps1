@@ -71,6 +71,8 @@ Write-Step 5 "Record the sandbox experiment" "Experiment '$($expResult.experimen
 $rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "innovation-sandbox-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "innovation-sandbox-workflow.json") | Out-Null
+# The rheo CLI defines into its own local store, not the running server's --db; publish to the server too.
+Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/workflows" -ContentType "application/json" -Body (Get-Content -Raw (Join-Path $PSScriptRoot "innovation-sandbox-workflow.json")) | Out-Null
 $processBody = @{ workflow = "innovation-sandbox-to-policy"; project = $ProposalId; actor = $Reviewer } | ConvertTo-Json
 $instance = Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/instances" -ContentType "application/json" -Body $processBody
 $evidence += @{ product = "rheovela"; artifact = $instance.id; state = "open" }

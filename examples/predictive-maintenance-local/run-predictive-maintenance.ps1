@@ -86,6 +86,8 @@ Write-Step 5 "Conduct the safety review" "$SafetyAuthority approved intrusive wo
 $rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "predictive-maintenance-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "predictive-maintenance-workflow.json") | Out-Null
+# The rheo CLI defines into its own local store, not the running server's --db; publish to the server too.
+Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/workflows" -ContentType "application/json" -Body (Get-Content -Raw (Join-Path $PSScriptRoot "predictive-maintenance-workflow.json")) | Out-Null
 $process = @{ workflow = "predictive-maintenance-to-work-order"; project = $SignalId; actor = $MaintenanceManager } | ConvertTo-Json
 $instance = Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/instances" -ContentType "application/json" -Body $process
 $evidence += @{ product = "rheovela"; artifact = $instance.id; state = "open" }

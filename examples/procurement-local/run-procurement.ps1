@@ -66,6 +66,8 @@ Write-Step 4 "Approve budget and supplier" "$FinanceApprover approved the budget
 $rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "procurement-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "procurement-workflow.json") | Out-Null
+# The rheo CLI defines into its own local store, not the running server's --db; publish to the server too.
+Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/workflows" -ContentType "application/json" -Body (Get-Content -Raw (Join-Path $PSScriptRoot "procurement-workflow.json")) | Out-Null
 $process = @{ workflow = "procurement-request-to-receipt"; project = "preq-0001"; actor = $ProcurementOwner } | ConvertTo-Json
 $instance = Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/instances" -ContentType "application/json" -Body $process
 $evidence += @{ product = "rheovela"; artifact = $instance.id; state = "open" }
