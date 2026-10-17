@@ -24,4 +24,4 @@ Enterprise planning compiler that turns governed goals, state, capabilities, and
 
 ## Authority
 
-The [orchadyn-open](https://github.com/axisrobo/orchadyn-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.
+The [orchadyn-open](https://github.com/axisvela/orchadyn-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.

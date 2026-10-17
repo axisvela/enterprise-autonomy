@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	eidovela "github.com/axisrobo/eidovela-open/sdk/go/eidovela/v3"
+	eidovela "github.com/axisvela/eidovela-open/sdk/go/eidovela/v3"
 )
 
 func TestEIDOVELATokenSourceReturnsIssuedTokenAndCaches(t *testing.T) {

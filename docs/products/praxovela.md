@@ -23,4 +23,4 @@ Local-first desktop agent runtime with governed, sandboxed capability use, a den
 
 ## Authority
 
-The [praxovela-open](https://github.com/axisrobo/praxovela-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.
+The [praxovela-open](https://github.com/axisvela/praxovela-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.

@@ -22,4 +22,4 @@ Agent-engineering assurance platform for reproducible testing, diagnosis, releas
 
 ## Authority
 
-The [tekmovela-open](https://github.com/axisrobo/tekmovela-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.
+The [tekmovela-open](https://github.com/axisvela/tekmovela-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.

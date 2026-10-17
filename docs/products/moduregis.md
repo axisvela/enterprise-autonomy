@@ -23,4 +23,4 @@ Enterprise capability control plane for publishing, discovering, governing, auth
 
 ## Authority
 
-The [moduregis-open](https://github.com/axisrobo/moduregis-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.
+The [moduregis-open](https://github.com/axisvela/moduregis-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.

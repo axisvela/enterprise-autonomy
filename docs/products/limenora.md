@@ -24,4 +24,4 @@ Governed integration gateway for APIs, MCP servers, events, webhooks, and partne
 
 ## Authority
 
-The [limenora-open](https://github.com/axisrobo/limenora-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.
+The [limenora-open](https://github.com/axisvela/limenora-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.

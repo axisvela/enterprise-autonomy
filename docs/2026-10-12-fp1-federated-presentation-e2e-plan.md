@@ -61,21 +61,21 @@ PRAXOVELA (sibling checkout):
 - [ ] **Step 1: Write the module file**
 
 ```go.mod
-module github.com/axisrobo/enterprise-autonomy/adapters/presentation-client
+module github.com/axisvela/enterprise-autonomy/adapters/presentation-client
 
 go 1.25.0
 
 require (
-	github.com/axisrobo/LIMENORA-open/sdk/go v0.0.0
-	github.com/axisrobo/eidovela-open v0.0.0
-	github.com/axisrobo/nomivela-open/v2 v2.0.0
+	github.com/axisvela/LIMENORA-open/sdk/go v0.0.0
+	github.com/axisvela/eidovela-open v0.0.0
+	github.com/axisvela/nomivela-open/v2 v2.0.0
 )
 
-replace github.com/axisrobo/LIMENORA-open/sdk/go => ../../../LIMENORA-open/backend/sdk/go
+replace github.com/axisvela/LIMENORA-open/sdk/go => ../../../LIMENORA-open/backend/sdk/go
 
-replace github.com/axisrobo/eidovela-open => ../../../EIDOVELA-open
+replace github.com/axisvela/eidovela-open => ../../../EIDOVELA-open
 
-replace github.com/axisrobo/nomivela-open/v2 => ../../../NOMIVELA-open
+replace github.com/axisvela/nomivela-open/v2 => ../../../NOMIVELA-open
 ```
 
 - [ ] **Step 2: Verify the module resolves**
@@ -130,7 +130,7 @@ import (
 	"testing"
 	"time"
 
-	eidovela "github.com/axisrobo/eidovela-open/sdk/go/eidovela/v3"
+	eidovela "github.com/axisvela/eidovela-open/sdk/go/eidovela/v3"
 )
 
 func TestEIDOVELATokenSourceReturnsIssuedTokenAndCaches(t *testing.T) {
@@ -184,8 +184,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/axisrobo/LIMENORA-open/sdk/go/network"
-	eidovela "github.com/axisrobo/eidovela-open/sdk/go/eidovela/v3"
+	"github.com/axisvela/LIMENORA-open/sdk/go/network"
+	eidovela "github.com/axisvela/eidovela-open/sdk/go/eidovela/v3"
 )
 
 // refreshSkew is how long before expiry the token is reissued.
@@ -335,8 +335,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/axisrobo/LIMENORA-open/sdk/go/network"
-	eidovela "github.com/axisrobo/eidovela-open/sdk/go/eidovela/v3"
+	"github.com/axisvela/LIMENORA-open/sdk/go/network"
+	eidovela "github.com/axisvela/eidovela-open/sdk/go/eidovela/v3"
 )
 
 // proofCarrier implements network.ProofCarrier for FP-1: it signs a resource
@@ -407,7 +407,7 @@ import (
 	"strings"
 	"testing"
 
-	nomivela "github.com/axisrobo/nomivela-open/v2/sdk/go"
+	nomivela "github.com/axisvela/nomivela-open/v2/sdk/go"
 )
 
 func TestSeedRegistryCreatesRecordsInDependencyOrder(t *testing.T) {
@@ -462,7 +462,7 @@ import (
 	"context"
 	"fmt"
 
-	nomivela "github.com/axisrobo/nomivela-open/v2/sdk/go"
+	nomivela "github.com/axisvela/nomivela-open/v2/sdk/go"
 )
 
 // seededIDs are the registry identifiers EIDOVELA enrollment needs.
@@ -640,9 +640,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/axisrobo/LIMENORA-open/sdk/go/network"
-	eidovela "github.com/axisrobo/eidovela-open/sdk/go/eidovela/v3"
-	nomivela "github.com/axisrobo/nomivela-open/v2/sdk/go"
+	"github.com/axisvela/LIMENORA-open/sdk/go/network"
+	eidovela "github.com/axisvela/eidovela-open/sdk/go/eidovela/v3"
+	nomivela "github.com/axisvela/nomivela-open/v2/sdk/go"
 )
 
 type config struct {
@@ -1110,8 +1110,8 @@ import (
 	"crypto/ed25519"
 	"time"
 
-	"github.com/axisrobo/LIMENORA-open/sdk/go/network"
-	eidovela "github.com/axisrobo/eidovela-open/sdk/go/eidovela/v3"
+	"github.com/axisvela/LIMENORA-open/sdk/go/network"
+	eidovela "github.com/axisvela/eidovela-open/sdk/go/eidovela/v3"
 )
 
 // fixedReplayCarrier reuses one resource-proof jti across calls so the gateway's

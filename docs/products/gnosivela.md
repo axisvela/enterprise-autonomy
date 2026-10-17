@@ -25,4 +25,4 @@ Enterprise semantic and knowledge fabric for governed concepts, claims, evidence
 
 ## Authority
 
-The [gnosivela-open](https://github.com/axisrobo/gnosivela-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.
+The [gnosivela-open](https://github.com/axisvela/gnosivela-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.

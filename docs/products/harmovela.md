@@ -22,4 +22,4 @@ Open asynchronous coordination protocol for autonomous-system events, tasks, sta
 
 ## Authority
 
-The [harmovela](https://github.com/axisrobo/harmovela) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.
+The [harmovela](https://github.com/axisvela/harmovela) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.

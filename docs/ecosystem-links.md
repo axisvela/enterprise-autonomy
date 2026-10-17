@@ -6,21 +6,21 @@ Public repositories and supporting material for the AxisRobo Enterprise Autonomy
 
 | Product | Repository |
 | --- | --- |
-| Moduregis | [moduregis-open](https://github.com/axisrobo/moduregis-open) |
-| Orchadyn | [orchadyn-open](https://github.com/axisrobo/orchadyn-open) |
-| Noetivela | [noetivela-open](https://github.com/axisrobo/noetivela-open) |
-| Gnosivela | [gnosivela-open](https://github.com/axisrobo/gnosivela-open) |
-| Mnemovela | [mnemovela-open](https://github.com/axisrobo/mnemovela-open) |
-| Ontovela | [ontovela-open](https://github.com/axisrobo/ontovela-open) |
-| Praxovela | [praxovela-open](https://github.com/axisrobo/praxovela-open) |
-| Rheovela | [rheovela-open](https://github.com/axisrobo/rheovela-open) |
-| Kinetovela | [kinetovela-open](https://github.com/axisrobo/kinetovela-open) |
-| Aegivela | [aegivela-open](https://github.com/axisrobo/aegivela-open) |
-| Limenora | [limenora-open](https://github.com/axisrobo/limenora-open) |
-| Peiravela | [peiravela-open](https://github.com/axisrobo/peiravela-open) |
-| Tekmovela | [tekmovela-open](https://github.com/axisrobo/tekmovela-open) |
-| Symbivela | [symbivela-open](https://github.com/axisrobo/symbivela-open) |
-| Harmovela | [harmovela](https://github.com/axisrobo/harmovela) |
+| Moduregis | [moduregis-open](https://github.com/axisvela/moduregis-open) |
+| Orchadyn | [orchadyn-open](https://github.com/axisvela/orchadyn-open) |
+| Noetivela | [noetivela-open](https://github.com/axisvela/noetivela-open) |
+| Gnosivela | [gnosivela-open](https://github.com/axisvela/gnosivela-open) |
+| Mnemovela | [mnemovela-open](https://github.com/axisvela/mnemovela-open) |
+| Ontovela | [ontovela-open](https://github.com/axisvela/ontovela-open) |
+| Praxovela | [praxovela-open](https://github.com/axisvela/praxovela-open) |
+| Rheovela | [rheovela-open](https://github.com/axisvela/rheovela-open) |
+| Kinetovela | [kinetovela-open](https://github.com/axisvela/kinetovela-open) |
+| Aegivela | [aegivela-open](https://github.com/axisvela/aegivela-open) |
+| Limenora | [limenora-open](https://github.com/axisvela/limenora-open) |
+| Peiravela | [peiravela-open](https://github.com/axisvela/peiravela-open) |
+| Tekmovela | [tekmovela-open](https://github.com/axisvela/tekmovela-open) |
+| Symbivela | [symbivela-open](https://github.com/axisvela/symbivela-open) |
+| Harmovela | [harmovela](https://github.com/axisvela/harmovela) |
 
 ## Ecosystem Repositories
 

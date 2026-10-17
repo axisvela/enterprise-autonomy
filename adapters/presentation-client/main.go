@@ -14,8 +14,8 @@ import (
 	"time"
 
 	"github.com/axisvela/LIMENORA-open/sdk/go/network"
-	eidovela "github.com/axisrobo/eidovela-open/sdk/go/eidovela/v3"
-	nomivela "github.com/axisrobo/nomivela-open/v2/sdk/go"
+	eidovela "github.com/axisvela/eidovela-open/sdk/go/eidovela/v3"
+	nomivela "github.com/axisvela/nomivela-open/v2/sdk/go"
 )
 
 type config struct {

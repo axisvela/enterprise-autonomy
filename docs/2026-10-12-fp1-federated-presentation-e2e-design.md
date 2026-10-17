@@ -60,10 +60,10 @@ only public SDK modules and shell out to core binaries:
 
 | Product | Public SDK (import) | Core binary |
 | --- | --- | --- |
-| NOMIVELA | `github.com/axisrobo/nomivela-open/v2/sdk/go` | `nomivela`, `nomivela-migrate` |
-| EIDOVELA | `github.com/axisrobo/eidovela-open/sdk/go/eidovela/v3` | `eidovelad`, `eidovela-migrate` |
-| LIMENORA | `github.com/axisrobo/LIMENORA-open/sdk/go/network` | `server-gateway` |
-| AEGIVELA (deferred) | `github.com/axisrobo/aegivela-open/sdk/go/pepsdk` | `aegivela-api` |
+| NOMIVELA | `github.com/axisvela/nomivela-open/v2/sdk/go` | `nomivela`, `nomivela-migrate` |
+| EIDOVELA | `github.com/axisvela/eidovela-open/sdk/go/eidovela/v3` | `eidovelad`, `eidovela-migrate` |
+| LIMENORA | `github.com/axisvela/LIMENORA-open/sdk/go/network` | `server-gateway` |
+| AEGIVELA (deferred) | `github.com/axisvela/aegivela-open/sdk/go/pepsdk` | `aegivela-api` |
 
 During local development the three SDK modules resolve through `replace`
 directives to sibling checkouts; for release they resolve to tagged modules. The

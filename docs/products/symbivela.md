@@ -24,4 +24,4 @@ Human sovereignty control surface for goals, plan review, approvals, interventio
 
 ## Authority
 
-The [symbivela-open](https://github.com/axisrobo/symbivela-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.
+The [symbivela-open](https://github.com/axisvela/symbivela-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.

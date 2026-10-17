@@ -25,4 +25,4 @@ Enterprise inference fabric for governed model and endpoint selection and routin
 
 ## Authority
 
-The [noetivela-open](https://github.com/axisrobo/noetivela-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.
+The [noetivela-open](https://github.com/axisvela/noetivela-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.

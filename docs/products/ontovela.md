@@ -24,4 +24,4 @@ Digital enterprise twin and operational world-model platform with evidence-beari
 
 ## Authority
 
-The [ontovela-open](https://github.com/axisrobo/ontovela-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.
+The [ontovela-open](https://github.com/axisvela/ontovela-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.

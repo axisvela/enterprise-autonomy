@@ -38,7 +38,7 @@ if ($OrchadynBinary) {
   foreach ($pair in @(@{Asset = "orchadyn-api_0.7.0_windows_amd64.exe"; Local = "orchadyn-api.exe"}, @{Asset = "orchadyn-migrate_0.7.0_windows_amd64.exe"; Local = "orchadyn-migrate.exe"})) {
     $target = Join-Path $orchadynReleaseDir $pair.Local
     if (-not (Test-Path $target)) {
-      $url = "https://github.com/axisrobo/orchadyn-open/releases/download/v0.7.0/$($pair.Asset)"
+      $url = "https://github.com/axisvela/orchadyn-open/releases/download/v0.7.0/$($pair.Asset)"
       Write-Host "Downloading $url"
       Invoke-WebRequest -UseBasicParsing $url -OutFile $target
     }
@@ -79,7 +79,7 @@ foreach ($name in @("moduregis-api.exe", "moduregis-migrate.exe")) {
     $zipName = $zipName -replace "moduregis-migrate", "moduregis-migrate_v1.0.1_windows_amd64"
     $zipPath = Join-Path $moduregisReleaseDir "$zipName.zip"
     if (-not (Test-Path $zipPath)) {
-      $url = "https://github.com/axisrobo/moduregis-open/releases/download/v1.0.1/$zipName.zip"
+      $url = "https://github.com/axisvela/moduregis-open/releases/download/v1.0.1/$zipName.zip"
       Write-Host "Downloading $url"
       Invoke-WebRequest -UseBasicParsing $url -OutFile $zipPath
     }

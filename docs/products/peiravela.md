@@ -23,4 +23,4 @@ Autonomous-system simulation, experimentation, and validation control plane with
 
 ## Authority
 
-The [peiravela-open](https://github.com/axisrobo/peiravela-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.
+The [peiravela-open](https://github.com/axisvela/peiravela-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.

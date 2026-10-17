@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/axisvela/LIMENORA-open/sdk/go/network"
-	eidovela "github.com/axisrobo/eidovela-open/sdk/go/eidovela/v3"
+	eidovela "github.com/axisvela/eidovela-open/sdk/go/eidovela/v3"
 )
 
 // refreshSkew is how long before expiry the token is reissued.

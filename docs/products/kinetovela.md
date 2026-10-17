@@ -23,4 +23,4 @@ Physical-autonomy and robotics fleet control plane for bounded, observable, and 
 
 ## Authority
 
-The [kinetovela-open](https://github.com/axisrobo/kinetovela-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details and maturity notes.
+The [kinetovela-open](https://github.com/axisvela/kinetovela-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details and maturity notes.

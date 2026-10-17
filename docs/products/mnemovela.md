@@ -24,4 +24,4 @@ Local-first cognition runtime for durable, auditable memory, context, ontology, 
 
 ## Authority
 
-The [mnemovela-open](https://github.com/axisrobo/mnemovela-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.
+The [mnemovela-open](https://github.com/axisvela/mnemovela-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.

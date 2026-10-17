@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/axisvela/LIMENORA-open/sdk/go/network"
-	eidovela "github.com/axisrobo/eidovela-open/sdk/go/eidovela/v3"
+	eidovela "github.com/axisvela/eidovela-open/sdk/go/eidovela/v3"
 )
 
 // proofCarrier implements network.ProofCarrier for FP-1: it signs a resource

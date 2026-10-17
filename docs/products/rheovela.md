@@ -24,4 +24,4 @@ Dynamic process and durable-workflow platform for recoverable, approvable, and a
 
 ## Authority
 
-The [rheovela-open](https://github.com/axisrobo/rheovela-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.
+The [rheovela-open](https://github.com/axisvela/rheovela-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.

@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	nomivela "github.com/axisrobo/nomivela-open/v2/sdk/go"
+	nomivela "github.com/axisvela/nomivela-open/v2/sdk/go"
 )
 
 func TestSeedRegistryCreatesRecordsInDependencyOrder(t *testing.T) {

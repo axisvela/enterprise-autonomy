@@ -23,4 +23,4 @@ Agent identity, authorization, and security fabric for delegated authority, appr
 
 ## Authority
 
-The [aegivela-open](https://github.com/axisrobo/aegivela-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.
+The [aegivela-open](https://github.com/axisvela/aegivela-open) repository is authoritative for implementation, availability, and product documentation. See the [technical catalog](../technical-catalog.md) for operational details.
