@@ -3,7 +3,7 @@ package main
 import (
 	"crypto/ed25519"
 
-	"github.com/axisrobo/LIMENORA-open/sdk/go/network"
+	"github.com/axisvela/LIMENORA-open/sdk/go/network"
 )
 
 // fixedReplayCarrier reuses one resource-proof payload across calls so the

@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/axisrobo/LIMENORA-open/sdk/go/network"
+	"github.com/axisvela/LIMENORA-open/sdk/go/network"
 	eidovela "github.com/axisrobo/eidovela-open/sdk/go/eidovela/v3"
 )
 
