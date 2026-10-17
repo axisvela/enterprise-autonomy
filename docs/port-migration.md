@@ -34,8 +34,8 @@ Each product owns a block of ten consecutive ports starting at `1806 + productIn
 
 ## Env-var Overrides
 
-Current binaries keep their documented override variables (for example `LISTEN_ADDR`, `ORCHADYN_LISTEN_ADDR`, `NOETIVELA_ADDR`, `AXON_PORT`, `NOMIVELA_HTTP_PORT`, `AEPD_*_PORT`). Set these to the planned ports when standing up new deployments. Nomivela now defaults to `1956` (`NOMIVELA_HTTP_PORT`).
+Current binaries keep their documented override variables (for example `LISTEN_ADDR`, `ORCHADYN_LISTEN_ADDR`, `NOETIVELA_ADDR`, `GNOSIVELA_ADDR`, `ONTOVELA_ADDR`, `AXON_PORT`, `NOMIVELA_HTTP_PORT`, `AEPD_*_PORT`). Set these to the planned ports when standing up new deployments. Noetivela now defaults to `1826/1827`, Gnosivela to `1836`, Ontovela to `1856`, and Nomivela to `1956`.
 
 ## Local Demos
 
-The runnable local demos exercise the planned allocation where the product binaries support it: Moduregis (`1806`), Orchadyn (`1816`), Symbivela (`1926`), and Limenora edge (`1896`) ship those defaults, and the demo stack explicitly overrides Ontovela (`--addr :1856`), Rheovela (`--addr :1876`), and Praxovela (`AXON_PORT=1866`) onto their planned ports. The reference adapters use `8090`–`8103`. No demo service occupies `8080`. See the [local run handbook](../examples/local-run-handbook.md) and [release status](release-status.md#port-migration-status) for the per-product tracking.
+The runnable local demos exercise the planned allocation where the product binaries support it: Moduregis (`1806`), Orchadyn (`1816`), Noetivela (`1826/1827`), Gnosivela (`1836`), Ontovela (`1856`), Symbivela (`1926`), and Limenora edge (`1896`) ship those defaults, and the demo stack explicitly overrides Rheovela (`--addr :1876`) and Praxovela (`AXON_PORT=1866`) onto their planned ports. The reference adapters use `8090`–`8103`. No demo service occupies `8080`. See the [local run handbook](../examples/local-run-handbook.md) and [release status](release-status.md#port-migration-status) for the per-product tracking.

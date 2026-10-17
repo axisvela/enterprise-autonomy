@@ -8,10 +8,10 @@ This catalog summarizes the local runnable surfaces of the AxisRobo Enterprise A
 | --- | --- | --- | --- | --- | --- | --- |
 | Moduregis | Capability control plane | `moduregis-api.exe`; worker + migrate CLIs | `1806` (`LISTEN_ADDR` default) | `1806` API · `1807` console | PostgreSQL (required) | HTTP API + React console + CLI |
 | Orchadyn | Planning compiler | `orchadyn-api.exe`; migrate CLI | `1816` (`ORCHADYN_LISTEN_ADDR` default) | `1816` API | PostgreSQL (required) | HTTP API + MCP |
-| Noetivela | Inference fabric | `noetivela-gateway`, `noetivela-controller`, `noetivela` CLI | gateway `:8080`, controller `:8081` | `1826` gateway · `1827` controller | None (in-memory / JSON file) | HTTP API + CLI + SDKs |
-| Gnosivela | Semantic and knowledge fabric | `gnosivela`; `gnosivela-gen` CLI | `:8080` (`-addr`) | `1836` API | PostgreSQL optional (in-memory default) | HTTP API + CLI + SDKs |
+| Noetivela | Inference fabric | `noetivela-gateway`, `noetivela-controller`, `noetivela` CLI | gateway `1826`, controller `1827` | `1826` gateway · `1827` controller | None (in-memory / JSON file) | HTTP API + CLI + SDKs |
+| Gnosivela | Semantic and knowledge fabric | `gnosivela`; `gnosivela-gen` CLI | `1836` (`GNOSIVELA_ADDR` / `-addr`) | `1836` API | PostgreSQL optional (in-memory default) | HTTP API + CLI + SDKs |
 | Mnemovela | Cognition and memory runtime | `mneme-http`, `mneme-grpc`, `mneme-mcp-stdio` | HTTP `8080`, gRPC `9090`, web `4200` | `1846` HTTP · `1847` gRPC | Embedded (in-memory / Pebble / SQLite); PostgreSQL in EE | HTTP + gRPC + MCP + web console + CLI |
-| Ontovela | Digital twin and world model | `ontovela.exe` | `:8080` (`-addr`) | `1856` API | PostgreSQL optional (in-memory default) | HTTP API + SDKs |
+| Ontovela | Digital twin and world model | `ontovela.exe` | `1856` (`ONTOVELA_ADDR` / `-addr`) | `1856` API | PostgreSQL optional (in-memory default) | HTTP API + SDKs |
 | Praxovela | Governed agent runtime | `axond.exe`; desktop app | `8420` (`AXON_PORT`) | `1866` AXON | SQLite local | HTTP API + desktop app + MCP |
 | Rheovela | Durable workflow platform | `rheo.exe` | `:8080` (`--addr`) | `1876` serve · `1877` console | SQLite default; PostgreSQL in EE | CLI + HTTP API + MCP + EE console |
 | Aegivela | Identity and authorization fabric | `aegivela-api` (darwin/linux/windows, v0.5.0); EE `aegivela-ee.exe` | `1886` core · `1887` EE | `1886` core · `1887` EE | PostgreSQL (required) | HTTP API + PEP SDK |
@@ -45,7 +45,7 @@ This catalog summarizes the local runnable surfaces of the AxisRobo Enterprise A
 ### Noetivela
 - **Role:** Inference fabric that governs model and endpoint selection and routes requests with policy, quality, latency, and cost evidence.
 - **Binaries:** `noetivela-gateway`, `noetivela-controller`, CLI `noetivela`.
-- **Ports:** gateway `:8080` (`NOETIVELA_ADDR`); controller `:8081` (`NOETIVELA_CONTROLLER_ADDR`).
+- **Ports:** gateway `1826` (`NOETIVELA_ADDR`); controller `1827` (`NOETIVELA_CONTROLLER_ADDR`).
 - **Database:** none required; in-memory registry with optional JSON file store (`NOETIVELA_STORE_FILE`).
 - **Interfaces:** OpenAI-compatible HTTP (`/v1/chat/completions`, `/v1/embeddings`) plus governed endpoints; CLI (`contract validate`, `eligible`, `chat`, `decisions`); Go/Python/TS SDKs.
 - **Health:** `GET /healthz`.
@@ -53,7 +53,7 @@ This catalog summarizes the local runnable surfaces of the AxisRobo Enterprise A
 ### Gnosivela
 - **Role:** Semantic and knowledge fabric for concepts, entity references, claims, evidence, conflicts, and scoped grounding views.
 - **Binaries:** `gnosivela`, `gnosivela-gen`.
-- **Port:** `:8080` default via `-addr`.
+- **Port:** `1836` default via `GNOSIVELA_ADDR` or `-addr`.
 - **Database:** PostgreSQL optional via `-pg-dsn`; in-memory default.
 - **Interfaces:** HTTP API (`/ontologies`, `/assertions`, `/entities/resolve`); DSL compiler CLI; Go/Java/Python/TS SDKs.
 - **Health:** `GET /healthz`.
@@ -69,7 +69,7 @@ This catalog summarizes the local runnable surfaces of the AxisRobo Enterprise A
 ### Ontovela
 - **Role:** Bitemporal, evidence-bearing operational world-model and digital twin platform.
 - **Binaries:** `ontovela` (local `ontovela.exe`; EE `ontovela-ee.exe`).
-- **Port:** core `:8080` default via `-addr`; local demos run `:1856`; EE `:8090`.
+- **Port:** core `1856` default via `ONTOVELA_ADDR` or `-addr`; demos use `1856`; EE `:8090`.
 - **Database:** PostgreSQL optional via `ONTOVELA_PG_DSN`/`-pg-dsn`; in-memory default.
 - **Interfaces:** tenant-scoped HTTP (`X-Tenant-ID`; `POST /v1/assertions`, `GET /v1/twins/{id}/state/{property}`, snapshots, changes); SDKs.
 - **Health:** `GET /healthz`.
@@ -164,7 +164,7 @@ This catalog summarizes the local runnable surfaces of the AxisRobo Enterprise A
 
 ## Conventions
 
-- Most HTTP services default to `:8080`; multi-plane products split control and data planes (Noetivela `8080/8081`, Limenora `1896-10257`, Harmovela `8787-8790`). Moduregis, Orchadyn, Limenora edge, Aegivela, Symbivela (v1.1.1), and Nomivela default to their planned ports; the local demo stack runs Ontovela (`1856`), Praxovela (`1866`), and Rheovela (`1876`) on their planned ports via overrides.
+- Most HTTP services default to `:8080`; multi-plane products split control and data planes (Noetivela `1826/1827`, Limenora `1896-10257`, Harmovela `8787-8790`). Moduregis, Orchadyn, Noetivela, Gnosivela, Ontovela, Limenora edge, Aegivela, Symbivela (v1.1.1), and Nomivela default to their planned ports; the local demo stack runs Praxovela (`1866`) and Rheovela (`1876`) on their planned ports via overrides.
 - Health endpoints are `/healthz` or `/health`; Symbivela additionally exposes `/ready` and `/metrics`.
 - Database posture varies: PostgreSQL-required (Moduregis, Orchadyn, Aegivela, Symbivela, Nomivela), PostgreSQL-optional with in-memory default (Gnosivela, Ontovela, Peiravela, Eidovela), and embedded/SQLite-default (Mnemovela, Praxovela, Rheovela, Harmovela).
 - Interfaces range from HTTP-only, CLI-only (Tekmovela), and desktop (Praxovela) to web consoles (Moduregis, Symbivela, Peiravela, Mnemovela, Rheovela-EE).

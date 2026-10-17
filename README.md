@@ -25,7 +25,6 @@ Architecture, contracts, schemas, profiles, conformance, governance, internal pl
 | Path | Purpose |
 | --- | --- |
 | `docs/products.md` | Public overview of the ecosystem products. |
-| `docs/product-maturity-assessment.md` | Product maturity tiers and 3.0 integration sequencing. |
 | `docs/products/` | Per-product public overview pages. |
 | `docs/demo-matrix.md` | Comparison of all thirteen runnable demos. |
 | `examples/` | Public, illustrative end-to-end scenarios and local runnable demos. |

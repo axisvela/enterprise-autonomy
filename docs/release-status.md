@@ -1,6 +1,6 @@
 # Release Status
 
-This page summarizes the public maturity of each product's local surface. Product repositories are authoritative for their own release versions and availability. For maturity tiers and the 3.0 integration sequence, see [Product Maturity and 3.0 Integration Assessment](product-maturity-assessment.md).
+This page summarizes the public maturity of each product's local surface. Product repositories are authoritative for their own release versions and availability.
 
 > **This public repository is at 1.1.12** — a stable release series (1.x) of the introduction and examples content. Releases are tagged `vX.Y.Z` and published to GitHub Releases with their CHANGELOG body; every version tag has a matching release. See the [demo matrix](demo-matrix.md) for the full runnable-demo set and [CHANGELOG.md](../CHANGELOG.md) for the release history.
 
@@ -32,10 +32,10 @@ Tracking against the [planned port allocation](port-migration.md). Product repos
 | --- | --- | --- | --- |
 | Moduregis | `1806` (`LISTEN_ADDR` default) | `1806` API · `1807` console | Default migrated |
 | Orchadyn | `1816` (`ORCHADYN_LISTEN_ADDR` default) | `1816` API | Default migrated |
-| Noetivela | gateway `:8080`, controller `:8081` | `1826` gateway · `1827` controller | Not migrated |
-| Gnosivela | `:8080` (`-addr`) | `1836` API | Not migrated |
+| Noetivela | gateway `1826`, controller `1827` | `1826` gateway · `1827` controller | Default migrated |
+| Gnosivela | `1836` (`GNOSIVELA_ADDR` / `-addr`) | `1836` API | Default migrated |
 | Mnemovela | HTTP `8080`, gRPC `9090`, web `4200` | `1846` HTTP · `1847` gRPC | Not migrated |
-| Ontovela | default `:8080`; demos on `1856` | `1856` API | Demo-stack migrated |
+| Ontovela | `1856` (`ONTOVELA_ADDR` / `-addr`) | `1856` API | Default migrated |
 | Praxovela | default `8420`; demos on `1866` | `1866` AXON | Demo-stack migrated |
 | Rheovela | default `:8080`; demos on `1876` | `1876` serve · `1877` console | Demo-stack migrated |
 | Aegivela | `1886` core · `1887` EE | `1886` core · `1887` EE | Migrated |
@@ -50,6 +50,6 @@ Tracking against the [planned port allocation](port-migration.md). Product repos
 
 ## Notes
 
-- Most HTTP services still default to `:8080`; new deployments should use the [planned port allocation](port-migration.md). Moduregis, Orchadyn, Limenora, Aegivela, Symbivela (v1.1.1), and Nomivela ship planned ports as defaults; the local demo stack runs Ontovela, Praxovela, and Rheovela on their planned ports via documented overrides.
+- Most HTTP services still default to `:8080`; new deployments should use the [planned port allocation](port-migration.md). Moduregis, Orchadyn, Noetivela, Gnosivela, Ontovela, Limenora, Aegivela, Symbivela (v1.1.1), and Nomivela ship planned ports as defaults; the local demo stack runs Praxovela and Rheovela on their planned ports via documented overrides.
 - Health endpoints are `/healthz` or `/health` unless noted in the [technical catalog](technical-catalog.md).
 - Posture varies from PostgreSQL-required to embedded/SQLite-default; see the [technical catalog](technical-catalog.md) for each product.

@@ -29,5 +29,5 @@
 
 ## 未覆盖（不声称）
 
-- 其余 12 个业务 demo（见 `../../docs/run-records.md` Case R3）；
+- 其余 12 个业务 demo 的运行记录维护在私有仓 `enterprise-autonomy-ee/operations/run-records.md` Case R3；
 - 部署拓扑：本记录是单机本地开发栈。

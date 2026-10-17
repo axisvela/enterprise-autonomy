@@ -24,7 +24,7 @@
 ```
 
 `_reports/` 为 git-ignore；数字与结论若变化，请更新本文件与
-`enterprise-autonomy/docs/run-records.md` 的对应 case 行。
+对应 case 行维护在私有仓 `enterprise-autonomy-ee/operations/run-records.md`。
 
 ## 未覆盖（不声称）
 
