@@ -7,7 +7,7 @@
 
 ```
 AXON_PORT=1867, AXON_API_KEY=dev-key                 # bridge 路由是 Admin 级，需管理员凭证
-AXON_RHEOVELA_URL=http://127.0.0.1:8080
+AXON_RHEOVELA_URL=http://127.0.0.1:1876
 AXON_RHEOVELA_AUDIENCE=rheovela
 AXON_AEGIVELA_URL=http://127.0.0.1:1886
 AXON_AEGIVELA_TOKEN=<内部令牌>
@@ -23,7 +23,7 @@ AXON_WORKLOAD_ORG_ROOT=did:axisrobo:dev
 
 ```
 [axond] AEGIVELA policy service: http://127.0.0.1:1886 (audience=praxovela)
-[axond] Orchestrator: Rheovela (http://127.0.0.1:8080, audience=rheovela)
+[axond] Orchestrator: Rheovela (http://127.0.0.1:1876, audience=rheovela)
 [axond] HTTP/SSE listening on http://127.0.0.1:1867
 ```
 

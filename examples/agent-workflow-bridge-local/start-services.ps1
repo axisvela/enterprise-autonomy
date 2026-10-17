@@ -11,7 +11,13 @@ New-Item -ItemType Directory -Force -Path $dataDir, $logDir, $keyDir | Out-Null
 function Wait-Http($url, $seconds = 30) {
   $deadline = (Get-Date).AddSeconds($seconds)
   while ((Get-Date) -lt $deadline) {
-    try { Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 3 | Out-Null; return $true } catch { Start-Sleep -Milliseconds 500 }
+    try { Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 3 | Out-Null; return $true }
+    catch {
+      # A non-2xx HTTP response (e.g. 401 when Rheovela auth is enabled) still
+      # means the listener is up; this is a liveness gate.
+      if ($_.Exception.Response -and [int]$_.Exception.Response.StatusCode -gt 0) { return $true }
+      Start-Sleep -Milliseconds 500
+    }
   }
   return $false
 }
@@ -118,7 +124,7 @@ if (-not $rheoBin) {
 }
 if (-not $rheoBin) { throw "No rheo binary under $env:RHEOVELA_DIR\dist" }
 $rheo = Start-Logged $rheoBin @('serve', '--addr', $env:RHEOVELA_ADDR, '--db', (Join-Path $dataDir 'rheo.db')) $null
-if (-not (Wait-Http "http://127.0.0.1:8080/api/v1/health")) { throw "Rheovela did not become healthy; see .local-logs" }
+if (-not (Wait-Http "http://127.0.0.1:1876/api/v1/health")) { throw "Rheovela did not become healthy; see .local-logs" }
 Write-Output "[start-services] Rheovela healthy"
 
 # publish the E2E workflow (authenticated with a freshly minted assertion)
@@ -135,7 +141,7 @@ $issueBody = @{
 }
 $assertion = (Invoke-RestMethod -Method Post -Uri 'http://127.0.0.1:1886/v1/workload-assertions/issue' `
   -Headers $authHeaders -ContentType 'application/json' -Body ($issueBody | ConvertTo-Json -Compress)).workload_assertion
-Invoke-WebRequest -Method Post -Uri 'http://127.0.0.1:8080/api/v1/workflows' `
+Invoke-WebRequest -Method Post -Uri 'http://127.0.0.1:1876/api/v1/workflows' `
   -Headers @{ Authorization = "Bearer $assertion" } -ContentType 'application/json' `
   -InFile $env:WORKFLOW_FILE -UseBasicParsing | Out-Null
 Write-Output "[start-services] published workflow $env:WORKFLOW_ID"
@@ -150,7 +156,7 @@ $env:USERPROFILE = Join-Path $dataDir "axond-home"
 $env:PRAXOVELA_HOME = Join-Path $env:USERPROFILE "prax"
 New-Item -ItemType Directory -Force -Path $env:USERPROFILE, $env:PRAXOVELA_HOME | Out-Null
 $env:AXON_PORT = $env:AXOND_PORT
-$env:AXON_RHEOVELA_URL      = 'http://127.0.0.1:8080'
+$env:AXON_RHEOVELA_URL      = 'http://127.0.0.1:1876'
 $env:AXON_RHEOVELA_AUDIENCE = $env:RHEOVELA_AUDIENCE
 $env:AXON_AEGIVELA_URL      = 'http://127.0.0.1:1886'
 $env:AXON_AEGIVELA_TOKEN    = $env:AEGIVELA_INTERNAL_AUTH_TOKEN

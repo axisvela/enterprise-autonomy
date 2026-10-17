@@ -7,7 +7,7 @@
 
 - **触发**：不带头（或只带 `X-Aegivela-Internal-Token`）调用 `POST /v1/workload-assertions/issue`。
 - **现象**：`401 unauthenticated`；PRAXOVELA 侧表现为 axond 启动失败
-  `[axond] Rheovela unreachable at http://127.0.0.1:8080: rheovela: credential: unauthenticated`。
+  `[axond] Rheovela unreachable at http://127.0.0.1:1876: rheovela: credential: unauthenticated`。
 - **根因**：`aegivela-open/sdk/go/identitysdk` 的 `internalHeader` 只设置内部令牌，而 AEGIVELA 的
   `InternalTokenResolver.Resolve` 要求 `X-Aegivela-Tenant-ID` / `-Actor-ID` / `-Authority-Root`。
 - **证据**：同参数下原始 HTTP（带头）→ `200` 且返回断言；`identitysdk.IssueWorkloadAssertion(...)` → `unauthenticated`。

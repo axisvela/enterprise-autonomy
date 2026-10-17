@@ -42,11 +42,11 @@
 
 | 项 | 内容 |
 | --- | --- |
-| 状态 | ✅ 已执行并通过（5 个场景）；⚠️ 2026-10-17 新增 Case 06 证实**部署态无重试/取消**（缺口） |
+| 状态 | ✅ 5 场景通过；2026-10-17 Case 06 **重试策略部署验证通过**（cancel 在 Rheovela API，axond 桥未暴露） |
 | 运行时间 | 2026-10-16 / 2026-10-17 |
 | 结果 | axond 启动日志出现 `Orchestrator: Rheovela`（该行只在真实 AEGIVELA 断言认证成功后打印）；`POST /v1/instances` → 实例 `active`；`GET /v1/instances/{id}` → `active`/`definition_id=expense`；`POST .../steps` → `ok`；`GET .../audit` → 通 |
 | 失败/负向 | F1 SDK 缺权威头→401（已修）、F2 断言 TTL 超限→400（已修）、F3 `evidence_ref` 形状（绕行）、F4 缺租约→fail-closed、F5 health 200≠认证通过、F6 漏设 env→401、F7 无凭据远程监听被拒 |
-| 部署态 work-item（Case 06） | `claim→complete` → `done`；`claim→fail`（注入）→ `failed`，再次 `claim` = **409 not claimable**。报告 `.local-data/fault-injection-report.json`；`retry_supported=false`。结论：Rheovela store 不回队，**重试/取消未实现** |
+| 部署态 work-item（Case 06） | `claim→complete` → `done`；`claim→fail` → 回队 `ready`（attempts=1）→ 重领 → `complete` → `done`；`max_attempts=1` 时终态 `failed`、重领 409；Rheovela 侧 `cancel` → `cancelled`。报告 `.local-data/fault-injection-report.json`（`retry_supported=true`）。结论：**重试策略已实现并在部署态验证**；cancel 在 Rheovela API，axond 桥尚未暴露 |
 | 记录 | [examples/agent-workflow-bridge-local/cases/](../examples/agent-workflow-bridge-local/cases/)（cases 01–06） |
 
 ---

@@ -9,13 +9,13 @@
 $env:RHEO_AUTH_JWKS     = 'http://127.0.0.1:1886/v1/workload-assertions/jwks'
 $env:RHEO_AUTH_ISSUER   = 'https://aegivela-dev.local'   # 必须等于断言 iss
 $env:RHEO_AUTH_AUDIENCE = 'rheovela'                     # 必须等于断言 aud
-& "$env:RHEOVELA_DIR\dist\rheo-windows-amd64.exe" serve --addr :8080 --db .\.local-data\rheo.db
+& "$env:RHEOVELA_DIR\dist\rheo-windows-amd64.exe" serve --addr :1876 --db .\.local-data\rheo.db
 ```
 
 ## 发布工作流（用刚签发的断言做 Bearer）
 
 ```powershell
-Invoke-WebRequest -Method Post -Uri http://127.0.0.1:8080/api/v1/workflows `
+Invoke-WebRequest -Method Post -Uri http://127.0.0.1:1876/api/v1/workflows `
   -Headers @{ Authorization = "Bearer $assertion" } -ContentType application/json `
   -InFile "$env:RHEOVELA_DIR\examples\expense.json" -UseBasicParsing
 ```
@@ -24,7 +24,7 @@ Invoke-WebRequest -Method Post -Uri http://127.0.0.1:8080/api/v1/workflows `
 
 | 检查 | 期望 |
 | --- | --- |
-| `GET http://127.0.0.1:8080/api/v1/health` | `{"db":"ok","status":"ok"}`（**该端点无需认证**，不能作为认证验证） |
+| `GET http://127.0.0.1:1876/api/v1/health` | `{"db":"ok","status":"ok"}`（**该端点无需认证**，不能作为认证验证） |
 | `GET /api/v1/workflows` 带断言 | `200`（无断言或断言无效 → 拒绝） |
 | `POST /api/v1/workflows` 带断言 | `201` |
 
