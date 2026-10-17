@@ -13,9 +13,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/axisvela/LIMENORA-open/sdk/go/network"
-	eidovela "github.com/axisvela/eidovela-open/sdk/go/eidovela/v3"
-	nomivela "github.com/axisvela/nomivela-open/v2/sdk/go"
+	"github.com/axisvela/LIMENORA-open/sdk/go/v3/network"
+	eidovela "github.com/axisvela/eidovela-open/v3/sdk/go/eidovela/v3"
+	nomivela "github.com/axisvela/nomivela-open/v3/sdk/go"
 )
 
 type config struct {

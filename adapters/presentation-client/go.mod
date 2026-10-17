@@ -1,17 +1,17 @@
-module github.com/axisvela/enterprise-autonomy/adapters/presentation-client
+module github.com/axisvela/enterprise-autonomy/adapters/presentation-client/v3
 
 go 1.25.0
 
-replace github.com/axisvela/LIMENORA-open/sdk/go => ../../../LIMENORA-open/sdk/go
+replace github.com/axisvela/LIMENORA-open/sdk/go/v3 => ../../../LIMENORA-open/sdk/go
 
-replace github.com/axisvela/eidovela-open => ../../../EIDOVELA-open
+replace github.com/axisvela/eidovela-open/v3 => ../../../EIDOVELA-open
 
-replace github.com/axisvela/nomivela-open/v2 => ../../../NOMIVELA-open
+replace github.com/axisvela/nomivela-open/v3 => ../../../NOMIVELA-open
 
 require (
-	github.com/axisvela/LIMENORA-open/sdk/go v0.0.0-00010101000000-000000000000
-	github.com/axisvela/eidovela-open v0.0.0-00010101000000-000000000000
-	github.com/axisvela/nomivela-open/v2 v2.0.0-00010101000000-000000000000
+	github.com/axisvela/LIMENORA-open/sdk/go/v3 v3.0.0
+	github.com/axisvela/eidovela-open/v3 v3.0.0
+	github.com/axisvela/nomivela-open/v3 v3.0.0
 	github.com/jackc/pgx/v5 v5.11.0
 )
 

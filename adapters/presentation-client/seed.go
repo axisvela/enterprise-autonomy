@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	nomivela "github.com/axisvela/nomivela-open/v2/sdk/go"
+	nomivela "github.com/axisvela/nomivela-open/v3/sdk/go"
 )
 
 // seededIDs are the registry identifiers EIDOVELA enrollment needs.
