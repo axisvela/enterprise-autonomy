@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http/httptest"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -141,4 +142,48 @@ func runGoogleADK(t *testing.T, ctx context.Context, cardURL, prompt, token stri
 		}
 	}
 	return output.String(), nil
+}
+
+func TestGoogleADKConcurrentConsumers(t *testing.T) {
+	server := newA2AServer(t, mustOrderAgent(t), "")
+	defer server.Close()
+
+	type call struct {
+		prompt string
+		want   string
+	}
+	calls := make([]call, 12)
+	for i := range calls {
+		if i%2 == 0 {
+			calls[i] = call{prompt: "Cancel order-1001", want: "approved: order-1001"}
+		} else {
+			calls[i] = call{prompt: "Cancel order-1002", want: "denied: order-1002 has shipped"}
+		}
+	}
+
+	type outcome struct {
+		want   string
+		output string
+		err    error
+	}
+	results := make(chan outcome, len(calls))
+	var wg sync.WaitGroup
+	wg.Add(len(calls))
+	for _, c := range calls {
+		go func(c call) {
+			defer wg.Done()
+			output, err := runGoogleADK(t, context.Background(), server.URL, c.prompt, "")
+			results <- outcome{want: c.want, output: output, err: err}
+		}(c)
+	}
+	wg.Wait()
+	close(results)
+	for result := range results {
+		if result.err != nil {
+			t.Fatal(result.err)
+		}
+		if !strings.Contains(result.output, result.want) {
+			t.Fatalf("output = %q, want substring %q", result.output, result.want)
+		}
+	}
 }
