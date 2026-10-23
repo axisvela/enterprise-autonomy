@@ -56,8 +56,10 @@ Build-Go (Join-Path $axisVelaHome "LIMENORA\backend\go") $limenoraBin "./cmd/ser
 
 $decisionKey = Join-Path $dataDir "decision.key"
 $grantKey = Join-Path $dataDir "grant.key"
+$workloadKey = Join-Path $dataDir "workload.key"
 if (-not (Test-Path $decisionKey)) { & openssl genpkey -algorithm ed25519 -out $decisionKey; if ($LASTEXITCODE -ne 0) { throw "decision key generation failed" } }
 if (-not (Test-Path $grantKey)) { & openssl genpkey -algorithm ed25519 -out $grantKey; if ($LASTEXITCODE -ne 0) { throw "grant key generation failed" } }
+if (-not (Test-Path $workloadKey)) { & openssl genpkey -algorithm ed25519 -out $workloadKey; if ($LASTEXITCODE -ne 0) { throw "workload key generation failed" } }
 $audienceFile = Join-Path $dataDir "audiences.json"
 [IO.File]::WriteAllText($audienceFile, '{"audiences":[{"audience":"praxo-a2a"}]}', (New-Object Text.UTF8Encoding($false)))
 
@@ -103,6 +105,9 @@ $env:AEGIVELA_POLICY_DECISION_ISSUER = "http://127.0.0.1:1886"
 $env:AEGIVELA_EXECUTION_GRANT_SIGNING_KEY_FILE = $grantKey
 $env:AEGIVELA_EXECUTION_GRANT_SIGNING_KEY_ID = "grant-1"
 $env:AEGIVELA_EXECUTION_GRANT_ISSUER = "http://127.0.0.1:1886"
+$env:AEGIVELA_WORKLOAD_ASSERTION_SIGNING_KEY_FILE = $workloadKey
+$env:AEGIVELA_WORKLOAD_ASSERTION_KEY_ID = "workload-1"
+$env:AEGIVELA_WORKLOAD_ASSERTION_ISSUER = "http://127.0.0.1:1886"
 $env:AEGIVELA_GRANT_AUDIENCE_REGISTRY_FILE = $audienceFile
 $env:AEGIVELA_IDENTITY_SOURCE = "eidovela"
 $env:AEGIVELA_EIDOVELA_URL = "http://127.0.0.1:1966"

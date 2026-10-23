@@ -55,10 +55,26 @@ do not commit `local.env.ps1`.
 - NOMIVELA, EIDOVELA, AEGIVELA, and LIMENORA start and pass health checks.
 - EIDOVELA runs in NOMIVELA registry-consumer mode for namespace
   `https://registry.a2a-iam.test`.
-- AEGIVELA uses EIDOVELA as its identity source and has signed decision/grant
-  keys plus a `praxo-a2a` audience registry.
+- AEGIVELA uses EIDOVELA as its identity source and has signed decision, grant,
+  and workload-assertion keys plus a `praxo-a2a` audience registry.
 - LIMENORA runs the server gateway with EIDOVELA presentation and an AEGIVELA
   default route for audience `praxo-a2a`.
+
+## Real IAM Smoke
+
+The real chain has been exercised locally:
+
+1. `examples/a2a-agent-iam/cmd/smoke` registers the Google ADK checkout agent in
+   NOMIVELA, enrolls it with EIDOVELA, and verifies a short-lived PoP token.
+2. AEGIVELA policy `system-api-access` allows `order:cancel`; a workload binding
+   and assertion are issued through `/v1/workload-bindings` and
+   `/v1/workload-assertions/issue`.
+3. `examples/a2a-agent-iam/cmd/decide -mode system` evaluates the assertion and
+   returned `outcome=allow`.
+
+The AEGIVELA `serviceAgentApi` v2 path is configured but currently returns
+`400 invalid_policy_request` against this local build; the `system_api`
+workload-assertion path is the verified allow path.
 
 ## Limits
 
