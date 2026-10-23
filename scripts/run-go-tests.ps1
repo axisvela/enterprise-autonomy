@@ -37,6 +37,24 @@ try {
     Pop-Location
     if ($LASTEXITCODE -eq 0) { Write-Host "run-go-tests: a2a-adk-order-cancellation OK" -ForegroundColor Green }
   }
+
+  $agentIAM = Join-Path $RepoRoot "examples\a2a-agent-iam"
+  if (-not (Test-Path (Join-Path $RepoRoot "..\NOMIVELA-open"))) {
+    Write-Host "run-go-tests: skip a2a-agent-iam (sibling IAM checkouts unavailable)" -ForegroundColor Yellow
+  } elseif (-not (Test-Path (Join-Path $agentIAM "go.mod"))) {
+    $failures += "a2a-agent-iam missing go.mod"
+  } else {
+    Push-Location $agentIAM
+    go test ./...
+    if ($LASTEXITCODE -ne 0) {
+      $failures += "a2a-agent-iam tests failed"
+    } else {
+      go vet ./...
+      if ($LASTEXITCODE -ne 0) { $failures += "a2a-agent-iam vet failed" }
+    }
+    Pop-Location
+    if ($LASTEXITCODE -eq 0) { Write-Host "run-go-tests: a2a-agent-iam OK" -ForegroundColor Green }
+  }
 } finally {
   $env:GOWORK = $previousGoWork
 }

@@ -106,6 +106,8 @@ Thirteen of the fourteen vertical slices have runnable local demos. Each demo dr
 - [Sequenced deployment](vertical-slices/sequenced-deployment.md)
 - [Inference request to governed answer](vertical-slices/inference-request-to-governed-answer.md)
 - [Google ADK A2A order cancellation interoperability](examples/a2a-adk-order-cancellation/README.md)
+- [A2A Agent IAM: direct](examples/a2a-agent-iam/direct/README.md)
+- [A2A Agent IAM: LIMENORA gateway](examples/a2a-agent-iam/limenora/README.md)
 - [A2A interoperability evidence](docs/a2a-interoperability.md)
 - [Business scenario catalog](docs/business-scenarios.md)
 - [Public example design guide](docs/example-design-guide.md)

@@ -29,6 +29,23 @@ paths. Neither contacts a model provider or changes a real order. A business
 denial is an agent result, while an unavailable, timed-out, or unauthorized peer
 is a transport failure that stops automation.
 
+## Agent IAM Contract Examples
+
+Two additional contract-level examples apply the recommended Agent IAM chain:
+
+- [`examples/a2a-agent-iam/direct`](../examples/a2a-agent-iam/direct/README.md):
+  Google ADK calls PRAXO-CORE directly; the server verifies EIDOVELA, resolves
+  NOMIVELA, calls AEGIVELA, and executes.
+- [`examples/a2a-agent-iam/limenora`](../examples/a2a-agent-iam/limenora/README.md):
+  Google ADK calls a LIMENORA-shaped gateway; the gateway performs the identity
+  and authorization checks and forwards a signed verified context to PRAXO-CORE.
+
+Both register the Google ADK agent in NOMIVELA, enroll it with EIDOVELA, send a
+token-bound DPoP proof, and use AEGIVELA for the `order:cancel` decision. They
+are contract-level examples: the IAM services are local fakes driven through
+their real SDKs. They do not prove a live NOMIVELA/EIDOVELA/AEGIVELA/LIMENORA
+deployment.
+
 ## Evidence Level
 
 This proves a cross-SDK JSON-RPC interoperability path with Google ADK Go
