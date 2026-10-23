@@ -9,7 +9,7 @@ replace github.com/axisvela/eidovela-open/v3 => ../../../EIDOVELA-open
 replace github.com/axisvela/nomivela-open/v3 => ../../../NOMIVELA-open
 
 require (
-	github.com/axisvela/limenora-open/sdk/go/v3 v3.0.0
+	github.com/axisvela/limenora-open/sdk/go/v3 v3.0.2
 	github.com/axisvela/eidovela-open/v3 v3.0.0
 	github.com/axisvela/nomivela-open/v3 v3.0.0
 	github.com/jackc/pgx/v5 v5.11.0
