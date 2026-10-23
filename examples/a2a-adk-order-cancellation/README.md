@@ -38,15 +38,17 @@ GOWORK=off go test ./...
 
 The test starts the PRAXO-CORE server with `httptest`, then uses the published
 Google ADK Go SDK as the external A2A client. It verifies discovery, successful
-business handling, a policy-style denial, remote failure, timeout, and authorized
-versus unauthorized calls.
+business handling, a policy-style denial, remote failure, timeout, authorized
+versus unauthorized calls, and concurrent consumers with mixed approval/denial
+requests.
 
 ## Boundaries
 
 - This is protocol interoperability, not a production order-management system.
 - The eligibility decisions are deterministic fixture rules; no order is changed.
-- The two-process demo still runs both peers on loopback. Production callers must
-  authenticate deployed peers, validate card trust across origins, use HTTPS, and
-  test load and failure behavior in their own environment.
+- The two-process demo still runs both peers on loopback. Concurrent loopback
+  calls are tested, but deployed throughput, SLOs, and failure behavior must be
+  measured in the caller's own environment. Production callers must authenticate
+  deployed peers, validate card trust across origins, and use HTTPS.
 - A denial is a business result, not an A2A transport error. The caller owns the
   human handoff and any actual cancellation.
