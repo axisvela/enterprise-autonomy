@@ -61,8 +61,11 @@ starts the four services locally on isolated PostgreSQL databases:
 
 The `cmd/smoke` command in `examples/a2a-agent-iam` registers the Google ADK
 checkout agent in NOMIVELA, completes EIDOVELA enrollment for its workload, and
-issues and verifies a PoP-bound token for audience `praxo-a2a`. This is a real
-local service chain, not a fake.
+issues and verifies a PoP-bound token for audience `praxo-a2a`. A local
+AEGIVELA policy, workload binding, and workload assertion produced a real
+`outcome=allow` decision. This is a real local service chain, not a fake. See
+the [run record](../examples/a2a-agent-iam-local/RUN-RECORD.md) for commands,
+results, issues, and fixes.
 
 It does not yet include a seeded AEGIVELA policy, workload assertion/binding, or
 a live A2A call through LIMENORA. Those remain the next integration steps.

@@ -76,6 +76,11 @@ The AEGIVELA `serviceAgentApi` v2 path is configured but currently returns
 `400 invalid_policy_request` against this local build; the `system_api`
 workload-assertion path is the verified allow path.
 
+## Run Record
+
+See [RUN-RECORD.md](RUN-RECORD.md) for the exact local environment, commands,
+observed results, issues, and fixes.
+
 ## Limits
 
 This starts the local services; it does not claim production readiness. The
