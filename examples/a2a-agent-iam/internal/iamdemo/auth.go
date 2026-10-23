@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -57,12 +58,25 @@ func verifyIdentity(ctx context.Context, r *http.Request, body []byte, eidovelaU
 }
 
 func authorize(ctx context.Context, aegivelaURL string, id *identity, orderRef string) error {
-	client := pepsdk.NewClient(aegivelaURL, http.DefaultClient)
 	assertion := fmt.Sprintf(`{"agentId":%q,"namespace":%q,"instanceId":%q,"agentEpoch":%d,"identityEpoch":%d}`,
 		id.Registry.Identity.AgentID, id.Registry.Namespace.Namespace, id.Principal.InstanceID,
 		id.Registry.Agent.AgentEpoch, id.Registry.Identity.IdentityEpoch)
+	return authorizeWithAssertion(ctx, aegivelaURL, assertion, orderRef)
+}
+
+func authorizeWithAssertion(ctx context.Context, aegivelaURL, assertion, orderRef string) error {
+	options := []pepsdk.Option{}
+	if token := os.Getenv("A2A_IAM_AEGIVELA_TOKEN"); token != "" {
+		options = append(options, pepsdk.WithHeaders(map[string]string{
+			"X-Aegivela-Internal-Token": token,
+			"X-Aegivela-Tenant-ID":      envOr("A2A_IAM_TENANT", "demo"),
+			"X-Aegivela-Actor-ID":       envOr("A2A_IAM_AEGIVELA_ACTOR", "agent_google_adk_checkout"),
+			"X-Aegivela-Authority-Root": envOr("A2A_IAM_AEGIVELA_AUTHORITY_ROOT", "root:demo"),
+		}))
+	}
+	client := pepsdk.NewClient(aegivelaURL, http.DefaultClient, options...)
 	result, err := client.Evaluate(ctx, pepsdk.Route{
-		Audience:  "aegivela",
+		Audience:  envOr("A2A_IAM_AUDIENCE", "praxo-a2a"),
 		Action:    "order:cancel",
 		Scope:     []string{"order:cancel"},
 		Kind:      "order",
@@ -78,6 +92,13 @@ func authorize(ctx context.Context, aegivelaURL string, id *identity, orderRef s
 		return pepsdk.ErrDenied
 	}
 	return nil
+}
+
+func envOr(key, fallback string) string {
+	if value := os.Getenv(key); value != "" {
+		return value
+	}
+	return fallback
 }
 
 func bearerToken(r *http.Request) string {
