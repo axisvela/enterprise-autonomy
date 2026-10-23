@@ -78,7 +78,7 @@ $nonAttestorText = if ($nonAttestorDenied) { "A non-designated attestor was reje
 Write-Step 5 "Attest the evidence set" "$ComplianceLead attested the evidence set under '$AttestationRef'. Status is '$($attResult.case.status)'. $nonAttestorText"
 
 # Step 6: durable process (Rheovela)
-$rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
+$rheo = Join-Path $AxisVelaHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "compliance-audit-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "compliance-audit-workflow.json") | Out-Null
 # The rheo CLI defines into its own local store, not the running server's --db; publish to the server too.

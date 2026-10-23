@@ -41,7 +41,7 @@ Idempotency is the first of many governance details: **re-runs are safe by const
 ### Prerequisites
 
 - Windows PowerShell 5.1 or later and `curl.exe`.
-- Local checkouts for `LIMENORA-open`, `ONTOVELA`, `RHEOVELA`, `SYMBIVELA`, and `PRAXOVELA` under `$AxisRoboHome`.
+- Local checkouts for `LIMENORA-open`, `ONTOVELA`, `RHEOVELA`, `SYMBIVELA`, and `PRAXOVELA` under `$AxisVelaHome`.
 - A running PostgreSQL 18 instance with `symbivela`, `orchadyn`, and `moduregis` databases.
 - Verified binaries for `limenora-edge.exe`, `ontovela.exe`, `rheo.exe`, and `symbivela.exe`.
 
@@ -50,7 +50,7 @@ Idempotency is the first of many governance details: **re-runs are safe by const
 Copy `local.env.ps1.example` to `local.env.ps1` and set the checkout root and connection strings. The file defines:
 
 ```powershell
-$AxisRoboHome = "D:\profile\paper-code"
+$AxisVelaHome = "D:\profile\paper-code"
 $TenantId = "tenant-a"
 $Actor = "operations-lead"
 $OrderAction = "alternate_location"

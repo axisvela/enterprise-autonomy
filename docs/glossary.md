@@ -1,6 +1,6 @@
 # Ecosystem Glossary
 
-Common terms used across AxisRobo Enterprise Autonomy public material.
+Common terms used across AxisVela Enterprise Autonomy public material.
 
 | Term | Meaning |
 | --- | --- |

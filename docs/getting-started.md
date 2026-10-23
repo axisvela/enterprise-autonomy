@@ -1,6 +1,6 @@
 # Getting Started
 
-This guide orients new readers across the public AxisRobo Enterprise Autonomy material.
+This guide orients new readers across the public AxisVela Enterprise Autonomy material.
 
 ## 1. Understand the ecosystem
 

@@ -1,6 +1,6 @@
 param([switch]$RebuildAxond)
 $ErrorActionPreference = "Stop"
-if (-not $env:AXISROBO_HOME -or -not $env:AEGIVELA_DIR) { throw "Load local.env.ps1 before running this script." }
+if (-not $env:AXISVELA_HOME -or -not $env:AEGIVELA_DIR) { throw "Load local.env.ps1 before running this script." }
 
 $root    = $PSScriptRoot
 $dataDir = Join-Path $root ".local-data"

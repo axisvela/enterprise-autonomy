@@ -16,7 +16,7 @@ AXON_WORKLOAD_BINDING_ID=<Case 02 的 BindingID>
 AXON_WORKLOAD_CLIENT_ID=axond-dev
 AXON_WORKLOAD_REF=axond
 AXON_WORKLOAD_SUBJECT_REF=axond-dev-subject
-AXON_WORKLOAD_ORG_ROOT=did:axisrobo:dev
+AXON_WORKLOAD_ORG_ROOT=did:axisvela:dev
 ```
 
 ## 预期可观测（启动即证明断言链路）

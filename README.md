@@ -1,8 +1,8 @@
-# AxisRobo Enterprise Autonomy
+# AxisVela Enterprise Autonomy
 
 > Contract-Governed Infrastructure for Agents, Robots, Twins and Simulated Worlds
 
-`enterprise-autonomy` is the public introduction and end-to-end examples repository for the AxisRobo Enterprise Autonomy ecosystem.
+`enterprise-autonomy` is the public introduction and end-to-end examples repository for the AxisVela Enterprise Autonomy ecosystem.
 
 ## Scope
 

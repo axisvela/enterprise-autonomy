@@ -92,7 +92,7 @@ Invoke-RestMethod -Method Post -Uri "http://localhost:8102/v1/deployments/dep-00
 ### Step 6 â€?Durable process wrapper (Rheovela)
 
 ```powershell
-$rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
+$rheo = Join-Path $AxisVelaHome "RHEOVELA\rheo.exe"
 & $rheo workflow define --file ".\sequenced-deployment-workflow.json"
 $processBody = @{ workflow = "sequenced-deployment"; project = $DeploymentId; actor = $Operator } | ConvertTo-Json
 Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/instances" -ContentType "application/json" -Body $processBody

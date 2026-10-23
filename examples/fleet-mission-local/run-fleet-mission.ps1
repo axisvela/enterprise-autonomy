@@ -80,7 +80,7 @@ $reviewText = if ($reviewDenied) { "A non-operator review was rejected (HTTP $re
 Write-Step 5 "Review and resume the mission" "$Operator resumed the mission under '$ApprovalRef'. Status is '$($reviewResult.mission.status)'. $reviewText"
 
 # Step 6: durable process (Rheovela)
-$rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
+$rheo = Join-Path $AxisVelaHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "fleet-mission-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "fleet-mission-workflow.json") | Out-Null
 # The rheo CLI defines into its own local store, not the running server's --db; publish to the server too.

@@ -10,7 +10,7 @@ AEGIVELA 的内部令牌解析器要求调用方在 `X-Aegivela-Internal-Token` 
 ```
 X-Aegivela-Tenant-ID      = tenant-dev
 X-Aegivela-Actor-ID       = axond-dev-subject
-X-Aegivela-Authority-Root = did:axisrobo:dev
+X-Aegivela-Authority-Root = did:axisvela:dev
 ```
 
 且 binding 请求体里的 `subject_ref` / `organization_root` 必须与这两个头**完全一致**。
@@ -22,14 +22,14 @@ $h = @{
   'X-Aegivela-Internal-Token' = $env:AEGIVELA_INTERNAL_AUTH_TOKEN
   'X-Aegivela-Tenant-ID'      = 'tenant-dev'
   'X-Aegivela-Actor-ID'       = 'axond-dev-subject'
-  'X-Aegivela-Authority-Root' = 'did:axisrobo:dev'
+  'X-Aegivela-Authority-Root' = 'did:axisvela:dev'
 }
 
 # 1. 建 binding
 $binding = Invoke-RestMethod -Method Post -Uri http://127.0.0.1:1886/v1/workload-bindings -Headers $h `
   -ContentType application/json -Body (@{
      api_version='aegivela.io/v1alpha1'
-     subject_ref='axond-dev-subject'; organization_root='did:axisrobo:dev'
+     subject_ref='axond-dev-subject'; organization_root='did:axisvela:dev'
      client_id='axond-dev'; workload_ref='axond'
      evidence_ref='evidence:dev-bridge-local'
      trace_id='4bf92f3577b34da6a3ce929d0e0e4736'
@@ -40,7 +40,7 @@ $binding.BindingID
 Invoke-RestMethod -Method Post -Uri http://127.0.0.1:1886/v1/workload-assertions/issue -Headers $h `
   -ContentType application/json -Body (@{
      api_version='aegivela.io/v1alpha1'
-     subject_ref='axond-dev-subject'; organization_root='did:axisrobo:dev'
+     subject_ref='axond-dev-subject'; organization_root='did:axisvela:dev'
      binding_id=$binding.BindingID; client_id='axond-dev'; workload_ref='axond'
      audience='rheovela'
      expires_at=(Get-Date).ToUniversalTime().AddMinutes(4).ToString('o')

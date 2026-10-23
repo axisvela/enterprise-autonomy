@@ -82,7 +82,7 @@ $nonMemberText = if ($nonMemberDenied) { "A non-member decision was rejected (HT
 Write-Step 5 "Record the review decision" "$Reviewer approved $ProposalId under '$DecisionRef'. Status is '$($decResult.proposal.status)'. $nonMemberText"
 
 # Step 6: durable process (Rheovela)
-$rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
+$rheo = Join-Path $AxisVelaHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "simulation-validation-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "simulation-validation-workflow.json") | Out-Null
 # The rheo CLI defines into its own local store, not the running server's --db; publish to the server too.

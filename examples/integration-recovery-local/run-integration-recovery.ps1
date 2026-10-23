@@ -76,7 +76,7 @@ $resumeDenied2Text = if ($resumeDenied2) { "The adapter rejected resume before v
 Write-Step 5 "Verify the reconnection" "$IntegrationOwner verified $IntegrationId under '$EvidenceRef'. $resumeDenied2Text"
 
 # Step 6: durable process (Rheovela)
-$rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
+$rheo = Join-Path $AxisVelaHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "integration-recovery-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "integration-recovery-workflow.json") | Out-Null
 # The rheo CLI defines into its own local store, not the running server's --db; publish to the server too.

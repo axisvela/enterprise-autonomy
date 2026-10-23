@@ -1,6 +1,6 @@
 # Local-Binary Order Fulfillment Exception Demo
 
-A stockout on `order-123` triggers an end-to-end exception workflow across six AxisRobo products plus two reference adapters. Each step is executed against real local binaries and produces an observable business artifact, not just a test call.
+A stockout on `order-123` triggers an end-to-end exception workflow across six AxisVela products plus two reference adapters. Each step is executed against real local binaries and produces an observable business artifact, not just a test call.
 
 > **Detailed walkthrough:** for the exact request bodies, headers, expected responses, and per-step governance behavior, see the [Detailed Operations Guide](operations-guide.md).
 
@@ -50,7 +50,7 @@ The demo intentionally does **not** update an order-management, inventory, carri
 - Local checkout directories for `LIMENORA-open`, `ONTOVELA`, `RHEOVELA`, `SYMBIVELA`, and `PRAXOVELA`
 - A running PostgreSQL 18 instance (for example `D:\app\PostgreSQL\18` on port `5433`), with databases `symbivela`, `orchadyn`, and `moduregis` available
 - The verified binaries: `limenora-edge.exe`, `ontovela.exe`, `rheo.exe`, and `symbivela.exe`
-- Optional: Orchadyn runs from the `axisrobo/orchadyn-open` v0.7.0 release, which the start script downloads on demand; Moduregis releases are downloaded on demand from v1.0.1
+- Optional: Orchadyn runs from the `axisvela/orchadyn-open` v0.7.0 release, which the start script downloads on demand; Moduregis releases are downloaded on demand from v1.0.1
 
 Copy `local.env.ps1.example` to `local.env.ps1`, then set your checkout root and the PostgreSQL 18 connection strings. `$OrchadynSource` points at the ORCHADYN checkout used for migration files; set `$OrchadynBinary = $null` to run without Orchadyn. Do not commit `local.env.ps1`.
 

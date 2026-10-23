@@ -18,7 +18,7 @@
 ## 环境准备（本机，仓外）
 
 - 建 PG 角色与库：`symbivela`/`orchadyn`/`moduregis`（登录名=库名，密码同名）。
-- `$AxisRoboHome` 指向 `D:\profile\paper-code`，但仓库实际在 `D:\profile\paper-code\axis-vela\`：在 `paper-code\` 下建 junction `ONTOVELA`/`RHEOVELA`/`SYMBIVELA`/`PRAXOVELA` → `axis-vela\` 对应目录（`local.env.ps1` 无需改）。
+- `$AxisVelaHome` 指向 `D:\profile\paper-code`，但仓库实际在 `D:\profile\paper-code\axis-vela\`：在 `paper-code\` 下建 junction `ONTOVELA`/`RHEOVELA`/`SYMBIVELA`/`PRAXOVELA` → `axis-vela\` 对应目录（`local.env.ps1` 无需改）。
 - PG 18 客户端用 `D:\app\pgAdmin 4\runtime\psql.exe`（`pgsql17-mingw` 的 psql 缺入口点，报 0xC0000139）。
 
 ## 非致命错误（保留、不声称已消除）

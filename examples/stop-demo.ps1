@@ -5,18 +5,18 @@ param(
 # Stops every process launched by a local demo. It identifies processes by
 # executable path, so it never touches unrelated processes:
 #   - reference adapters under <repo>/adapters/
-#   - product binaries under the demo stack ($AxisRoboHome + demo release dirs)
+#   - product binaries under the demo stack ($AxisVelaHome + demo release dirs)
 
-$AxisRoboHome = $env:AxisRoboHome
-if (-not $AxisRoboHome) { $AxisRoboHome = "D:\profile\paper-code" }
+$AxisVelaHome = $env:AxisVelaHome
+if (-not $AxisVelaHome) { $AxisVelaHome = "D:\profile\paper-code" }
 
 $patterns = @(
   (Join-Path $RepoRoot "adapters\"),
-  (Join-Path $AxisRoboHome "PRAXOVELA\packages\axon-core\"),
-  (Join-Path $AxisRoboHome "tmp\release\"),
-  (Join-Path $AxisRoboHome "ONTOVELA\"),
-  (Join-Path $AxisRoboHome "RHEOVELA\"),
-  (Join-Path $AxisRoboHome "SYMBIVELA\"),
+  (Join-Path $AxisVelaHome "PRAXOVELA\packages\axon-core\"),
+  (Join-Path $AxisVelaHome "tmp\release\"),
+  (Join-Path $AxisVelaHome "ONTOVELA\"),
+  (Join-Path $AxisVelaHome "RHEOVELA\"),
+  (Join-Path $AxisVelaHome "SYMBIVELA\"),
   (Join-Path $RepoRoot "examples\order-fulfillment-local\.orchadyn-release\"),
   (Join-Path $RepoRoot "examples\order-fulfillment-local\.moduregis-release\"),
   (Join-Path $RepoRoot "examples\procurement-local\.orchadyn-release\"),

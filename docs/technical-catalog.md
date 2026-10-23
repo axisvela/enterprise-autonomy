@@ -1,6 +1,6 @@
-# AxisRobo Product Technical Catalog
+# AxisVela Product Technical Catalog
 
-This catalog summarizes the local runnable surfaces of the AxisRobo Enterprise Autonomy ecosystem. It reflects the currently available source trees and local build artifacts, and each product's own repository remains authoritative.
+This catalog summarizes the local runnable surfaces of the AxisVela Enterprise Autonomy ecosystem. It reflects the currently available source trees and local build artifacts, and each product's own repository remains authoritative.
 
 ## Summary
 

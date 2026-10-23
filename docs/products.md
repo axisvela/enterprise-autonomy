@@ -1,6 +1,6 @@
-# AxisRobo Product Overview
+# AxisVela Product Overview
 
-AxisRobo Enterprise Autonomy brings together independently owned products for governed agents, robots, twins, simulation, and human collaboration.
+AxisVela Enterprise Autonomy brings together independently owned products for governed agents, robots, twins, simulation, and human collaboration.
 
 | Product | Public Role | Overview | Repository |
 | --- | --- | --- | --- |
