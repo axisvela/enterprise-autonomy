@@ -30,6 +30,15 @@ Run the two-process demo, including bearer authentication and the denial path:
 .\run.ps1
 ```
 
+Use another loopback port when the default `8091` is busy:
+
+```powershell
+.\run.ps1 -Port 18091
+```
+
+The PRAXO-CORE peer listens on that port; the Google ADK consumer uses an
+outbound connection and does not need a listening port of its own.
+
 Run the in-process interoperability tests:
 
 ```powershell
