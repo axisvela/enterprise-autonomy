@@ -3,6 +3,7 @@ package ordera2a
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"net/http/httptest"
 	"strings"
 	"sync"
@@ -10,6 +11,8 @@ import (
 	"time"
 
 	sdk "github.com/a2aproject/a2a-go/v2/a2a"
+	"github.com/a2aproject/a2a-go/v2/a2aclient"
+	"github.com/a2aproject/a2a-go/v2/a2asrv"
 	a2aadapter "github.com/axisvela/praxo-core/adapters/a2a"
 	praxoagent "github.com/axisvela/praxo-core/v2/pkg/agent"
 	adkagent "google.golang.org/adk/v2/agent"
@@ -122,6 +125,10 @@ func runGoogleADK(t *testing.T, ctx context.Context, cardURL, prompt, token stri
 	if err != nil {
 		return "", err
 	}
+	return runRemoteADK(ctx, remote, prompt)
+}
+
+func runRemoteADK(ctx context.Context, remote adkagent.Agent, prompt string) (string, error) {
 	adkRunner, err := runner.NewInMemory("shopping_checkout", remote)
 	if err != nil {
 		return "", err
@@ -142,6 +149,64 @@ func runGoogleADK(t *testing.T, ctx context.Context, cardURL, prompt, token stri
 		}
 	}
 	return output.String(), nil
+}
+
+type bearerTransport struct {
+	base  http.RoundTripper
+	token string
+}
+
+func (t bearerTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	clone := req.Clone(req.Context())
+	clone.Header.Set("Authorization", "Bearer "+t.token)
+	return t.base.RoundTrip(clone)
+}
+
+func TestGoogleADKOverTLS(t *testing.T) {
+	const token = "tls-token"
+	agent := mustOrderAgent(t)
+	var server *httptest.Server
+	server = httptest.NewTLSServer(NewMux(agent, token, func() *sdk.AgentCard {
+		return NewCard(server.URL+"/invoke", token)
+	}))
+	defer server.Close()
+
+	card := NewCard(server.URL+"/invoke", token)
+	httpClient := &http.Client{Transport: bearerTransport{base: server.Client().Transport, token: token}}
+	factory := a2aclient.NewFactory(a2aclient.WithJSONRPCTransport(httpClient))
+	remote, err := remoteagent.NewA2A(remoteagent.A2AConfig{
+		Name: "order_cancellation_peer", AgentCard: card,
+		ClientProvider: remoteagent.NewA2AClientProvider(factory),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	output, err := runRemoteADK(context.Background(), remote, "Cancel order-1001")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(output, "approved: order-1001") {
+		t.Fatalf("output = %q", output)
+	}
+}
+
+func TestGoogleADKRejectsCrossOriginCard(t *testing.T) {
+	interfaceServer := httptest.NewServer(http.NotFoundHandler())
+	defer interfaceServer.Close()
+	card := NewCard(interfaceServer.URL+"/invoke", "")
+	cardServer := httptest.NewServer(a2asrv.NewStaticAgentCardHandler(card))
+	defer cardServer.Close()
+
+	remote, err := remoteagent.NewA2A(remoteagent.A2AConfig{
+		Name: "order_cancellation_peer", AgentCardProvider: remoteagent.NewAgentCardProvider(cardServer.URL),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = runRemoteADK(context.Background(), remote, "Cancel order-1001")
+	if err == nil || (!strings.Contains(err.Error(), "origin") && !strings.Contains(err.Error(), "agent card")) {
+		t.Fatalf("err = %v", err)
+	}
 }
 
 func TestGoogleADKConcurrentConsumers(t *testing.T) {
