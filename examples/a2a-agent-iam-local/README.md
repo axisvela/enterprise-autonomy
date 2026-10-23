@@ -71,6 +71,11 @@ The real chain has been exercised locally:
    `/v1/workload-assertions/issue`.
 3. `examples/a2a-agent-iam/cmd/decide -mode system` evaluates the assertion and
    returned `outcome=allow`.
+4. `examples/a2a-agent-iam/cmd/live` enrolls a fresh EIDOVELA instance, starts a
+   PRAXO-CORE A2A server with real EIDOVELA verification, NOMIVELA context
+   resolution, and AEGIVELA workload-assertion authorization, then calls it with
+   Google ADK. The call returned `approved: order-1001 can be cancelled before
+   shipment`.
 
 The AEGIVELA `serviceAgentApi` v2 path is configured but currently returns
 `400 invalid_policy_request` against this local build; the `system_api`
@@ -83,9 +88,8 @@ observed results, issues, and fixes.
 
 ## Limits
 
-This starts the local services; it does not claim production readiness. The
-A2A Agent IAM examples under `examples/a2a-agent-iam` remain contract-level and
-use local fakes. A live end-to-end A2A call through this stack still requires a
-seeded AEGIVELA policy, workload assertion/binding, and a PRAXO-CORE A2A
-consumer wired to these endpoints. LIMENORA is running as a gateway, not as a
-fully configured A2A reverse-ingress route.
+This starts the local services; it does not claim production readiness. A live
+Google ADK -> PRAXO-CORE A2A call with real NOMIVELA, EIDOVELA, and AEGIVELA is
+verified. It calls the PRAXO-CORE A2A server directly; LIMENORA is running as a
+gateway, not as a fully configured A2A reverse-ingress route. External A2A peers,
+deployed TLS/identity, and deployed throughput/SLO validation remain open.

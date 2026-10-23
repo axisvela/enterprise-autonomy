@@ -63,8 +63,12 @@ The `cmd/smoke` command in `examples/a2a-agent-iam` registers the Google ADK
 checkout agent in NOMIVELA, completes EIDOVELA enrollment for its workload, and
 issues and verifies a PoP-bound token for audience `praxo-a2a`. A local
 AEGIVELA policy, workload binding, and workload assertion produced a real
-`outcome=allow` decision. This is a real local service chain, not a fake. See
-the [run record](../examples/a2a-agent-iam-local/RUN-RECORD.md) for commands,
+`outcome=allow` decision. The `cmd/live` command starts a PRAXO-CORE A2A server
+with real EIDOVELA verification, NOMIVELA context resolution, and AEGIVELA
+workload-assertion authorization, then calls it with Google ADK and receives
+`approved: order-1001 can be cancelled before shipment`. This is a real local
+service chain, not a fake. See the
+[run record](../examples/a2a-agent-iam-local/RUN-RECORD.md) for commands,
 results, issues, and fixes.
 
 It does not yet include a seeded AEGIVELA policy, workload assertion/binding, or

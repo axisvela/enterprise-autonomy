@@ -67,6 +67,13 @@ GOWORK=off go run ./cmd/smoke
 GOWORK=off go run ./cmd/decide -mode system -assertion <assertion> \
   -agent db18dbd9-65f1-470c-9539-93a394d242f5 \
   -instance 59e86bc2-2501-4097-a494-cddf9d5c065d
+
+$env:A2A_IAM_AEGIVELA_TOKEN = "dev-aegivela-token"
+$env:A2A_IAM_TENANT = "demo"
+GOWORK=off go run ./cmd/live \
+  -agent-id db18dbd9-65f1-470c-9539-93a394d242f5 \
+  -workload-id 63e9f268-14b7-428f-85ff-659c2c07ca51 \
+  -assertion <assertion>
 ```
 
 Stop the stack with:
@@ -75,6 +82,20 @@ Stop the stack with:
 cd examples/a2a-agent-iam-local
 .\stop-services.ps1
 ```
+
+## Live A2A Call
+
+A Google ADK -> PRAXO-CORE A2A call was exercised with the real local IAM
+services:
+
+1. A fresh EIDOVELA enrollment produced instance
+   `d36ec1a8-b15f-4955-b5a1-5a942a36d550` and an 804-byte PoP token.
+2. The PRAXO-CORE A2A server verified the token, resolved NOMIVELA Registry
+   Context, and evaluated the AEGIVELA workload assertion.
+3. Google ADK received `approved: order-1001 can be cancelled before shipment`.
+
+The server was the PRAXO-CORE A2A server listening directly on
+`127.0.0.1:18086`; LIMENORA was not in this request path.
 
 ## Issues And Fixes
 
@@ -92,12 +113,23 @@ cd examples/a2a-agent-iam-local
 5. **AEGIVELA `serviceAgentApi` v2 returned `400 invalid_policy_request`** on
    this local build. The verified path is `system_api` with an AEGIVELA-issued
    workload assertion, which returned `allow`.
+6. **A 30-minute assertion request returned `400
+   invalid_workload_assertion_request`**. The same request with a 5-minute
+   expiry succeeded, so the local issuer enforces a short maximum TTL.
+7. **EIDOVELA enrollment rejected mismatched workload attributes** with
+   `workload attributes do not match registered selector`. The live command
+   sends `app=google-adk`, matching the registered workload selector.
+8. **The first live A2A call returned `403`** because the `system_api` client
+   did not send AEGIVELA internal headers. The live path now sends the internal
+   token, tenant, actor, and authority root.
 
 ## Limits
 
 - This is a single-host local stack, not a production deployment.
-- The real A2A request path through LIMENORA to a PRAXO-CORE A2A server is not
-  wired yet.
+- The live A2A call goes directly to the PRAXO-CORE A2A server. The LIMENORA
+  A2A reverse-ingress route to PRAXO-CORE is not wired yet.
+- AEGIVELA `serviceAgentApi` v2 still returns `400` on this local build; the
+  verified path is `system_api`.
 - External A2A peer interoperability, external gRPC, deployed TLS/identity, and
   deployed throughput/SLO validation remain open.
 - Workload assertion and token values are credentials and are not recorded.

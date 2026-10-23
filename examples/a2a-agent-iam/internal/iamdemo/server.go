@@ -225,6 +225,19 @@ func newPraxoMux(runner a2aadapter.Runner, auth func(*http.Request) (int, error)
 	return mux
 }
 
+func NewLiveMux(runner a2aadapter.Runner, eidovelaURL, nomivelaURL, aegivelaURL, assertion string, card func() *sdk.AgentCard) http.Handler {
+	return newPraxoMux(runner, func(r *http.Request) (int, error) {
+		body := readAndRestore(r)
+		if _, err := verifyIdentity(r.Context(), r, body, eidovelaURL, nomivelaURL); err != nil {
+			return http.StatusUnauthorized, err
+		}
+		if err := authorizeWithAssertion(r.Context(), aegivelaURL, assertion, orderRef(body)); err != nil {
+			return http.StatusForbidden, err
+		}
+		return http.StatusOK, nil
+	}, card)
+}
+
 func readAndRestore(r *http.Request) []byte {
 	body, _ := io.ReadAll(r.Body)
 	r.Body = io.NopCloser(bytes.NewReader(body))
@@ -291,9 +304,13 @@ func NewCard(invokeURL string) *sdk.AgentCard {
 	}
 }
 
+func NewOrderAgent() (*praxoagent.Agent, error) {
+	return praxoagent.New(praxoagent.Options{Model: orderModel{}, MaxSteps: 1})
+}
+
 func mustOrderAgent(t *testing.T) *praxoagent.Agent {
 	t.Helper()
-	agent, err := praxoagent.New(praxoagent.Options{Model: orderModel{}, MaxSteps: 1})
+	agent, err := NewOrderAgent()
 	if err != nil {
 		t.Fatal(err)
 	}
