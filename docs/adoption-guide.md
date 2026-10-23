@@ -1,6 +1,6 @@
 # Adoption Guide
 
-How to approach adopting AxisRobo Enterprise Autonomy products for a governed autonomous outcome.
+How to approach adopting AxisVela Enterprise Autonomy products for a governed autonomous outcome.
 
 ## Principles
 

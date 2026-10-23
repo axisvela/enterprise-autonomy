@@ -70,7 +70,7 @@ $outcome.steps += @{ index = 5; title = "Record the sandbox experiment"; product
 Write-Step 5 "Record the sandbox experiment" "Experiment '$($expResult.experiment.id)' recorded inside '$($expResult.experiment.scope)' with outcome '$($expResult.experiment.outcome)'. Status is '$($expResult.proposal.status)'."
 
 # Step 6: durable process (Rheovela)
-$rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
+$rheo = Join-Path $AxisVelaHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "innovation-sandbox-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "innovation-sandbox-workflow.json") | Out-Null
 # The rheo CLI defines into its own local store, not the running server's --db; publish to the server too.

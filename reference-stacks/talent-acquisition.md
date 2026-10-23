@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This public reference stack illustrates how AxisRobo products can contribute to a governed talent-acquisition outcome. It is a product-composition overview, not a deployment blueprint or implementation specification.
+This public reference stack illustrates how AxisVela products can contribute to a governed talent-acquisition outcome. It is a product-composition overview, not a deployment blueprint or implementation specification.
 
 ## Example Composition
 

@@ -1,6 +1,6 @@
 # Ecosystem Links
 
-Public repositories and supporting material for the AxisRobo Enterprise Autonomy ecosystem. Product repositories are authoritative for implementation, availability, and product documentation.
+Public repositories and supporting material for the AxisVela Enterprise Autonomy ecosystem. Product repositories are authoritative for implementation, availability, and product documentation.
 
 ## Product Repositories
 

@@ -1,7 +1,7 @@
 param([switch]$Rebuild)
 
 $ErrorActionPreference = "Stop"
-if (-not $AxisRoboHome -or -not $env:FP1_ADMIN_DSN) { throw "Load local.env.ps1 before running this script." }
+if (-not $AxisVelaHome -or -not $env:FP1_ADMIN_DSN) { throw "Load local.env.ps1 before running this script." }
 
 $logDir = Join-Path $PSScriptRoot ".local-logs"
 $dataDir = Join-Path $PSScriptRoot ".local-data"
@@ -22,10 +22,10 @@ $nomivelaBin = Join-Path $dataDir "nomivela.exe"
 $eidovelaBin = Join-Path $dataDir "eidovelad.exe"
 $eidovelaMig = Join-Path $dataDir "eidovela-migrate.exe"
 $limenoraBin = Join-Path $dataDir "limenora-server.exe"
-Build-Go (Join-Path $AxisRoboHome "NOMIVELA\backend") $nomivelaBin "./cmd/nomivela"
-Build-Go (Join-Path $AxisRoboHome "EIDOVELA\backend") $eidovelaBin "./cmd/eidovelad"
-Build-Go (Join-Path $AxisRoboHome "EIDOVELA\backend") $eidovelaMig "./cmd/eidovela-migrate"
-Build-Go (Join-Path $AxisRoboHome "LIMENORA\backend\go") $limenoraBin "./cmd/server-gateway"
+Build-Go (Join-Path $AxisVelaHome "NOMIVELA\backend") $nomivelaBin "./cmd/nomivela"
+Build-Go (Join-Path $AxisVelaHome "EIDOVELA\backend") $eidovelaBin "./cmd/eidovelad"
+Build-Go (Join-Path $AxisVelaHome "EIDOVELA\backend") $eidovelaMig "./cmd/eidovela-migrate"
+Build-Go (Join-Path $AxisVelaHome "LIMENORA\backend\go") $limenoraBin "./cmd/server-gateway"
 
 # Create the example databases (idempotent).
 $adapter = Join-Path $PSScriptRoot "..\..\adapters\presentation-client"
@@ -47,7 +47,7 @@ Start-Process -FilePath $nomivelaBin -RedirectStandardOutput "$logDir\nomivela.o
 
 # EIDOVELA migrate (explicit migrations dir), then daemon (consumer mode).
 $env:EIDOVELA_DATABASE_URL = $eidovelaDSN
-& $eidovelaMig -dir (Join-Path $AxisRoboHome "EIDOVELA\backend\migrations")
+& $eidovelaMig -dir (Join-Path $AxisVelaHome "EIDOVELA\backend\migrations")
 $env:EIDOVELA_LISTEN_ADDR = "127.0.0.1:1966"
 $env:EIDOVELA_ISSUER = $env:FP1_EIDOVELA_ISSUER
 $env:EIDOVELA_NOMIVELA_URL = $env:FP1_NOMIVELA_URL

@@ -1,6 +1,6 @@
 # Example Value and Effect Framework
 
-Public examples exist to demonstrate that the AxisRobo Enterprise Autonomy ecosystem can produce governed, measurable outcomes. This framework defines what makes an example valuable and how its effect is shown.
+Public examples exist to demonstrate that the AxisVela Enterprise Autonomy ecosystem can produce governed, measurable outcomes. This framework defines what makes an example valuable and how its effect is shown.
 
 ## The Value Chain
 

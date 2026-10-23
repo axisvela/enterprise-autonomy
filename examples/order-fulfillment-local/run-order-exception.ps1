@@ -1,6 +1,6 @@
 param()
 
-if (-not $TenantId -or -not $Actor -or -not $AxisRoboHome -or -not $OrderAction -or -not $OrderApprovalRef) { throw "Load local.env.ps1 before running this script." }
+if (-not $TenantId -or -not $Actor -or -not $AxisVelaHome -or -not $OrderAction -or -not $OrderApprovalRef) { throw "Load local.env.ps1 before running this script." }
 
 function Write-Step($index, $title, $detail) {
   Write-Host ""
@@ -54,7 +54,7 @@ if ($OrchadynBinary) {
 }
 
 # Step 4: create the durable process instance
-$rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
+$rheo = Join-Path $AxisVelaHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "order-exception.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "order-exception.json") | Out-Null
 # The `rheo` CLI defines into its own local store, not the running server's --db, so

@@ -1,6 +1,6 @@
 param()
 
-if (-not $AxisRoboHome -or -not $env:DATABASE_URL) {
+if (-not $AxisVelaHome -or -not $env:DATABASE_URL) {
   throw "Load local.env.ps1 before running this script."
 }
 
@@ -9,10 +9,10 @@ $dataDir = Join-Path $PSScriptRoot ".local-data"
 New-Item -ItemType Directory -Force -Path $logDir, $dataDir, (Join-Path $PSScriptRoot ".praxovela") | Out-Null
 
 $services = @(
-  @{ Name = "limenora"; File = Join-Path $AxisRoboHome "tmp\release\v0.8.0\windows-amd64\limenora-edge.exe"; Args = "--port 1896 --data-dir `"$dataDir\limenora`"" },
-  @{ Name = "ontovela"; File = Join-Path $AxisRoboHome "ONTOVELA\backend\ontovela.exe"; Args = "serve --addr :1856" },
-  @{ Name = "rheovela"; File = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"; Args = "serve --addr :1876 --db `"$dataDir\rheovela.db`"" },
-  @{ Name = "symbivela"; File = Join-Path $AxisRoboHome "SYMBIVELA\backend\symbivela.exe"; Args = "" }
+  @{ Name = "limenora"; File = Join-Path $AxisVelaHome "tmp\release\v0.8.0\windows-amd64\limenora-edge.exe"; Args = "--port 1896 --data-dir `"$dataDir\limenora`"" },
+  @{ Name = "ontovela"; File = Join-Path $AxisVelaHome "ONTOVELA\backend\ontovela.exe"; Args = "serve --addr :1856" },
+  @{ Name = "rheovela"; File = Join-Path $AxisVelaHome "RHEOVELA\rheo.exe"; Args = "serve --addr :1876 --db `"$dataDir\rheovela.db`"" },
+  @{ Name = "symbivela"; File = Join-Path $AxisVelaHome "SYMBIVELA\backend\symbivela.exe"; Args = "" }
 )
 
 foreach ($service in $services) {
@@ -24,11 +24,11 @@ foreach ($service in $services) {
 
 $previousAxonPort = $env:AXON_PORT
 $env:AXON_PORT = "1866"
-$praxovela = Join-Path $AxisRoboHome "PRAXOVELA\packages\axon-core\axond.exe"
+$praxovela = Join-Path $AxisVelaHome "PRAXOVELA\packages\axon-core\axond.exe"
 if (-not (Test-Path $praxovela)) { throw "Binary not found: $praxovela" }
 $previousBoundaries = $env:PRAXOVELA_BOUNDARIES
 $env:PRAXOVELA_BOUNDARIES = Join-Path $PSScriptRoot "inference-boundaries.yaml"
-Start-Process -FilePath $praxovela -WorkingDirectory (Join-Path $AxisRoboHome "PRAXOVELA") -RedirectStandardOutput "$logDir\praxovela.out.log" -RedirectStandardError "$logDir\praxovela.err.log" -WindowStyle Hidden
+Start-Process -FilePath $praxovela -WorkingDirectory (Join-Path $AxisVelaHome "PRAXOVELA") -RedirectStandardOutput "$logDir\praxovela.out.log" -RedirectStandardError "$logDir\praxovela.err.log" -WindowStyle Hidden
 $env:PRAXOVELA_BOUNDARIES = $previousBoundaries
 $env:AXON_PORT = $previousAxonPort
 

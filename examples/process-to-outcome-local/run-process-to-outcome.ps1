@@ -73,7 +73,7 @@ $termText = if ($termDenied) { "The adapter rejected completion before the termi
 Write-Step 5 "Show the outcome needs the terminal stage" "Completion was attempted at stage '$($afterStages.current_stage)' (not terminal); the adapter denied it. $termText"
 
 # Step 6: durable process wrapper (Rheovela)
-$rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
+$rheo = Join-Path $AxisVelaHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "process-to-outcome-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "process-to-outcome-workflow.json") | Out-Null
 # The rheo CLI defines into its own local store, not the running server's --db; publish to the server too.

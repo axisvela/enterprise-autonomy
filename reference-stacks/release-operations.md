@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This public reference stack illustrates how AxisRobo products can contribute to a governed release-operations outcome for autonomous systems: an agent executes a declared step sequence in order, citing evidence, while any deviation from the sequence requires human approval. It is a product-composition overview, not a deployment blueprint or implementation specification.
+This public reference stack illustrates how AxisVela products can contribute to a governed release-operations outcome for autonomous systems: an agent executes a declared step sequence in order, citing evidence, while any deviation from the sequence requires human approval. It is a product-composition overview, not a deployment blueprint or implementation specification.
 
 ## Example Composition
 

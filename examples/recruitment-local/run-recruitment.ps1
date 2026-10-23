@@ -59,7 +59,7 @@ $outcome.steps += @{ index = 4; title = "Record the human shortlist decision"; p
 Write-Step 4 "Record the human shortlist decision" "Panel $Panel advanced $Candidate with rationale 'meets criteria'. Status is '$($slResult.requisition.status)'."
 
 # Step 5: durable process (Rheovela)
-$rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
+$rheo = Join-Path $AxisVelaHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "recruitment-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "recruitment-workflow.json") | Out-Null
 # The rheo CLI defines into its own local store, not the running server's --db; publish to the server too.

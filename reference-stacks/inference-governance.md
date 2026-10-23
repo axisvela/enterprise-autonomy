@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This public reference stack illustrates how AxisRobo products can contribute to a governed inference outcome for autonomous systems: a request is routed to an authorized model and endpoint under policy, grounded in claims and durable memory, and recorded as auditable evidence. It is a product-composition overview, not a deployment blueprint or implementation specification.
+This public reference stack illustrates how AxisVela products can contribute to a governed inference outcome for autonomous systems: a request is routed to an authorized model and endpoint under policy, grounded in claims and durable memory, and recorded as auditable evidence. It is a product-composition overview, not a deployment blueprint or implementation specification.
 
 ## Example Composition
 

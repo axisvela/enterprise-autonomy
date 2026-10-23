@@ -73,7 +73,7 @@ $pauseText = if ($pauseDenied) { "The adapter rejected the unapproved pause (HTT
 Write-Step 5 "Show deviations need human approval" "An unapproved pause was attempted; the adapter denied it. $pauseText"
 
 # Step 6: durable process wrapper (Rheovela)
-$rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
+$rheo = Join-Path $AxisVelaHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "sequenced-deployment-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "sequenced-deployment-workflow.json") | Out-Null
 # The rheo CLI defines into its own local store, not the running server's --db; publish to the server too.

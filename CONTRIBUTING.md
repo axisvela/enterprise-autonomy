@@ -1,6 +1,6 @@
 # Contributing to enterprise-autonomy
 
-Thank you for helping improve the public AxisRobo Enterprise Autonomy material.
+Thank you for helping improve the public AxisVela Enterprise Autonomy material.
 
 ## Scope
 

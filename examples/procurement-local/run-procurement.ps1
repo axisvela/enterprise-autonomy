@@ -65,7 +65,7 @@ $deniedText = if ($denied) { "The adapter rejected the requester's self-approval
 Write-Step 4 "Approve budget and supplier" "$FinanceApprover approved the budget and $ProcurementOwner approved the supplier under '$ApprovalRef'. Status is '$($prResult.request.status)'. $deniedText"
 
 # Step 5: durable process (Rheovela)
-$rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
+$rheo = Join-Path $AxisVelaHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "procurement-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "procurement-workflow.json") | Out-Null
 # The rheo CLI defines into its own local store, not the running server's --db; publish to the server too.

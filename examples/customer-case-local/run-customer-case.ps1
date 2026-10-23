@@ -68,7 +68,7 @@ $approvalDeniedText = if ($approvalDenied) { "The adapter rejected compensation 
 Write-Step 4 "Approve the resolution" "$ServiceLead approved the compensation under '$ApprovalRef'. $approvalDeniedText"
 
 # Step 5: durable process (Rheovela)
-$rheo = Join-Path $AxisRoboHome "RHEOVELA\rheo.exe"
+$rheo = Join-Path $AxisVelaHome "RHEOVELA\rheo.exe"
 & $rheo workflow validate (Join-Path $PSScriptRoot "customer-case-workflow.json") | Out-Null
 & $rheo workflow define --file (Join-Path $PSScriptRoot "customer-case-workflow.json") | Out-Null
 # The rheo CLI defines into its own local store, not the running server's --db; publish to the server too.
