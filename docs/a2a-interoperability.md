@@ -20,7 +20,10 @@ The scenario demonstrates:
 - bearer authentication: a correct token succeeds, while missing or wrong
   tokens return HTTP 401 and stop before any order decision; and
 - concurrent consumers with mixed approval and denial requests, each receiving
-  the result for its own order.
+  the result for its own order;
+- loopback TLS termination with a bearer-authenticated A2A endpoint; and
+- rejection of an agent card whose advertised interface URL has a different
+  origin from the card source.
 
 The agent card declares bearer security when the server has a token. The
 `run.ps1` path builds separate PRAXO-CORE server and Google ADK client
@@ -49,11 +52,11 @@ deployment.
 ## Evidence Level
 
 This proves a cross-SDK JSON-RPC interoperability path with Google ADK Go
-v2.6.0, including a two-process loopback run, bearer authentication, and
-concurrent loopback consumers. It does not prove production interoperability
-with a deployed Google ADK service, gRPC transport interoperability, TLS
-termination, cross-origin card trust, provider identity, or deployed throughput,
-SLOs, and operational behavior under load.
+v2.6.0, including a two-process loopback run, bearer authentication, concurrent
+loopback consumers, loopback TLS termination, and cross-origin agent-card
+rejection. It does not prove production interoperability with a deployed Google
+ADK service, gRPC transport interoperability, deployed TLS/identity, provider
+identity, or deployed throughput, SLOs, and operational behavior under load.
 
 Production callers must authenticate the peer, pin or otherwise validate the
 agent card origin and interface URL, use HTTPS outside loopback development,
