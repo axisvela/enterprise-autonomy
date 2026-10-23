@@ -4,6 +4,17 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`. `1.0.0` is the first stable release of the public introduction and examples repository.
 
+## 1.1.13 (2026-10-23)
+
+- Added Google ADK Go A2A interoperability examples: a deterministic order-cancellation peer, authenticated two-process loopback runs, concurrent consumers, and direct/LIMENORA Agent IAM contract examples combining NOMIVELA registration, EIDOVELA PoP tokens, AEGIVELA authorization, and PRAXO-CORE execution.
+- Added public product maturity tiers and refreshed release-status, product, technical-catalog, and port-migration content for the 3.0 integration wave.
+- Migrated Go module paths, imports, replace directives, vendored modules, and npm scope to `axisvela` and `/v3`. External compatibility is intentionally not preserved for those reference modules.
+- Extended the agent-workflow bridge demo with R6 retry/cancel evidence, deployed fault injection, a sixth failure case, planned port `1876`, and Windows PowerShell 5.1 startup fixes.
+- Recorded C8 provider-outage-under-load evidence.
+- Added the missing document-toolchain formatter-availability case.
+- Pinned the LIMENORA open SDK to v3.0.2 and aligned presentation-client imports.
+- Removed internal planning and run-record documents from the public repository.
+
 ## 1.1.11 (2026-10-16)
 
 - Added the inference-domain reference adapter (authorization-before-route, policy-based model/endpoint selection, grounding-cited answers, human review for high impact, immutable audit) with **governed inference** governance.

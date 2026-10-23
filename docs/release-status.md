@@ -4,7 +4,7 @@ This page summarizes the public release and local-runtime status of each product
 
 **Maturity tier** is a public summary of core readiness: `A` = mature and integration-ready; `B` = early, improve before integration; `C` = packaging or placeholder. Detailed open/core/EE metrics, test inventories, and roadmap execution are maintained in the private `enterprise-autonomy-ee` repository.
 
-> **This public repository is at 1.1.12** — a stable release series (1.x) of the introduction and examples content. Releases are tagged `vX.Y.Z` and published to GitHub Releases with their CHANGELOG body; every version tag has a matching release. See the [demo matrix](demo-matrix.md) for the full runnable-demo set and [CHANGELOG.md](../CHANGELOG.md) for the release history.
+> **This public repository is at 1.1.13** — a stable release series (1.x) of the introduction and examples content. Releases are tagged `vX.Y.Z` and published to GitHub Releases with their CHANGELOG body; every version tag has a matching release. See the [demo matrix](demo-matrix.md) for the full runnable-demo set and [CHANGELOG.md](../CHANGELOG.md) for the release history.
 
 | Product | Maturity | Local binary available | Maturity notes |
 | --- | :---: | --- | --- |
