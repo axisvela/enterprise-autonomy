@@ -15,19 +15,25 @@ The scenario demonstrates:
 
 - approval of an order that has not shipped;
 - a business denial that routes to a human returns specialist;
-- remote agent failure propagation; and
-- caller-side deadline expiry.
+- remote agent failure propagation;
+- caller-side deadline expiry; and
+- bearer authentication: a correct token succeeds, while missing or wrong
+  tokens return HTTP 401 and stop before any order decision.
 
-It uses deterministic fixture rules and `httptest`; it does not contact a model
-provider or change a real order. A business denial is an agent result, while an
-unavailable or timed-out peer is a transport failure that stops automation.
+The agent card declares bearer security when the server has a token. The
+`run.ps1` path builds separate PRAXO-CORE server and Google ADK client
+processes on loopback, while the Go tests use `httptest` for the same protocol
+paths. Neither contacts a model provider or changes a real order. A business
+denial is an agent result, while an unavailable, timed-out, or unauthorized peer
+is a transport failure that stops automation.
 
 ## Evidence Level
 
-This proves an in-process, cross-SDK JSON-RPC interoperability path with Google
-ADK Go v2.6.0. It does not prove production interoperability with a deployed
-Google ADK service, gRPC transport interoperability, authentication, card trust
-across origins, or operational behavior under load.
+This proves a cross-SDK JSON-RPC interoperability path with Google ADK Go
+v2.6.0, including a two-process loopback run and bearer authentication. It does
+not prove production interoperability with a deployed Google ADK service, gRPC
+transport interoperability, TLS termination, cross-origin card trust, provider
+identity, or operational behavior under load.
 
 Production callers must authenticate the peer, pin or otherwise validate the
 agent card origin and interface URL, use HTTPS outside loopback development,

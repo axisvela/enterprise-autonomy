@@ -3,24 +3,23 @@ package ordera2a
 import (
 	"context"
 	"fmt"
-	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
 	"time"
 
 	sdk "github.com/a2aproject/a2a-go/v2/a2a"
-	"github.com/a2aproject/a2a-go/v2/a2asrv"
 	a2aadapter "github.com/axisvela/praxo-core/adapters/a2a"
 	praxoagent "github.com/axisvela/praxo-core/v2/pkg/agent"
 	adkagent "google.golang.org/adk/v2/agent"
 	remoteagent "google.golang.org/adk/v2/agent/remoteagent/v2"
+	"google.golang.org/adk/v2/auth"
 	"google.golang.org/adk/v2/runner"
 	"google.golang.org/genai"
 )
 
 func TestGoogleADKConsumesPraxoOrderAgent(t *testing.T) {
-	server := newA2AServer(t, mustOrderAgent(t))
+	server := newA2AServer(t, mustOrderAgent(t), "")
 	defer server.Close()
 
 	tests := []struct {
@@ -33,7 +32,7 @@ func TestGoogleADKConsumesPraxoOrderAgent(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			output, err := runGoogleADK(t, context.Background(), server.URL, test.text)
+			output, err := runGoogleADK(t, context.Background(), server.URL, test.text, "")
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -45,62 +44,80 @@ func TestGoogleADKConsumesPraxoOrderAgent(t *testing.T) {
 }
 
 func TestGoogleADKReportsPraxoFailure(t *testing.T) {
-	server := newA2AServer(t, failingRunner{})
+	server := newA2AServer(t, failingRunner{}, "")
 	defer server.Close()
 
-	_, err := runGoogleADK(t, context.Background(), server.URL, "Cancel order-1001")
+	_, err := runGoogleADK(t, context.Background(), server.URL, "Cancel order-1001", "")
 	if err == nil || !strings.Contains(err.Error(), "order eligibility service is unavailable") {
 		t.Fatalf("err = %v", err)
 	}
 }
 
 func TestGoogleADKReportsPraxoTimeout(t *testing.T) {
-	server := newA2AServer(t, blockingRunner{})
+	server := newA2AServer(t, blockingRunner{}, "")
 	defer server.Close()
 
 	ctx, cancel := context.WithTimeout(context.Background(), 50*time.Millisecond)
 	defer cancel()
-	_, err := runGoogleADK(t, ctx, server.URL, "Cancel order-1001")
+	_, err := runGoogleADK(t, ctx, server.URL, "Cancel order-1001", "")
 	if err == nil || !strings.Contains(err.Error(), context.DeadlineExceeded.Error()) {
 		t.Fatalf("err = %v", err)
 	}
 }
 
+func TestGoogleADKAuthenticatesPraxoPeer(t *testing.T) {
+	const token = "test-order-token"
+	server := newA2AServer(t, mustOrderAgent(t), token)
+	defer server.Close()
+
+	output, err := runGoogleADK(t, context.Background(), server.URL, "Cancel order-1001", token)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(output, "approved: order-1001") {
+		t.Fatalf("output = %q", output)
+	}
+	for _, badToken := range []string{"", "wrong-token"} {
+		_, err := runGoogleADK(t, context.Background(), server.URL, "Cancel order-1001", badToken)
+		if err == nil || !isUnauthorized(err) {
+			t.Fatalf("token %q err = %v", badToken, err)
+		}
+	}
+}
+
+func isUnauthorized(err error) bool {
+	text := strings.ToLower(err.Error())
+	return strings.Contains(text, "401") || strings.Contains(text, "unauthorized")
+}
+
 func mustOrderAgent(t *testing.T) *praxoagent.Agent {
 	t.Helper()
-	agent, err := newOrderAgent()
+	agent, err := NewOrderAgent()
 	if err != nil {
 		t.Fatal(err)
 	}
 	return agent
 }
 
-func newA2AServer(t *testing.T, runner a2aadapter.Runner) *httptest.Server {
+func newA2AServer(t *testing.T, runner a2aadapter.Runner, token string) *httptest.Server {
 	t.Helper()
-	handler := a2asrv.NewHandler(a2aadapter.Executor{Agent: runner})
-	mux := http.NewServeMux()
-	mux.Handle("/invoke", a2asrv.NewJSONRPCHandler(handler))
-
 	var server *httptest.Server
-	mux.Handle(a2asrv.WellKnownAgentCardPath, a2asrv.NewAgentCardHandler(a2asrv.AgentCardProducerFn(func(context.Context) (*sdk.AgentCard, error) {
-		return &sdk.AgentCard{
-			Name:        "order-cancellation-eligibility",
-			Description: "Checks whether a shopping order is eligible for automatic cancellation.",
-			SupportedInterfaces: []*sdk.AgentInterface{
-				sdk.NewAgentInterface(server.URL+"/invoke", sdk.TransportProtocolJSONRPC),
-			},
-		}, nil
-	})))
-	server = httptest.NewServer(mux)
+	server = httptest.NewServer(NewMux(runner, token, func() *sdk.AgentCard {
+		return NewCard(server.URL+"/invoke", token)
+	}))
 	return server
 }
 
-func runGoogleADK(t *testing.T, ctx context.Context, cardURL, prompt string) (string, error) {
+func runGoogleADK(t *testing.T, ctx context.Context, cardURL, prompt, token string) (string, error) {
 	t.Helper()
-	remote, err := remoteagent.NewA2A(remoteagent.A2AConfig{
+	cfg := remoteagent.A2AConfig{
 		Name:              "order_cancellation_peer",
 		AgentCardProvider: remoteagent.NewAgentCardProvider(cardURL),
-	})
+	}
+	if token != "" {
+		cfg.Auth = auth.StaticToken(token)
+	}
+	remote, err := remoteagent.NewA2A(cfg)
 	if err != nil {
 		return "", err
 	}
