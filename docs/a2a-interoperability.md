@@ -49,6 +49,24 @@ are contract-level examples: the IAM services are local fakes driven through
 their real SDKs. They do not prove a live NOMIVELA/EIDOVELA/AEGIVELA/LIMENORA
 deployment.
 
+## Local IAM Stack
+
+[`examples/a2a-agent-iam-local`](../examples/a2a-agent-iam-local/README.md)
+starts the four services locally on isolated PostgreSQL databases:
+
+- NOMIVELA `:1956`
+- EIDOVELA `:1966`
+- AEGIVELA `:1886`
+- LIMENORA `:1897`
+
+The `cmd/smoke` command in `examples/a2a-agent-iam` registers the Google ADK
+checkout agent in NOMIVELA, completes EIDOVELA enrollment for its workload, and
+issues and verifies a PoP-bound token for audience `praxo-a2a`. This is a real
+local service chain, not a fake.
+
+It does not yet include a seeded AEGIVELA policy, workload assertion/binding, or
+a live A2A call through LIMENORA. Those remain the next integration steps.
+
 ## Evidence Level
 
 This proves a cross-SDK JSON-RPC interoperability path with Google ADK Go
