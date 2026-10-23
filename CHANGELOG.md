@@ -15,6 +15,14 @@ Versioning: the current version lives in `VERSION`. Manage it with `scripts/vers
 - Pinned the LIMENORA open SDK to v3.0.2 and aligned presentation-client imports.
 - Removed internal planning and run-record documents from the public repository.
 
+## 1.1.12 (2026-10-17)
+
+- Recorded per-example execution results and run records for order fulfillment, memory engine, document toolchain, identity/auth, plugin rolling update, and agent-workflow bridge R6 cases.
+- Ran all 13 business demos to VERIFY OK and fixed shared blockers, including Ontovela twin registration and local startup issues.
+- Recorded the C7 load matrix and the C8/R9 operational evidence.
+- Fixed release workflow handling when no release is warranted or VERSION is already tagged.
+- Renamed generated `.stack` output to `_reports`, ignored Orchadyn release artifacts, and refreshed version references.
+
 ## 1.1.11 (2026-10-16)
 
 - Added the inference-domain reference adapter (authorization-before-route, policy-based model/endpoint selection, grounding-cited answers, human review for high impact, immutable audit) with **governed inference** governance.
