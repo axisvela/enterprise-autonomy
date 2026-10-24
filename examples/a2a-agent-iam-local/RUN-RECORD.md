@@ -145,13 +145,38 @@ Backend fixes are recorded in AEGIVELA commit
 `3ceb44c` (`fix: align EIDOVELA authentication and v2 policy signing`).
 
 Targeted identity, principal, policy, HTTP API, and production PDP regression tests
-pass, as does backend `go vet ./...`. Backend `go test ./...` still fails in
-`internal/contractdrift`: a separate generated identity v2 protobuf descriptor
-panics during initialization. Generated descriptors need systematic regeneration
-after the module rename; this is not a fully green backend verification result.
+pass, as does backend `go vet ./...`. The generated protobuf descriptors were
+regenerated in `c14b781`; backend `go test ./...`, `go vet ./...`, and
+`go build ./...` pass.
 
-This decision does not establish instance-lease enforcement, end-to-end v2 A2A,
-or LIMENORA reverse-ingress behavior. No credentials are recorded here.
+This decision does not establish instance-lease enforcement or a fully live
+EIDOVELA PoP credential on the reverse path. No credentials are recorded here.
+
+## Authority Reverse Ingress
+
+`run-limenora-a2a.ps1 -Authority` issued a real AEGIVELA workload assertion with
+audience `praxo-a2a`, created an `aegivela-gateway-connect` policy rule allowing
+`connection:open`, and started LIMENORA with mode `service_agent_api` and
+federated assertion source.
+
+Observed:
+
+```text
+approved: order-1001 can be cancelled before shipment
+authority deny enforced
+```
+
+After the first call, the script created a deny policy version. The next
+reverse-ingress request was rejected with HTTP 403 before reaching the backend.
+The script then restored an allow policy. The static path
+(`.\run-limenora-a2a.ps1`) still returned
+`approved: order-1001 can be cancelled before shipment`.
+
+A direct AEGIVELA `/v1/gateway/connect` check returned `outcome=allow`, decision
+`c3b7c9e8-192a-4cc3-be7d-d57bbc55797f`, policy `v1` for the same assertion and
+`connection:open` scope. The reverse path uses an AEGIVELA workload assertion as
+the agent credential, not a live EIDOVELA PoP token. Instance leases, external
+peers, deployed TLS/identity, and SLO remain open.
 
 ## Protobuf Blocker Follow-Up
 
