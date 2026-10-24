@@ -24,9 +24,13 @@ func main() {
 		log.Fatal(err)
 	}
 	baseURL := "http://" + listener.Addr().String()
+	cardBase := os.Getenv("PRAXO_A2A_CARD_BASE")
+	if cardBase == "" {
+		cardBase = baseURL
+	}
 	token := os.Getenv("PRAXO_A2A_TOKEN")
 	mux := ordera2a.NewMux(agent, token, func() *sdk.AgentCard {
-		return ordera2a.NewCard(baseURL+"/invoke", token)
+		return ordera2a.NewCard(cardBase+"/invoke", token)
 	})
 	log.Printf("PRAXO A2A order service listening on %s", baseURL)
 	log.Fatal(http.Serve(listener, mux))

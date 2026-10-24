@@ -71,8 +71,15 @@ service chain, not a fake. See the
 [run record](../examples/a2a-agent-iam-local/RUN-RECORD.md) for commands,
 results, issues, and fixes.
 
-It does not yet include a seeded AEGIVELA policy, workload assertion/binding, or
-a live A2A call through LIMENORA. Those remain the next integration steps.
+A separate real LIMENORA reverse-ingress route has also been exercised: Google
+ADK fetched the gateway-advertised card and invoked the PRAXO-CORE A2A backend
+through LIMENORA with `X-LIMENORA-Agent-Credential`; LIMENORA injected the
+backend bearer credential and returned `approved: order-1001 can be cancelled
+before shipment`. Missing or wrong agent credentials were rejected with HTTP 403
+before the backend. This route uses a static file agent binding and static
+backend credential, not live EIDOVELA/AEGIVELA gateway decisions. Instance
+leases, a fully IAM-governed gateway route, deployed peers, external gRPC, and
+deployed TLS/SLO remain open.
 
 ## Evidence Level
 

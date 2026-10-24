@@ -59,6 +59,11 @@ do not commit `local.env.ps1`.
   and workload-assertion keys plus a `praxo-a2a` audience registry.
 - LIMENORA runs the server gateway with EIDOVELA presentation and an AEGIVELA
   default route for audience `praxo-a2a`.
+- A separate local LIMENORA instance was exercised as a real A2A reverse-ingress
+  gateway with a static agent binding and backend bearer injection. Google ADK
+  through the gateway returned `approved: order-1001 can be cancelled before
+  shipment`; missing or wrong agent credentials returned HTTP 403. This is not a
+  full EIDOVELA/AEGIVELA gateway decision or a deployed route.
 
 ## Real IAM Smoke
 
@@ -77,9 +82,9 @@ The real chain has been exercised locally:
    Google ADK. The call returned `approved: order-1001 can be cancelled before
    shipment`.
 
-The AEGIVELA `serviceAgentApi` v2 path is configured but currently returns
-`400 invalid_policy_request` against this local build; the `system_api`
-workload-assertion path is the verified allow path.
+The prebuilt AEGIVELA binary still returns `400 invalid_policy_request` for
+`serviceAgentApi` v2. The patched source build on port `1888` returned a real
+v2 `allow`; the full v2 A2A/instance-lease/gateway path remains unverified.
 
 ## Run Record
 
@@ -90,6 +95,8 @@ observed results, issues, and fixes.
 
 This starts the local services; it does not claim production readiness. A live
 Google ADK -> PRAXO-CORE A2A call with real NOMIVELA, EIDOVELA, and AEGIVELA is
-verified. It calls the PRAXO-CORE A2A server directly; LIMENORA is running as a
-gateway, not as a fully configured A2A reverse-ingress route. External A2A peers,
-deployed TLS/identity, and deployed throughput/SLO validation remain open.
+verified and calls the PRAXO server directly. A separate real LIMENORA
+reverse-ingress route was verified with a static agent binding and backend bearer
+injection, not with live EIDOVELA/AEGIVELA gateway decisions. Instance leases,
+external A2A peers, external gRPC, deployed TLS/identity, and deployed
+throughput/SLO validation remain open.

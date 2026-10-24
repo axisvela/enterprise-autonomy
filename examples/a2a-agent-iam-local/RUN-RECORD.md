@@ -163,11 +163,41 @@ descriptors. `buf lint`, uncached backend `go test -count=1 ./...`,
 `go vet ./...`, and `go build ./...` pass. Database-dependent tests may skip
 without a configured test database; this is not a production deployment claim.
 
+## LIMENORA A2A Reverse Ingress
+
+A separate LIMENORA server instance on `127.0.0.1:1898` was configured with:
+
+- a file agent binding (`GATEWAY_AGENT_BINDINGS`) for a service agent with
+  audience `a2a-demo`, and
+- a reverse route `/a2a` to `http://127.0.0.1:18091`, with `require_agent: true`
+  and a header injection of the backend bearer credential.
+
+The PRAXO-CORE order agent ran on `127.0.0.1:18091` and advertised
+`PRAXO_A2A_CARD_BASE=http://127.0.0.1:1898/a2a`, so its card interface pointed
+at the gateway rather than the backend.
+
+The Google ADK client fetched the card through the gateway with
+`X-LIMENORA-Agent-Credential` and invoked through the advertised gateway URL.
+Results:
+
+- correct agent credential: `approved: order-1001 can be cancelled before shipment`
+- missing agent credential: HTTP 403 from LIMENORA
+- wrong agent credential: HTTP 403 from LIMENORA before any order decision
+
+The temporary `1898` and `18091` processes were stopped after verification. The
+original four-service stack remains on its normal ports.
+
+This proves the LIMENORA reverse-ingress forwarding, agent-binding lookup, card
+rewriting through the advertised URL, and backend credential injection. It uses
+a static file agent binding and static backend bearer credential; it is not a
+live EIDOVELA/AEGIVELA gateway decision, instance-lease test, deployed peer, or
+TLS/SLO test. No agent credential or backend token value is recorded.
+
 ## Limits
 
 - This is a single-host local stack, not a production deployment.
-- The live A2A call goes directly to the PRAXO-CORE A2A server. The LIMENORA
-  A2A reverse-ingress route to PRAXO-CORE is not wired yet.
+- LIMENORA reverse ingress is now exercised with a static agent binding, but not
+  with live EIDOVELA presentation or AEGIVELA authorization at the gateway.
 - The old AEGIVELA binary on `1886` still returns `400` for `serviceAgentApi`
   v2. The patched source build on `1888` has a verified v2 `allow` decision;
   the live A2A call was verified separately with `system_api`.
