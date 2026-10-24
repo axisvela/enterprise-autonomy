@@ -51,6 +51,30 @@ business handling, a policy-style denial, remote failure, timeout, authorized
 versus unauthorized calls, concurrent consumers with mixed approval/denial
 requests, loopback TLS termination, and rejection of a cross-origin agent card.
 
+## Gateway Mode
+
+The client and server can also run through a LIMENORA reverse-ingress route.
+The server advertises a gateway URL with `PRAXO_A2A_CARD_BASE`; the client sends
+`X-LIMENORA-Agent-Credential` and fetches the card/invokes through the gateway.
+
+```powershell
+$env:PRAXO_A2A_TOKEN = "order-token"
+$env:PRAXO_A2A_CARD_BASE = "http://127.0.0.1:1898/a2a"
+.\praxo-server.exe -addr 127.0.0.1:18091
+
+go run ./cmd/adk-client `
+  -card http://127.0.0.1:1898/a2a `
+  -agent-credential limenora-a2a-demo `
+  -prompt "Cancel order-1001"
+```
+
+LIMENORA must have a matching agent binding and a route that forwards the path
+prefix to the backend and injects the backend bearer credential. The verified
+local path returned `approved: order-1001 can be cancelled before shipment`;
+missing or wrong agent credentials were rejected with HTTP 403 before any order
+decision. This uses a static file binding and static backend credential, not a
+live EIDOVELA/AEGIVELA gateway decision.
+
 ## Boundaries
 
 - This is protocol interoperability, not a production order-management system.
