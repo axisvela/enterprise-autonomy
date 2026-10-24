@@ -32,10 +32,11 @@ func main() {
 	agentID := flag.String("agent-id", os.Getenv("A2A_IAM_AGENT_ID"), "NOMIVELA agent ID")
 	workloadID := flag.String("workload-id", os.Getenv("A2A_IAM_WORKLOAD_ID"), "NOMIVELA workload registration ID")
 	assertion := flag.String("assertion", os.Getenv("A2A_IAM_WORKLOAD_ASSERTION"), "AEGIVELA workload assertion")
+	enrollOnly := flag.Bool("enroll-only", false, "enroll a fresh instance and exit")
 	flag.Parse()
 
-	if *agentID == "" || *workloadID == "" || *assertion == "" {
-		log.Fatal("agent-id, workload-id, and assertion are required")
+	if *agentID == "" || *workloadID == "" || (!*enrollOnly && *assertion == "") {
+		log.Fatal("agent-id and workload-id are required; assertion is required unless -enroll-only")
 	}
 
 	nomivelaURL := env("A2A_IAM_NOMIVELA_URL", "http://127.0.0.1:1956")
@@ -68,6 +69,9 @@ func main() {
 		log.Fatalf("token agent mismatch: %s", principal.AgentID)
 	}
 	fmt.Printf("enrolled agent=%s instance=%s token_bytes=%d\n", principal.AgentID, principal.InstanceID, len(token.Token))
+	if *enrollOnly {
+		return
+	}
 
 	agent, err := iamdemo.NewOrderAgent()
 	if err != nil {
