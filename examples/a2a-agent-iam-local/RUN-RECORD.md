@@ -147,6 +147,22 @@ after the module rename; this is not a fully green backend verification result.
 This decision does not establish instance-lease enforcement, end-to-end v2 A2A,
 or LIMENORA reverse-ingress behavior. No credentials are recorded here.
 
+## Protobuf Blocker Follow-Up
+
+The identity descriptor panic was reproduced and resolved locally by running
+the existing root `buf generate` configuration with its pinned Go plugin
+`v1.36.11`. Regeneration repaired descriptor-length encodings in 27 generated
+files; no `.proto` definitions or wire baselines changed. A second generation
+produced identical output.
+
+The repair and all-version initialization regression test are recorded in
+AEGIVELA commit `c14b781` (`fix: regenerate contract descriptors after module rename`).
+
+The contract-drift suite now initializes all 31 legacy and v2 contract
+descriptors. `buf lint`, uncached backend `go test -count=1 ./...`,
+`go vet ./...`, and `go build ./...` pass. Database-dependent tests may skip
+without a configured test database; this is not a production deployment claim.
+
 ## Limits
 
 - This is a single-host local stack, not a production deployment.
