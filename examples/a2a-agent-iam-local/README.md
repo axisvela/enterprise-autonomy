@@ -65,8 +65,9 @@ do not commit `local.env.ps1`.
 - `run-limenora-a2a.ps1 -Authority` additionally uses a live AEGIVELA
   `service_agent_api` decision for the reverse-ingress request. An allow decision
   forwarded the call, and a deny policy produced HTTP 403 before the backend.
-  The path uses an AEGIVELA workload assertion as the agent credential, not a
-  live EIDOVELA PoP token.
+  The path enrolls a fresh EIDOVELA/NOMIVELA instance with a valid lease and
+  rejects expired leases. It uses an AEGIVELA workload assertion as the agent
+  credential, not a live EIDOVELA PoP token.
 
 ## Real IAM Smoke
 
@@ -106,5 +107,6 @@ Google ADK -> PRAXO-CORE A2A call with real NOMIVELA, EIDOVELA, and AEGIVELA is
 verified and calls the PRAXO server directly. LIMENORA reverse-ingress is verified
 with both a static binding and a live AEGIVELA `service_agent_api` decision. The
 authority path uses an AEGIVELA workload assertion, not a live EIDOVELA PoP
-token. Instance leases, external A2A peers, external gRPC, deployed
-TLS/identity, and deployed throughput/SLO validation remain open.
+token. Expired instance leases are rejected and a fresh enrolled instance is
+required; lease renewal/termination propagation, external A2A peers, external
+gRPC, deployed TLS/identity, and deployed throughput/SLO validation remain open.

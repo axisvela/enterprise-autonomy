@@ -175,8 +175,16 @@ The script then restored an allow policy. The static path
 A direct AEGIVELA `/v1/gateway/connect` check returned `outcome=allow`, decision
 `c3b7c9e8-192a-4cc3-be7d-d57bbc55797f`, policy `v1` for the same assertion and
 `connection:open` scope. The reverse path uses an AEGIVELA workload assertion as
-the agent credential, not a live EIDOVELA PoP token. Instance leases, external
-peers, deployed TLS/identity, and SLO remain open.
+the agent credential, not a live EIDOVELA PoP token.
+
+The authority script also runs `cmd/live -enroll-only` to create a fresh
+EIDOVELA/NOMIVELA instance before the decision. The verified context then carries
+a nested `instance` with `leaseExpiresAt`. Setting every instance lease to the
+past removed `instanceId`/`instance` from the context and
+`/v1/gateway/connect` returned HTTP 401 `unauthenticated`; re-running the script
+enrolled a new instance and restored the allow path. Lease
+renewal/termination propagation, external peers, deployed TLS/identity, and SLO
+remain open.
 
 ## Protobuf Blocker Follow-Up
 

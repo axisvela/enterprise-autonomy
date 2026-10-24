@@ -11,7 +11,8 @@ param(
   [string]$AgentID = "db18dbd9-65f1-470c-9539-93a394d242f5",
   [string]$BindingID = "MuA-uiLtANWocJ2aq_D8dg",
   [string]$ClientID = "google-adk",
-  [string]$WorkloadRef = "workload-adk-1"
+  [string]$WorkloadRef = "workload-adk-1",
+  [string]$WorkloadRegistrationID = "63e9f268-14b7-428f-85ff-659c2c07ca51"
 )
 
 $ErrorActionPreference = "Stop"
@@ -20,8 +21,10 @@ $axisVelaHome = if ($env:AXISVELA_HOME) { $env:AXISVELA_HOME } else { (Resolve-P
 $dataDir = Join-Path $root ".local-data"
 $logDir = Join-Path $root ".local-logs"
 $example = Join-Path $root "..\a2a-adk-order-cancellation"
+$iamExample = Join-Path $root "..\a2a-agent-iam"
 $serverExe = Join-Path $dataDir "praxo-a2a-server.exe"
 $clientExe = Join-Path $dataDir "adk-gateway-client.exe"
+$enrollExe = Join-Path $dataDir "adk-enroll.exe"
 $gatewayExe = Join-Path $dataDir "limenora-server.exe"
 $bindingFile = Join-Path $dataDir "limenora-a2a-bindings.json"
 $routeFile = Join-Path $dataDir "limenora-a2a-routes.json"
@@ -74,6 +77,9 @@ $aegivelaHeaders = @{
   "X-Aegivela-Authority-Root" = "root:demo"
 }
 if ($Authority) {
+  Build-Go $iamExample $enrollExe "./cmd/live"
+  & $enrollExe -enroll-only -agent-id $AgentID -workload-id $WorkloadRegistrationID
+  if ($LASTEXITCODE -ne 0) { throw "fresh instance enrollment failed" }
   $assertionRequest = @{
     api_version = "aegivela.io/v1alpha1"
     subject_ref = "agent_google_adk_checkout"
