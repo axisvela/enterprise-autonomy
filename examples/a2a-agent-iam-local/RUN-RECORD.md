@@ -131,6 +131,11 @@ decision `168f966f-eea0-4435-82a9-6c0279996456`, policy `v1`, for a real
 the old prebuilt binary and temporary `1888` workaround are no longer used.
 Earlier failures describe that old binary and the debugging history.
 
+After rebuilding the stack from current source, the `system_api` path also
+returned `outcome=allow`, decision `128ea12b-6ed8-4d53-8458-cb94e62b070c`,
+policy `v1`, and `run-limenora-a2a.ps1` still returned
+`approved: order-1001 can be cancelled before shipment`.
+
 The local fixes cover camelCase authentication state and nested instance fields,
 `credentialed` state with active credential-generation verification, Agent ID as
 the principal actor, and production PDP resource digests required for v2 signing.
