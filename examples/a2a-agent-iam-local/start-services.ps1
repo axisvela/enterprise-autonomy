@@ -45,13 +45,13 @@ foreach ($db in @("a2a_iam_nomivela", "a2a_iam_eidovela", "a2a_iam_aegivela", "a
 $nomivelaBin = Join-Path $dataDir "nomivela.exe"
 $eidovelaBin = Join-Path $dataDir "eidovelad.exe"
 $eidovelaMig = Join-Path $dataDir "eidovela-migrate.exe"
-$aegivelaBin = Join-Path $axisVelaHome "Aegivela\bin\aegivela-api.exe"
+$aegivelaBin = Join-Path $dataDir "aegivela-api.exe"
 $limenoraBin = Join-Path $dataDir "limenora-server.exe"
 
 Build-Go (Join-Path $axisVelaHome "NOMIVELA\backend") $nomivelaBin "./cmd/nomivela"
 Build-Go (Join-Path $axisVelaHome "EIDOVELA\backend") $eidovelaBin "./cmd/eidovelad"
 Build-Go (Join-Path $axisVelaHome "EIDOVELA\backend") $eidovelaMig "./cmd/eidovela-migrate"
-if (-not (Test-Path $aegivelaBin)) { throw "prebuilt AEGIVELA binary not found: $aegivelaBin" }
+Build-Go (Join-Path $axisVelaHome "Aegivela\backend") $aegivelaBin "./cmd/aegivela-api"
 Build-Go (Join-Path $axisVelaHome "LIMENORA\backend\go") $limenoraBin "./cmd/server-gateway"
 
 $decisionKey = Join-Path $dataDir "decision.key"

@@ -125,10 +125,11 @@ The server was the PRAXO-CORE A2A server listening directly on
 
 ## V2 Verification Update
 
-The patched current-source AEGIVELA instance on `127.0.0.1:1888` returned
-`outcome=allow`, decision `02e57764-f40e-4e3e-a347-9a3f4eeb58f3`, policy `v1`,
-for a real `serviceAgentApi` v2 request. The old binary on `1886` remains
-unchanged; earlier failures describe that binary and the debugging history.
+The current-source AEGIVELA on `127.0.0.1:1886` returned `outcome=allow`,
+decision `168f966f-eea0-4435-82a9-6c0279996456`, policy `v1`, for a real
+`serviceAgentApi` v2 request. The start script now builds AEGIVELA from source;
+the old prebuilt binary and temporary `1888` workaround are no longer used.
+Earlier failures describe that old binary and the debugging history.
 
 The local fixes cover camelCase authentication state and nested instance fields,
 `credentialed` state with active credential-generation verification, Agent ID as
@@ -198,9 +199,9 @@ TLS/SLO test. No agent credential or backend token value is recorded.
 - This is a single-host local stack, not a production deployment.
 - LIMENORA reverse ingress is now exercised with a static agent binding, but not
   with live EIDOVELA presentation or AEGIVELA authorization at the gateway.
-- The old AEGIVELA binary on `1886` still returns `400` for `serviceAgentApi`
-  v2. The patched source build on `1888` has a verified v2 `allow` decision;
-  the live A2A call was verified separately with `system_api`.
+- AEGIVELA is built from current source on `1886`; v2 `serviceAgentApi` has a
+  verified `allow` decision. The live A2A call was verified separately with
+  `system_api`; complete v2 A2A/instance-lease/gateway behavior remains open.
 - External A2A peer interoperability, external gRPC, deployed TLS/identity, and
   deployed throughput/SLO validation remain open.
 - Workload assertion and token values are credentials and are not recorded.

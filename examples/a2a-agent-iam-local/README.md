@@ -34,9 +34,8 @@ The script creates isolated databases:
 ```
 
 Use `-Rebuild` to rebuild the local binaries after changing sibling sources.
-The AEGIVELA prebuilt binary at `Aegivela/bin/aegivela-api.exe` is used because
-the current source build panics in its generated protobuf descriptor init under
-this toolchain.
+AEGIVELA is built from the current source; the protobuf descriptor regression is
+fixed, so the old prebuilt binary is no longer required.
 
 ## Stop
 
@@ -82,9 +81,9 @@ The real chain has been exercised locally:
    Google ADK. The call returned `approved: order-1001 can be cancelled before
    shipment`.
 
-The prebuilt AEGIVELA binary still returns `400 invalid_policy_request` for
-`serviceAgentApi` v2. The patched source build on port `1888` returned a real
-v2 `allow`; the full v2 A2A/instance-lease/gateway path remains unverified.
+The current-source AEGIVELA on port `1886` returned a real `serviceAgentApi` v2
+`allow` decision. The old prebuilt binary and the temporary `1888` workaround are
+no longer used. The full v2 A2A/instance-lease/gateway path remains unverified.
 
 ## Run Record
 
