@@ -67,7 +67,7 @@ func main() {
 		TaskBinding:       task,
 		ParentAuthority:   parent,
 		Principal: &pepsdk.PolicyPrincipalV2{
-			Namespace: *namespace, ActorRef: *agentRef, WorkloadRef: *workloadRef,
+			Namespace: *namespace, ActorRef: *agentID, WorkloadRef: *workloadRef,
 			AgentID: *agentID, AgentClass: "service",
 			OrganizationAuthorityRoot: "root:demo", AuthorityBinding: "organizationRoot",
 			AgentEpoch: &agentEpoch, IdentityEpoch: &identityEpoch, InstanceID: *instanceID,
