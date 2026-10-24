@@ -123,13 +123,38 @@ The server was the PRAXO-CORE A2A server listening directly on
    did not send AEGIVELA internal headers. The live path now sends the internal
    token, tenant, actor, and authority root.
 
+## V2 Verification Update
+
+The patched current-source AEGIVELA instance on `127.0.0.1:1888` returned
+`outcome=allow`, decision `02e57764-f40e-4e3e-a347-9a3f4eeb58f3`, policy `v1`,
+for a real `serviceAgentApi` v2 request. The old binary on `1886` remains
+unchanged; earlier failures describe that binary and the debugging history.
+
+The local fixes cover camelCase authentication state and nested instance fields,
+`credentialed` state with active credential-generation verification, Agent ID as
+the principal actor, and production PDP resource digests required for v2 signing.
+Temporary principal diagnostic logging was removed.
+
+Backend fixes are recorded in AEGIVELA commit
+`3ceb44c` (`fix: align EIDOVELA authentication and v2 policy signing`).
+
+Targeted identity, principal, policy, HTTP API, and production PDP regression tests
+pass, as does backend `go vet ./...`. Backend `go test ./...` still fails in
+`internal/contractdrift`: a separate generated identity v2 protobuf descriptor
+panics during initialization. Generated descriptors need systematic regeneration
+after the module rename; this is not a fully green backend verification result.
+
+This decision does not establish instance-lease enforcement, end-to-end v2 A2A,
+or LIMENORA reverse-ingress behavior. No credentials are recorded here.
+
 ## Limits
 
 - This is a single-host local stack, not a production deployment.
 - The live A2A call goes directly to the PRAXO-CORE A2A server. The LIMENORA
   A2A reverse-ingress route to PRAXO-CORE is not wired yet.
-- AEGIVELA `serviceAgentApi` v2 still returns `400` on this local build; the
-  verified path is `system_api`.
+- The old AEGIVELA binary on `1886` still returns `400` for `serviceAgentApi`
+  v2. The patched source build on `1888` has a verified v2 `allow` decision;
+  the live A2A call was verified separately with `system_api`.
 - External A2A peer interoperability, external gRPC, deployed TLS/identity, and
   deployed throughput/SLO validation remain open.
 - Workload assertion and token values are credentials and are not recorded.
