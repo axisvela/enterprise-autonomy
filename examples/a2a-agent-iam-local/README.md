@@ -61,8 +61,12 @@ do not commit `local.env.ps1`.
 - A separate local LIMENORA instance was exercised as a real A2A reverse-ingress
   gateway with a static agent binding and backend bearer injection. Google ADK
   through the gateway returned `approved: order-1001 can be cancelled before
-  shipment`; missing or wrong agent credentials returned HTTP 403. This is not a
-  full EIDOVELA/AEGIVELA gateway decision or a deployed route.
+  shipment`; missing or wrong agent credentials returned HTTP 403.
+- `run-limenora-a2a.ps1 -Authority` additionally uses a live AEGIVELA
+  `service_agent_api` decision for the reverse-ingress request. An allow decision
+  forwarded the call, and a deny policy produced HTTP 403 before the backend.
+  The path uses an AEGIVELA workload assertion as the agent credential, not a
+  live EIDOVELA PoP token.
 
 ## Real IAM Smoke
 
@@ -80,10 +84,15 @@ The real chain has been exercised locally:
    resolution, and AEGIVELA workload-assertion authorization, then calls it with
    Google ADK. The call returned `approved: order-1001 can be cancelled before
    shipment`.
+5. `run-limenora-a2a.ps1 -Authority` issues a real AEGIVELA workload assertion,
+   seeds a gateway-connect policy, forwards through LIMENORA, then switches the
+   policy to deny and verifies the next reverse-ingress request is rejected with
+   HTTP 403.
 
 The current-source AEGIVELA on port `1886` returned a real `serviceAgentApi` v2
 `allow` decision. The old prebuilt binary and the temporary `1888` workaround are
-no longer used. The full v2 A2A/instance-lease/gateway path remains unverified.
+no longer used. Live AEGIVELA reverse-ingress decisions are now verified; a live
+EIDOVELA PoP credential, instance leases, and the full v2 A2A path remain open.
 
 ## Run Record
 
@@ -94,8 +103,8 @@ observed results, issues, and fixes.
 
 This starts the local services; it does not claim production readiness. A live
 Google ADK -> PRAXO-CORE A2A call with real NOMIVELA, EIDOVELA, and AEGIVELA is
-verified and calls the PRAXO server directly. A separate real LIMENORA
-reverse-ingress route was verified with a static agent binding and backend bearer
-injection, not with live EIDOVELA/AEGIVELA gateway decisions. Instance leases,
-external A2A peers, external gRPC, deployed TLS/identity, and deployed
-throughput/SLO validation remain open.
+verified and calls the PRAXO server directly. LIMENORA reverse-ingress is verified
+with both a static binding and a live AEGIVELA `service_agent_api` decision. The
+authority path uses an AEGIVELA workload assertion, not a live EIDOVELA PoP
+token. Instance leases, external A2A peers, external gRPC, deployed
+TLS/identity, and deployed throughput/SLO validation remain open.
