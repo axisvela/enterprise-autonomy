@@ -154,8 +154,9 @@ func verifyDPoP(r *http.Request, proof, token string, pub ed25519.PublicKey) err
 		return errUnauthorized
 	}
 	sum := sha256.Sum256([]byte(token))
+	age := time.Since(time.Unix(claims.IAT, 0))
 	if claims.HTM != r.Method || claims.ATH != base64.RawURLEncoding.EncodeToString(sum[:]) ||
-		claims.JTI == "" || time.Since(time.Unix(claims.IAT, 0)) > time.Minute {
+		claims.JTI == "" || age > time.Minute || age < -time.Minute {
 		return errUnauthorized
 	}
 	target := "http://" + r.Host + r.URL.EscapedPath()
@@ -184,8 +185,12 @@ func gatewaySignature(secret, agentID, namespace string, timestamp int64) string
 }
 
 func verifyGateway(r *http.Request, secret string) error {
+	if strings.TrimSpace(secret) == "" {
+		return errUnauthorized
+	}
 	timestamp, err := strconv.ParseInt(r.Header.Get("X-A2A-Gateway-Timestamp"), 10, 64)
-	if err != nil || time.Since(time.Unix(timestamp, 0)) > time.Minute {
+	age := time.Since(time.Unix(timestamp, 0))
+	if err != nil || age > time.Minute || age < -time.Minute {
 		return errUnauthorized
 	}
 	agentID := r.Header.Get("X-A2A-Agent-ID")

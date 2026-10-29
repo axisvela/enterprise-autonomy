@@ -16,6 +16,7 @@ Small validation and reporting utilities for the public examples.
 | [validate-json.ps1](validate-json.ps1) | Verifies every JSON file under `examples/` and `adapters/` parses. | `0` pass, `1` failure |
 | [kill-adapters.ps1](kill-adapters.ps1) | Kills any reference-adapter process built from this repository. | `0` (with or without matches) |
 | [run-go-tests.ps1](run-go-tests.ps1) | Runs `go vet` and `go test` across every reference-adapter module. | `0` pass, `1` failure |
+| [test-demo-runner.ps1](test-demo-runner.ps1) | Tests strict acceptance, skips, stale reports, phase failures, and cleanup using isolated synthetic fixtures; runs in CI without services. | `0` pass, nonzero failure |
 | [read-changelog-section.ps1](read-changelog-section.ps1) | Extracts a version's block from `CHANGELOG.md`. | `0` (prints block), `1` missing |
 | [create-tag.ps1](create-tag.ps1) | Creates the annotated tag `v<VERSION>` (no-op if it exists). | `0` success, `1` invalid/missing |
 | [create-release.ps1](create-release.ps1) | Creates a GitHub Release via `gh` with the changelog block as body (idempotent; `-NotLatest` for backfills). | `0` success, `1` failure |
@@ -31,6 +32,27 @@ Small validation and reporting utilities for the public examples.
 .\scripts\run-demo-smoke.ps1
 .\scripts\report-value.ps1
 ```
+
+## Demo Evidence
+
+Run `examples/run-all-demos.ps1 -Strict` for execution acceptance. `-Only` defines
+the required subset; explicit `-Skip` and missing configuration are recorded as
+skips and make strict acceptance fail. `-CheckOnly` checks structure, not E2E;
+combining it with `-Strict` cannot satisfy execution acceptance.
+
+Each invocation writes `examples/_reports/<execution-id>/all-demos-report.json`,
+per-stage logs, timestamps, exit codes, counts, and copied report digests. Only
+fresh completed reports from passing scenarios are aggregated. Existing scenario
+reports are preserved as `previous-report.json` before execution, not reused.
+Failures retain their evidence; subsequent runs use new IDs. Configuration is
+loaded separately in each stage subprocess so script `exit` cannot terminate
+the orchestrator. Cleanup failure also fails that scenario.
+
+These local artifacts may contain sensitive service output. Keep them restricted,
+review and redact before sharing, and do not commit credentials or raw tenant
+data. The runner does not infer all product versions or effective configurations;
+record those separately for live acceptance. Do not run overlapping invocations
+against the same demo services or working data.
 
 ## Version Management
 
@@ -83,6 +105,15 @@ Verify the hook is active with `.\scripts\check-hooks.ps1`. The CI workflow perf
 ## Continuous Integration
 
 The repository includes [`.github/workflows/ci.yml`](../.github/workflows/ci.yml). On every push to `main` and on pull requests it runs on a Windows runner:
+
+A separate required-to-pass `iam-contracts` job checks out Core `v2.5.1` and
+fixed public IAM repository commits as siblings, then runs uncached contract
+tests and vet without the optional-sibling skip path. It retains OS/toolchain,
+actual source SHAs, module resolution, input hashes, and JSON test results for
+14 days. Missing required fixture passes or skipped test cases fail the job;
+command packages with no tests are not mistaken for skipped fixture cases.
+These are deterministic contract fixtures, not live IAM service E2E;
+branch protection requirements must be configured separately by maintainers.
 
 1. `check-links.ps1` — breaks the build on broken internal links.
 2. `validate-demos.ps1` — verifies demo structure and script syntax.

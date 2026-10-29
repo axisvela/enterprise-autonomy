@@ -1,6 +1,6 @@
 # Local-Binary Integration Outage Recovery Demo
 
-An outage on `partner-shipping` drives a governed recovery for in-flight work `work-0001`: case, outage context, **preserve-before-resume**, **verify-before-resume**, durable process, recovery plan, resume, and complete â€?with **no silent re-execution**. The demo runs against real local binaries plus the integration-domain reference adapter.
+An outage on `partner-shipping` drives a governed recovery for in-flight work `work-0001`: case, outage context, **preserve-before-resume**, **verify-before-resume**, durable process, recovery plan, resume, and complete ï¿½?with **no silent re-execution**. The demo runs against real local binaries plus the integration-domain reference adapter.
 
 > **Detailed walkthrough:** for the exact request bodies, headers, expected responses, and per-step governance behavior, see the [Detailed Operations Guide](operations-guide.md).
 
@@ -11,19 +11,19 @@ The run script prints a **step-by-step business report** and a **Value & Effect 
 - **The recovery lifecycle**: how `work-0001` moves from `inflight` to `completed` through preservation, verification, resume, and completion.
 - **Preserve-before-resume**: resume before preservation is rejected.
 - **Verify-before-resume**: resume before the integration is verified is rejected.
-- **No silent re-execution**: a second completion is rejected.
+- **No silent re-execution**: a second completion is rejected; same-key retries require identical payloads, and persistence failure does not report success.
 - **The division of authority**: no single product recovers work; each contributes one governed step.
 
 ## The Scenario In Business Terms
 
-1. **Open** â€?the integration owner opens a governed outage case.
-2. **Detect** â€?the outage and in-flight work are asserted with evidence.
-3. **Preserve gate** â€?resume before preservation is rejected.
-4. **Preserve** â€?the in-flight work is preserved under a durable reference.
-5. **Verify gate** â€?resume before verification is rejected; the integration is verified.
-6. **Process** â€?a durable recovery process is opened.
-7. **Plan** â€?a verified recovery plan is generated (recommendation only).
-8. **Resume and complete** â€?the work resumes, completes, and a repeat completion is rejected.
+1. **Open** ï¿½?the integration owner opens a governed outage case.
+2. **Detect** ï¿½?the outage and in-flight work are asserted with evidence.
+3. **Preserve gate** ï¿½?resume before preservation is rejected.
+4. **Preserve** ï¿½?the in-flight work is preserved under a durable reference.
+5. **Verify gate** ï¿½?resume before verification is rejected; the integration is verified.
+6. **Process** ï¿½?a durable recovery process is opened.
+7. **Plan** ï¿½?a verified recovery plan is generated (recommendation only).
+8. **Resume and complete** ï¿½?the work resumes, completes, and a repeat completion is rejected.
 
 ## What This Demo Does
 

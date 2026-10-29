@@ -6,6 +6,86 @@ on:
   pull_request:
 
 jobs:
+  iam-contracts:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    env:
+      GOWORK: "off"
+    defaults:
+      run:
+        shell: powershell
+        working-directory: enterprise-autonomy/examples/a2a-agent-iam
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: enterprise-autonomy
+      - uses: actions/checkout@v4
+        with:
+          repository: axisvela/praxo-core
+          ref: v2.5.1
+          path: praxo-core
+      - uses: actions/checkout@v4
+        with:
+          repository: axisvela/NOMIVELA-open
+          ref: 484c861543093fa72a0b1dfeccf9331291e5714a
+          path: NOMIVELA-open
+      - uses: actions/checkout@v4
+        with:
+          repository: axisvela/EIDOVELA-open
+          ref: 66616397f128e3417a052fab148f5cd41d11865f
+          path: EIDOVELA-open
+      - uses: actions/checkout@v4
+        with:
+          repository: axisvela/aegivela-open
+          ref: 0a6a8010e2ab7551259eb6406e9d2180d6094d48
+          path: aegivela-open
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26.10"
+          cache-dependency-path: enterprise-autonomy/examples/a2a-agent-iam/go.sum
+      - name: Record environment and resolved sources
+        run: |
+          $evidence = New-Item -ItemType Directory -Force "$env:RUNNER_TEMP/iam-contracts"
+          [Environment]::OSVersion.VersionString | Set-Content "$evidence/environment.txt"
+          $PSVersionTable.PSVersion.ToString() | Add-Content "$evidence/environment.txt"
+          go version | Add-Content "$evidence/environment.txt"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          "GOWORK=$env:GOWORK; fixtures only; no live IAM services" | Add-Content "$evidence/environment.txt"
+          foreach ($repo in @("enterprise-autonomy", "praxo-core", "NOMIVELA-open", "EIDOVELA-open", "aegivela-open")) {
+            $sha = git -C "$env:GITHUB_WORKSPACE/$repo" rev-parse HEAD
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            "$repo=$sha" | Add-Content "$evidence/environment.txt"
+          }
+          go list -m -json all | Set-Content -Encoding UTF8 "$evidence/modules.jsonstream"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Get-FileHash -Algorithm SHA256 go.mod,go.sum,internal/iamdemo/auth.go,internal/iamdemo/auth_test.go | Format-List | Out-File "$evidence/input-hashes.txt"
+      - name: Run mandatory IAM contract fixtures
+        run: |
+          go test -count=1 -json ./... | Tee-Object "$env:RUNNER_TEMP/iam-contracts/test-results.jsonl"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $events = @(Get-Content "$env:RUNNER_TEMP/iam-contracts/test-results.jsonl" | ForEach-Object { $_ | ConvertFrom-Json })
+          if (@($events | Where-Object { $_.Action -eq "skip" -and $_.Test }).Count -gt 0) {
+            throw "Mandatory IAM fixture was skipped"
+          }
+          $required = @("TestDirectGoogleADKAgentIAM", "TestLIMENORAFrontedGoogleADKAgentIAM", "TestLiveMuxRejectsMissingToken", "TestDPoPTimeAndRequestBinding", "TestGatewayTimeAndRequiredKey")
+          $required | ConvertTo-Json | Set-Content -Encoding UTF8 "$env:RUNNER_TEMP/iam-contracts/required-tests.json"
+          foreach ($test in $required) {
+            if (@($events | Where-Object { $_.Action -eq "pass" -and $_.Test -eq $test }).Count -ne 1) {
+              throw "Missing required IAM fixture pass: $test"
+            }
+          }
+      - name: Vet IAM contract example
+        run: go vet ./...
+      - name: Retain contract evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: iam-contracts-${{ github.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/iam-contracts/
+          retention-days: 14
+          if-no-files-found: warn
+
   verify:
     runs-on: windows-latest
     steps:
@@ -29,6 +109,10 @@ jobs:
       - name: Validate JSON files
         shell: powershell
         run: .\scripts\validate-json.ps1
+
+      - name: Verify demo runner failure and evidence semantics
+        shell: powershell
+        run: .\scripts\test-demo-runner.ps1
 
       - name: Go vet and test reference adapters
         shell: powershell

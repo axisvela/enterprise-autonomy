@@ -39,6 +39,11 @@ go test -count=1 ./...
 
 The module uses local `replace` directives for sibling checkouts:
 
+The declared Core baseline is `v2.5.1`, but the replacements below determine the
+actual source executed. Record every sibling repository SHA and dirty state when
+using the test results as integration evidence; this is not published-package
+consumption or a live-service test.
+
 - `../../../NOMIVELA-open`
 - `../../../EIDOVELA-open`
 - `../../../aegivela-open/sdk/go`
@@ -72,6 +77,13 @@ shipment` through Google ADK and PRAXO-CORE, after a real AEGIVELA `allow`
 decision. The assertion and token values are credentials and are not recorded.
 
 ## Evidence Level
+
+The demo validators accept at most one minute of past or future clock skew for
+DPoP and gateway timestamps, and reject missing/blank gateway signing keys.
+Negative fixtures also check method, path, token/key, signature, and required
+gateway subject fields. These checks do not supply a DPoP JTI replay cache or
+bind the gateway HMAC to the request body; do not use this demo envelope as a
+production operation-authorization or replay-protection protocol.
 
 The `direct` and `limenora` tests are contract-level wiring evidence: they prove
 the sequence, request/response shapes, token/key binding, DPoP proof checking,

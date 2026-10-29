@@ -8,7 +8,7 @@ require (
 	github.com/axisvela/eidovela-open/v3 v3.0.0
 	github.com/axisvela/nomivela-open/v3 v3.0.0
 	github.com/axisvela/praxo-core/adapters/a2a v0.1.0
-	github.com/axisvela/praxo-core/v2 v2.3.2
+	github.com/axisvela/praxo-core/v2 v2.5.1
 	google.golang.org/adk/v2 v2.6.0
 	google.golang.org/genai v1.74.0
 )

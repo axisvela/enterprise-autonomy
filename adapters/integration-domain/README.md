@@ -20,7 +20,8 @@ go build -o integration-domain-adapter.exe .
 
 - **Preserve before resume.** In-flight work must be preserved (durable reference) before it can resume (`403 work_not_preserved`).
 - **Verify before resume.** Work can only resume after the integration's reconnection is verified by the integration owner (`403 integration_not_verified`).
-- **No silent re-execution.** A completed action can never be re-executed (`409 action_already_completed_no_silent_rerun`); only the same idempotency key replays.
+- **No silent re-execution.** A completed action can never be re-executed (`409 action_already_completed_no_silent_rerun`); only the same idempotency key with the same payload replays. Reusing a key with different content returns `409 idempotency_key_conflict`.
+- **No unpersisted success.** State is written atomically before success is returned. A persistence failure returns `500 persistence_failed` and leaves the previous state unchanged. This is a local reference adapter, not a transactional business ledger.
 
 ## APIs
 

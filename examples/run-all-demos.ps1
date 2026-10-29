@@ -1,7 +1,9 @@
 param(
   [string[]]$Only = @(),
   [string[]]$Skip = @(),
-  [switch]$CheckOnly
+  [switch]$CheckOnly,
+  [switch]$Strict,
+  [string]$OutputRoot = (Join-Path $PSScriptRoot "_reports")
 )
 
 # Runs every runnable local demo end to end (start -> scenario -> verify -> stop)
@@ -30,99 +32,120 @@ $demos = @(
 )
 
 $requiredFiles = @("README.md", "operations-guide.md", "local.env.ps1.example", "evidence-schema.md", "run-all.ps1", "verify.ps1", "start-services.ps1")
-$results = @()
-$anyFailure = $false
+$ErrorActionPreference = "Stop"
+$unknown = @(@($Only) + @($Skip) | Where-Object { $_ -notin $demos.Name })
+if ($unknown.Count -gt 0) { throw "Unknown demo names: $($unknown -join ', ')" }
+$selected = @($demos | Where-Object { $Only.Count -eq 0 -or $_.Name -in $Only })
+$executionID = "{0}-{1}" -f [DateTime]::UtcNow.ToString("yyyyMMddTHHmmssfffZ"), [guid]::NewGuid().ToString("N")
+$runDir = New-Item -ItemType Directory -Path (Join-Path $OutputRoot $executionID) -Force
+$shell = (Get-Process -Id $PID).Path
+$dashboard = [ordered]@{
+  execution_id = $executionID
+  started_at = [DateTime]::UtcNow.ToString("o")
+  finished_at = $null
+  mode = $(if ($CheckOnly) { "structure-only" } else { "execution" })
+  strict = [bool]$Strict
+  required_scenarios = @($selected.Name)
+  environment = @{ os = [Environment]::OSVersion.VersionString; architecture = $env:PROCESSOR_ARCHITECTURE; powershell = $PSVersionTable.PSVersion.ToString() }
+  configuration = @{ only = @($Only); skip = @($Skip); credential_values_recorded = $false }
+  runner_sha256 = (Get-FileHash -Algorithm SHA256 -LiteralPath $PSCommandPath).Hash
+  results = @()
+  demos = @()
+}
 
-foreach ($demo in $demos) {
+foreach ($demo in $selected) {
   $name = $demo.Name
-  if ($Only.Count -gt 0 -and $name -notin $Only) { continue }
-  if ($name -in $Skip) { Write-Host "run-all-demos: skipping $name (explicit)" -ForegroundColor Yellow; continue }
-
   $dir = Join-Path $PSScriptRoot $name
-  $required = if ($demo.ContainsKey("Required")) { $demo["Required"] } else { $requiredFiles }
-  $missing = @($required | Where-Object { -not (Test-Path (Join-Path $dir $_)) })
-  $runScript = Join-Path $dir $demo.Run
-  if (-not (Test-Path $runScript)) { $missing += $demo.Run }
-
-  if ($missing.Count -gt 0) {
-    Write-Host "run-all-demos: FAIL $name - missing: $($missing -join ', ')" -ForegroundColor Red
-    $results += [pscustomobject]@{ Demo = $name; Status = "structure-fail"; Reason = ($missing -join ", ") }
-    $anyFailure = $true
-    continue
-  }
-
-  if ($CheckOnly) {
-    Write-Host "run-all-demos: OK $name (structure verified)" -ForegroundColor Green
-    $results += [pscustomobject]@{ Demo = $name; Status = "structure-ok"; Reason = "" }
-    continue
-  }
-
-  if (-not (Test-Path (Join-Path $dir "local.env.ps1"))) {
-    Write-Host "run-all-demos: SKIP $name - local.env.ps1 not present (copy from local.env.ps1.example)" -ForegroundColor Yellow
-    $results += [pscustomobject]@{ Demo = $name; Status = "skipped"; Reason = "no local.env.ps1" }
-    continue
-  }
-
-  $status = "pass"
-  $reason = ""
-  Push-Location $dir
+  $scenarioDir = New-Item -ItemType Directory -Path (Join-Path $runDir $name)
+  $result = [ordered]@{ demo = $name; status = "not-run"; reason = ""; started_at = [DateTime]::UtcNow.ToString("o"); finished_at = $null; phases = @(); artifacts = @(); findings = @(); data = @{ expected = "Fresh value report with outcome.completed=true after successful verification"; report = $demo.Report; configuration_source = "local.env.ps1 (values not recorded)" } }
   try {
-    . .\local.env.ps1
-    Write-Host "run-all-demos: starting $name..." -ForegroundColor Cyan
-    .\start-services.ps1
-    if ($LASTEXITCODE -ne 0) { throw "start-services failed" }
-    Write-Host "run-all-demos: running scenario for $name..." -ForegroundColor Cyan
-    & .\$($demo.Run)
-    if ($LASTEXITCODE -ne 0) { throw "scenario failed" }
-    Write-Host "run-all-demos: verifying $name..." -ForegroundColor Cyan
-    .\verify.ps1
-    if ($LASTEXITCODE -ne 0) { throw "verify failed" }
-  } catch {
-    $status = "fail"
-    $reason = $_.Exception.Message
-    $anyFailure = $true
-  } finally {
-    Pop-Location
-  }
-
-  Write-Host "run-all-demos: stopping $name..." -ForegroundColor Cyan
-  & (Join-Path $PSScriptRoot "stop-demo.ps1")
-  $results += [pscustomobject]@{ Demo = $name; Status = $status; Reason = $reason }
-}
-
-# Aggregate value reports
-$dashboard = @{ generated_at = (Get-Date).ToString("o"); demos = @() }
-foreach ($demo in $demos) {
-  $reportPath = Join-Path $PSScriptRoot "$($demo.Name)\.local-data\$($demo.Report)"
-  if (Test-Path $reportPath) {
-    $json = Get-Content -Raw $reportPath | ConvertFrom-Json
-    $dashboard.demos += [pscustomobject]@{
-      example = $json.example
-      outcome = "$($json.outcome.before) -> $($json.outcome.after)"
-      products = $json.kpis.products_involved
-      gates = $json.kpis.gates_passed
-      evidence = $json.kpis.evidence_artifacts
-      steps = $json.kpis.steps_completed
-      time_seconds = $json.kpis.time_to_resolve
-      completed = $json.outcome.completed
+    if ($name -in $Skip) {
+      $result.status = "skipped"
+      $result.reason = "explicit exclusion"
+      continue
     }
+    $required = if ($demo.ContainsKey("Required")) { $demo.Required } else { $requiredFiles }
+    $missing = @(@($required) + @($demo.Run) | Where-Object { -not (Test-Path -LiteralPath (Join-Path $dir $_) -PathType Leaf) })
+    if ($missing.Count -gt 0) { throw "Missing required files: $($missing -join ', ')" }
+    if ($CheckOnly) {
+      $result.status = "structure-only"
+      continue
+    }
+    $config = Join-Path $dir "local.env.ps1"
+    if (-not (Test-Path -LiteralPath $config -PathType Leaf)) {
+      $result.status = "skipped"
+      $result.reason = "no local.env.ps1"
+      continue
+    }
+    $reportPath = Join-Path $dir ".local-data\$($demo.Report)"
+    if (Test-Path -LiteralPath $reportPath) {
+      Move-Item -LiteralPath $reportPath -Destination (Join-Path $scenarioDir "previous-report.json")
+    }
+    Push-Location $dir
+    try {
+      foreach ($phase in @(
+        @{ Name = "start"; Script = (Join-Path $dir "start-services.ps1") },
+        @{ Name = "scenario"; Script = (Join-Path $dir $demo.Run) },
+        @{ Name = "verify"; Script = (Join-Path $dir "verify.ps1") }
+      )) {
+        $log = Join-Path $scenarioDir ($phase.Name + ".log")
+        $started = [DateTime]::UtcNow.ToString("o")
+        $command = "`$ErrorActionPreference = 'Stop'; `$global:LASTEXITCODE = 0; . '$($config.Replace("'", "''"))'; & '$($phase.Script.Replace("'", "''"))'; if (-not `$?) { exit 1 }; exit `$LASTEXITCODE"
+        $ErrorActionPreference = "Continue"
+        & $shell -NoProfile -NonInteractive -Command $command *> $log
+        $phaseExit = $LASTEXITCODE
+        $ErrorActionPreference = "Stop"
+        $result.phases += @{ name = $phase.Name; started_at = $started; finished_at = [DateTime]::UtcNow.ToString("o"); exit_code = $phaseExit; log = ($phase.Name + ".log") }
+        if ($phaseExit -ne 0) { throw "$($phase.Name) failed (exit $phaseExit)" }
+      }
+      if (-not (Test-Path -LiteralPath $reportPath -PathType Leaf)) { throw "No report produced by this execution" }
+      $json = Get-Content -Raw -LiteralPath $reportPath | ConvertFrom-Json
+      if ($json.outcome.completed -isnot [bool] -or -not $json.outcome.completed) { throw "Report does not confirm a completed outcome" }
+      $artifact = Join-Path $scenarioDir "value-report.json"
+      Copy-Item -LiteralPath $reportPath -Destination $artifact
+      $result.artifacts += @{ path = "value-report.json"; sha256 = (Get-FileHash -Algorithm SHA256 -LiteralPath $artifact).Hash; bytes = (Get-Item -LiteralPath $artifact).Length }
+      $result.status = "passed"
+    } finally {
+      $cleanupLog = Join-Path $scenarioDir "cleanup.log"
+      $started = [DateTime]::UtcNow.ToString("o")
+      try {
+        $ErrorActionPreference = "Continue"
+        & $shell -NoProfile -NonInteractive -File (Join-Path $PSScriptRoot "stop-demo.ps1") *> $cleanupLog
+        $cleanupExit = $LASTEXITCODE
+        $ErrorActionPreference = "Stop"
+        $result.phases += @{ name = "cleanup"; started_at = $started; finished_at = [DateTime]::UtcNow.ToString("o"); exit_code = $cleanupExit; log = "cleanup.log" }
+        if ($cleanupExit -ne 0) { throw "cleanup failed (exit $cleanupExit)" }
+      } catch {
+        $result.findings += "Cleanup failed; inspect restricted cleanup.log"
+        if ($result.status -eq "passed") { $result.status = "failed"; $result.reason = "cleanup failed" }
+      } finally {
+        Pop-Location
+      }
+    }
+    if ($result.status -eq "passed") {
+      $dashboard.demos += @{ demo = $name; execution_id = $executionID; report = "$name/value-report.json"; outcome = $json.outcome; kpis = $json.kpis }
+    }
+  } catch {
+    $result.status = "failed"
+    $result.reason = $_.Exception.Message
+  } finally {
+    foreach ($artifact in @(Get-ChildItem -LiteralPath $scenarioDir -Filter *.log)) {
+      $result.artifacts += @{ path = $artifact.Name; sha256 = (Get-FileHash -Algorithm SHA256 -LiteralPath $artifact.FullName).Hash; bytes = $artifact.Length }
+    }
+    $result.finished_at = [DateTime]::UtcNow.ToString("o")
+    $dashboard.results += [pscustomobject]$result
   }
 }
-$stackDir = Join-Path $PSScriptRoot "_reports"
-New-Item -ItemType Directory -Force -Path $stackDir | Out-Null
-$dashboard | ConvertTo-Json -Depth 6 | Set-Content (Join-Path $stackDir "all-demos-report.json")
-
-Write-Host ""
-Write-Host "================ Demo Summary ================" -ForegroundColor Cyan
-$results | Format-Table -AutoSize | Out-String | Write-Host
-Write-Host "=============================================="
-if ($dashboard.demos.Count -gt 0) {
-  Write-Host "Combined value dashboard written to examples\_reports\all-demos-report.json" -ForegroundColor Green
+$counts = [ordered]@{}
+foreach ($status in @("passed", "failed", "skipped", "blocked", "not-run", "structure-only")) {
+  $counts[$status] = @($dashboard.results | Where-Object { $_.status -eq $status }).Count
 }
-
-if ($anyFailure) {
-  Write-Host "run-all-demos: one or more demos failed." -ForegroundColor Red
-  exit 1
-}
-Write-Host "run-all-demos: all selected demos passed." -ForegroundColor Green
+$dashboard.counts = $counts
+$satisfied = -not $CheckOnly -and $selected.Count -gt 0 -and $counts.passed -eq $selected.Count
+$dashboard.acceptance = $(if ($satisfied) { "satisfied" } elseif ($CheckOnly) { "not-evaluated" } else { "unsatisfied" })
+$dashboard.finished_at = [DateTime]::UtcNow.ToString("o")
+$dashboard | ConvertTo-Json -Depth 12 | Set-Content -Encoding UTF8 (Join-Path $runDir "all-demos-report.json")
+$dashboard.results | Format-Table demo,status,reason -AutoSize | Out-String | Write-Host
+Write-Host "run-all-demos: execution=$executionID acceptance=$($dashboard.acceptance) report=$runDir"
+if ($counts.failed -gt 0 -or ($Strict -and -not $satisfied)) { exit 1 }
 exit 0

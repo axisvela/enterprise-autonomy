@@ -4,6 +4,29 @@ All notable changes to this repository are documented here. Public content is ex
 
 Versioning: the current version lives in `VERSION`. Manage it with `scripts/version.ps1` and decide on tags with `scripts/check-release.ps1`. `1.0.0` is the first stable release of the public introduction and examples repository.
 
+## Unreleased
+
+- The integration-domain reference adapter now binds idempotency keys to
+  normalized request payloads, rejects key reuse with different content, writes
+  state atomically before success, rolls back on persistence failure, and proves
+  same-key replay after process restart. Synthetic fixtures cover completion,
+  queued operations, response loss and concurrent duplicate submission without
+  live product services.
+- Added a standalone IAM contract CI job with pinned sibling sources and
+  retained environment/module/test artifacts, rather than relying on the
+  optional local-sibling test path. It does not run live IAM services.
+- IAM example validators reject far-future DPoP/gateway timestamps and missing
+  gateway signing keys. Credential fixtures cover clock skew, request binding,
+  signatures and required subject fields; the demo still does not implement
+  a proof replay cache or request-body-bound gateway assertions.
+- Updated the A2A consumer to published Core `v2.5.1`; the IAM example also
+  declares `v2.5.1` while retaining its explicit sibling-source replacements.
+- Added strict demo execution acceptance with explicit skipped/structure-only
+  outcomes, per-execution reports, phase logs, exit codes, artifact hashes, and
+  cleanup failure propagation. Old scenario reports are archived, not aggregated
+  as current evidence. Synthetic failure-path regressions run in CI without
+  starting product services.
+
 ## 1.1.13 (2026-10-23)
 
 - Added Google ADK Go A2A interoperability examples: a deterministic order-cancellation peer, authenticated two-process loopback runs, concurrent consumers, and direct/LIMENORA Agent IAM contract examples combining NOMIVELA registration, EIDOVELA PoP tokens, AEGIVELA authorization, and PRAXO-CORE execution.

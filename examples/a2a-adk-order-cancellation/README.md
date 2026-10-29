@@ -77,6 +77,9 @@ live EIDOVELA/AEGIVELA gateway decision.
 
 ## Boundaries
 
+- The module pins published Core `v2.5.1` and A2A adapter `v0.1.0`, without a
+  local Core replacement. These dependency versions do not establish live IAM
+  service or business-effect recovery verification.
 - This is protocol interoperability, not a production order-management system.
 - The eligibility decisions are deterministic fixture rules; no order is changed.
 - The two-process demo still runs both peers on loopback. Concurrent loopback

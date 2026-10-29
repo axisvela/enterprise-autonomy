@@ -12,6 +12,8 @@ github.com/axisvela/praxo-core/adapters/a2a v0.1.0 h1:Gj7/ZgZcmPgJLNoSFILR6CjwWb
 github.com/axisvela/praxo-core/adapters/a2a v0.1.0/go.mod h1:+LO8Sh3J4vyqch9roz3azOqpc55XmilUlExrjSgidxY=
 github.com/axisvela/praxo-core/v2 v2.3.2 h1:ZFq5TrlHgWPowNshAnkJRjHYE8JyHlpYFLTOPXvldTQ=
 github.com/axisvela/praxo-core/v2 v2.3.2/go.mod h1:B1HB9Eu8Tk1mdWhd0954ANj6Zni0rBn+Tobj+9Kve3o=
+github.com/axisvela/praxo-core/v2 v2.5.1 h1:9Tgt3h5yScjPPhao1QHXi6mgC3U4mMUcrVcKjdvB6dE=
+github.com/axisvela/praxo-core/v2 v2.5.1/go.mod h1:B1HB9Eu8Tk1mdWhd0954ANj6Zni0rBn+Tobj+9Kve3o=
 github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=
 github.com/cespare/xxhash/v2 v2.3.0/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
 github.com/felixge/httpsnoop v1.1.0 h1:3YtUj32ZZkqZtt3sZZsClsymw/QDuVfpNhoA31zeORc=

@@ -5,7 +5,7 @@ go 1.26.10
 require (
 	github.com/a2aproject/a2a-go/v2 v2.7.0
 	github.com/axisvela/praxo-core/adapters/a2a v0.1.0
-	github.com/axisvela/praxo-core/v2 v2.3.2
+	github.com/axisvela/praxo-core/v2 v2.5.1
 	google.golang.org/adk/v2 v2.6.0
 	google.golang.org/genai v1.74.0
 )
