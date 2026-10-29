@@ -127,5 +127,7 @@ try {
   Write-Host "test-demo-runner: passed=$passed failed=1; fixture evidence retained at $root"
   throw
 } finally {
-  if ($passed -eq 15) { Remove-Item -Recurse -Force -LiteralPath $root }
+  if ($passed -eq 15) { Remove-Item -Recurse -Force -LiteralPath $root -ErrorAction SilentlyContinue }
 }
+
+exit 0
