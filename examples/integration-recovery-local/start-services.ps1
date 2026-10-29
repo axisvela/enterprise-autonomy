@@ -61,12 +61,16 @@ if ($OrchadynBinary) {
     $migrateDir = Split-Path $OrchadynMigrateBinary
     Push-Location $migrateDir
     & $OrchadynMigrateBinary
+    $orchadynMigrationExit = $LASTEXITCODE
     Pop-Location
+  } else {
+    $orchadynMigrationExit = 0
   }
   Start-Process -FilePath $OrchadynBinary -RedirectStandardOutput "$logDir\orchadyn.out.log" -RedirectStandardError "$logDir\orchadyn.err.log" -WindowStyle Hidden
   $env:DATABASE_URL = $previousDatabaseURL
   $env:ORCHADYN_TENANT_ID = $previousTenant
   $env:ORCHADYN_LISTEN_ADDR = $previousListen
+  if ($orchadynMigrationExit -ne 0) { throw "Orchadyn migration failed with exit $orchadynMigrationExit" }
 }
 
 $moduregisReleaseDir = Join-Path $PSScriptRoot ".moduregis-release"
@@ -106,7 +110,10 @@ $moduregisMigrate = Join-Path $moduregisReleaseDir "moduregis-migrate.exe"
 if (Test-Path $moduregisMigrate -PathType Leaf) {
   Push-Location $moduregisReleaseDir
   & $moduregisMigrate -migration-dir ".\migrations"
+  $moduregisMigrationExit = $LASTEXITCODE
   Pop-Location
+} else {
+  $moduregisMigrationExit = 0
 }
 $moduregisApi = Join-Path $moduregisReleaseDir "moduregis-api.exe"
 $moduregisCmd = "/c set DATABASE_URL=$env:MODUREGIS_DATABASE_URL&& set MODUREGIS_ENV=development&& set AEGIVELA_MODE=stub&& set LISTEN_ADDR=$ModuregisListenAddr&& $moduregisApi"
@@ -115,6 +122,7 @@ $env:DATABASE_URL = $previousModuregisDatabaseURL
 $env:MODUREGIS_ENV = $previousModuregisEnv
 $env:AEGIVELA_MODE = $previousAegivelaMode
 $env:LISTEN_ADDR = $previousModuregisListen
+if ($moduregisMigrationExit -ne 0) { throw "Moduregis migration failed with exit $moduregisMigrationExit" }
 
 $adapterDir = Join-Path $PSScriptRoot "..\..\adapters\integration-domain"
 $adapterBinary = Join-Path $adapterDir "integration-domain-adapter.exe"
@@ -123,8 +131,12 @@ if (-not (Test-Path $adapterBinary)) {
   $env:GOWORK = "off"
   Push-Location $adapterDir
   go build -o $adapterBinary .
+  $adapterBuildExit = $LASTEXITCODE
   Pop-Location
   $env:GOWORK = $previousGoWork
+  if ($adapterBuildExit -ne 0) { throw "integration-domain adapter build failed with exit $adapterBuildExit" }
+} else {
+  $adapterBuildExit = 0
 }
 Start-Process -FilePath $adapterBinary -ArgumentList "--addr :8096 --data-file `"$dataDir\integration-domain-data.json`"" -RedirectStandardOutput "$logDir\integration-domain.out.log" -RedirectStandardError "$logDir\integration-domain.err.log" -WindowStyle Hidden
 
