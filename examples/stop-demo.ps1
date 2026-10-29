@@ -24,7 +24,9 @@ $patterns = @(
   (Join-Path $RepoRoot "examples\customer-case-local\.orchadyn-release\"),
   (Join-Path $RepoRoot "examples\customer-case-local\.moduregis-release\"),
   (Join-Path $RepoRoot "examples\recruitment-local\.orchadyn-release\"),
-  (Join-Path $RepoRoot "examples\recruitment-local\.moduregis-release\")
+  (Join-Path $RepoRoot "examples\recruitment-local\.moduregis-release\"),
+  (Join-Path $RepoRoot "examples\integration-recovery-local\.orchadyn-release\"),
+  (Join-Path $RepoRoot "examples\integration-recovery-local\.moduregis-release\")
 )
 
 $targets = @()

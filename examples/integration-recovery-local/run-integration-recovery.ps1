@@ -34,6 +34,8 @@ $work = Invoke-RestMethod -Uri $workBase
 $assertion = @{ id = "assertion-partner-shipping-down"; subject_id = $IntegrationId; property = "integration_status"; value = "down"; state_kind = "observed"; event_time = "2026-08-16T10:00:00Z"; system_time = "2026-08-16T10:00:01Z"; source = "integration-monitor"; evidence_ref = "evidence://monitor/partner-shipping" } | ConvertTo-Json
 $ontoTwin = @{ id = ($assertion | ConvertFrom-Json).subject_id; type_ref = "entity" } | ConvertTo-Json
 try { Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/twins" -Headers @{ "X-Tenant-ID" = $TenantId } -ContentType "application/json" -Body $ontoTwin | Out-Null } catch { }
+$ontoBinding = @{ id = "integration-monitor-status"; source = "integration-monitor"; property = "integration_status"; authority_rank = 10; max_lag_seconds = 60 } | ConvertTo-Json
+Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/source-bindings" -Headers @{ "X-Tenant-ID" = $TenantId } -ContentType "application/json" -Body $ontoBinding | Out-Null
 $state = Invoke-RestMethod -Method Post -Uri "http://localhost:1856/v1/assertions" -Headers $ontoHeaders -ContentType "application/json" -Body $assertion
 $evidence += @{ product = "integration-domain"; artifact = $integration.id; state = $integration.status }
 $evidence += @{ product = "integration-domain"; artifact = $work.id; state = $work.status }
@@ -83,9 +85,9 @@ $rheo = Join-Path $AxisVelaHome "RHEOVELA\rheo.exe"
 Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/workflows" -ContentType "application/json" -Body (Get-Content -Raw (Join-Path $PSScriptRoot "integration-recovery-workflow.json")) | Out-Null
 $process = @{ workflow = "integration-outage-recovery"; project = $WorkId; actor = $IntegrationOwner } | ConvertTo-Json
 $instance = Invoke-RestMethod -Method Post -Uri "http://localhost:1876/api/v1/instances" -ContentType "application/json" -Body $process
-$evidence += @{ product = "rheovela"; artifact = $instance.id; state = "open" }
-$outcome.steps += @{ index = 6; title = "Create the durable recovery process"; product = "rheovela"; artifact = $instance.id }
-Write-Step 6 "Create the durable recovery process" "Rheovela opened process instance '$($instance.id)' for 'integration-outage-recovery'. Stages: preserve, verify, resume, complete, close."
+$evidence += @{ product = "rheovela"; artifact = $instance.instance_id; state = $instance.status }
+$outcome.steps += @{ index = 6; title = "Create the durable recovery process"; product = "rheovela"; artifact = $instance.instance_id }
+Write-Step 6 "Create the durable recovery process" "Rheovela opened process instance '$($instance.instance_id)' for 'integration-outage-recovery'. Stages: preserve, verify, resume, complete, close."
 
 # Step 7: plan (Orchadyn, optional)
 $plan = Get-Content -Raw (Join-Path $PSScriptRoot "integration-recovery-plan.json") | ConvertFrom-Json

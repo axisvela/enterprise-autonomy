@@ -10,7 +10,7 @@
   "catalog": [
     {"id": "cap-preserve", "type": "recovery.preserve", "version": "1.0.0", "effects": ["preserve"], "cost": 0},
     {"id": "cap-verify", "type": "recovery.verify", "version": "1.0.0", "effects": ["verify"], "cost": 0},
-    {"id": "cap-resume", "type": "recovery.resume", "version": "1.0.0", "effects": ["resume"], "preservationRequired": true, "verificationRequired": true, "cost": 0}
+    {"id": "cap-resume", "type": "recovery.resume", "version": "1.0.0", "effects": ["resume"], "cost": 0}
   ],
   "constraints": [
     {"kind": "preserve-before-resume", "hard": true, "value": "preservation-required"},

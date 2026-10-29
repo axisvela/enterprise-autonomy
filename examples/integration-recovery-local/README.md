@@ -52,6 +52,25 @@ The run script prints a **step-by-step business report** and a **Value & Effect 
 
 Copy `local.env.ps1.example` to `local.env.ps1` and set your checkout root and connection strings. Do not commit `local.env.ps1`.
 
+## Clean Run
+
+The scenario uses fixed IDs and the local services retain state. For a repeatable
+run, create disposable `iro_symbivela`, `iro_orchadyn`, and `iro_moduregis`
+databases, point the demo at them, and clear only this demo's local state:
+
+```powershell
+$env:PGPASSWORD = '<local-admin-password>'
+.\run-clean.ps1 `
+  -Psql 'D:\app\PostgreSQL\18\bin\psql.exe' `
+  -AdminDSN 'postgres://postgres@localhost:5433/postgres?sslmode=disable'
+```
+
+`run-clean.ps1` drops/recreates only the `iro_*` databases, resets
+`.local-data` files used by this demo, runs start/scenario/verify, and always
+calls `..\stop-demo.ps1`. It does not use the shared `symbivela`, `orchadyn`, or
+`moduregis` databases. `reset-databases.ps1` can be used separately when the
+services are already configured.
+
 ## Start The Services
 
 ```powershell

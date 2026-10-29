@@ -27,6 +27,7 @@ Assert-True (@($report.evidence | Where-Object { $_.artifact -eq "resume-before-
 Assert-True (@($report.evidence | Where-Object { $_.artifact -eq "resume-before-verify-rejected" }).Count -eq 1) "verify-denial evidence present"
 Assert-True (@($report.evidence | Where-Object { $_.artifact -eq "silent-rerun-rejected" }).Count -eq 1) "silent-rerun denial evidence present"
 Assert-True (@($report.gates | Where-Object { $_.gate -eq "reconnect-verified" }).Count -eq 1) "reconnect-verified gate recorded"
+Assert-True (@($report.evidence | Where-Object { $_.product -eq "rheovela" -and $_.artifact }).Count -eq 1) "Rheovela process evidence present"
 
 Write-Host ""
 if ($failures.Count -eq 0) {
