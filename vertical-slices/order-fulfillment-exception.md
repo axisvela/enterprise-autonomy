@@ -81,3 +81,13 @@ This example omits pricing rules, allocation logic, communication templates, end
 ## Runnable Local Demo
 
 For verified local-binary startup commands, configuration, API requests, request bodies, and expected operational outputs, see the [local order-exception demo](../examples/order-fulfillment-local/README.md).
+
+## Executable Evidence
+
+| Check | Evidence |
+| --- | --- |
+| Adapter idempotency | `adapters/order-domain` tests pass (`go test .`); a repeated `idempotency_key` returns `replayed: true` and adds only one action. |
+| Local value report | `examples/order-fulfillment-local` writes `order-value-report.json` for the end-to-end run. |
+| Durable effect/outbox checks | The separate `demo-repository/praxovela-e2e` Case C9 records local PostgreSQL effect/outbox/reconcile checks. |
+
+The adapter is a local reference service, not a production order-management, payment, carrier, or notification integration. Production providers still require authorized endpoints, idempotency/status semantics, and operational evidence.
