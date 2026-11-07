@@ -91,3 +91,5 @@ For verified local-binary startup commands, configuration, API requests, request
 | Durable effect/outbox checks | The separate `demo-repository/praxovela-e2e` Case C9 records local PostgreSQL effect/outbox/reconcile checks. |
 
 The adapter is a local reference service, not a production order-management, payment, carrier, or notification integration. Production providers still require authorized endpoints, idempotency/status semantics, and operational evidence.
+
+See the [executable evidence index](executable-evidence.md) for the other vertical slices.
